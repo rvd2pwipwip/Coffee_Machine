@@ -47,6 +47,10 @@ android {
         exclude 'META-INF/services/com.fasterxml.jackson.core.JsonFactory'
         exclude 'META-INF/services/com.fasterxml.jackson.core.ObjectCodec'
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 apply plugin: 'jacoco'
