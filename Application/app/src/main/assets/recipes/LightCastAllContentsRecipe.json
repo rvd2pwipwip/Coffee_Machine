@@ -4,14 +4,15 @@
   "model": "com.amazon.android.model.content.Content",
   "modelType": "array",
   "translator": "ContentTranslator",
-  "query": "$",
+  "query": "$.data[*].data[?(@.id)]",
   "matchList": [
-    "title@mTitle",
+    "data/title@mTitle",
+    "data/artists@mSubtitle",
     "id@mId",
-    "description@mDescription",
-    "videoURL@mUrl",
-    "imgURL@mCardImageUrl",
-    "imgURL@mBackgroundImageUrl",
-    "channel_id@mChannelId"
+    "data/full_description@mDescription",
+    "data/images/0/url@mUrl",
+    "data/images/0/url@mCardImageUrl",
+    "data/images/1/url@mBackgroundImageUrl",
+    "id@mChannelId"
   ]
 }

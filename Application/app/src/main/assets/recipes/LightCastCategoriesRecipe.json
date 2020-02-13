@@ -4,10 +4,10 @@
   "model": "com.amazon.android.model.content.ContentContainer",
   "translator": "ContentContainerTranslator",
   "modelType": "array",
-  "query": "$..categories[*]",
+  "query": "$.data[*]",
   "queryResultType": "[]$",
   "matchList": [
-    "StringKey@mName"
+    "metadata/display_name@mName"
   ],
-  "keyDataType": "StringKey@keyDataPath"
+  "keyDataType": "id@keyDataPath"
 }

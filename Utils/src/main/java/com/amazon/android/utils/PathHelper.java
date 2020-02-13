@@ -17,6 +17,8 @@ package com.amazon.android.utils;
 import android.util.Log;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -193,8 +195,19 @@ public class PathHelper {
             Map<String, Object> next;
             try {
                 // Try to get the next map using the current key
-                //noinspection unchecked
-                next = (Map<String, Object>) map.get(key);
+                Object object = map.get(key);
+                if (object instanceof ArrayList && key.equalsIgnoreCase("images")) {
+                    ArrayList array = (ArrayList) object;
+                    Map<String, Object> arrayMap = new LinkedHashMap<>();
+
+                    for (int i = 0; i < array.size(); i++) {
+                        arrayMap.put(String.valueOf(i), array.get(i));
+                    }
+                    next = arrayMap;
+                } else {
+                    //noinspection unchecked
+                    next = (Map<String, Object>) object;
+                }
             }
             // If using the current key did not retrieve a map object, we are done traversing the
             // map.

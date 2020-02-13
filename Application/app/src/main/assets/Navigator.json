@@ -1,6 +1,6 @@
 {
   "config": {
-    "showRelatedContent": true,
+    "showRelatedContent": false,
     "useCategoryAsDefaultRelatedContent": true,
     "searchAlgo": "basic",
     "enableCEA608": false,
@@ -22,15 +22,6 @@
       "contents": {
         "dataLoader": "recipes/LightCastDataLoaderRecipe1.json",
         "dynamicParser": "recipes/LightCastContentsRecipe.json"
-      }
-    },
-    {
-      "categories": {
-        "name": "Hardcoded Category Name"
-      },
-      "contents": {
-        "dataLoader": "recipes/LightCastDataLoaderRecipe1.json",
-        "dynamicParser": "recipes/LightCastAllContentsRecipe.json"
       }
     }
   ],
