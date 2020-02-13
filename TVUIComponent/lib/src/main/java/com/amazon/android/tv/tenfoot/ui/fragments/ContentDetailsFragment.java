@@ -91,8 +91,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
     private static final String TAG = ContentDetailsFragment.class.getSimpleName();
 
-    private static final int DETAIL_THUMB_WIDTH = 264;
-    private static final int DETAIL_THUMB_HEIGHT = 198;
+    private static final int DETAIL_THUMB_WIDTH = 280;
+    private static final int DETAIL_THUMB_HEIGHT = 367;
 
     private static final int MILLISECONDS_IN_SECOND = 1000;
     private static final int SECONDS_IN_MINUTE = 60;

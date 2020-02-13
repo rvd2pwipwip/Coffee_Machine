@@ -60,8 +60,7 @@ permissions and limitations under the License.
 
     <!-- Action widget dimensions -->
     <!-- These values are used to calculate the action widget grid view length programmatically. -->
-    <dimen name="action_widget_height">40dp</dimen>
-    <dimen name="action_widget_width">40dp</dimen>
-    <dimen name="action_widget_padding">10dp</dimen>
-    <dimen name="grid_view_left_right_padding">12dip</dimen>
+    <dimen name="action_widget_height">25px</dimen>
+    <dimen name="action_widget_width">25px</dimen>
+    <dimen name="grid_view_left_right_padding">30px</dimen>
 </resources>

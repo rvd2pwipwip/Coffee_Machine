@@ -150,7 +150,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             view.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color
                     .transparent));
             view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable
-                    .search_background));
+                    .background_explore));
 
             final SearchBar searchBar = (SearchBar) view.findViewById(R.id.lb_search_bar);
             if (searchBar != null) {

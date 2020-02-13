@@ -41,7 +41,7 @@ android {
     buildToolsVersion "25.0.0"
 
     defaultConfig {
-        applicationId "com.fireappbuilder.android.calypso"
+        applicationId "com.stingray.android.qelloTv"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 10

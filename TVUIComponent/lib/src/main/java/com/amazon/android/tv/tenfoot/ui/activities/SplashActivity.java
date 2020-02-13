@@ -67,19 +67,7 @@ public class SplashActivity extends BaseActivity implements ICancellableLoad {
         mAppLogo = (ImageView) findViewById(R.id.main_logo);
         mProgress = (ProgressBar) findViewById(R.id.feed_progress);
         TextView mProgressText = (TextView) findViewById(R.id.feed_loader);
-        TextView copyrightTextView = (TextView) findViewById(R.id.copyright);
 
-        try {
-            // Update copyright text with app version.
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            copyrightTextView.append("\nVersion " + pInfo.versionName);
-        }
-        catch (Resources.NotFoundException exception) {
-            Log.e(TAG, "Resource not found: ", exception);
-        }
-        catch (PackageManager.NameNotFoundException exception) {
-            Log.e(TAG, "Package name not found: ", exception);
-        }
         // Check to see if this activity is not called from the TenFootApp.
         if (!getIntent().hasExtra(ContentBrowser.CONTENT_WILL_UPDATE)) {
             mProgressText.setText(R.string.feed_loading);

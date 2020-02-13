@@ -18,10 +18,9 @@ import com.amazon.android.configuration.ConfigurationManager;
 import com.amazon.android.contentbrowser.app.ContentBrowserApplication;
 import com.amazon.android.contentbrowser.constants.ConfigurationConstants;
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.ui.activities.ContentBrowseActivity;
+import com.amazon.android.tv.tenfoot.ui.activities.MainActivity;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentSearchActivity;
-import com.amazon.android.tv.tenfoot.ui.activities.FullContentBrowseActivity;
 import com.amazon.android.tv.tenfoot.ui.activities.SplashActivity;
 
 import android.content.res.Resources;
@@ -70,10 +69,7 @@ public class TenFootApp extends ContentBrowserApplication {
         // Add analytics constant of embedded activities.
         mAnalyticsManager.addAnalyticsConstantForActivity(SplashActivity.class.getSimpleName(),
                                                           AnalyticsTags.SCREEN_SPLASH)
-                         .addAnalyticsConstantForActivity(ContentBrowseActivity.class
-                                                                  .getSimpleName(),
-                                                          AnalyticsTags.SCREEN_BROWSE)
-                         .addAnalyticsConstantForActivity(FullContentBrowseActivity.class
+                         .addAnalyticsConstantForActivity(MainActivity.class
                                                                   .getSimpleName(),
                                                           AnalyticsTags.SCREEN_BROWSE)
                          .addAnalyticsConstantForActivity(ContentSearchActivity.class

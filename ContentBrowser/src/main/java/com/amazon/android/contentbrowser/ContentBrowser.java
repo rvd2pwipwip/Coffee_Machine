@@ -39,9 +39,9 @@ import com.amazon.android.search.ISearchAlgo;
 import com.amazon.android.search.ISearchResult;
 import com.amazon.android.search.SearchManager;
 import com.amazon.android.ui.fragments.AlertDialogFragment;
+import com.amazon.android.ui.fragments.ContactUsSettingsFragment;
 import com.amazon.android.ui.fragments.LogoutSettingsFragment;
-import com.amazon.android.ui.fragments.NoticeSettingsFragment;
-import com.amazon.android.ui.fragments.SlideShowSettingFragment;
+import com.amazon.android.ui.fragments.TermsSettingsFragment;
 import com.amazon.android.utils.ErrorUtils;
 import com.amazon.android.utils.LeanbackHelpers;
 import com.amazon.android.utils.Preferences;
@@ -176,6 +176,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * Terms constant.
      */
     public static final String TERMS = "Terms";
+    /**
+     * Contact Us constant.
+     */
+    public static final String CONTACT_US = "ContactUs";
 
     /**
      * Slide show setting constant.
@@ -584,9 +588,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                            .getBoolean(R.bool.override_all_contents_subscription_flag);
 
         addWidgetsAction(createSearchAction());
-        //addWidgetsAction(createSlideShowAction());
         addSettingsAction(createTermsOfUseSettingsAction());
-        //addSettingsAction(createSlideShowSettingAction());
+        addSettingsAction(createContactUsSettingsAction());
         setupLogoutAction();
         
         mSearchManager.addSearchAlgo(DEFAULT_SEARCH_ALGO_NAME, new ISearchAlgo<Content>() {
@@ -1051,6 +1054,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                            .setLabel1(mAppContext.getString(R.string.terms_title));
     }
 
+    private Action createContactUsSettingsAction() {
+        return new Action().setAction(CONTACT_US).setIconResourceId(R.drawable.email).setLabel1("Contact Us");
+    }
+
     /**
      * Create loginLogoutAction Action with initial state set as login.
      *
@@ -1088,36 +1095,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      */
     private Action createSearchAction() {
 
-        Action search = new Action(CONTENT_ACTION_SEARCH, SEARCH, R.drawable
-                .lb_ic_in_app_search);
+        Action search = new Action(CONTENT_ACTION_SEARCH, SEARCH, R.drawable.explore_white);
         search.setId(ContentBrowser.CONTENT_ACTION_SEARCH);
         search.setAction(SEARCH);
         return search;
-    }
-
-    /**
-     * Creates slide show action.
-     *
-     * @return The slide show action.
-     */
-    private Action createSlideShowAction() {
-
-        Action slideShow = new Action(CONTENT_ACTION_SLIDESHOW, SLIDE_SHOW, R.drawable.lb_ic_play);
-        slideShow.setId(ContentBrowser.CONTENT_ACTION_SLIDESHOW);
-        slideShow.setAction(SLIDE_SHOW);
-        return slideShow;
-    }
-
-    /**
-     * Create slide show setting action.
-     *
-     * @return The slide show setting action.
-     */
-    private Action createSlideShowSettingAction() {
-
-        return new Action().setAction(SLIDESHOW_SETTING)
-                           .setLabel1(mAppContext.getString(R.string.slideshow_title))
-                           .setIconResourceId(R.drawable.ic_terms_text);
     }
 
     /**
@@ -1245,31 +1226,20 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 loginLogoutActionTriggered(activity, settingsAction);
                 break;
             case TERMS:
-                new NoticeSettingsFragment()
+                new TermsSettingsFragment()
                         .createFragment(activity,
                                         activity.getFragmentManager(),
                                         settingsAction);
                 break;
-            case SLIDESHOW_SETTING:
-                slideShowSettingActionTriggered(activity, settingsAction);
-                break;
+            case CONTACT_US:
+                new ContactUsSettingsFragment()
+                        .createFragment(activity,
+                                activity.getFragmentManager(),
+                                settingsAction);
             default:
                 Log.e(TAG, "Unsupported action " + settingsAction);
                 break;
         }
-    }
-
-    /**
-     * Method to trigger the SlideShowSettingFragment on clicking slideshowSetting Action.
-     *
-     * @param activity       The activity on which fragment needs to be added.
-     * @param settingsAction The action instance.
-     */
-    private void slideShowSettingActionTriggered(Activity activity, Action settingsAction) {
-
-        new SlideShowSettingFragment().createFragment(activity,
-                                                      activity.getFragmentManager(),
-                                                      settingsAction);
     }
 
     /**

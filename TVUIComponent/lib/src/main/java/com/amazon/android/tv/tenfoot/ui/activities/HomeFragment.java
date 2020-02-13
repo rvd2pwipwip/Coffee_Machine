@@ -29,22 +29,8 @@
 
 package com.amazon.android.tv.tenfoot.ui.activities;
 
-import com.amazon.android.configuration.ConfigurationManager;
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.model.Action;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
-import com.amazon.android.ui.constants.ConfigurationConstants;
-import com.amazon.android.ui.fragments.LogoutSettingsFragment;
-import com.amazon.android.utils.GlideHelper;
-import com.amazon.android.ui.utils.BackgroundImageUtils;
-import com.amazon.android.utils.Helpers;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.base.BaseActivity;
-import com.amazon.android.tv.tenfoot.ui.fragments.ContentBrowseFragment;
-
+import android.app.Fragment;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -52,9 +38,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.amazon.android.configuration.ConfigurationManager;
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.model.Action;
+import com.amazon.android.model.content.Content;
+import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.tv.tenfoot.ui.fragments.ContentBrowseFragment;
+import com.amazon.android.ui.constants.ConfigurationConstants;
+import com.amazon.android.ui.fragments.LogoutSettingsFragment;
+import com.amazon.android.ui.utils.BackgroundImageUtils;
+import com.amazon.android.utils.GlideHelper;
+import com.amazon.android.utils.Helpers;
 
 import java.util.concurrent.TimeUnit;
 
@@ -64,12 +64,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
 /**
- * ContentBrowseActivity class that loads the ContentBrowseFragment.
+ * MainActivity class that loads the ContentBrowseFragment.
  */
-public class ContentBrowseActivity extends BaseActivity implements ContentBrowseFragment
+public class HomeFragment extends Fragment implements ContentBrowseFragment
         .OnBrowseRowListener {
 
-    private final String TAG = ContentBrowseActivity.class.getSimpleName();
+    private final String TAG = HomeFragment.class.getSimpleName();
 
     private static final int CONTENT_IMAGE_CROSS_FADE_DURATION = 1000;
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
@@ -89,43 +89,53 @@ public class ContentBrowseActivity extends BaseActivity implements ContentBrowse
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.content_browse_activity_layout);
+        Helpers.handleActivityEnterFadeTransition(getActivity(), ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
+    }
 
-        Helpers.handleActivityEnterFadeTransition(this, ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
 
-        mContentTitle = (TextView) findViewById(R.id.content_detail_title);
+        final View view = inflater.inflate(R.layout.home_layout, container, false);
 
-        CalligraphyUtils.applyFontToTextView(this, mContentTitle, ConfigurationManager
-                .getInstance(this).getTypefacePath(ConfigurationConstants.BOLD_FONT));
+        if (view != null) {
 
-        mContentDescription = (TextView) findViewById(R.id.content_detail_description);
-        CalligraphyUtils.applyFontToTextView(this, mContentDescription, ConfigurationManager
-                .getInstance(this).getTypefacePath(ConfigurationConstants.LIGHT_FONT));
+            mContentTitle = (TextView) view.findViewById(R.id.content_detail_title);
 
-        mContentImage = (ImageView) findViewById(R.id.content_image);
+            CalligraphyUtils.applyFontToTextView(getActivity(), mContentTitle, ConfigurationManager
+                    .getInstance(getActivity()).getTypefacePath(ConfigurationConstants.BOLD_FONT));
 
-        mContentImage.setImageURI(Uri.EMPTY);
+            mContentDescription = (TextView) view.findViewById(R.id.content_detail_description);
+            CalligraphyUtils.applyFontToTextView(getActivity(), mContentDescription, ConfigurationManager
+                    .getInstance(getActivity()).getTypefacePath(ConfigurationConstants.LIGHT_FONT));
 
-        // Get display/background size
-        Display display = getWindowManager().getDefaultDisplay();
-        Point windowSize = new Point();
-        display.getSize(windowSize);
-        int imageWidth = (int) getResources().getDimension(R.dimen.content_image_width);
-        int imageHeight = (int) getResources().getDimension(R.dimen.content_image_height);
-        int gradientSize = (int) getResources().getDimension(R.dimen.content_image_gradient_size);
-        // Create the background
-        Bitmap background =
-                BackgroundImageUtils.createBackgroundWithPreviewWindow(
-                        windowSize.x,
-                        windowSize.y,
-                        imageWidth,
-                        imageHeight,
-                        gradientSize,
-                        ContextCompat.getColor(this, R.color.browse_background_color));
-        mBackgroundWithPreview = new BitmapDrawable(getResources(), background);
-        // Set the background
-        mMainFrame = findViewById(R.id.main_frame);
-        mMainFrame.setBackground(mBackgroundWithPreview);
+            mContentImage = (ImageView) view.findViewById(R.id.content_image);
+
+            mContentImage.setImageURI(Uri.EMPTY);
+
+            // Get display/background size
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            Point windowSize = new Point();
+            display.getSize(windowSize);
+            int imageWidth = (int) getResources().getDimension(R.dimen.content_image_width);
+            int imageHeight = (int) getResources().getDimension(R.dimen.content_image_height);
+            int gradientSize = (int) getResources().getDimension(R.dimen.content_image_gradient_size);
+            // Create the background
+            Bitmap background =
+                    BackgroundImageUtils.createBackgroundWithPreviewWindow(
+                            windowSize.x,
+                            windowSize.y,
+                            imageWidth,
+                            imageHeight,
+                            gradientSize,
+                            ContextCompat.getColor(getActivity(), R.color.browse_background_color));
+            mBackgroundWithPreview = new BitmapDrawable(getResources(), background);
+            // Set the background
+            mMainFrame = view.findViewById(R.id.main_frame);
+            mMainFrame.setBackground(mBackgroundWithPreview);
+
+        }
+        return view;
     }
 
     /**
@@ -150,6 +160,12 @@ public class ContentBrowseActivity extends BaseActivity implements ContentBrowse
                                           getString(R.string.terms_description),
                                           null);
             }
+            //Contact Us action
+            else if (ContentBrowser.CONTACT_US.equals(settingsAction.getAction())) {
+                callImageLoadSubscription(getString(R.string.contact_us_title),
+                        "",
+                        null);
+            }
             // Login and logout action.
             else if (ContentBrowser.LOGIN_LOGOUT.equals(settingsAction.getAction())) {
 
@@ -165,6 +181,20 @@ public class ContentBrowseActivity extends BaseActivity implements ContentBrowse
                 }
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+
+        super.onDestroy();
+        if (mContentImageLoadSubscription != null) {
+            mContentImageLoadSubscription.unsubscribe();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     /**
@@ -184,47 +214,21 @@ public class ContentBrowseActivity extends BaseActivity implements ContentBrowse
                 .subscribe(c -> {
                     mContentTitle.setText(title);
                     mContentDescription.setText(description);
-                    GlideHelper.loadImageWithCrossFadeTransition(this,
-                                                                 mContentImage,
-                                                                 bgImageUrl,
-                                                                 CONTENT_IMAGE_CROSS_FADE_DURATION,
-                                                                 R.color.browse_background_color);
+                    GlideHelper.loadImageWithCrossFadeTransition(getActivity().getApplicationContext(),
+                            mContentImage,
+                            bgImageUrl,
+                            CONTENT_IMAGE_CROSS_FADE_DURATION,
+                            R.color.browse_background_color);
 
                     // If there is no image, remove the preview window
                     if (bgImageUrl != null && !bgImageUrl.isEmpty()) {
                         mMainFrame.setBackground(mBackgroundWithPreview);
-                    }
-                    else {
-                        mMainFrame.setBackgroundColor(Color.TRANSPARENT);
+                    } else {
+                        mMainFrame.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable
+                                .background_my_qello));
                     }
                 });
 
     }
 
-    @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
-        if (mContentImageLoadSubscription != null) {
-            mContentImageLoadSubscription.unsubscribe();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
-        if (ContentBrowser.getInstance(this).getAuthHelper() != null) {
-            ContentBrowser.getInstance(this).getAuthHelper()
-                          .loadPoweredByLogo(this, (ImageView) findViewById(R.id.mvpd_logo));
-        }
-
-        reportFullyDrawn();
-    }
-
-    @Override
-    public void setRestoreActivityValues() {
-
-        BrowseHelper.saveBrowseActivityState(this);
-    }
 }

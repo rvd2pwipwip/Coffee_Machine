@@ -32,8 +32,6 @@ permissions and limitations under the License.
   <string name="auto_play_speed">Velocità di scorrimento</string>
   <string name="terms_title">Termini di utilizzo</string>
   <string name="terms_description">Leggi le note legali.</string>
-  <string name="slideshow_title">Velocità della presentazione</string>
-  <string name="slideshow_description">Imposta la velocità della presentazione.</string>
   <string name="logout_description">Concludi l\'accesso al tuo account.</string>
   <string name="login_description">Accedi al tuo account.</string>
   <string name="logout_dialog_description">Vuoi davvero concludere l\'accesso?</string>

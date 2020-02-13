@@ -14,13 +14,9 @@ permissions and limitations under the License.
 -->
 <resources>
     <integer name="ellipsized_text_view_max_characters">1700</integer>
-    <integer name="slide_show_slow_speed">10000</integer>
-    <integer name="slide_show_middle_speed">5000</integer>
-    <integer name="slide_show_fast_speed">3000</integer>
-    <integer name="slide_show_fade_anim_duration">600</integer>
     <string name="logout_settings_fragment_tag">logout_settings_fragment</string>
-    <string name="notice_settings_fragment_tag">notice_settings_fragment</string>
-    <string name="slideshow_settings_fragment_tag">slideshow_settings_fragment</string>
+    <string name="terms_settings_fragment_tag">terms_settings_fragment</string>
+    <string name="contact_us_settings_fragment_tag">contact_us_settings_fragment</string>
 
 </resources>
 

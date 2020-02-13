@@ -32,8 +32,6 @@ permissions and limitations under the License.
   <string name="auto_play_speed">Vitesse de la diapositive</string>
   <string name="terms_title">Conditions d\'utilisation</string>
   <string name="terms_description">Consulter les mentions légales.</string>
-  <string name="slideshow_title">Vitesse du diaporama</string>
-  <string name="slideshow_description">Définir la vitesse du diaporama.</string>
   <string name="logout_description">Se déconnecter de votre compte.</string>
   <string name="login_description">Se connecter à votre compte.</string>
   <string name="logout_dialog_description">Êtes-vous sûr(e) de vouloir vous déconnecter&#160;?</string>

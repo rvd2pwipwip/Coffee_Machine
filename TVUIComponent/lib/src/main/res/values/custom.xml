@@ -21,11 +21,11 @@ permissions and limitations under the License.
     <!-- Default App Colors -->
 
     <!-- The background color of the screens. -->
-    <color name="background">#22282E</color>
+    <color name="background">#0b0c0d</color>
     <!-- Used for card background. -->
     <color name="card_background">#2B2B2B</color>
     <!-- The color of button highlights and widgets. -->
-    <color name="accent">#EE962D</color>
+    <color name="accent">#FF03A4D9</color>
     <!-- Used for the text of a selected item's title and description.
          Also used for button text, Splash screen text, and read more dialog text. -->
     <color name="primary_text">#E6FFFFFF</color>
@@ -41,15 +41,15 @@ permissions and limitations under the License.
     <!-- Background image for splash screen -->
     <drawable name="splash_background">@color/background</drawable>
     <!-- Company logo to show on Splash Screen -->
-    <drawable name="splash_logo">@drawable/fire_app_builder_white</drawable>
+    <drawable name="splash_logo">@drawable/stingray_qello_white</drawable>
     <!-- Color of splash screen loader -->
     <color name="spinner_color">#FFFFFFFF</color>
     <!-- Alpha of spinner -->
     <integer name="spinner_alpha">60</integer>
     <!-- color of loading and reloading text-->
-    <color name="feed_loading">@color/primary_text</color>
+    <color name="feed_loading">@color/tertiary_text</color>
     <!-- Copyright string text color -->
-    <color name="copyright">@color/primary_text</color>
+    <color name="copyright">@color/tertiary_text</color>
 
     <!-- End of Splash Screen Customization -->
 
@@ -67,7 +67,7 @@ permissions and limitations under the License.
     <!-- Header text size -->
     <dimen name="browse_header_text">16sp</dimen>
     <!-- Company logo -->
-    <drawable name="company_logo">@drawable/fire_app_builder_white_2</drawable>
+    <drawable name="company_logo">@drawable/stingray_qello_white</drawable>
     <!-- App icon -->
     <drawable name="app_logo">@mipmap/ic_launcher</drawable>
     <!-- Background color -->
@@ -80,7 +80,7 @@ permissions and limitations under the License.
     <!-- Background color of the card info -->
     <color name="card_info_bg">@color/card_background</color>
     <!-- Card info title text color -->
-    <color name="card_info_title_text">@color/primary_text</color>
+    <color name="card_info_title_text">@color/secondary_text</color>
     <!-- Card info content text color -->
     <color name="card_info_content_text">@color/secondary_text</color>
     <!-- Card info title text size -->
@@ -97,9 +97,9 @@ permissions and limitations under the License.
     <!-- Details Customization -->
 
     <!-- Text color for unfocused action button -->
-    <color name="action_button_text_color">@color/primary_text</color>
+    <color name="action_button_text_color">@color/secondary_text</color>
     <!-- Text color for focused action button -->
-    <color name="action_button_text_color_focused">@color/primary_text</color>
+    <color name="action_button_text_color_focused">@color/secondary_text</color>
     <!-- Background color for focused action button -->
     <drawable name="action_button_focused">@drawable/btn_generic_focused</drawable>
     <!-- Background color for normal state of action button -->
@@ -107,11 +107,11 @@ permissions and limitations under the License.
     <!-- Details description title text color -->
     <color name="details_description_title">@color/primary_text</color>
     <!-- Details description subtitle text color -->
-    <color name="details_description_subtitle">@color/tertiary_text</color>
+    <color name="details_description_subtitle">@color/secondary_text</color>
     <!-- Details description body text color -->
-    <color name="details_description_body">@color/primary_text</color>
+    <color name="details_description_body">@color/secondary_text</color>
     <!-- Details description extended body text color -->
-    <color name="details_description_extended">@color/primary_text</color>
+    <color name="details_description_extended">@color/secondary_text</color>
     <!-- Action button text size -->
     <dimen name="action_text">14sp</dimen>
     <!-- Details description title text size -->
@@ -133,7 +133,7 @@ permissions and limitations under the License.
     <!-- Color of buffered progress bar -->
     <color name="playback_buffered_progress">#FF5A5A5A</color>
     <!-- Color of the progress bar -->
-    <color name="progress_bar">#FFDADADA</color>
+    <color name="progress_bar">#FF03A4D9</color>
     <!-- Text color of the playback time -->
     <color name="playback_time_text">@color/secondary_text</color>
     <!-- Hide More options status activation status-->
@@ -153,7 +153,7 @@ permissions and limitations under the License.
     <!-- Error Activity Customization -->
 
     <dimen name="error_message_text_size">16sp</dimen>
-    <color name="error_message_text_color">@color/primary_text</color>
+    <color name="error_message_text_color">@color/secondary_text</color>
     <integer name="error_button_height">64</integer>
 
     <!-- End of Error Activity Customization -->

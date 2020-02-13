@@ -95,7 +95,7 @@ public class CardPresenter extends Presenter {
         cardView.setCardType(BaseCardView.CARD_TYPE_INFO_OVER);
         cardView.setInfoVisibility(BaseCardView.CARD_REGION_VISIBLE_ALWAYS);
 
-        int CARD_WIDTH_PX = 160;
+        int CARD_WIDTH_PX = 92;
         mCardWidthDp = Helpers.convertPixelToDp(mContext, CARD_WIDTH_PX);
 
         int CARD_HEIGHT_PX = 120;

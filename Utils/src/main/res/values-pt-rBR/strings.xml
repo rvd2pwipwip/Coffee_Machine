@@ -32,8 +32,6 @@ permissions and limitations under the License.
   <string name="auto_play_speed">Velocidade dos slides</string>
   <string name="terms_title">Termos de uso</string>
   <string name="terms_description">Revisar os avisos legais.</string>
-  <string name="slideshow_title">Velocidade da apresentação de slides</string>
-  <string name="slideshow_description">Definir a velocidade da apresentação de slides.</string>
   <string name="logout_description">Sair da sua conta.</string>
   <string name="login_description">Acesse sua conta</string>
   <string name="logout_dialog_description">Tem certeza de que quer sair? </string>

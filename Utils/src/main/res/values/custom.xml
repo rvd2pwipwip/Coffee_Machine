@@ -15,7 +15,7 @@ permissions and limitations under the License.
 -->
 <resources>
     <!-- The color of button highlights and widgets. -->
-    <color name="accent">#EE962D</color>
+    <color name="accent">#FF03A4D9</color>
     <!-- Used for the text of a selected item's title and description.
          Also used for button text, Splash screen text, and read more dialog text. -->
     <color name="primary_text">#E6FFFFFF</color>
@@ -31,6 +31,7 @@ permissions and limitations under the License.
     <drawable name="company_logo">@drawable/logo</drawable>
     <!-- terms of use file -->
     <string name="terms_of_use_file">terms_of_use.html</string>
+    <string name="contact_us_file">contact_us.html</string>
     <!-- A default light device font used for body text -->
     <string name="default_light_font">Roboto Light</string>
     <!-- A default bold device font used for titles -->

@@ -59,8 +59,6 @@ permissions and limitations under the License.
                 android:scaleType="centerInside"
                 android:src="@drawable/company_logo"/>
 
-        <include layout="@layout/powered_by_image_view"/>
-
         <LinearLayout
                 android:id="@+id/content_details"
                 android:layout_width="352dp"
@@ -101,5 +99,5 @@ permissions and limitations under the License.
                 tools:layout="@layout/action_widget_container"/>
     </RelativeLayout>
 
-    <include layout="@layout/action_widget_container"/>
+
 </RelativeLayout>

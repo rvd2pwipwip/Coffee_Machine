@@ -245,16 +245,6 @@ public class LogoutSettingsFragment extends ASettingsFragment {
                 // Remove MVPD logo from preferences.
                 Preferences.setString(PreferencesConstants.MVPD_LOGO_URL, "");
 
-                // Hide MVPD logo because the user logged out.
-                try {
-                    ImageView poweredByLogoImage =
-                            (ImageView) fragment.getActivity().findViewById(R.id.mvpd_logo);
-
-                    poweredByLogoImage.setVisibility(View.INVISIBLE);
-                }
-                catch (Exception e) {
-                    Log.e(TAG, "Couldn't hide the powered by layout!!!", e);
-                }
 
                 LocalBroadcastManager.getInstance(context)
                                      .sendBroadcast(new Intent().setAction

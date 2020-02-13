@@ -38,9 +38,9 @@ import android.widget.TextView;
 /**
  * Provides fragment to be shown when "Terms of Use" settings item is clicked.
  */
-public class NoticeSettingsFragment extends ASettingsFragment {
+public class TermsSettingsFragment extends ASettingsFragment {
 
-    private static final String TAG = NoticeSettingsFragment.class.getSimpleName();
+    private static final String TAG = TermsSettingsFragment.class.getSimpleName();
 
     /**
      * The activity.
@@ -58,7 +58,7 @@ public class NoticeSettingsFragment extends ASettingsFragment {
         final ReadDialogFragment dialog = new ReadDialogFragment();
         dialog.setContentViewProvider(getSingleViewProvider(activity));
         dialog.setArguments(getArguments(activity));
-        commitFragment(manager, dialog, activity.getString(R.string.notice_settings_fragment_tag));
+        commitFragment(manager, dialog, activity.getString(R.string.terms_settings_fragment_tag));
         mActivity = activity;
 
     }

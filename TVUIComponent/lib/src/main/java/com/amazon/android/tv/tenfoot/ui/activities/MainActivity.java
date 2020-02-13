@@ -29,32 +29,48 @@
 
 package com.amazon.android.tv.tenfoot.ui.activities;
 
+import android.app.Fragment;
+import android.os.Bundle;
+import android.widget.ImageView;
+
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.base.BaseActivity;
 import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
-import com.amazon.android.ui.constants.PreferencesConstants;
-import com.amazon.android.utils.Preferences;
-import com.amazon.utils.DateAndTimeHelper;
-
-import android.os.Bundle;
+import com.amazon.android.utils.Helpers;
 
 /**
- * An activity class that loads FullContentBrowseFragment to browse the content with a navigation
- * bar to the left side of the rows of content.
+ * MainActivity class that loads the ContentBrowseFragment.
  */
-public class FullContentBrowseActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {
 
-    private final String TAG = FullContentBrowseActivity.class.getSimpleName();
+    private final String TAG = MainActivity.class.getSimpleName();
 
-    /**
-     * Called when the activity is first created.
-     */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.full_content_browse_activity_layout);
+
+        setContentView(R.layout.main_layout);
+        Helpers.handleActivityEnterFadeTransition(this, 1500);
+
+        Fragment homeFrag = new HomeFragment();
+        homeFrag.setArguments(savedInstanceState);
+        getFragmentManager().beginTransaction().add(R.id.detail, homeFrag).commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        reportFullyDrawn();
     }
 
     @Override
@@ -62,4 +78,6 @@ public class FullContentBrowseActivity extends BaseActivity {
 
         BrowseHelper.saveBrowseActivityState(this);
     }
+
+
 }

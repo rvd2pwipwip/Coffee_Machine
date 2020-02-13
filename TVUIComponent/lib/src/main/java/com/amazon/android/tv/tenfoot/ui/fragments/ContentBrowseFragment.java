@@ -35,7 +35,8 @@ import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
-import com.amazon.android.tv.tenfoot.ui.activities.ContentBrowseActivity;
+import com.amazon.android.tv.tenfoot.ui.activities.HomeFragment;
+import com.amazon.android.tv.tenfoot.ui.activities.MainActivity;
 import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
 import com.amazon.android.ui.constants.PreferencesConstants;
 import com.amazon.android.utils.Preferences;
@@ -87,7 +88,7 @@ public class ContentBrowseFragment extends RowsFragment {
         // This makes sure that the container activity has implemented the callback interface.
         // If not, it throws an exception.
         try {
-            mCallback = (OnBrowseRowListener) getActivity();
+            mCallback = (HomeFragment) getFragmentManager().findFragmentById(R.id.detail);
         }
         catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() +
@@ -96,12 +97,10 @@ public class ContentBrowseFragment extends RowsFragment {
 
         CustomListRowPresenter customListRowPresenter = new CustomListRowPresenter();
         customListRowPresenter.setHeaderPresenter(new RowHeaderPresenter());
-
-        // Uncomment this code to remove shadow from the cards
-        //customListRowPresenter.setShadowEnabled(false);
+        customListRowPresenter.setShadowEnabled(false);
 
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(customListRowPresenter);
-
+        //HERE
         BrowseHelper.loadRootContentContainer(getActivity(), rowsAdapter);
         mSettingsAdapter = BrowseHelper.addSettingsActionsToRowAdapter(getActivity(), rowsAdapter);
         mLoginButtonIndex = BrowseHelper.getLoginButtonIndex(mSettingsAdapter);
@@ -149,28 +148,7 @@ public class ContentBrowseFragment extends RowsFragment {
     public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
 
-        if (mSettingsAdapter != null) {
-            if (mLoginButtonIndex != -1) {
-                mSettingsAdapter.notifyArrayItemRangeChanged(mLoginButtonIndex, 1);
 
-                // Update the details preview if the action occurred from the home screen.
-                if (Preferences.getString(PreferencesConstants.LAST_ACTIVITY)
-                               .equals(ContentBrowser.CONTENT_HOME_SCREEN)) {
-                    if (authenticationStatusUpdateEvent.isUserAuthenticated()) {
-                        ((ContentBrowseActivity) getActivity()).callImageLoadSubscription(
-                                getString(R.string.logout_label),
-                                getString(R.string.logout_description),
-                                null);
-                    }
-                    else {
-                        ((ContentBrowseActivity) getActivity()).callImageLoadSubscription(
-                                getString(R.string.login_label),
-                                getString(R.string.login_description),
-                                null);
-                    }
-                }
-            }
-        }
     }
 
     private final class ItemViewClickedListener implements OnItemViewClickedListener {

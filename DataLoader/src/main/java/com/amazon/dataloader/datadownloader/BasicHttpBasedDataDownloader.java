@@ -30,7 +30,8 @@ import java.util.Map;
  * This class represents a basic HTTP-based data downloader. It receives a URL from the URL
  * generator, fetches the content from that URL, and returns the content.
  */
-public class BasicHttpBasedDataDownloader extends ADataDownloader {
+public class
+BasicHttpBasedDataDownloader extends ADataDownloader {
 
     /**
      * Key to locate the URL generator implementation.

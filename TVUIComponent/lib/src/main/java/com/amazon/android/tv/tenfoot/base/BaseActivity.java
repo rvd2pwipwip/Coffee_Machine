@@ -22,8 +22,8 @@ import com.amazon.android.tv.tenfoot.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.OnChildViewHolderSelectedListener;
+import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -106,8 +106,8 @@ public abstract class BaseActivity extends Activity {
         super.onStart();
 
         // Get the Action widget container.
-        HorizontalGridView actionWidgetContainer =
-                (HorizontalGridView) findViewById(R.id.widget_grid_view);
+        VerticalGridView actionWidgetContainer =
+                (VerticalGridView) findViewById(R.id.widget_grid_view);
 
         if (actionWidgetContainer != null) {
 

@@ -32,8 +32,6 @@ permissions and limitations under the License.
   <string name="auto_play_speed">スライドの速度</string>
   <string name="terms_title">利用規約</string>
   <string name="terms_description">法律に関する通知を表示します。</string>
-  <string name="slideshow_title">スライドショーの速度</string>
-  <string name="slideshow_description">スライドショーの速度を設定します。</string>
   <string name="logout_description">アカウントからログアウトします。</string>
   <string name="login_description">アカウントにログインします。</string>
   <string name="logout_dialog_description">ログアウトしますか?</string>

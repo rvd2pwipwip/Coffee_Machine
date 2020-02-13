@@ -41,7 +41,7 @@
       "verifyNetworkConnection": true,
       "onAction": "CONTENT_SPLASH_SCREEN"
     },
-    "com.amazon.android.tv.tenfoot.ui.activities.ContentBrowseActivity": {
+    "com.amazon.android.tv.tenfoot.ui.activities.MainActivity": {
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,
       "onAction": "CONTENT_HOME_SCREEN"
