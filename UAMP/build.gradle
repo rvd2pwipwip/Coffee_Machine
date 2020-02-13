@@ -38,10 +38,6 @@ android {
     packagingOptions {
         pickFirst  'META-INF/LICENSE'
     }
-    compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
 }
 
 apply plugin: 'jacoco'
