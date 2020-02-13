@@ -66,9 +66,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'org.mockito:mockito-core:1.9.5'
-    androidTestCompile "com.google.dexmaker:dexmaker:1.0"
-    androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.0"
+    androidTestCompile 'org.mockito:mockito-core:3.1.0'
+    androidTestCompile "com.google.dexmaker:dexmaker:1.2"
+    androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.2"
 
 }
 
@@ -77,6 +77,6 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+        classpath 'me.tatarka:gradle-retrolambda:3.7.1'
     }
 }

@@ -55,7 +55,7 @@ dependencies {
     compile project(':AdsInterface')
 
     // Set this dependency to use JUnit 4 rules
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestCompile 'com.android.support.test:rules:1.0.2'
 
     androidTestCompile('com.android.support.test:runner:0.4.1') {
         exclude module: 'support-annotations'
