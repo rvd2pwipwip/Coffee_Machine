@@ -70,7 +70,6 @@ permissions and limitations under the License.
             </intent-filter>
 
         </activity>
-        <activity android:name="com.amazon.android.tv.tenfoot.ui.activities.ContentSearchActivity"/>
         <activity android:name="com.amazon.android.tv.tenfoot.ui.activities.SplashActivity"/>
         <activity android:name="com.amazon.android.uamp.ui.PlaybackActivity"/>
     </application>
