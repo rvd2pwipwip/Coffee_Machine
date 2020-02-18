@@ -62,7 +62,10 @@ public class NetworkUtils {
 
         try {
             URL url = new URL(urlString);
-            URLConnection urlConnection = url.openConnection();
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("x-client-id", "mBasxFOpteXOYwc9");
+
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     urlConnection.getInputStream(), Helpers.getDefaultAppCharset()), 8);

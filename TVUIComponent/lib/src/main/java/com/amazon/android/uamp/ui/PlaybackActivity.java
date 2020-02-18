@@ -30,46 +30,13 @@
 
 package com.amazon.android.uamp.ui;
 
-import com.google.android.exoplayer.text.CaptionStyleCompat;
-import com.google.android.exoplayer.text.SubtitleLayout;
-
-import com.amazon.ads.IAds;
-import com.amazon.ads.AdMetaData;
-import com.amazon.analytics.AnalyticsTags;
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.contentbrowser.database.helpers.RecentDatabaseHelper;
-import com.amazon.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
-import com.amazon.android.contentbrowser.database.records.RecentRecord;
-import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.module.ModuleManager;
-
-import com.amazon.android.recipe.Recipe;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.uamp.DrmProvider;
-import com.amazon.android.uamp.UAMP;
-import com.amazon.android.uamp.mediaSession.MediaSessionController;
-import com.amazon.android.uamp.constants.PreferencesConstants;
-import com.amazon.android.uamp.helper.CaptioningHelper;
-import com.amazon.android.ui.fragments.ErrorDialogFragment;
-import com.amazon.android.utils.ErrorUtils;
-import com.amazon.android.utils.Helpers;
-import com.amazon.android.utils.Preferences;
-
-import android.media.session.PlaybackState;
-
-import com.amazon.mediaplayer.AMZNMediaPlayer;
-import com.amazon.mediaplayer.AMZNMediaPlayer.PlayerState;
-import com.amazon.mediaplayer.playback.text.Cue;
-import com.amazon.mediaplayer.tracks.TrackType;
-import com.amazon.utils.DateAndTimeHelper;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -88,13 +55,43 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.amazon.ads.AdMetaData;
+import com.amazon.ads.IAds;
+import com.amazon.analytics.AnalyticsTags;
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.database.helpers.RecentDatabaseHelper;
+import com.amazon.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
+import com.amazon.android.contentbrowser.database.records.RecentRecord;
+import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
+import com.amazon.android.model.content.Content;
+import com.amazon.android.module.ModuleManager;
+import com.amazon.android.recipe.Recipe;
+import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.uamp.DrmProvider;
+import com.amazon.android.uamp.UAMP;
+import com.amazon.android.uamp.constants.PreferencesConstants;
+import com.amazon.android.uamp.helper.CaptioningHelper;
+import com.amazon.android.uamp.mediaSession.GetVideoLinksRunnable;
+import com.amazon.android.uamp.mediaSession.MediaSessionController;
+import com.amazon.android.uamp.mediaSession.VideoLinkSelector;
+import com.amazon.android.ui.fragments.ErrorDialogFragment;
+import com.amazon.android.utils.ErrorUtils;
+import com.amazon.android.utils.Helpers;
+import com.amazon.android.utils.Preferences;
+import com.amazon.mediaplayer.AMZNMediaPlayer;
+import com.amazon.mediaplayer.AMZNMediaPlayer.PlayerState;
+import com.amazon.mediaplayer.playback.text.Cue;
+import com.amazon.mediaplayer.tracks.TrackType;
+import com.amazon.utils.DateAndTimeHelper;
+import com.google.android.exoplayer.text.CaptionStyleCompat;
+import com.google.android.exoplayer.text.SubtitleLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -208,7 +205,6 @@ public class PlaybackActivity extends Activity implements
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         //flag for onResume to know this is being called at activity creation
         mResumeOnCreation = true;
         // Create video position tracking handler.
@@ -254,70 +250,86 @@ public class PlaybackActivity extends Activity implements
         mSelectedContent =
                 (Content) getIntent().getSerializableExtra(Content.class.getSimpleName());
 
-        if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
-            AnalyticsHelper.trackError(TAG, "Received an Intent to play content without a " +
-                    "content object or content URL");
+        GetVideoLinksRunnable runnable = new GetVideoLinksRunnable(mSelectedContent.getChannelId());
+
+        Thread thread = new Thread(runnable);
+        thread.setDaemon(true);
+        thread.start();
+
+        try {
+            thread.join();
+
+            // TODO LEO LANUZO - Need to establish a proper way to communicate from Network thread to the UI thread
+            mSelectedContent.setUrl(new VideoLinkSelector().select(runnable.getMediaUriByType()));
+
+            if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
+                AnalyticsHelper.trackError(TAG, "Received an Intent to play content without a " +
+                        "content object or content URL");
+                finish();
+            }
+
+            loadViews();
+            createPlayerAndInitializeListeners();
+            mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            mCaptioningHelper = new CaptioningHelper(this, mSubtitleLayout);
+            mCurrentPlaybackPosition = 0;
+            mTransportControlsUpdateHandler = new Handler(Looper.getMainLooper());
+            mContinualFwdUpdater = new ContinualFwdUpdater();
+            mContinualRewindUpdater = new ContinualRewindUpdater();
+            mIsLongPress = false;
+            mIsNetworkError = false;
+
+            // Auto-play the selected content.
+            mAutoPlay = true;
+
+            //initialize the media session
+            initMediaSession();
+
+            mCaptioningHelper = new CaptioningHelper(this, mSubtitleLayout);
+            mCaptioningChangeListener = new CaptioningManager.CaptioningChangeListener() {
+                @Override
+                public void onEnabledChanged(boolean enabled) {
+
+                    Log.d(TAG, "onEnabledChanged: " + enabled);
+                    super.onEnabledChanged(enabled);
+
+                    if (mCaptioningHelper.useGlobalSetting()) {
+                        mIsClosedCaptionEnabled = enabled;
+                        modifyClosedCaptionState(mIsClosedCaptionEnabled);
+                    }
+                }
+
+                @Override
+                public void onUserStyleChanged(@NonNull CaptioningManager.CaptionStyle userStyle) {
+
+                    Log.d(TAG, "onUserStyleChanged");
+                    super.onUserStyleChanged(userStyle);
+                    mSubtitleLayout.setStyle(CaptionStyleCompat.createFromCaptionStyle(userStyle));
+                }
+
+                @Override
+                public void onLocaleChanged(Locale locale) {
+
+                    Log.d(TAG, "onLocaleChanged");
+                    super.onLocaleChanged(locale);
+                }
+
+                @Override
+                public void onFontScaleChanged(float fontScale) {
+
+                    Log.d(TAG, "onFontScaleChanged");
+                    super.onFontScaleChanged(fontScale);
+                    mSubtitleLayout.setFractionalTextSize(
+                            fontScale * SubtitleLayout.DEFAULT_TEXT_SIZE_FRACTION);
+                }
+            };
+
+            mCaptioningHelper.setCaptioningManagerListener(mCaptioningChangeListener);
+
+        } catch (InterruptedException e) {
+            AnalyticsHelper.trackError(TAG, "Thread to load videoLinks was interrupted");
             finish();
         }
-
-        loadViews();
-        createPlayerAndInitializeListeners();
-        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        mCaptioningHelper = new CaptioningHelper(this, mSubtitleLayout);
-        mCurrentPlaybackPosition = 0;
-        mTransportControlsUpdateHandler = new Handler(Looper.getMainLooper());
-        mContinualFwdUpdater = new ContinualFwdUpdater();
-        mContinualRewindUpdater = new ContinualRewindUpdater();
-        mIsLongPress = false;
-        mIsNetworkError = false;
-
-        // Auto-play the selected content.
-        mAutoPlay = true;
-
-        //initialize the media session
-        initMediaSession();
-
-        mCaptioningHelper = new CaptioningHelper(this, mSubtitleLayout);
-        mCaptioningChangeListener = new CaptioningManager.CaptioningChangeListener() {
-            @Override
-            public void onEnabledChanged(boolean enabled) {
-
-                Log.d(TAG, "onEnabledChanged: " + enabled);
-                super.onEnabledChanged(enabled);
-
-                if (mCaptioningHelper.useGlobalSetting()) {
-                    mIsClosedCaptionEnabled = enabled;
-                    modifyClosedCaptionState(mIsClosedCaptionEnabled);
-                }
-            }
-
-            @Override
-            public void onUserStyleChanged(@NonNull CaptioningManager.CaptionStyle userStyle) {
-
-                Log.d(TAG, "onUserStyleChanged");
-                super.onUserStyleChanged(userStyle);
-                mSubtitleLayout.setStyle(CaptionStyleCompat.createFromCaptionStyle(userStyle));
-            }
-
-            @Override
-            public void onLocaleChanged(Locale locale) {
-
-                Log.d(TAG, "onLocaleChanged");
-                super.onLocaleChanged(locale);
-            }
-
-            @Override
-            public void onFontScaleChanged(float fontScale) {
-
-                Log.d(TAG, "onFontScaleChanged");
-                super.onFontScaleChanged(fontScale);
-                mSubtitleLayout.setFractionalTextSize(
-                        fontScale * SubtitleLayout.DEFAULT_TEXT_SIZE_FRACTION);
-            }
-        };
-
-        mCaptioningHelper.setCaptioningManagerListener(mCaptioningChangeListener);
-
     }
 
     /**
