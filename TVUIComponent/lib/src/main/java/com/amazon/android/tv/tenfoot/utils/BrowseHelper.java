@@ -98,11 +98,13 @@ public class BrowseHelper {
      */
     public static int getLoginButtonIndex(ArrayObjectAdapter settingsAdapter) {
 
-        for (int i = 0; i < settingsAdapter.size(); i++) {
+        if (settingsAdapter != null ) {
+            for (int i = 0; i < settingsAdapter.size(); i++) {
 
-            Action action = (Action) settingsAdapter.get(i);
-            if (action.getAction().equals(ContentBrowser.LOGIN_LOGOUT)) {
-                return i;
+                Action action = (Action) settingsAdapter.get(i);
+                if (action.getAction().equals(ContentBrowser.LOGIN_LOGOUT)) {
+                    return i;
+                }
             }
         }
         return -1;

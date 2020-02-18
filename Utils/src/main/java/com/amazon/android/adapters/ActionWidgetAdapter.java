@@ -125,7 +125,6 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
         ((ViewHolder) baseHolder).actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 verticalGridView.performClick();
             }
         });
