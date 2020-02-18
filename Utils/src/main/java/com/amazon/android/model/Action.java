@@ -75,11 +75,6 @@ public class Action {
         String mName;
 
         /**
-         * Action hint, can be used for hinting buttons.
-         */
-        String mHint;
-
-        /**
          * Icon resource id.
          */
         int mIconResourceId;
@@ -95,7 +90,6 @@ public class Action {
                     ", label1=" + mLabel1 +
                     ", label2=" + mLabel2 +
                     ", name='" + mName + '\'' +
-                    ", hint='" + mHint + '\'' +
                     ", iconResourceId=" + mIconResourceId +
                     '}';
         }
@@ -138,21 +132,18 @@ public class Action {
      * @param iconResourceID The icon resource ID for the new Action.
      */
     public Action(long id, String tag, int iconResourceID) {
-
         mId = id;
         ActionData actionData = new ActionData();
         mActionDataPerState.put(DEFAULT_STATE, actionData);
         actionData.mLabel1 = tag;
         actionData.mName = tag;
         actionData.mIconResourceId = iconResourceID;
-
     }
 
     /**
      * Constructor for Action class.
      */
     public Action() {
-
         mActionDataPerState.put(DEFAULT_STATE, new ActionData());
     }
 
@@ -163,33 +154,7 @@ public class Action {
      * @return Action object reference.
      */
     public Action setAction(String action) {
-
         this.mAction = action;
-        return this;
-    }
-
-    /**
-     * Set hint string for current state.
-     *
-     * @param hint Hint string.
-     * @return Action object reference.
-     */
-    public Action setHint(String hint) {
-
-        return setHint(mState, hint);
-    }
-
-    /**
-     * Set hint string for state.
-     *
-     * @param state The state to set the value of.
-     * @param hint The hint string.
-     * @return Action object reference.
-     */
-    public Action setHint(int state, String hint) {
-
-        validateAndAddState(state);
-        mActionDataPerState.get(state).mHint = hint;
         return this;
     }
 
@@ -199,7 +164,6 @@ public class Action {
      * @param state State to validate.
      */
     private boolean doesStateExist(int state) {
-
         return mActionDataPerState.containsKey(state);
     }
 
@@ -211,7 +175,6 @@ public class Action {
      * @return True if the state is valid; false otherwise.
      */
     private boolean validateAndAddState(int state) {
-
         if (!mActionDataPerState.containsKey(state)) {
             mActionDataPerState.put(state, new ActionData());
             return false;
@@ -226,7 +189,6 @@ public class Action {
      * @return Action object reference.
      */
     public Action setIconResourceId(int iconResourceId) {
-
         return setIconResourceId(mState, iconResourceId);
     }
 
@@ -238,7 +200,6 @@ public class Action {
      * @return Action object reference.
      */
     public Action setIconResourceId(int state, int iconResourceId) {
-
         validateAndAddState(state);
         mActionDataPerState.get(state).mIconResourceId = iconResourceId;
         return this;
@@ -251,7 +212,6 @@ public class Action {
      * @return Action object reference.
      */
     public Action setName(String name) {
-
         return setName(mState, name);
     }
 
@@ -263,7 +223,6 @@ public class Action {
      * @return Action object reference.
      */
     public Action setName(int state, String name) {
-
         validateAndAddState(state);
         mActionDataPerState.get(state).mName = name;
         return this;
@@ -275,7 +234,6 @@ public class Action {
      * @return Action object name.
      */
     public String getName() {
-
         return getName(mState);
     }
 
@@ -285,35 +243,12 @@ public class Action {
      * @return Action object name for state.
      */
     public String getName(int state) {
-
         if (!doesStateExist(state)) {
             return null;
         }
         return mActionDataPerState.get(state).mName;
     }
 
-    /**
-     * Get hint string for state.
-     * @param state The state to get the hint of.
-     * @return Hint string for state.
-     */
-    public String getHint(int state) {
-
-        if (!doesStateExist(state)) {
-            return null;
-        }
-        return mActionDataPerState.get(state).mHint;
-    }
-
-    /**
-     * Get hint string.
-     *
-     * @return Hint string.
-     */
-    public String getHint() {
-
-        return getHint(mState);
-    }
 
     /**
      * Get icon resource id.
@@ -321,7 +256,6 @@ public class Action {
      * @return Icon resource id.
      */
     public int getIconResourceId() {
-
         return getIconResourceId(mState);
     }
 
@@ -344,7 +278,6 @@ public class Action {
      * @return Action string.
      */
     public String getAction() {
-
         return mAction;
     }
 
@@ -355,7 +288,6 @@ public class Action {
      * @return The action.
      */
     public final Action setId(long id) {
-
         mId = id;
         return this;
     }
@@ -366,7 +298,6 @@ public class Action {
      * @return The action id.
      */
     public final long getId() {
-
         return mId;
     }
 
@@ -377,7 +308,6 @@ public class Action {
      * @return The action.
      */
     public final Action setLabel1(CharSequence label) {
-
         return setLabel1(mState, label);
     }
 
@@ -389,7 +319,6 @@ public class Action {
      * @return The action.
      */
     public final Action setLabel1(int state, CharSequence label) {
-
         validateAndAddState(state);
         mActionDataPerState.get(state).mLabel1 = label;
         return this;
@@ -401,7 +330,6 @@ public class Action {
      * @return The first label.
      */
     public final CharSequence getLabel1() {
-
         return getLabel1(mState);
     }
 
@@ -412,7 +340,6 @@ public class Action {
      * @return The first label.
      */
     public final CharSequence getLabel1(int state) {
-
         if (!doesStateExist(state)) {
             return null;
         }
@@ -426,7 +353,6 @@ public class Action {
      * @return The action.
      */
     public final Action setLabel2(CharSequence label) {
-
         return setLabel2(mState, label);
     }
 
@@ -438,7 +364,6 @@ public class Action {
      * @return The action.
      */
     public final Action setLabel2(int state, CharSequence label) {
-
         validateAndAddState(state);
         mActionDataPerState.get(state).mLabel2 = label;
         return this;
@@ -450,7 +375,6 @@ public class Action {
      * @return The second label.
      */
     public final CharSequence getLabel2() {
-
         return getLabel2(mState);
     }
 
@@ -461,7 +385,6 @@ public class Action {
      * @return The first label.
      */
     public final CharSequence getLabel2(int state) {
-
         if (!doesStateExist(state)) {
             return null;
         }
@@ -475,7 +398,6 @@ public class Action {
      * @return The action.
      */
     public final Action setIcon(Drawable icon) {
-
         return setIcon(mState, icon);
     }
 
@@ -487,7 +409,6 @@ public class Action {
      * @return The action.
      */
     public final Action setIcon(int state, Drawable icon) {
-
         validateAndAddState(state);
         mActionDataPerState.get(state).mIcon = icon;
         return this;
@@ -499,7 +420,6 @@ public class Action {
      * @return The icon Drawable.
      */
     public final Drawable getIcon() {
-
         return getIcon(mState);
     }
 
@@ -510,7 +430,6 @@ public class Action {
      * @return The icon Drawable.
      */
     public final Drawable getIcon(int state) {
-
         if (!doesStateExist(state)) {
             return null;
         }
@@ -524,7 +443,6 @@ public class Action {
      * @return The action.
      */
     public final Action addKeyCode(int keyCode) {
-
         mKeyCodes.add(keyCode);
         return this;
     }
@@ -535,7 +453,6 @@ public class Action {
      * @param keyCode The keycode.
      */
     public final void removeKeyCode(int keyCode) {
-
         mKeyCodes.remove(keyCode);
     }
 
@@ -546,7 +463,6 @@ public class Action {
      * @return True if the action responds to the keycode; false otherwise.
      */
     public final boolean respondsToKeyCode(int keyCode) {
-
         return mKeyCodes.contains(keyCode);
     }
 
@@ -556,7 +472,6 @@ public class Action {
      * @return State of the action.
      */
     public int getState() {
-
         return mState;
     }
 
@@ -566,7 +481,6 @@ public class Action {
      * @param state State of the action.
      */
     public Action setState(int state) {
-
         this.mState = state;
         return this;
     }

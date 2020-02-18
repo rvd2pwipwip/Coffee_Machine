@@ -27,7 +27,7 @@
  * the License.
  */
 
-package com.amazon.android.tv.tenfoot.ui.activities;
+package com.amazon.android.tv.tenfoot.ui.fragments;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -37,6 +37,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,6 @@ import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.ui.fragments.ContentBrowseFragment;
 import com.amazon.android.ui.constants.ConfigurationConstants;
 import com.amazon.android.ui.fragments.LogoutSettingsFragment;
 import com.amazon.android.ui.utils.BackgroundImageUtils;
@@ -134,6 +134,13 @@ public class HomeFragment extends Fragment implements ContentBrowseFragment
             mMainFrame = view.findViewById(R.id.main_frame);
             mMainFrame.setBackground(mBackgroundWithPreview);
 
+            Fragment contentBrowseFragment = getFragmentManager().findFragmentById(R.id.content_browse_fragment);
+            if(contentBrowseFragment == null) {
+                contentBrowseFragment = new ContentBrowseFragment();
+                contentBrowseFragment.setArguments(savedInstanceState);
+            }
+            getFragmentManager().beginTransaction().replace(R.id.content_browse, contentBrowseFragment).commit();
+
         }
         return view;
     }
@@ -185,11 +192,11 @@ public class HomeFragment extends Fragment implements ContentBrowseFragment
 
     @Override
     public void onDestroy() {
-
         super.onDestroy();
         if (mContentImageLoadSubscription != null) {
             mContentImageLoadSubscription.unsubscribe();
         }
+        Log.d(TAG, "Home Fragment destroyed");
     }
 
     @Override

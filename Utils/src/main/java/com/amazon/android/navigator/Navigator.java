@@ -262,7 +262,6 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
      * @return Active activity.
      */
     public Activity getActiveActivity() {
-
         return mCurrentActivity;
     }
 
@@ -273,7 +272,6 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
      * @param bundle     Bundle to be passed to start activity.
      */
     public void startActivity(String screenName, Bundle bundle) {
-
         startActivity(mCurrentActivity, screenName, bundle, null);
     }
 
@@ -455,7 +453,6 @@ public class Navigator implements Application.ActivityLifecycleCallbacks {
      * {@inheritDoc}
      */
     private static String getActivityName(Activity activity) {
-
         return StringManipulation.getExtension(activity.getLocalClassName());
     }
 }

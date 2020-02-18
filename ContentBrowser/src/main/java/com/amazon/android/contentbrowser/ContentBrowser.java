@@ -51,9 +51,11 @@ import com.amazon.utils.StringManipulation;
 import org.greenrobot.eventbus.EventBus;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v17.leanback.app.SearchFragment;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.util.Log;
 
@@ -161,11 +163,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * Search constant.
      */
     public static final String SEARCH = "Search";
-
-    /**
-     * Slide show constant.
-     */
-    public static final String SLIDE_SHOW = "SlideShow";
+    public static final String HOME = "Home";
 
     /**
      * Login constant.
@@ -180,11 +178,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * Contact Us constant.
      */
     public static final String CONTACT_US = "ContactUs";
-
-    /**
-     * Slide show setting constant.
-     */
-    public static final String SLIDESHOW_SETTING = "SlideShowSetting";
 
     /**
      * Constant for the "watch now" action.
@@ -235,6 +228,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * Constant for the "search" action.
      */
     public static final int CONTENT_ACTION_SEARCH = 10;
+    public static final int CONTENT_ACTION_HOME = 16;
 
     /**
      * Constant for the "login" action.
@@ -587,9 +581,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 mAppContext.getResources()
                            .getBoolean(R.bool.override_all_contents_subscription_flag);
 
+        addWidgetsAction(createHomeAction());
         addWidgetsAction(createSearchAction());
-        addSettingsAction(createTermsOfUseSettingsAction());
-        addSettingsAction(createContactUsSettingsAction());
         setupLogoutAction();
         
         mSearchManager.addSearchAlgo(DEFAULT_SEARCH_ALGO_NAME, new ISearchAlgo<Content>() {
@@ -1084,7 +1077,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param action The action to add.
      */
     public void addWidgetsAction(Action action) {
-
         mWidgetActionsList.add(action);
     }
 
@@ -1094,10 +1086,16 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @return The search action.
      */
     private Action createSearchAction() {
-
         Action search = new Action(CONTENT_ACTION_SEARCH, SEARCH, R.drawable.explore_white);
         search.setId(ContentBrowser.CONTENT_ACTION_SEARCH);
         search.setAction(SEARCH);
+        return search;
+    }
+
+    private Action createHomeAction() {
+        Action search = new Action(CONTENT_ACTION_HOME, HOME, R.drawable.home_white);
+        search.setId(ContentBrowser.CONTENT_ACTION_HOME);
+        search.setAction(HOME);
         return search;
     }
 
@@ -1107,16 +1105,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @return A list of actions used for the action widget adapter.
      */
     public ArrayList<Action> getWidgetActionsList() {
-
         return (ArrayList<Action>) mWidgetActionsList;
     }
 
     /**
-     * Get recommended list of a content as content container.
-     * If there are no items with similar tags, this method returns items from the same category.
-     *
-     * TODO: DEVTECH-2635
-     *
      * @param content Content.
      * @return Recommended contents as a content container.
      */
@@ -1738,45 +1730,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                    mNavigator.startActivity(screenName, activitySwitchListener),
                            errorExtra -> showAuthenticationErrorDialog(errorExtra)
         );
-    }
-
-    /**
-     * Action triggered.
-     *
-     * @param activity Activity.
-     * @param action   Action.
-     */
-    public void actionTriggered(Activity activity, Action action) {
-
-        actionTriggered(activity, action, null);
-    }
-
-    /**
-     * Action triggered.
-     *
-     * @param activity Activity.
-     * @param action   Action.
-     * @param extras   Extras bundle.
-     */
-    public void actionTriggered(Activity activity, Action action, Bundle extras) {
-
-        switch ((int) action.getId()) {
-            case ContentBrowser.CONTENT_ACTION_SEARCH: {
-                Log.d(TAG, "actionTriggered -> CONTENT_ACTION_SEARCH");
-                switchToScreen(CONTENT_SEARCH_SCREEN);
-            }
-            break;
-            case ContentBrowser.CONTENT_ACTION_SLIDESHOW: {
-                Log.d(TAG, "actionTriggered -> CONTENT_ACTION_SLIDESHOW");
-                switchToScreen(CONTENT_SLIDESHOW_SCREEN);
-            }
-            break;
-            case ContentBrowser.CONTENT_ACTION_LOGIN_LOGOUT: {
-                Log.d(TAG, "actionTriggered -> CONTENT_ACTION_LOGIN_LOGOUT");
-                loginLogoutActionTriggered(activity, action);
-            }
-            break;
-        }
     }
 
     /**

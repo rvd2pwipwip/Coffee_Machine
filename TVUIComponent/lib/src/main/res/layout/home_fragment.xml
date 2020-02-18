@@ -31,8 +31,8 @@ permissions and limitations under the License.
 -->
 
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-          android:name="com.amazon.android.tv.tenfoot.ui.fragments.ContentSearchFragment"
-          android:id="@+id/content_search_fragment"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-        />
+    android:name="com.amazon.android.tv.tenfoot.ui.fragments.HomeFragment"
+    android:id="@+id/home_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</fragment>

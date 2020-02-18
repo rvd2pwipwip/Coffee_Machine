@@ -18,8 +18,13 @@ import com.amazon.android.adapters.ActionWidgetAdapter;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.model.Action;
 import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.tv.tenfoot.ui.fragments.HomeFragment;
+import com.amazon.android.tv.tenfoot.ui.fragments.ContentSearchFragment;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v17.leanback.widget.OnChildViewHolderSelectedListener;
@@ -123,11 +128,9 @@ public abstract class BaseActivity extends Activity {
 
             // Set the selected listener for the child view of the selected listener.
             actionWidgetContainer.setOnChildViewHolderSelectedListener(mRowSelectedListener);
-
             // Set the on click listener for this widget container.
             actionWidgetContainer.setOnClickListener(
-                    v -> ContentBrowser.getInstance(BaseActivity.this).actionTriggered
-                            (BaseActivity.this, mSelectedAction));
+                    v -> this.actionTriggered( mSelectedAction));
         }
     }
 
@@ -146,5 +149,44 @@ public abstract class BaseActivity extends Activity {
      * restored when the app launches.
      */
     public abstract void setRestoreActivityValues();
+
+    public void actionTriggered(Action action) {
+        FragmentManager fragmentManager = this.getFragmentManager();
+
+        switch ((int) action.getId()) {
+            case ContentBrowser.CONTENT_ACTION_SEARCH: {
+                Log.d(TAG, "actionTriggered -> CONTENT_ACTION_SEARCH");
+
+                Fragment searchFragment = fragmentManager.findFragmentByTag(ContentSearchFragment.class.getSimpleName());
+                if(searchFragment == null) {
+                    searchFragment = new ContentSearchFragment();
+                }
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.detail, searchFragment, ContentSearchFragment.class.getSimpleName());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+            break;
+            case ContentBrowser.CONTENT_ACTION_HOME: {
+                Log.d(TAG, "actionTriggered -> CONTENT_ACTION_HOME");
+
+                Fragment homeFragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
+                if(homeFragment == null) {
+                    homeFragment = new HomeFragment();
+                }
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.detail, homeFragment, HomeFragment.class.getSimpleName());
+                fragmentTransaction.commit();
+            }
+            break;
+            case ContentBrowser.CONTENT_ACTION_LOGIN_LOGOUT: {
+                Log.d(TAG, "actionTriggered -> CONTENT_ACTION_LOGIN_LOGOUT");
+                //loginLogoutActionTriggered(activity, action);
+            }
+            break;
+        }
+    }
 }
 

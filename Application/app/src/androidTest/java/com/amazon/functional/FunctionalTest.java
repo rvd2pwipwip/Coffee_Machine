@@ -15,6 +15,16 @@
 
 package com.amazon.functional;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+import android.support.v17.leanback.widget.HorizontalGridView;
+import android.support.v17.leanback.widget.SearchEditText;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
@@ -28,16 +38,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
-
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.v17.leanback.widget.HorizontalGridView;
-import android.support.v17.leanback.widget.SearchEditText;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +98,7 @@ public class FunctionalTest {
      */
     private void init() {
         // wait for browse screen to load
-        solo.waitForView(R.id.full_content_browse_fragment, 0, TestConfig.LONG_TIMEOUT);
+        solo.waitForView(R.id.content_browse_fragment, 0, TestConfig.LONG_TIMEOUT);
         // get item count
         count = 0;
         mContentContainer = ContentBrowser.getInstance(mSplashActivity)
@@ -288,7 +288,7 @@ public class FunctionalTest {
                 errors.addError(t);
             }
             solo.goBack();
-            solo.waitForView(R.id.full_content_browse_fragment);
+            solo.waitForView(R.id.content_browse_fragment);
 
         }
     }
@@ -307,7 +307,7 @@ public class FunctionalTest {
                 errors.addError(t);
             }
             solo.goBack();
-            solo.waitForView(R.id.full_content_browse_fragment);
+            solo.waitForView(R.id.content_browse_fragment);
         }
         else {
             Log.i(TAG, "doStandardSearchTest(): not using sample feed, skipping test");
@@ -328,7 +328,7 @@ public class FunctionalTest {
             errors.addError(t);
         }
         solo.goBack();
-        solo.waitForView(R.id.full_content_browse_fragment);
+        solo.waitForView(R.id.content_browse_fragment);
     }
 
     /**
@@ -345,7 +345,7 @@ public class FunctionalTest {
                 errors.addError(t);
             }
             solo.goBack();
-            solo.waitForView(R.id.full_content_browse_fragment);
+            solo.waitForView(R.id.content_browse_fragment);
         }
         else {
             Log.i(TAG, "doUniqueSearchTest(): not using sample feed, skipping test");
