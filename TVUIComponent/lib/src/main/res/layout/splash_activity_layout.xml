@@ -48,16 +48,4 @@ permissions and limitations under the License.
             android:layout_below="@id/main_logo"
             android:layout_centerInParent="true"
             android:indeterminateDrawable="@drawable/custom_progress"/>
-
-    <TextView
-            android:id="@+id/copyright"
-            android:text="@string/copyright"
-            android:textSize="@dimen/copyright_font_size"
-            android:textColor="@color/copyright"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/copyright_margin_bottom"/>
 </RelativeLayout>

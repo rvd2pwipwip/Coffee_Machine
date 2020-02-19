@@ -137,7 +137,7 @@ public class CardPresenter extends Presenter {
                                               viewHolder.view.getContext(),
                                               content.getCardImageUrl(),
                                               new GlideHelper.LoggingListener<>(),
-                                              R.drawable.movie);
+                                              R.drawable.default_poster);
             }
         }
         else if (item instanceof ContentContainer) {
