@@ -1,44 +1,4 @@
-/**
- * This file was modified by Amazon:
- * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- *     http://aws.amazon.com/apache2.0/
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
 package com.amazon.android.tv.tenfoot.ui.fragments;
-
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.contentbrowser.helper.AuthHelper;
-import com.amazon.android.model.Action;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainer;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
-import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,6 +15,18 @@ import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.VerticalGridView;
 import android.util.Log;
 
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.helper.AuthHelper;
+import com.amazon.android.model.Action;
+import com.amazon.android.model.content.Content;
+import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
+import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 
 /**
  * This fragment displays content in horizontal rows for browsing. Each row has its title displayed
@@ -65,10 +37,8 @@ public class ContentBrowseFragment extends RowsFragment {
     private static final String TAG = ContentBrowseFragment.class.getSimpleName();
     private static final int WAIT_BEFORE_FOCUS_REQUEST_MS = 500;
     private OnBrowseRowListener mCallback;
-    private ArrayObjectAdapter mSettingsAdapter = null;
     private ListRow mRecentListRow = null;
     private ListRow mWatchlistListRow = null;
-    private int mLoginButtonIndex;
 
     // Container Activity must implement this interface.
     public interface OnBrowseRowListener {
@@ -95,11 +65,8 @@ public class ContentBrowseFragment extends RowsFragment {
         customListRowPresenter.setShadowEnabled(false);
 
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(customListRowPresenter);
-        //HERE
-        BrowseHelper.loadRootContentContainer(getActivity(), rowsAdapter);
-        mSettingsAdapter = BrowseHelper.addSettingsActionsToRowAdapter(getActivity(), rowsAdapter);
-        mLoginButtonIndex = BrowseHelper.getLoginButtonIndex(mSettingsAdapter);
 
+        BrowseHelper.loadRootContentContainer(getActivity(), rowsAdapter);
         setAdapter(rowsAdapter);
 
         setOnItemViewClickedListener(new ItemViewClickedListener());

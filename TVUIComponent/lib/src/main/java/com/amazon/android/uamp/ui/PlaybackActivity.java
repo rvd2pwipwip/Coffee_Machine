@@ -612,7 +612,7 @@ public class PlaybackActivity extends Activity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         ContentBrowser.getInstance(this)
-                      .handleOnActivityResult(this, requestCode, resultCode, data);
+                      .handleOnActivityResult(requestCode, resultCode, data);
     }
 
     /**

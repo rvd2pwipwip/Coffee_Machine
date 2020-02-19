@@ -14,6 +14,13 @@
  */
 package com.amazon.android.contentbrowser;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
+import android.util.Log;
+
 import com.amazon.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.amazon.android.contentbrowser.database.helpers.WatchlistDatabaseHelper;
 import com.amazon.android.contentbrowser.database.records.RecentRecord;
@@ -50,15 +57,6 @@ import com.amazon.utils.StringManipulation;
 
 import org.greenrobot.eventbus.EventBus;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v17.leanback.app.SearchFragment;
-import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,315 +69,67 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static com.amazon.android.contentbrowser.helper.LauncherIntegrationManager
-        .getSourceOfContentPlayRequest;
+import static com.amazon.android.contentbrowser.helper.LauncherIntegrationManager.getSourceOfContentPlayRequest;
 
 /**
  * This class is the controller of the content browsing solution.
  */
 public class ContentBrowser implements IContentBrowser, ICancellableLoad {
 
-    /**
-     * Debug TAG.
-     */
     private static final String TAG = ContentBrowser.class.getSimpleName();
 
-    /**
-     * Debug recipe chain flag.
-     */
     private static final boolean DEBUG_RECIPE_CHAIN = false;
-
-    /**
-     * Cause a feed error flag for debugging.
-     */
-    private static final boolean CAUSE_A_FEED_ERROR_FOR_DEBUGGING = false;
-
-    /**
-     * Request from launcher boolean key
-     */
     private static final String REQUEST_FROM_LAUNCHER = "REQUEST_FROM_LAUNCHER";
-
-    /**
-     * Content will update key.
-     */
     public static final String CONTENT_WILL_UPDATE = "CONTENT_WILL_UPDATE";
-
-    /**
-     * The splash screen name.
-     */
     public static final String CONTENT_SPLASH_SCREEN = "CONTENT_SPLASH_SCREEN";
-
-    /**
-     * The login screen name.
-     */
-    public static final String CONTENT_LOGIN_SCREEN = "CONTENT_LOGIN_SCREEN";
-
-    /**
-     * The home screen name.
-     */
     public static final String CONTENT_HOME_SCREEN = "CONTENT_HOME_SCREEN";
-
-    /**
-     * The search screen name.
-     */
-    public static final String CONTENT_SEARCH_SCREEN = "CONTENT_SEARCH_SCREEN";
-
-    /**
-     * The details screen name.
-     */
     public static final String CONTENT_DETAILS_SCREEN = "CONTENT_DETAILS_SCREEN";
-
-    /**
-     * The submenu screen name.
-     */
     public static final String CONTENT_SUBMENU_SCREEN = "CONTENT_SUBMENU_SCREEN";
-
-    /**
-     * The recommended content screen name.
-     */
-    public static final String CONTENT_RECOMMENDED_SCREEN = "CONTENT_RECOMMENDED_SCREEN";
-
-    /**
-     * The content renderer screen name.
-     */
     public static final String CONTENT_RENDERER_SCREEN = "CONTENT_RENDERER_SCREEN";
 
-    /**
-     * The connectivity screen name.
-     */
-    public static final String CONTENT_CONNECTIVITY_SCREEN = "CONTENT_CONNECTIVITY_SCREEN";
-
-    /**
-     * The slide show screen name.
-     */
-    public static final String CONTENT_SLIDESHOW_SCREEN = "CONTENT_SLIDESHOW_SCREEN";
-
-    /**
-     * Free content constant.
-     */
     public static final String FREE_CONTENT = "free";
-
-    /**
-     * Search constant.
-     */
     public static final String SEARCH = "Search";
     public static final String HOME = "Home";
-
-    /**
-     * Login constant.
-     */
+    public static final String MY_QELLO = "MyQello";
     public static final String LOGIN_LOGOUT = "LoginLogout";
-
-    /**
-     * Terms constant.
-     */
     public static final String TERMS = "Terms";
-    /**
-     * Contact Us constant.
-     */
     public static final String CONTACT_US = "ContactUs";
 
-    /**
-     * Constant for the "watch now" action.
-     */
     public static final int CONTENT_ACTION_WATCH_NOW = 1;
-
-    /**
-     * Constant for the "watch from beginning" action.
-     */
     public static final int CONTENT_ACTION_WATCH_FROM_BEGINNING = 2;
-
-    /**
-     * Constant for the "resume playback" action.
-     */
     public static final int CONTENT_ACTION_RESUME = 3;
-
-    /**
-     * Constant for the "watch later" action.
-     */
-    public static final int CONTENT_ACTION_WATCH_LATER = 4;
-
-    /**
-     * Constant for the "purchase subscription" action.
-     */
     public static final int CONTENT_ACTION_SUBSCRIPTION = 5;
-
-    /**
-     * Constant for the "purchase daily pass" action.
-     */
     public static final int CONTENT_ACTION_DAILY_PASS = 6;
+    public static final int CONTENT_ACTION_SEARCH = 7;
+    public static final int CONTENT_ACTION_HOME = 8;
+    public static final int CONTENT_ACTION_MY_QELLO = 9;
+    public static final int CONTENT_ACTION_LOGIN_LOGOUT = 10;
+    public static final int CONTENT_ACTION_ADD_WATCHLIST = 11;
+    public static final int CONTENT_ACTION_REMOVE_WATCHLIST = 12;
 
-    /**
-     * Constant for the "trial" action.
-     */
-    public static final int CONTENT_ACTION_TRIAL = 7;
-
-    /**
-     * Constant for the "buy" action.
-     */
-    public static final int CONTENT_ACTION_BUY = 8;
-
-    /**
-     * Constant for the "rent" action.
-     */
-    public static final int CONTENT_ACTION_RENT = 9;
-
-    /**
-     * Constant for the "search" action.
-     */
-    public static final int CONTENT_ACTION_SEARCH = 10;
-    public static final int CONTENT_ACTION_HOME = 16;
-
-    /**
-     * Constant for the "login" action.
-     */
-    public static final int CONTENT_ACTION_LOGIN_LOGOUT = 11;
-
-    /**
-     * Constant for the "slide show" action.
-     */
-    public static final int CONTENT_ACTION_SLIDESHOW = 12;
-
-    /**
-     * Constant for the "launcher" action.
-     */
-    public static final int CONTENT_ACTION_CALL_FROM_LAUNCHER = 13;
-
-    /**
-     * Constant for the "add to watchlist" action.
-     */
-    public static final int CONTENT_ACTION_ADD_WATCHLIST = 14;
-
-    /**
-     * Constant for the "remove from watchlist" action.
-     */
-    public static final int CONTENT_ACTION_REMOVE_WATCHLIST = 15;
-
-    /**
-     * The maximum number of actions supported.
-     */
-    public static final int CONTENT_ACTION_MAX = 100;
-
-    /**
-     * Search algorithm name.
-     */
     private static final String DEFAULT_SEARCH_ALGO_NAME = "basic";
-
-    /**
-     * Content reload timeout in seconds.
-     */
-    private static final int CONTENT_RELOAD_TIMEOUT = 14400; // Equals 4 hours.
-
-    /**
-     * Constant for grace time in milliseconds
-     */
-    public static final long GRACE_TIME_MS = 5000; // 5 seconds.
-
-    /**
-     * Constant to add to intent extras to inform content browser to restore from the last activity.
-     */
     public static final String RESTORE_ACTIVITY = "restore_last_activity";
 
-    /**
-     * Application context.
-     */
+    public static final long GRACE_TIME_MS = 5000; // 5 seconds.
+
     private final Context mAppContext;
-
-    /**
-     * Singleton instance.
-     */
     private static ContentBrowser sInstance;
-
-    /**
-     * Lock object for singleton get instance.
-     */
     private static final Object sLock = new Object();
-
-    /**
-     * Event bus reference.
-     */
     private final EventBus mEventBus = EventBus.getDefault();
-
-    /**
-     * Search manager instance.
-     */
     private final SearchManager<ContentContainer, Content> mSearchManager = new SearchManager<>();
-
-    /**
-     * Custom search handler reference.
-     */
     private ICustomSearchHandler mICustomSearchHandler;
-
-    /**
-     * Root content container listener.
-     */
     private IRootContentContainerListener mIRootContentContainerListener;
-
-    /**
-     * Last selected content.
-     */
     private Content mLastSelectedContent;
-
-    /**
-     * Last selected content container.
-     */
-    private ContentContainer mLastSelectedContentContainer;
-
-    /**
-     * Navigator instance.
-     */
     private final Navigator mNavigator;
-
-    /**
-     * Actions list.
-     */
     private final List<Action> mWidgetActionsList = new ArrayList<>();
-
-    /**
-     * Global content action list.
-     */
     private final List<Action> mGlobalContentActionList = new ArrayList<>();
-
-    /**
-     * Content action listener.
-     */
-    private final Map<Integer, List<IContentActionListener>> mContentActionListeners = new
-            HashMap<>();
-
-    /**
-     * Settings actions list.
-     */
-    private final List<Action> mSettingsActions = new ArrayList<>();
-
-    /**
-     * Powered by logo map.
-     */
+    private final Map<Integer, List<IContentActionListener>> mContentActionListeners = new HashMap<>();
     private final Map<String, String> mPoweredByLogoUrlMap = new HashMap<>();
-
-    /**
-     * Auth helper instance.
-     */
     private AuthHelper mAuthHelper;
-
-    /**
-     * Purchase helper instance.
-     */
     private PurchaseHelper mPurchaseHelper;
-
-    /**
-     * LauncherIntegrationManager instance.
-     */
     private LauncherIntegrationManager mLauncherIntegrationManager;
-
-    /**
-     * Flag for whether or not the user is subscribed.
-     */
-    private boolean mSubscribed = false;
-
-    /**
-     * Flag for whether or not in-app purchasing is disabled.
-     */
-    private boolean mIAPDisabled = false;
+    private boolean mSubscribed;
+    private boolean mIAPDisabled;
 
     /**
      * When set to true, this flag will override the subscription flag for all the content.
@@ -435,19 +185,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public boolean isLoadingCancelled() {
 
         return false;
-    }
-
-    /**
-     * Sets up the login action. The login action is only added to the settings row if a screen
-     * requires verification to access as noted in the Navigator.json configuration file.
-     */
-    private void setupLogoutAction() {
-
-        mLoginAction = createLogoutButtonSettingsAction();
-
-        if (Navigator.isScreenAccessVerificationRequired(mNavigator.getNavigatorModel())) {
-            addSettingsAction(mLoginAction);
-        }
     }
 
     /**
@@ -583,18 +320,12 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
 
         addWidgetsAction(createHomeAction());
         addWidgetsAction(createSearchAction());
-        setupLogoutAction();
+        addWidgetsAction(createMyQelloAction());
         
-        mSearchManager.addSearchAlgo(DEFAULT_SEARCH_ALGO_NAME, new ISearchAlgo<Content>() {
-            @Override
-            public boolean onCompare(String query, Content content) {
-
-                return content.searchInFields(query, new String[]{
-                        Content.TITLE_FIELD_NAME,
-                        Content.DESCRIPTION_FIELD_NAME
-                });
-            }
-        });
+        mSearchManager.addSearchAlgo(DEFAULT_SEARCH_ALGO_NAME, (ISearchAlgo<Content>) (query, content) -> content.searchInFields(query, new String[]{
+                Content.TITLE_FIELD_NAME,
+                Content.DESCRIPTION_FIELD_NAME
+        }));
 
         mNavigator.setINavigationListener(new Navigator.INavigationListener() {
 
@@ -790,61 +521,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         return mContentLoader;
     }
 
-    /**
-     * Set root content container listener.
-     *
-     * @param listener Root content container listener.
-     * @return Content browser instance.
-     */
-    public ContentBrowser setRootContentContainerListener(IRootContentContainerListener listener) {
-
-        mIRootContentContainerListener = listener;
-        return this;
-    }
-
-    /**
-     * Set custom search handler.
-     *
-     * @param customSearchHandler Custom search handler.
-     * @return Content browser instance.
-     */
-    public ContentBrowser setCustomSearchHandler(ICustomSearchHandler customSearchHandler) {
-
-        mICustomSearchHandler = customSearchHandler;
-        return this;
-    }
-
-    /**
-     * Add action to global action list.
-     *
-     * @param action Action.
-     * @return Content browser instance.
-     */
-    public ContentBrowser addActionToGlobalContentActionList(Action action) {
-
-        mGlobalContentActionList.add(action);
-        return this;
-    }
-
-    /**
-     * Add content action listener.
-     *
-     * @param actionId               Action id.
-     * @param iContentActionListener Content action listener.
-     */
-    public void addContentActionListener(int actionId, IContentActionListener
-            iContentActionListener) {
-
-        List<IContentActionListener> iContentActionListenersList =
-                mContentActionListeners.get(actionId);
-
-        if (iContentActionListenersList == null) {
-            iContentActionListenersList = new ArrayList<>();
-            mContentActionListeners.put(actionId, iContentActionListenersList);
-        }
-
-        iContentActionListenersList.add(iContentActionListener);
-    }
 
     /**
      * Get root content container.
@@ -887,18 +563,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      */
     public ContentBrowser setLastSelectedContentContainer(ContentContainer contentContainer) {
 
-        mLastSelectedContentContainer = contentContainer;
         return this;
-    }
-
-    /**
-     * Get last selected content container.
-     *
-     * @return Last selected content container.
-     */
-    public ContentContainer getLastSelectedContentContainer() {
-
-        return mLastSelectedContentContainer;
     }
 
     /**
@@ -948,7 +613,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @return True if the category's content should be used as default related content; false
      * otherwise.
      */
-    public boolean isUseCategoryAsDefaultRelatedContent() {
+    private boolean isUseCategoryAsDefaultRelatedContent() {
 
         return mNavigator.getNavigatorModel().getConfig().useCategoryAsDefaultRelatedContent;
     }
@@ -1017,66 +682,11 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     }
 
     /**
-     * Get settings actions.
-     *
-     * @return List of settings actions.
-     */
-    public List<Action> getSettingsActions() {
-
-        return mSettingsActions;
-    }
-
-    /**
-     * Add settings action.
-     *
-     * @param settingsAction Settings action.
-     */
-    private void addSettingsAction(Action settingsAction) {
-
-        mSettingsActions.add(settingsAction);
-    }
-
-    /**
-     * Get terms of use {@link Action}.
-     *
-     * @return terms of use action.
-     */
-    private Action createTermsOfUseSettingsAction() {
-        // Create the Terms of Use settings action.
-        return new Action().setAction(TERMS).setIconResourceId(R.drawable.ic_terms_text)
-                           .setLabel1(mAppContext.getString(R.string.terms_title));
-    }
-
-    private Action createContactUsSettingsAction() {
-        return new Action().setAction(CONTACT_US).setIconResourceId(R.drawable.email).setLabel1("Contact Us");
-    }
-
-    /**
-     * Create loginLogoutAction Action with initial state set as login.
-     *
-     * @return loginLogoutAction action.
-     */
-    private Action createLogoutButtonSettingsAction() {
-        // Create the logout button settings action.
-        return new Action().setAction(LOGIN_LOGOUT)
-                           .setId(ContentBrowser.CONTENT_ACTION_LOGIN_LOGOUT)
-                           .setLabel1(LogoutSettingsFragment.TYPE_LOGOUT,
-                                      mAppContext.getString(R.string.logout_label))
-                           .setIconResourceId(LogoutSettingsFragment.TYPE_LOGOUT, R
-                                   .drawable.ic_login_logout)
-                           .setLabel1(LogoutSettingsFragment.TYPE_LOGIN,
-                                      mAppContext.getString(R.string.login_label))
-                           .setIconResourceId(LogoutSettingsFragment.TYPE_LOGIN, R
-                                   .drawable.ic_login_logout)
-                           .setState(LogoutSettingsFragment.TYPE_LOGIN);
-    }
-
-    /**
      * Add action to widget action list.
      *
      * @param action The action to add.
      */
-    public void addWidgetsAction(Action action) {
+    private void addWidgetsAction(Action action) {
         mWidgetActionsList.add(action);
     }
 
@@ -1096,6 +706,13 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         Action search = new Action(CONTENT_ACTION_HOME, HOME, R.drawable.home_white);
         search.setId(ContentBrowser.CONTENT_ACTION_HOME);
         search.setAction(HOME);
+        return search;
+    }
+
+    private Action createMyQelloAction() {
+        Action search = new Action(CONTENT_ACTION_MY_QELLO, HOME, R.drawable.my_qello_white);
+        search.setId(ContentBrowser.CONTENT_ACTION_MY_QELLO);
+        search.setAction(MY_QELLO);
         return search;
     }
 
@@ -1428,8 +1045,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             long duration = record.getDuration();
             long currentPlaybackPosition = record.getPlaybackLocation();
 
-            if ((duration > 0) && (currentPlaybackPosition > 0)
-                    && (duration > currentPlaybackPosition)) {
+            if (currentPlaybackPosition > 0 && duration > currentPlaybackPosition) {
                 return (duration - currentPlaybackPosition);
             }
         }
@@ -1454,8 +1070,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             long duration = record.getDuration();
             long currentPlaybackPosition = record.getPlaybackLocation();
 
-            if ((duration > 0) && (currentPlaybackPosition > 0)
-                    && (duration > currentPlaybackPosition)) {
+            if (currentPlaybackPosition > 0 && duration > currentPlaybackPosition) {
                 return (((double) currentPlaybackPosition) / duration);
             }
         }
@@ -1469,7 +1084,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param content Content.
      * @return Recent Record.
      */
-    public RecentRecord getRecentRecord(Content content) {
+    private RecentRecord getRecentRecord(Content content) {
 
         RecentRecord record = null;
         RecentDatabaseHelper databaseHelper = RecentDatabaseHelper.getInstance();
@@ -1532,20 +1147,17 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     /**
      * Handle on activity result.
      *
-     * @param activity    Activity.
      * @param requestCode Request code.
      * @param resultCode  Result code.
      * @param data        Intent.
      */
-    public void handleOnActivityResult(Activity activity, int requestCode, int resultCode,
+    public void handleOnActivityResult(int requestCode, int resultCode,
                                        Intent data) {
 
         Log.d(TAG, "handleOnActivityResult " + requestCode);
 
-        switch (requestCode) {
-            case AuthHelper.AUTH_ON_ACTIVITY_RESULT_REQUEST_CODE:
-                mAuthHelper.handleOnActivityResult(requestCode, resultCode, data);
-                break;
+        if (requestCode == AuthHelper.AUTH_ON_ACTIVITY_RESULT_REQUEST_CODE) {
+            mAuthHelper.handleOnActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -1590,11 +1202,11 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param iScreenSwitchListener     Screen switch listener.
      * @param iScreenSwitchErrorHandler Screen switch error handler
      */
-    public void verifyScreenSwitch(String screenName,
+    private void verifyScreenSwitch(String screenName,
                                    IScreenSwitchListener iScreenSwitchListener,
                                    IScreenSwitchErrorHandler iScreenSwitchErrorHandler) {
 
-        verifyScreenSwitch(screenName, (Content) null, iScreenSwitchListener,
+        verifyScreenSwitch(screenName, null, iScreenSwitchListener,
                            iScreenSwitchErrorHandler);
     }
 
@@ -1657,7 +1269,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param screenName Screen name.
      */
     public void switchToScreen(String screenName) {
-
         switchToScreen(screenName, (Navigator.ActivitySwitchListener) null);
     }
 
@@ -1667,26 +1278,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param screenName             Screen name.
      * @param activitySwitchListener Activity switch listener.
      */
-    public void switchToScreen(String screenName, Navigator.ActivitySwitchListener
+    private void switchToScreen(String screenName, Navigator.ActivitySwitchListener
             activitySwitchListener) {
 
-        verifyScreenSwitch(screenName, extra ->
-                                   mNavigator.startActivity(screenName, activitySwitchListener),
-                           errorExtra -> showAuthenticationErrorDialog(errorExtra)
-        );
-    }
-
-    /**
-     * Switch to screen by name with bundle.
-     *
-     * @param screenName Screen name.
-     * @param bundle     Bundle.
-     */
-    public void switchToScreen(String screenName, Bundle bundle) {
-
-        verifyScreenSwitch(screenName, extra ->
-                                   mNavigator.startActivity(screenName, bundle),
-                           errorExtra -> showAuthenticationErrorDialog(errorExtra)
+        verifyScreenSwitch(screenName, extra -> mNavigator.startActivity(screenName, activitySwitchListener), this::showAuthenticationErrorDialog
         );
     }
 
@@ -1700,8 +1295,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public void switchToScreen(String screenName, Content content, Bundle bundle) {
 
         verifyScreenSwitch(screenName, content, extra ->
-                                   mNavigator.startActivity(screenName, bundle),
-                           errorExtra -> showAuthenticationErrorDialog(errorExtra)
+                                   mNavigator.startActivity(screenName, bundle), this::showAuthenticationErrorDialog
         );
     }
 
@@ -1712,7 +1306,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param content    Content
      */
     public void switchToScreen(String screenName, Content content) {
-
         switchToScreen(screenName, content, (Navigator.ActivitySwitchListener) null);
     }
 
@@ -1723,12 +1316,9 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param content                Content
      * @param activitySwitchListener Activity switch listener.
      */
-    public void switchToScreen(String screenName, Content content, Navigator.ActivitySwitchListener
-            activitySwitchListener) {
-
+    private void switchToScreen(String screenName, Content content, Navigator.ActivitySwitchListener activitySwitchListener) {
         verifyScreenSwitch(screenName, content, extra ->
-                                   mNavigator.startActivity(screenName, activitySwitchListener),
-                           errorExtra -> showAuthenticationErrorDialog(errorExtra)
+                                   mNavigator.startActivity(screenName, activitySwitchListener), this::showAuthenticationErrorDialog
         );
     }
 
@@ -1738,7 +1328,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param content  Content.
      * @param actionId Action id.
      */
-    public void switchToRendererScreen(Content content, int actionId) {
+    private void switchToRendererScreen(Content content, int actionId) {
 
         switchToScreen(ContentBrowser.CONTENT_RENDERER_SCREEN, content, intent -> {
             intent.putExtra(Content.class.getSimpleName(), content);
@@ -1762,12 +1352,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      *
      * @param inputIntent Input intent for launching renderer screen.
      */
-    public void switchToRendererScreen(Intent inputIntent) {
+    private void switchToRendererScreen(Intent inputIntent) {
 
         switchToScreen(ContentBrowser.CONTENT_RENDERER_SCREEN, (Content) inputIntent
-                .getSerializableExtra(Content.class.getSimpleName()), intent -> {
-            intent.putExtras(inputIntent.getExtras());
-        });
+                .getSerializableExtra(Content.class.getSimpleName()), intent -> { intent.putExtras(inputIntent.getExtras()); });
     }
 
     /**
@@ -1777,8 +1365,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param content  Content.
      * @param actionId Action id.
      */
-    public void handleRendererScreenSwitch(Activity activity, Content content, int actionId,
-                                           boolean showErrorDialog) {
+    private void handleRendererScreenSwitch(Activity activity, Content content, int actionId, boolean showErrorDialog) {
 
         if (mIAPDisabled) {
             switchToRendererScreen(content, actionId);
@@ -2113,7 +1700,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      *
      * @param inputIntent input intent to be passed to home screen.
      */
-    public void switchToHomeScreen(Intent inputIntent) {
+    private void switchToHomeScreen(Intent inputIntent) {
 
         switchToScreen(CONTENT_HOME_SCREEN, intent -> {
             // Make sure we clear activity stack.
@@ -2125,12 +1712,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     /**
      * Switches to home screen.
      */
-    public void switchToHomeScreen() {
+    private void switchToHomeScreen() {
 
-        switchToScreen(CONTENT_HOME_SCREEN, intent -> {
-            // Make sure we clear activity stack.
-            updateIntentToClearActivityStack(intent);
-        });
+        // Make sure we clear activity stack.
+        switchToScreen(CONTENT_HOME_SCREEN, this::updateIntentToClearActivityStack);
     }
 
     /**
@@ -2164,10 +1749,9 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         if (mAuthHelper == null || mAuthHelper.getIAuthentication() == null) {
             return false;
         }
-        else if (mAuthHelper.getIAuthentication().isAuthenticationCanBeDoneLater()) {
-            return false;
+        else {
+            return !mAuthHelper.getIAuthentication().isAuthenticationCanBeDoneLater();
         }
-        return true;
     }
 
     /**
@@ -2188,10 +1772,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     private void initFromImmatureApp(Activity activity) {
 
         Log.d(TAG, "init from immature app");
-        mNavigator.startActivity(CONTENT_SPLASH_SCREEN, intent -> {
-            // Make sure we clear activity stack.
-            updateIntentToClearActivityStack(intent);
-        });
+        // Make sure we clear activity stack.
+        mNavigator.startActivity(CONTENT_SPLASH_SCREEN, this::updateIntentToClearActivityStack);
         if (activity != null) {
             activity.finish();
         }

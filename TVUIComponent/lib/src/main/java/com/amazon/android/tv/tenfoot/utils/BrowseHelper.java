@@ -1,26 +1,10 @@
-/**
- * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- *     http://aws.amazon.com/apache2.0/
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
 package com.amazon.android.tv.tenfoot.utils;
 
 import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
-import com.amazon.android.tv.tenfoot.presenter.SettingsCardPresenter;
 import com.amazon.android.ui.constants.PreferencesConstants;
 import com.amazon.android.utils.Preferences;
 import com.amazon.utils.DateAndTimeHelper;
@@ -58,56 +42,6 @@ public class BrowseHelper {
             Preferences.setLong(PreferencesConstants.TIME_LAST_SAVED,
                                 DateAndTimeHelper.getCurrentDate().getTime());
         }
-    }
-
-    /**
-     * Adds the settings actions to an adapter and adds the adapter to the row adapter.
-     *
-     * @param activity   The activity.
-     * @param rowAdapter The row adapter.
-     */
-    public static ArrayObjectAdapter addSettingsActionsToRowAdapter(Activity activity,
-                                                                    ArrayObjectAdapter rowAdapter) {
-
-        List<Action> settings = ContentBrowser.getInstance(activity).getSettingsActions();
-
-        if (settings == null || settings.isEmpty()) {
-            Log.d(TAG, "No settings were found");
-            return null;
-        }
-
-        SettingsCardPresenter cardPresenter = new SettingsCardPresenter();
-        ArrayObjectAdapter settingsAdapter = new ArrayObjectAdapter(cardPresenter);
-
-        for (Action item : settings) {
-            settingsAdapter.add(item);
-        }
-        // Create settings header and row.
-        HeaderItem header = new HeaderItem(0, activity.getResources()
-                                                      .getString(R.string.settings_title));
-        rowAdapter.add(new ListRow(header, settingsAdapter));
-
-        return settingsAdapter;
-    }
-
-    /**
-     * Get the index of the login/logout button from the settings row adapter.
-     *
-     * @param settingsAdapter The settings row adapter.
-     * @return The index of the login/logout button or -1 if it was not found.
-     */
-    public static int getLoginButtonIndex(ArrayObjectAdapter settingsAdapter) {
-
-        if (settingsAdapter != null ) {
-            for (int i = 0; i < settingsAdapter.size(); i++) {
-
-                Action action = (Action) settingsAdapter.get(i);
-                if (action.getAction().equals(ContentBrowser.LOGIN_LOGOUT)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
     }
 
     /**

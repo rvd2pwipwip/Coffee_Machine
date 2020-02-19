@@ -20,6 +20,7 @@ import com.amazon.android.model.Action;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.ui.fragments.HomeFragment;
 import com.amazon.android.tv.tenfoot.ui.fragments.ContentSearchFragment;
+import com.amazon.android.tv.tenfoot.ui.fragments.MyQelloFragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -65,18 +66,6 @@ public abstract class BaseActivity extends Activity {
      * {@inheritDoc}
      */
     @Override
-    public boolean onSearchRequested() {
-
-        Log.v(TAG, "onSearchRequested called.");
-        ContentBrowser.getInstance(this)
-                      .switchToScreen(ContentBrowser.CONTENT_SEARCH_SCREEN);
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         Log.v(TAG, "onActivityResult called with requestCode:" + requestCode +
@@ -84,7 +73,7 @@ public abstract class BaseActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         ContentBrowser.getInstance(this)
-                      .handleOnActivityResult(this, requestCode, resultCode, data);
+                      .handleOnActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -152,9 +141,10 @@ public abstract class BaseActivity extends Activity {
 
     public void actionTriggered(Action action) {
         FragmentManager fragmentManager = this.getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch ((int) action.getId()) {
-            case ContentBrowser.CONTENT_ACTION_SEARCH: {
+            case ContentBrowser.CONTENT_ACTION_SEARCH:
                 Log.d(TAG, "actionTriggered -> CONTENT_ACTION_SEARCH");
 
                 Fragment searchFragment = fragmentManager.findFragmentByTag(ContentSearchFragment.class.getSimpleName());
@@ -162,13 +152,11 @@ public abstract class BaseActivity extends Activity {
                     searchFragment = new ContentSearchFragment();
                 }
 
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.detail, searchFragment, ContentSearchFragment.class.getSimpleName());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-            }
-            break;
-            case ContentBrowser.CONTENT_ACTION_HOME: {
+                break;
+            case ContentBrowser.CONTENT_ACTION_HOME:
                 Log.d(TAG, "actionTriggered -> CONTENT_ACTION_HOME");
 
                 Fragment homeFragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
@@ -176,11 +164,20 @@ public abstract class BaseActivity extends Activity {
                     homeFragment = new HomeFragment();
                 }
 
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.detail, homeFragment, HomeFragment.class.getSimpleName());
                 fragmentTransaction.commit();
-            }
-            break;
+                break;
+            case ContentBrowser.CONTENT_ACTION_MY_QELLO:
+                Log.d(TAG, "actionTriggered -> CONTENT_ACTION_MY_QELLO");
+
+                Fragment myQelloFragment = fragmentManager.findFragmentByTag(MyQelloFragment.class.getSimpleName());
+                if(myQelloFragment == null) {
+                    myQelloFragment = new MyQelloFragment();
+                }
+
+                fragmentTransaction.replace(R.id.detail, myQelloFragment, MyQelloFragment.class.getSimpleName());
+                fragmentTransaction.commit();
+                break;
             case ContentBrowser.CONTENT_ACTION_LOGIN_LOGOUT: {
                 Log.d(TAG, "actionTriggered -> CONTENT_ACTION_LOGIN_LOGOUT");
                 //loginLogoutActionTriggered(activity, action);

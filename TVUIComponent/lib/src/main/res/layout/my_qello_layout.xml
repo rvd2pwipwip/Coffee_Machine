@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/qello_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_my_qello"
+    android:orientation="vertical"
+    android:paddingStart="85px">
+
+    <Button
+        android:id="@+id/terms_button"
+        style="@android:style/Widget.Holo.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/terms_title"
+        android:textAllCaps="false"
+        android:textColor="#C4C4C4"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/contact_us_button"
+        style="@android:style/Widget.Holo.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="Contact Us"
+        android:textAllCaps="false"
+        android:textColor="#C4C4C4"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="428px"
+        android:layout_height="1px"
+        android:background="#C2C2C2" />
+
+    <Button
+        android:id="@+id/login_logout_button"
+        style="@android:style/Widget.Holo.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="Log in/out"
+        android:textAllCaps="false"
+        android:textColor="#C4C4C4"
+        android:textSize="14sp" />
+
+</LinearLayout>

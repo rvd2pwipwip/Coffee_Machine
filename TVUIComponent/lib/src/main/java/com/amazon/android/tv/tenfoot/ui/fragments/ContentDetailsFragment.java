@@ -28,20 +28,6 @@
  */
 package com.amazon.android.tv.tenfoot.ui.fragments;
 
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.model.Action;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainer;
-import com.amazon.android.utils.GlideHelper;
-import com.amazon.android.utils.Helpers;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
-import com.amazon.android.tv.tenfoot.presenter.DetailsDescriptionPresenter;
-import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
-import com.amazon.android.utils.LeanbackHelpers;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -62,13 +48,13 @@ import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
-import android.support.v17.leanback.widget.RowHeaderPresenter;
-import android.support.v17.leanback.widget.TenFootActionPresenterSelector;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
+import android.support.v17.leanback.widget.RowHeaderPresenter;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
+import android.support.v17.leanback.widget.TenFootActionPresenterSelector;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -79,14 +65,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.model.Action;
+import com.amazon.android.model.content.Content;
+import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
+import com.amazon.android.tv.tenfoot.presenter.DetailsDescriptionPresenter;
+import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
+import com.amazon.android.utils.GlideHelper;
+import com.amazon.android.utils.Helpers;
+import com.amazon.android.utils.LeanbackHelpers;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+
 import java.util.List;
 
 
-/**
- * LeanbackDetailsFragment extends DetailsFragment, a Wrapper fragment for leanback
- * content_details_activity_layout screens.
- * It shows a detailed view of video and its meta plus related videos.
- */
 public class ContentDetailsFragment extends android.support.v17.leanback.app.DetailsFragment {
 
     private static final String TAG = ContentDetailsFragment.class.getSimpleName();
@@ -104,7 +99,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private ClassPresenterSelector mPresenterSelector;
 
     private BackgroundManager mBackgroundManager;
-    private Drawable mDefaultBackground;
     private DisplayMetrics mMetrics;
     private boolean mShowRelatedContent;
 
@@ -213,7 +207,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
         mBackgroundManager = BackgroundManager.getInstance(getActivity());
         mBackgroundManager.attach(getActivity().getWindow());
-        mDefaultBackground = ContextCompat.getDrawable(getActivity(), android.R.color.transparent);
         mMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
     }
@@ -312,7 +305,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
                     long hours = 0;
                     long minutes = 0;
-                    long seconds = 0;
 
                     if (secondsRemaining >= SECONDS_IN_HOUR) {
                         hours = secondsRemaining / SECONDS_IN_HOUR;
@@ -324,7 +316,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         secondsRemaining -= minutes * SECONDS_IN_MINUTE;
                     }
 
-                    seconds = secondsRemaining;
+                    long seconds = secondsRemaining;
 
                     Resources res = getResources();
 
