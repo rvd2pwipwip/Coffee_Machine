@@ -204,7 +204,6 @@ class DataLoaderModule extends ADataModule implements IRecipeCooker {
 
         @Override
         protected Void doInBackground(Void... params) {
-
             loadData();
             return null;
         }

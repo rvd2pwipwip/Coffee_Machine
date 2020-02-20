@@ -17,7 +17,6 @@ package com.amazon.android.ui.fragments;
 import com.amazon.android.configuration.ConfigurationManager;
 import com.amazon.android.model.Action;
 import com.amazon.android.ui.constants.PreferencesConstants;
-import com.amazon.android.ui.interfaces.ASettingsFragment;
 import com.amazon.android.ui.constants.ConfigurationConstants;
 
 import com.amazon.android.ui.interfaces.SingleViewProvider;
@@ -30,12 +29,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
@@ -43,7 +40,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 /**
  * Provides fragment to be shown when logout settings item is clicked.
  */
-public class LogoutSettingsFragment extends ASettingsFragment {
+public class LogoutSettingsFragment {
 
     /**
      * Debug tag.
@@ -76,7 +73,6 @@ public class LogoutSettingsFragment extends ASettingsFragment {
      *
      * Creates the fragment based on user's login/logout status.
      */
-    @Override
     public void createFragment(final Activity activity, final FragmentManager manager,
                                Action settingsAction) {
 
@@ -102,7 +98,7 @@ public class LogoutSettingsFragment extends ASettingsFragment {
         dialog.setContentViewProvider(getSingleViewProvider(dialog, activity, layout));
         dialog.setArguments(getArguments(getDefaultHeight(activity, layout),
                                          getDefaultWidth(activity)));
-        commitFragment(manager, dialog, activity.getString(R.string.logout_settings_fragment_tag));
+        //commitFragment(manager, dialog, activity.getString(R.string.logout_settings_fragment_tag));
 
     }
 

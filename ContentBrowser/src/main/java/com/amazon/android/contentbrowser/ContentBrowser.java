@@ -47,8 +47,8 @@ import com.amazon.android.search.ISearchResult;
 import com.amazon.android.search.SearchManager;
 import com.amazon.android.ui.fragments.AlertDialogFragment;
 import com.amazon.android.ui.fragments.ContactUsSettingsFragment;
+import com.amazon.android.ui.fragments.FAQSettingsFragment;
 import com.amazon.android.ui.fragments.LogoutSettingsFragment;
-import com.amazon.android.ui.fragments.TermsSettingsFragment;
 import com.amazon.android.utils.ErrorUtils;
 import com.amazon.android.utils.LeanbackHelpers;
 import com.amazon.android.utils.Preferences;
@@ -835,16 +835,14 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 loginLogoutActionTriggered(activity, settingsAction);
                 break;
             case TERMS:
-                new TermsSettingsFragment()
+                new FAQSettingsFragment()
                         .createFragment(activity,
-                                        activity.getFragmentManager(),
-                                        settingsAction);
+                                        activity.getFragmentManager() );
                 break;
             case CONTACT_US:
                 new ContactUsSettingsFragment()
                         .createFragment(activity,
-                                activity.getFragmentManager(),
-                                settingsAction);
+                                activity.getFragmentManager());
             default:
                 Log.e(TAG, "Unsupported action " + settingsAction);
                 break;

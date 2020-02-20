@@ -167,17 +167,6 @@ public class Helpers {
     }
 
     /**
-     * This method converts Unix time to Date.
-     *
-     * @param intDate Input integer value.
-     * @return The date.
-     */
-    public static Date covertIntegerToDate(Integer intDate) {
-
-        return new Date((long) intDate * 1000);
-    }
-
-    /**
      * Get the contents of the file and return as a Spanned text object.
      *
      * @param context  Application context that allows access to the assets folder.

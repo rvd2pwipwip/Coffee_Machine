@@ -119,11 +119,14 @@ dependencies {
     testCompile 'org.powermock:powermock-classloading-xstream:1.6.2'
     testCompile 'com.android.support.test:runner:1.0.2'
     compile project(':Calligraphy')
+
+    implementation 'io.noties.markwon:core:4.2.1'
 }
 
 buildscript {
     repositories {
         jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.7.1'

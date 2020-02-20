@@ -63,7 +63,7 @@ public class NetworkUtils {
         try {
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestMethod(GET);
             urlConnection.setRequestProperty("x-client-id", "mBasxFOpteXOYwc9");
 
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -72,7 +72,7 @@ public class NetworkUtils {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line);
+                sb.append(line).append("\n");
             }
             return sb.toString();
         }
