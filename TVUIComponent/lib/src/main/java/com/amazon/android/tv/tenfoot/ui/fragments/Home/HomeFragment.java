@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment implements ContentBrowseFragment
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
     private static final int UI_UPDATE_DELAY_IN_MS = 0;
 
+    private TextView mContentArtist;
     private TextView mContentTitle;
     private TextView mContentDescription;
     private ImageView mContentImage;
@@ -71,8 +72,11 @@ public class HomeFragment extends Fragment implements ContentBrowseFragment
 
         if (view != null) {
 
-            mContentTitle = (TextView) view.findViewById(R.id.content_detail_title);
+            mContentArtist = (TextView) view.findViewById(R.id.content_detail_artist);
+            CalligraphyUtils.applyFontToTextView(getActivity(), mContentArtist, ConfigurationManager
+                    .getInstance(getActivity()).getTypefacePath(ConfigurationConstants.LIGHT_FONT));
 
+            mContentTitle = (TextView) view.findViewById(R.id.content_detail_title);
             CalligraphyUtils.applyFontToTextView(getActivity(), mContentTitle, ConfigurationManager
                     .getInstance(getActivity()).getTypefacePath(ConfigurationConstants.BOLD_FONT));
 
@@ -126,38 +130,10 @@ public class HomeFragment extends Fragment implements ContentBrowseFragment
 
         if (item instanceof Content) {
             Content content = (Content) item;
-            callImageLoadSubscription(content.getTitle(),
+            callImageLoadSubscription(content.getSubtitle(),
+                                      content.getTitle(),
                                       content.getDescription(),
                                       content.getBackgroundImageUrl());
-        }
-        else if (item instanceof Action) {
-            Action settingsAction = (Action) item;
-            // Terms of use action.
-            if (ContentBrowser.TERMS.equals(settingsAction.getAction())) {
-                callImageLoadSubscription(getString(R.string.terms_title),
-                                          getString(R.string.terms_description),
-                                          null);
-            }
-            //Contact Us action
-            else if (ContentBrowser.CONTACT_US.equals(settingsAction.getAction())) {
-                callImageLoadSubscription(getString(R.string.contact_us_title),
-                        "",
-                        null);
-            }
-            // Login and logout action.
-            else if (ContentBrowser.LOGIN_LOGOUT.equals(settingsAction.getAction())) {
-
-                if (settingsAction.getState() == LogoutSettingsFragment.TYPE_LOGOUT) {
-                    callImageLoadSubscription(getString(R.string.logout_label),
-                                              getString(R.string.logout_description),
-                                              null);
-                }
-                else {
-                    callImageLoadSubscription(getString(R.string.login_label),
-                                              getString(R.string.login_description),
-                                              null);
-                }
-            }
         }
     }
 
@@ -184,12 +160,13 @@ public class HomeFragment extends Fragment implements ContentBrowseFragment
      * @param description The description to display.
      * @param bgImageUrl  The URL of the image to display.
      */
-    public void callImageLoadSubscription(String title, String description, String bgImageUrl) {
+    public void callImageLoadSubscription(String artistName, String title, String description, String bgImageUrl) {
 
         mContentImageLoadSubscription = Observable
                 .timer(UI_UPDATE_DELAY_IN_MS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread()) // This is a must for timer.
                 .subscribe(c -> {
+                    mContentArtist.setText(artistName);
                     mContentTitle.setText(title);
                     mContentDescription.setText(description);
                     GlideHelper.loadImageWithCrossFadeTransition(getActivity().getApplicationContext(),

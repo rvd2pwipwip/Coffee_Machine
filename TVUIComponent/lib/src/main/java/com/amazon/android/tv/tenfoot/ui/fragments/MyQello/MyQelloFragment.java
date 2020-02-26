@@ -51,8 +51,8 @@ public class MyQelloFragment extends Fragment{
             }
         });
 
-        Button history = (Button) view.findViewById(R.id.history_button);
-        history.setOnFocusChangeListener((v, hasFocus) -> {
+        Button historyButton = (Button) view.findViewById(R.id.history_button);
+        historyButton.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus) {
                 FragmentManager fragmentManager = this.getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -63,6 +63,22 @@ public class MyQelloFragment extends Fragment{
                 }
 
                 fragmentTransaction.replace(R.id.my_qello_detail, historyFragment, HistoryFragment.class.getSimpleName());
+                fragmentTransaction.commit();
+            }
+        });
+
+        Button favoritesButton = (Button) view.findViewById(R.id.favorites_button);
+        favoritesButton.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus) {
+                FragmentManager fragmentManager = this.getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                Fragment favoritesFragment = fragmentManager.findFragmentByTag(FavoritesFragment.class.getSimpleName());
+                if(favoritesFragment == null) {
+                    favoritesFragment = new FavoritesFragment();
+                }
+
+                fragmentTransaction.replace(R.id.my_qello_detail, favoritesFragment, FavoritesFragment.class.getSimpleName());
                 fragmentTransaction.commit();
             }
         });

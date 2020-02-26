@@ -37,27 +37,31 @@ permissions and limitations under the License.
         android:layout_height="wrap_content"
         >
 
-    <android.support.v17.leanback.widget.ResizingTextView
-            android:id="@+id/details_description_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/detailsDescriptionTitleStyle"
-            />
-
     <TextView
-            android:id="@+id/details_description_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/details_description_subtitle_bottom_margin"
-            style="?attr/detailsDescriptionSubtitleStyle"
-            />
+        android:id="@+id/details_description_subtitle"
+        style="?attr/detailsDescriptionSubtitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/accent"
+        android:textSize="14sp" />
+
+    <android.support.v17.leanback.widget.ResizingTextView
+        android:id="@+id/details_description_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FAFAFA"
+        android:fontFamily="sans-serif-black"
+        style="?attr/detailsDescriptionTitleStyle"
+        />
 
     <com.amazon.android.ui.widget.EllipsizedTextView
-            android:id="@+id/ellipsized_description_text"
-            style="@style/DetailsDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"/>
+        android:id="@+id/ellipsized_description_text"
+        style="@style/DetailsDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:focusable="true" />
 
 </LinearLayout>

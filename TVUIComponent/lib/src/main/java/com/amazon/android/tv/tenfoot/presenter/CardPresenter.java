@@ -92,7 +92,7 @@ public class CardPresenter extends Presenter {
         cardView.setFocusableInTouchMode(true);
 
         // Set the type and visibility of the info area.
-        cardView.setCardType(BaseCardView.CARD_TYPE_INFO_OVER);
+        cardView.setCardType(BaseCardView.CARD_TYPE_MAIN_ONLY);
         cardView.setInfoVisibility(BaseCardView.CARD_REGION_VISIBLE_ALWAYS);
 
         int CARD_WIDTH_PX = 92;

@@ -25,7 +25,7 @@
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
-            android:text="Histroy"
+            android:text="History"
             android:textAllCaps="false"
             android:textColor="#C4C4C4"
             android:textSize="14sp" />
