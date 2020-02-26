@@ -40,7 +40,7 @@ permissions and limitations under the License.
     <include layout="@layout/action_widget_container"/>
 
     <FrameLayout
-        android:id="@+id/detail"
+        android:id="@+id/main_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FF0000"

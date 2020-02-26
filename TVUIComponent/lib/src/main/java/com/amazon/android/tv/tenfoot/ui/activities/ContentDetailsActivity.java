@@ -32,7 +32,7 @@ import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.model.event.ActionUpdateEvent;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.base.BaseActivity;
-import com.amazon.android.tv.tenfoot.ui.fragments.ContentDetailsFragment;
+import com.amazon.android.tv.tenfoot.ui.fragments.Home.ContentDetailsFragment;
 import com.amazon.android.ui.constants.PreferencesConstants;
 import com.amazon.android.utils.Preferences;
 import com.amazon.utils.DateAndTimeHelper;

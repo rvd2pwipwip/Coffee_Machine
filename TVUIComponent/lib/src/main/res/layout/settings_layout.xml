@@ -4,81 +4,87 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/qello_layout"
+    android:id="@+id/settings_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_my_qello"
     android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="85px"
+        android:layout_marginLeft="102px"
         android:layout_marginTop="85px"
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/history_button"
+            android:id="@+id/account_button"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
-            android:text="Histroy"
+            android:text="Account and Settings"
             android:textAllCaps="false"
             android:textColor="#C4C4C4"
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/favorites_button"
+            android:id="@+id/faq_button"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
-            android:text="Favorites"
+            android:text="FAQ"
             android:textAllCaps="false"
             android:textColor="#C4C4C4"
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/playlists_button"
+            android:id="@+id/contact_us_button"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
-            android:text="Playlists"
+            android:text="Contact Us"
             android:textAllCaps="false"
             android:textColor="#C4C4C4"
             android:textSize="14sp" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="428px"
-            android:layout_height="1px"
-            android:background="#C2C2C2" />
-
         <Button
-            android:id="@+id/settings_button"
+            android:id="@+id/about_button"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
-            android:drawableLeft="@drawable/settings_gear"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
-            android:text="    Settings"
+            android:text="About"
+            android:textAllCaps="false"
+            android:textColor="#C4C4C4"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/login_logout_button"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:background="@drawable/action_button_background"
+            android:fontFamily="sans-serif-light"
+            android:gravity="left|center_vertical"
+            android:text="Login/Log Out"
             android:textAllCaps="false"
             android:textColor="#C4C4C4"
             android:textSize="14sp" />
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/my_qello_detail"
+        android:id="@+id/settings_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

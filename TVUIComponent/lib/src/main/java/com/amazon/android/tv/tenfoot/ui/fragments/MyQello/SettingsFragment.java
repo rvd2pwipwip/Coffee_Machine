@@ -1,4 +1,4 @@
-package com.amazon.android.tv.tenfoot.ui.fragments;
+package com.amazon.android.tv.tenfoot.ui.fragments.MyQello;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,12 +12,9 @@ import com.amazon.android.ui.fragments.ContactUsSettingsFragment;
 import com.amazon.android.ui.fragments.FAQSettingsFragment;
 import com.amazon.android.utils.Helpers;
 
-/**
- * MainActivity class that loads the ContentBrowseFragment.
- */
-public class MyQelloFragment extends Fragment{
+public class SettingsFragment extends Fragment {
 
-    private final String TAG = MyQelloFragment.class.getSimpleName();
+    private final String TAG = SettingsFragment.class.getSimpleName();
 
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
 
@@ -32,7 +29,7 @@ public class MyQelloFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.my_qello_layout, container, false);
+        View view =  inflater.inflate(R.layout.settings_layout, container, false);
         addListenerOnButton(view);
         return view;
     }

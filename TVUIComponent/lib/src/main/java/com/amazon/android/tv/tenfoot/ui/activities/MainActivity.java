@@ -31,13 +31,10 @@ package com.amazon.android.tv.tenfoot.ui.activities;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v17.leanback.app.SearchFragment;
-import android.widget.ImageView;
 
-import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.base.BaseActivity;
-import com.amazon.android.tv.tenfoot.ui.fragments.HomeFragment;
+import com.amazon.android.tv.tenfoot.ui.fragments.Home.HomeFragment;
 import com.amazon.android.tv.tenfoot.utils.BrowseHelper;
 import com.amazon.android.utils.Helpers;
 
@@ -60,7 +57,7 @@ public class MainActivity extends BaseActivity {
         Fragment homeFrag = new HomeFragment();
         homeFrag.setArguments(savedInstanceState);
 
-        getFragmentManager().beginTransaction().add(R.id.detail, homeFrag, HomeFragment.class.getSimpleName()).commit();
+        getFragmentManager().beginTransaction().add(R.id.main_detail, homeFrag, HomeFragment.class.getSimpleName()).commit();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.amazon.android.tv.tenfoot.ui.fragments;
+package com.amazon.android.tv.tenfoot.ui.fragments.Home;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;

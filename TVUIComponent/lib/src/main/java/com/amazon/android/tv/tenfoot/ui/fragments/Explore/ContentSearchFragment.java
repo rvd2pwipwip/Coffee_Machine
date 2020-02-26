@@ -26,7 +26,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.amazon.android.tv.tenfoot.ui.fragments;
+package com.amazon.android.tv.tenfoot.ui.fragments.Explore;
 
 
 import com.amazon.android.contentbrowser.ContentBrowser;

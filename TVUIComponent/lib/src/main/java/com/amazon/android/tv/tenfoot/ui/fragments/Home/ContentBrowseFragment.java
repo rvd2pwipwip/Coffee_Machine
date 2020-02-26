@@ -1,4 +1,4 @@
-package com.amazon.android.tv.tenfoot.ui.fragments;
+package com.amazon.android.tv.tenfoot.ui.fragments.Home;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,7 +53,7 @@ public class ContentBrowseFragment extends RowsFragment {
         // This makes sure that the container activity has implemented the callback interface.
         // If not, it throws an exception.
         try {
-            mCallback = (HomeFragment) getFragmentManager().findFragmentById(R.id.detail);
+            mCallback = (HomeFragment) getFragmentManager().findFragmentById(R.id.main_detail);
         }
         catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() +

@@ -115,20 +115,16 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
         });
 
         // Set the color changing actions for the items.
-        ((ViewHolder) baseHolder).actionButton.setOnFocusChangeListener(new View
-                .OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+        ((ViewHolder) baseHolder).actionButton.setOnFocusChangeListener((v, hasFocus) -> {
 
-                if (hasFocus) {
-                    int color = v.getContext().getResources().getColor(R.color.search_orb);
-                    v.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-                    v.invalidate();
-                }
-                else {
-                    v.getBackground().clearColorFilter();
-                    v.invalidate();
-                }
+            if (hasFocus) {
+                int color = v.getContext().getResources().getColor(R.color.search_orb);
+                v.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+                v.invalidate();
+            }
+            else {
+                v.getBackground().clearColorFilter();
+                v.invalidate();
             }
         });
     }

@@ -18,9 +18,9 @@ import com.amazon.android.adapters.ActionWidgetAdapter;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.model.Action;
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.ui.fragments.HomeFragment;
-import com.amazon.android.tv.tenfoot.ui.fragments.ContentSearchFragment;
-import com.amazon.android.tv.tenfoot.ui.fragments.MyQelloFragment;
+import com.amazon.android.tv.tenfoot.ui.fragments.Home.HomeFragment;
+import com.amazon.android.tv.tenfoot.ui.fragments.Explore.ContentSearchFragment;
+import com.amazon.android.tv.tenfoot.ui.fragments.MyQello.MyQelloFragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -152,7 +152,7 @@ public abstract class BaseActivity extends Activity {
                     searchFragment = new ContentSearchFragment();
                 }
 
-                fragmentTransaction.replace(R.id.detail, searchFragment, ContentSearchFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.main_detail, searchFragment, ContentSearchFragment.class.getSimpleName());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
@@ -164,7 +164,7 @@ public abstract class BaseActivity extends Activity {
                     homeFragment = new HomeFragment();
                 }
 
-                fragmentTransaction.replace(R.id.detail, homeFragment, HomeFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.main_detail, homeFragment, HomeFragment.class.getSimpleName());
                 fragmentTransaction.commit();
                 break;
             case ContentBrowser.CONTENT_ACTION_MY_QELLO:
@@ -175,7 +175,7 @@ public abstract class BaseActivity extends Activity {
                     myQelloFragment = new MyQelloFragment();
                 }
 
-                fragmentTransaction.replace(R.id.detail, myQelloFragment, MyQelloFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.main_detail, myQelloFragment, MyQelloFragment.class.getSimpleName());
                 fragmentTransaction.commit();
                 break;
             case ContentBrowser.CONTENT_ACTION_LOGIN_LOGOUT: {
