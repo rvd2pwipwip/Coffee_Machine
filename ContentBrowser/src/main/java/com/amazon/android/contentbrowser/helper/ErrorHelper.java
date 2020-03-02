@@ -16,13 +16,13 @@
 package com.amazon.android.contentbrowser.helper;
 
 
-import com.amazon.android.utils.ErrorUtils;
-import com.amazon.android.ui.fragments.ErrorDialogFragment;
-import com.amazon.android.utils.Helpers;
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.util.Log;
+
+import com.amazon.android.ui.fragments.ErrorDialogFragment;
+import com.amazon.android.utils.ErrorUtils;
+import com.amazon.android.utils.Helpers;
 
 /**
  * Error helper class.
@@ -71,8 +71,5 @@ public class ErrorHelper {
         }
         errorDialogFragment.show(fm, ErrorDialogFragment.FRAGMENT_TAG_NAME);
 
-        // Inform analytics that an error occurred.
-        AnalyticsHelper.trackError(activity.getLocalClassName(),
-                                   ErrorUtils.getErrorMessage(activity, error_category));
     }
 }

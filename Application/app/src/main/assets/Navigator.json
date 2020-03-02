@@ -42,7 +42,7 @@
       "onAction": "CONTENT_DETAILS_SCREEN"
     },
     "com.amazon.android.uamp.ui.PlaybackActivity": {
-      "verifyScreenAccess": false,
+      "verifyScreenAccess": true,
       "verifyNetworkConnection": true,
       "onAction": "CONTENT_RENDERER_SCREEN"
     }

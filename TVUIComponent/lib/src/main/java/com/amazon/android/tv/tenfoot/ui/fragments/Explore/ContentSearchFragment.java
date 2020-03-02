@@ -29,17 +29,6 @@
 package com.amazon.android.tv.tenfoot.ui.fragments.Explore;
 
 
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.search.SearchManager;
-import com.amazon.android.utils.Helpers;
-import com.amazon.android.tv.tenfoot.BuildConfig;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
-import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
-import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
-
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -70,6 +59,16 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.model.content.Content;
+import com.amazon.android.search.SearchManager;
+import com.amazon.android.tv.tenfoot.BuildConfig;
+import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
+import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
+import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
+import com.amazon.android.utils.Helpers;
 
 
 /**
@@ -204,16 +203,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                     // If user presses back from keyboard, you don't get KeyboardDismissListener
                     // so handle that here.
                     searchEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-
-                        // Track search if keyboard is closed with IME_ACTION_PREVIOUS or
-                        // if IME_ACTION_SEARCH occurs.
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                                actionId == EditorInfo.IME_ACTION_PREVIOUS) {
-
-                            if (mQuery != null) {
-                                AnalyticsHelper.trackSearchQuery(mQuery);
-                            }
-                        }
 
                         if (actionId == EditorInfo.IME_ACTION_PREVIOUS) {
 

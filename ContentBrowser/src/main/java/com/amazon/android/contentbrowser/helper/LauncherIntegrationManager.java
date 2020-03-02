@@ -14,16 +14,16 @@
  */
 package com.amazon.android.contentbrowser.helper;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.R;
 import com.amazon.android.utils.Preferences;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 /**
  * Manager class to manage launcher integration. It interacts with ContentBrowser and listens to
@@ -220,7 +220,6 @@ public class LauncherIntegrationManager {
         }
         // Send the intent to the Launcher
         context.sendBroadcast(intent);
-        AnalyticsHelper.trackAppAuthenticationStatusBroadcasted(isUserAuthenticated);
     }
 
     /**

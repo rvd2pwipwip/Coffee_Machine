@@ -14,17 +14,16 @@
  */
 package com.amazon.android.contentbrowser.recommendations;
 
-import com.amazon.android.contentbrowser.ContentLoader;
-import com.amazon.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
-import com.amazon.android.contentbrowser.database.records.RecommendationRecord;
-import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainer;
-
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.amazon.android.contentbrowser.ContentLoader;
+import com.amazon.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
+import com.amazon.android.contentbrowser.database.records.RecommendationRecord;
+import com.amazon.android.model.content.Content;
+import com.amazon.android.model.content.ContentContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +147,6 @@ public class RecommendationManager {
         else {
             loadDataForRecommendations(context);
         }
-        AnalyticsHelper.trackUpdateGlobalRecommendations();
     }
 
     /**
@@ -169,7 +167,6 @@ public class RecommendationManager {
                 mSender.sendRecommendationsForType(RecommendationRecord.RELATED,
                                                    relatedIds,
                                                    mMaxRelated);
-                AnalyticsHelper.trackUpdateRelatedRecommendations(content);
                 return null;
             }
 
@@ -230,7 +227,6 @@ public class RecommendationManager {
             notificationManager.cancel(record.getRecommendationId());
         }
         databaseHelper.purgeExpiredRecords(mContext);
-        AnalyticsHelper.trackExpiredRecommendations(records.size());
         Log.d(TAG, "Done cleaning database");
     }
 

@@ -24,7 +24,6 @@ import android.util.Log;
 import com.amazon.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.amazon.android.contentbrowser.database.helpers.WatchlistDatabaseHelper;
 import com.amazon.android.contentbrowser.database.records.RecentRecord;
-import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.contentbrowser.helper.AuthHelper;
 import com.amazon.android.contentbrowser.helper.ErrorHelper;
 import com.amazon.android.contentbrowser.helper.FontManager;
@@ -1447,7 +1446,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             }
         }
 
-        AnalyticsHelper.trackContentDetailsAction(content, actionId);
         switch (actionId) {
             case CONTENT_ACTION_WATCH_NOW:
             case CONTENT_ACTION_WATCH_FROM_BEGINNING:
@@ -1579,8 +1577,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                                                      "contentId "
                                                                                      + contentId);
                                       }
-                                      AnalyticsHelper.trackLauncherRequest(contentId, content,
-                                                                           getSourceOfContentPlayRequest(activity.getIntent()));
                                       Intent intent = new Intent();
                                       intent.putExtra(Content.class.getSimpleName(), content);
                                       intent.putExtra(REQUEST_FROM_LAUNCHER, true);
@@ -1591,8 +1587,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                   }
                                   catch (Exception e) {
                                       Log.e(TAG, e.getLocalizedMessage(), e);
-                                      AnalyticsHelper.trackLauncherRequest(contentId, null,
-                                                                           getSourceOfContentPlayRequest(activity.getIntent()));
                                       AlertDialogFragment.createAndShowAlertDialogFragment
                                               (mNavigator.getActiveActivity(),
                                                "Error",

@@ -14,20 +14,15 @@
  */
 package com.amazon.android.tv.tenfoot.base;
 
-import com.amazon.android.configuration.ConfigurationManager;
-import com.amazon.android.contentbrowser.app.ContentBrowserApplication;
-import com.amazon.android.contentbrowser.constants.ConfigurationConstants;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.ui.activities.MainActivity;
-import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
-import com.amazon.android.tv.tenfoot.ui.activities.SplashActivity;
-
 import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.amazon.android.uamp.ui.PlaybackActivity;
-import com.amazon.analytics.AnalyticsTags;
+import com.amazon.android.configuration.ConfigurationManager;
+import com.amazon.android.contentbrowser.app.ContentBrowserApplication;
+import com.amazon.android.contentbrowser.constants.ConfigurationConstants;
+import com.amazon.android.tv.tenfoot.R;
+
 
 /**
  * TenFoot Application class.
@@ -64,18 +59,5 @@ public class TenFootApp extends ContentBrowserApplication {
         catch (Resources.NotFoundException exception) {
             Log.e(TAG, "Resources not found", exception);
         }
-
-        // Add analytics constant of embedded activities.
-        mAnalyticsManager.addAnalyticsConstantForActivity(SplashActivity.class.getSimpleName(),
-                                                          AnalyticsTags.SCREEN_SPLASH)
-                         .addAnalyticsConstantForActivity(MainActivity.class
-                                                                  .getSimpleName(),
-                                                          AnalyticsTags.SCREEN_BROWSE)
-                         .addAnalyticsConstantForActivity(ContentDetailsActivity.class
-                                                                  .getSimpleName(),
-                                                          AnalyticsTags.SCREEN_DETAILS)
-                         .addAnalyticsConstantForActivity(PlaybackActivity.class
-                                                                  .getSimpleName(),
-                                                          AnalyticsTags.SCREEN_PLAYBACK);
     }
 }

@@ -87,7 +87,6 @@ dependencies {
     compile project(':Utils')
     compile project(':ModuleInterface')
     compile project(':AuthInterface')
-    compile project(':AnalyticsInterface')
     compile project(':UAMP')
     compile project(':ContentBrowser')
     // Global font support

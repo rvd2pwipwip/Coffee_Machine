@@ -41,7 +41,7 @@ android {
     buildToolsVersion '24.0.3'
 
     defaultConfig {
-        applicationId "com.stingray.android.qelloTv"
+        applicationId "com.stingray.qello.android.firetv"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 10
@@ -97,7 +97,5 @@ dependencies {
     compile project(':TVUIComponent')
     compile project(':UAMP')
     compile project(':AMZNMediaPlayerComponent')
-    compile project(':PassThroughAdsComponent')
     compile project(':PassThroughLoginComponent')
-    compile project(':LoggerAnalyticsComponent')
 }
