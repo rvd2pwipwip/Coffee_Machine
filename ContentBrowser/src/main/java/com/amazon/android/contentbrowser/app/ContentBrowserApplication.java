@@ -14,13 +14,9 @@
  */
 package com.amazon.android.contentbrowser.app;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.os.SystemClock;
-import android.util.Log;
-
+import com.amazon.ads.IAds;
+import com.amazon.android.contentbrowser.R;
+import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.contentbrowser.recommendations.UpdateRecommendationsService;
 import com.amazon.android.module.ModularApplication;
 import com.amazon.android.module.Module;
@@ -30,6 +26,21 @@ import com.amazon.android.utils.Preferences;
 import com.amazon.auth.IAuthentication;
 import com.amazon.purchase.IPurchase;
 import com.squareup.leakcanary.RefWatcher;
+
+import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.WindowManager;
+
+import com.amazon.analytics.AnalyticsManager;
+import com.amazon.analytics.IAnalytics;
 
 /**
  * Content browser application class.
@@ -63,6 +74,11 @@ public class ContentBrowserApplication extends ModularApplication {
     private RefWatcher mRefWatcher;
 
     /**
+     * Analytics manager reference.
+     */
+    protected AnalyticsManager mAnalyticsManager;
+
+    /**
      * Get singleton instance.
      *
      * @return Content browser application singleton instance.
@@ -94,6 +110,8 @@ public class ContentBrowserApplication extends ModularApplication {
 
         Preferences.setContext(this);
 
+        mAnalyticsManager = AnalyticsManager.getInstance(this);
+
         initAllModules(this.getApplicationContext());
         initializeAuthModule();
         scheduleRecommendationUpdate(this.getApplicationContext(), INITIAL_DELAY);
@@ -118,6 +136,21 @@ public class ContentBrowserApplication extends ModularApplication {
      */
     @Override
     public void onModulesLoaded() {
+        // Setup Ads.
+        IAds ads = (IAds) ModuleManager.getInstance()
+                                       .getModule(IAds.class.getSimpleName())
+                                       .getImpl(true);
+        ads.setExtra(new Bundle());
+
+        // Setup Analytics.
+        IAnalytics analytics =
+                (IAnalytics) ModuleManager.getInstance()
+                                          .getModule(IAnalytics.class.getSimpleName())
+                                          .getImpl(true);
+
+        mAnalyticsManager.setAnalyticsInterface(analytics);
+        sInstance.registerActivityLifecycleCallbacks(mAnalyticsManager);
+        AnalyticsHelper.trackAppEntry();
         initializeAuthModule();
         // Last call.
         postModulesLoaded();
@@ -131,6 +164,12 @@ public class ContentBrowserApplication extends ModularApplication {
 
         if (UAMP.class.getSimpleName().equals(interfaceName)) {
             ModuleManager.getInstance().setModule(interfaceName, new Module<UAMP>());
+        }
+        else if (IAnalytics.class.getSimpleName().equals(interfaceName)) {
+            ModuleManager.getInstance().setModule(interfaceName, new Module<IAnalytics>());
+        }
+        else if (IAds.class.getSimpleName().equals(interfaceName)) {
+            ModuleManager.getInstance().setModule(interfaceName, new Module<IAds>());
         }
         else if (IAuthentication.class.getSimpleName().equals(interfaceName)) {
             ModuleManager.getInstance().setModule(interfaceName, new Module<IAuthentication>());

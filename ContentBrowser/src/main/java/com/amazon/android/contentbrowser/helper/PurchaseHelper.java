@@ -14,11 +14,6 @@
  */
 package com.amazon.android.contentbrowser.helper;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
-
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.R;
 import com.amazon.android.model.content.Content;
@@ -35,6 +30,11 @@ import com.amazon.purchase.PurchaseManagerListener;
 import com.amazon.purchase.model.Response;
 
 import org.greenrobot.eventbus.EventBus;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -276,9 +276,11 @@ public class PurchaseHelper {
             setSubscription(validity, sku);
             resultBundle.putString(RESULT_SKU, sku);
             resultBundle.putBoolean(RESULT_VALIDITY, validity);
+            AnalyticsHelper.trackPurchaseResult(sku, validity);
             handleSuccessCase(subscriber, resultBundle);
         }
         else {
+            AnalyticsHelper.trackError(TAG, "Purchase failed "+response);
             resultBundle.putBoolean(RESULT_VALIDITY, false);
             handleFailureCase(subscriber, resultBundle);
         }

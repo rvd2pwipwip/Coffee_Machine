@@ -1,4 +1,46 @@
+/**
+ * This file was modified by Amazon:
+ * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *      http://aws.amazon.com/apache2.0/
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+/*
+ * Copyright (C) 2014 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package com.amazon.android.uamp.ui;
+
+import com.amazon.analytics.AnalyticsTags;
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
+import com.amazon.android.model.content.Content;
+import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
+import com.amazon.android.tv.tenfoot.utils.ContentHelper;
+import com.amazon.android.uamp.mediaSession.MediaSessionController;
+import com.amazon.utils.StringManipulation;
+import com.amazon.android.utils.GlideHelper;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +56,7 @@ import android.support.v17.leanback.widget.ControlButtonPresenterSelector;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
+import android.support.v17.leanback.widget.OnActionClickedListener;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.PlaybackControlsRow;
 import android.support.v17.leanback.widget.PlaybackControlsRow.FastForwardAction;
@@ -36,18 +79,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
-import com.amazon.android.tv.tenfoot.utils.ContentHelper;
-import com.amazon.android.uamp.mediaSession.MediaSessionController;
-import com.amazon.android.utils.GlideHelper;
-import com.amazon.utils.StringManipulation;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -324,38 +355,52 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
         else {
             playbackControlsRowPresenter = new PlaybackControlsRowPresenter();
         }
-        playbackControlsRowPresenter.setOnActionClickedListener(action -> {
+        playbackControlsRowPresenter.setOnActionClickedListener(new OnActionClickedListener() {
+            public void onActionClicked(Action action) {
 
-            if (action.getId() == mPlayPauseAction.getId()) {
-                boolean actionIndex = mPlayPauseAction.getIndex() == PlayPauseAction.PLAY;
-                togglePlayback(actionIndex);
-            }
-            else if (action.getId() == mSkipNextAction.getId()) {
-                ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
-                                                                                     .CONTENT_RENDERER_SCREEN,
-                                                                             mRelatedContentList.get(mCurrentItem + 1), extra -> next(),
-                                                                             errorExtra ->
-                                                                                     ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
-            }
-            else if (action.getId() == mClosedCaptioningAction.getId()) {
-                toggleCloseCaption();
-            }
-            else if (action.getId() == mSkipPreviousAction.getId()) {
-                ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
-                                                                                     .CONTENT_RENDERER_SCREEN,
-                                                                             mRelatedContentList.get(mCurrentItem - 1), extra -> prev(),
-                                                                             errorExtra ->
-                                                                                     ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
-            }
-            else if (action.getId() == mFastForwardAction.getId()) {
-                fastForward();
-            }
-            else if (action.getId() == mRewindAction.getId()) {
-                fastRewind();
-            }
-            else if (action instanceof PlaybackControlsRow.MultiAction) {
-                ((PlaybackControlsRow.MultiAction) action).nextIndex();
-                notifyChanged(action);
+                if (action.getId() == mPlayPauseAction.getId()) {
+                    boolean actionIndex = mPlayPauseAction.getIndex() == PlayPauseAction.PLAY;
+                    togglePlayback(actionIndex);
+                    if (actionIndex) {
+                        trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY);
+                    }
+                    else {
+                        trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE);
+                    }
+                }
+                else if (action.getId() == mSkipNextAction.getId()) {
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_NEXT);
+                    ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
+                                                                                         .CONTENT_RENDERER_SCREEN,
+                                                                                 mRelatedContentList.get(mCurrentItem + 1), extra -> next(),
+                                                                                 errorExtra ->
+                                                                                         ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
+                }
+                else if (action.getId() == mClosedCaptioningAction.getId()) {
+                    toggleCloseCaption();
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_TOGGLE_CC);
+                }
+                else if (action.getId() == mSkipPreviousAction.getId()) {
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PRE);
+                    ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
+                                                                                         .CONTENT_RENDERER_SCREEN,
+                                                                                 mRelatedContentList.get(mCurrentItem - 1), extra -> prev(),
+                                                                                 errorExtra ->
+                                                                                         ContentBrowser.getInstance(getActivity()).showAuthenticationErrorDialog(errorExtra));
+                }
+                else if (action.getId() == mFastForwardAction.getId()) {
+                    fastForward();
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF);
+                }
+                else if (action.getId() == mRewindAction.getId()) {
+                    fastRewind();
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND);
+                }
+                else if (action instanceof PlaybackControlsRow.MultiAction) {
+                    ((PlaybackControlsRow.MultiAction) action).nextIndex();
+                    notifyChanged(action);
+                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_MULTI_ACTION);
+                }
             }
         });
 
@@ -390,6 +435,33 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
         }
 
         setAdapter(mRowsAdapter);
+    }
+
+    /**
+     * Helper method to track a playback action.
+     *
+     * @param action The playback action to track.
+     */
+    private void trackAnalyticsAction(String action) {
+
+        trackAnalyticsAction(action, mSelectedContent);
+    }
+
+
+    /**
+     * Helper method to track a playback action.
+     *
+     * @param action  The playback action to track.
+     * @param content The content.
+     */
+    private void trackAnalyticsAction(String action, Content content) {
+
+        if (isAdded() && getActivity() != null) {
+
+            AnalyticsHelper.trackPlaybackControlAction(action, content,
+                                                       ((PlaybackActivity) getActivity())
+                                                               .getCurrentPosition());
+        }
     }
 
     /**
@@ -432,7 +504,8 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
      * Triggers update of playback row to {@link #mCurrentItem}.
      */
     public void updatePlayback() {
-        updatePlaybackRow();
+
+        updatePlaybackRow(mCurrentItem);
     }
 
     private void addPlaybackControlsRow() {
@@ -446,7 +519,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
         }
         mRowsAdapter.add(mPlaybackControlsRow);
 
-        updatePlaybackRow();
+        updatePlaybackRow(mCurrentItem);
 
         ControlButtonPresenterSelector presenterSelector = new ControlButtonPresenterSelector();
         mPrimaryActionsAdapter = new ArrayObjectAdapter(presenterSelector);
@@ -610,7 +683,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
         }
     }
 
-    private void updatePlaybackRow() {
+    private void updatePlaybackRow(int index) {
 
         if (mPlaybackControlsRow.getItem() != null) {
             Content item = (Content) mPlaybackControlsRow.getItem();
@@ -695,7 +768,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
                                                         .getExtraValueAsBoolean(Content.LIVE_TAG));
 
         mFfwRwdSpeed = INITIAL_SPEED;
-        updatePlaybackRow();
+        updatePlaybackRow(mCurrentItem);
     }
 
     private void prev() {
@@ -725,7 +798,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
                                                         .getExtraValueAsBoolean(Content.LIVE_TAG));
 
         mFfwRwdSpeed = INITIAL_SPEED;
-        updatePlaybackRow();
+        updatePlaybackRow(mCurrentItem);
     }
 
     /**
@@ -859,19 +932,22 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
         @Override
         public void run() {
 
-            mClickTrackingHandler.post(() -> {
+            mClickTrackingHandler.post(new Runnable() {
+                @Override
+                public void run() {
 
-                if (mClickCount == 0) {
-                    mFfwRwdSpeed = INITIAL_SPEED;
+                    if (mClickCount == 0) {
+                        mFfwRwdSpeed = INITIAL_SPEED;
+                    }
+                    else if (mClickCount == 1) {
+                        mFfwRwdSpeed *= 2;
+                    }
+                    else if (mClickCount >= 2) {
+                        mFfwRwdSpeed *= 4;
+                    }
+                    mClickCount = 0;
+                    mClickTrackingTimer = null;
                 }
-                else if (mClickCount == 1) {
-                    mFfwRwdSpeed *= 2;
-                }
-                else if (mClickCount >= 2) {
-                    mFfwRwdSpeed *= 4;
-                }
-                mClickCount = 0;
-                mClickTrackingTimer = null;
             });
         }
     }
@@ -920,6 +996,8 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
 
             if (item instanceof Content) {
                 Content content = (Content) item;
+                trackAnalyticsAction(AnalyticsTags.ACTION_RECOMMENDED_CONTENT_CLICKED, content);
+
                 ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
                                                                                      .CONTENT_RENDERER_SCREEN,
                                                                              content,

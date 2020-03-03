@@ -62,6 +62,8 @@ dependencies {
 
     api project(':ModuleInterface')
     api project(':AuthInterface')
+    api project(':AnalyticsInterface')
+    api project(':AdsInterface')
     api project(':PurchaseInterface')
     api project(':UAMP')
     api project(':DataLoader')

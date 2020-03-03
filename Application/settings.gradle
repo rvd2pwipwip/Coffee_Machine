@@ -28,10 +28,14 @@ include ':app',
         /* Interfaces */
         ':PurchaseInterface',
         ':AuthInterface',
+        ':AdsInterface',
+        ':AnalyticsInterface',
         ':ModuleInterface',
         /* Implementations */
+        ':PassThroughAdsComponent',
         ':AMZNMediaPlayerComponent',
-        ':PassThroughLoginComponent'
+        ':PassThroughLoginComponent',
+        ':LoggerAnalyticsComponent'
 
 /* Frameworks */
 project(':TVUIComponent').projectDir = new File(rootProject.projectDir, '../TVUIComponent/lib')
@@ -47,11 +51,15 @@ project(':Utils').projectDir = new File(rootProject.projectDir, '../Utils')
 
 /* Interfaces */
 project(':ModuleInterface').projectDir = new File(rootProject.projectDir, '../ModuleInterface')
+project(':AdsInterface').projectDir = new File(rootProject.projectDir, '../AdsInterface')
 project(':AuthInterface').projectDir = new File(rootProject.projectDir, '../AuthInterface')
+project(':AnalyticsInterface').projectDir = new File(rootProject.projectDir, '../AnalyticsInterface')
 project(':PurchaseInterface').projectDir = new File(rootProject.projectDir, '../PurchaseInterface')
 
 /* Implementations */
 project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDir, '../AMZNMediaPlayerComponent')
+project(':PassThroughAdsComponent').projectDir = new File(rootProject.projectDir, '../PassThroughAdsComponent')
 project(':PassThroughLoginComponent').projectDir = new File(rootProject.projectDir, '../PassThroughLoginComponent')
+project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../LoggerAnalyticsComponent')
 // Uncomment when using ComScore Analytics
 //project(':comscore').projectDir = new File(rootProject.projectDir, '../ComScoreAnalyticsComponent/libs/comscore')

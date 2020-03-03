@@ -14,11 +14,11 @@
  */
 package com.amazon.android.contentbrowser.helper;
 
+import com.amazon.android.utils.Preferences;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
-import com.amazon.android.utils.Preferences;
 
 /**
  * Broadcast receiver to receive App authorization status requests from Launcher
@@ -32,6 +32,7 @@ public class LauncherIntegrationBroadcastReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
+        AnalyticsHelper.trackAppAuthenticationStatusRequested();
         boolean userAuthenticated = Preferences.getBoolean(LauncherIntegrationManager
                                                                 .PREFERENCE_KEY_USER_AUTHENTICATED);
         LauncherIntegrationManager.sendAppAuthenticationStatusBroadcast(context, userAuthenticated);
