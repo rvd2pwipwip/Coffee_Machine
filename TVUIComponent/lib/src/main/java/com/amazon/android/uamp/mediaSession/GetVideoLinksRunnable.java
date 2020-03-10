@@ -1,5 +1,7 @@
 package com.amazon.android.uamp.mediaSession;
 
+import android.util.Log;
+
 import com.amazon.android.uamp.model.VideoLink;
 import com.amazon.android.uamp.model.VideoLinks;
 import com.amazon.android.utils.NetworkUtils;
@@ -7,16 +9,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class GetVideoLinksRunnable implements Runnable {
     private final static String ENDPOINT = "https://svod-stage.api.stingray.com/v1/content/%s/video-links?hevc-compatible=true";
-    private final static Logger LOG = LoggerFactory.getLogger(GetVideoLinksRunnable.class);
+    private static final String TAG = GetVideoLinksRunnable.class.getSimpleName();
 
     private String assetId;
     private ObjectMapper objectMapper;
@@ -40,7 +39,7 @@ public class GetVideoLinksRunnable implements Runnable {
             String url = String.format(ENDPOINT, assetId);
             String jsonResponse = NetworkUtils.getDataLocatedAtUrl(url);
 
-            LOG.info(String.format("Received response: %s", jsonResponse));
+            Log.i(TAG, String.format("Received response: %s", jsonResponse));
 
             List<VideoLink> videoLinks = objectMapper.readValue(jsonResponse, VideoLinks.class).getVideoLinks();
 
@@ -53,14 +52,14 @@ public class GetVideoLinksRunnable implements Runnable {
                         mediaUriByType.put(type, videoLink.getMediaUri());
                     }
                 } catch (IllegalArgumentException e) {
-                    LOG.warn(String.format("Unrecognized video type [%s]", videoLink.getVideoType()),e);
+                    Log.w(TAG, String.format("Unrecognized video type [%s]", videoLink.getVideoType()),e);
                 }
             }
 
             this.mediaUriByType = mediaUriByType;
 
         } catch (Exception e) {
-            LOG.error(String.format("Failed to get videoLink from [%s]", ENDPOINT),e);
+            Log.e(TAG, String.format("Failed to get videoLink from [%s]", ENDPOINT),e);
         }
     }
 }
