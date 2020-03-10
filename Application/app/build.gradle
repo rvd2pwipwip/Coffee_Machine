@@ -13,7 +13,6 @@
  * permissions and limitations under the License.
  */
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 // Uncomment when using CrashlyticsComponent
 //apply plugin: 'io.fabric'
 apply from: "../artifacts.gradle"

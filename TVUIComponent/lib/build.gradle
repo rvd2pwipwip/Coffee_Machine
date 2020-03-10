@@ -15,7 +15,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'jacoco'
 apply from: '../config/quality.gradle'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
