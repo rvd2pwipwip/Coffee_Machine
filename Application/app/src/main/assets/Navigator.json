@@ -9,9 +9,9 @@
   },
   "branding": {
     "globalTheme": "AppTheme",
-    "lightFont" : "Roboto Light",
-    "boldFont" : "Roboto Bold",
-    "regularFont" : "Roboto Regular"
+    "lightFont" : "fonts/Roboto-Light.ttf",
+    "boldFont" : "fonts/Roboto-Bold.ttf",
+    "regularFont" : "fonts/Roboto-Regular.ttf-"
   },
   "globalRecipes": [
     {
