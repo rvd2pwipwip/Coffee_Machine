@@ -19,7 +19,7 @@ permissions and limitations under the License.
     <dimen name="details_description_extended_text">15sp</dimen>
 
     <!-- Details Description hover layout dimensions -->
-    <dimen name="read_dialog_width">519dp</dimen>
+    <dimen name="read_dialog_width">520dp</dimen>
     <dimen name="read_dialog_height">320dp</dimen>
     <dimen name="read_dialog_text_margin_vertical">24dp</dimen>
     <dimen name="read_dialog_text_margin_left">34.0dp</dimen>
@@ -38,8 +38,8 @@ permissions and limitations under the License.
     <dimen name="logout_fragment_desc_size">14sp</dimen>
 
     <!-- Slideshow Setting dimensions-->
-    <dimen name="slideshow_setting_height">120dp</dimen>
-    <dimen name="slideshow_setting_width">309dp</dimen>
+    <dimen name="slideshow_setting_height">230dp</dimen>
+    <dimen name="slideshow_setting_width">300dp</dimen>
     <dimen name="slideshow_setting_button_height">5dp</dimen>
     <dimen name="slideshow_setting_button_width">130dp</dimen>
     <dimen name="slideshow_setting_title_size">10dp</dimen>
@@ -60,7 +60,7 @@ permissions and limitations under the License.
 
     <!-- Action widget dimensions -->
     <!-- These values are used to calculate the action widget grid view length programmatically. -->
-    <dimen name="action_widget_height">25px</dimen>
-    <dimen name="action_widget_width">25px</dimen>
-    <dimen name="grid_view_left_right_padding">30px</dimen>
+    <dimen name="action_widget_height">40dp</dimen>
+    <dimen name="action_widget_width">30dp</dimen>
+    <dimen name="grid_view_left_right_padding">5dp</dimen>
 </resources>
