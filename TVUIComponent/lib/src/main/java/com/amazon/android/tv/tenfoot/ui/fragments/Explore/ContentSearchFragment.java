@@ -29,17 +29,6 @@
 package com.amazon.android.tv.tenfoot.ui.fragments.Explore;
 
 
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.search.SearchManager;
-import com.amazon.android.utils.Helpers;
-import com.amazon.android.tv.tenfoot.BuildConfig;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
-import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
-import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
-
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -70,6 +59,17 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
+import com.amazon.android.model.content.Content;
+import com.amazon.android.search.SearchManager;
+import com.amazon.android.tv.tenfoot.BuildConfig;
+import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
+import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
+import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
+import com.amazon.android.utils.Helpers;
 
 
 /**
@@ -145,6 +145,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
+
+
         if (view != null) {
             // Set background color and drawable.
             view.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color
@@ -161,8 +163,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
                 layoutParams.setMarginStart((int) getResources().getDimension(
                         R.dimen.search_bar_margin_left));
-
                 searchBar.setLayoutParams(layoutParams);
+
 
                 // Move the search bar items next to the search icon.
                 RelativeLayout searchBarItems =
@@ -191,6 +193,12 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 if (mSpeechOrbView != null) {
                     mSpeechOrbView.setOrbIcon(ContextCompat.getDrawable(getActivity(),
                                                                         R.drawable.search_icon));
+                    RelativeLayout.LayoutParams mSpeechOrbViewLayoutParams = (RelativeLayout
+                            .LayoutParams) mSpeechOrbView.getLayoutParams();
+
+                    mSpeechOrbViewLayoutParams.setMarginStart((int) getResources()
+                            .getDimension(R.dimen.search_bar_speech_orb_margin_left));
+                    mSpeechOrbView.setLayoutParams(mSpeechOrbViewLayoutParams);
                 }
 
                 final SearchEditText searchEditText =
