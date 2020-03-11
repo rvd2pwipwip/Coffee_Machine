@@ -78,7 +78,7 @@ permissions and limitations under the License.
     <dimen name="content_image_height">400dp</dimen>
     <dimen name="content_image_width">675dp</dimen>
     <!-- Size of gradient fade for content preview window -->
-    <dimen name="content_image_gradient_size">150dp</dimen>
+    <dimen name="content_image_gradient_size">275dp</dimen>
     <!-- A grace period used when selecting recent records that have been started but not
         finished. Measured in milliseconds. -->
     <integer name="recent_grace_period">10000</integer>
