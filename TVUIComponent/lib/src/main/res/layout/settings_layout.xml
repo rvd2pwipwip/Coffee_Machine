@@ -69,11 +69,24 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/login_logout_button"
+            android:id="@+id/free_trial_button"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
+            android:background="@drawable/action_button_background"
+            android:fontFamily="sans-serif-light"
+            android:gravity="left|center_vertical"
+            android:text="Start Free Trial"
+            android:textAllCaps="false"
+            android:textColor="#C4C4C4"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/login_logout_button"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"

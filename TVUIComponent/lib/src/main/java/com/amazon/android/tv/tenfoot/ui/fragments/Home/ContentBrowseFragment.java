@@ -136,13 +136,6 @@ public class ContentBrowseFragment extends RowsFragment {
                               .setLastSelectedContentContainer(contentContainer)
                               .switchToScreen(ContentBrowser.CONTENT_SUBMENU_SCREEN);
             }
-            else if (item instanceof Action) {
-                Action settingsAction = (Action) item;
-                Log.d(TAG, "Settings with title " + settingsAction.getAction() + " was clicked");
-                ContentBrowser.getInstance(getActivity())
-                              .settingsActionTriggered(getActivity(),
-                                                       settingsAction);
-            }
         }
     }
 

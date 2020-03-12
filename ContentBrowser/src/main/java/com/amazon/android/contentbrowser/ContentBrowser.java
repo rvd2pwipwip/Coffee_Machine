@@ -1,17 +1,3 @@
-/**
- * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- *     http://aws.amazon.com/apache2.0/
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
 package com.amazon.android.contentbrowser;
 
 import android.app.Activity;
@@ -81,19 +67,16 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     private static final boolean DEBUG_RECIPE_CHAIN = false;
     private static final String REQUEST_FROM_LAUNCHER = "REQUEST_FROM_LAUNCHER";
     public static final String CONTENT_WILL_UPDATE = "CONTENT_WILL_UPDATE";
-    public static final String CONTENT_SPLASH_SCREEN = "CONTENT_SPLASH_SCREEN";
+    private static final String CONTENT_SPLASH_SCREEN = "CONTENT_SPLASH_SCREEN";
     public static final String CONTENT_HOME_SCREEN = "CONTENT_HOME_SCREEN";
     public static final String CONTENT_DETAILS_SCREEN = "CONTENT_DETAILS_SCREEN";
     public static final String CONTENT_SUBMENU_SCREEN = "CONTENT_SUBMENU_SCREEN";
     public static final String CONTENT_RENDERER_SCREEN = "CONTENT_RENDERER_SCREEN";
 
-    public static final String FREE_CONTENT = "free";
-    public static final String SEARCH = "Search";
-    public static final String HOME = "Home";
-    public static final String MY_QELLO = "MyQello";
-    public static final String LOGIN_LOGOUT = "LoginLogout";
-    public static final String TERMS = "Terms";
-    public static final String CONTACT_US = "ContactUs";
+    private static final String FREE_CONTENT = "free";
+    private static final String SEARCH = "Search";
+    private static final String HOME = "Home";
+    private static final String MY_QELLO = "MyQello";
 
     public static final int CONTENT_ACTION_WATCH_NOW = 1;
     public static final int CONTENT_ACTION_WATCH_FROM_BEGINNING = 2;
@@ -104,8 +87,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public static final int CONTENT_ACTION_HOME = 8;
     public static final int CONTENT_ACTION_MY_QELLO = 9;
     public static final int CONTENT_ACTION_LOGIN_LOGOUT = 10;
-    public static final int CONTENT_ACTION_ADD_WATCHLIST = 11;
-    public static final int CONTENT_ACTION_REMOVE_WATCHLIST = 12;
+    private static final int CONTENT_ACTION_ADD_WATCHLIST = 11;
+    private static final int CONTENT_ACTION_REMOVE_WATCHLIST = 12;
 
     private static final String DEFAULT_SEARCH_ALGO_NAME = "basic";
     public static final String RESTORE_ACTIVITY = "restore_last_activity";
@@ -821,54 +804,21 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     }
 
     /**
-     * Setting action selected.
-     *
-     * @param activity       Activity.
-     * @param settingsAction Selected setting action.
-     */
-    public void settingsActionTriggered(Activity activity, Action settingsAction) {
-
-        Log.d(TAG, "settingsActionTriggered Selected");
-
-        switch (settingsAction.getAction()) {
-            case LOGIN_LOGOUT:
-                loginLogoutActionTriggered(activity, settingsAction);
-                break;
-            case TERMS:
-                new FAQSettingsFragment()
-                        .createFragment(activity,
-                                        activity.getFragmentManager() );
-                break;
-            case CONTACT_US:
-                new ContactUsSettingsFragment()
-                        .createFragment(activity,
-                                activity.getFragmentManager());
-            default:
-                Log.e(TAG, "Unsupported action " + settingsAction);
-                break;
-        }
-    }
-
-    /**
      * Method to trigger the LogoutSettingsFragment on clicking loginLogout Action.
      *
      * @param activity       The activity on which fragment needs to be added.
-     * @param settingsAction The action instance.
      */
-    private void loginLogoutActionTriggered(Activity activity, Action settingsAction) {
+    public void loginLogoutActionTriggered(Activity activity) {
 
         mAuthHelper
                 .isAuthenticated()
                 .subscribe(isAuthenticatedResultBundle -> {
                     if (isAuthenticatedResultBundle.getBoolean(AuthHelper.RESULT)) {
-                        settingsAction.setState(LogoutSettingsFragment.TYPE_LOGOUT);
                         new LogoutSettingsFragment()
                                 .createFragment(activity,
-                                                activity.getFragmentManager(),
-                                                settingsAction);
+                                                activity.getFragmentManager());
                     }
                     else {
-                        settingsAction.setState(LogoutSettingsFragment.TYPE_LOGIN);
                         mAuthHelper.authenticateWithActivity().subscribe(resultBundle -> {
                             if (resultBundle != null &&
                                     !resultBundle.getBoolean(AuthHelper.RESULT)) {

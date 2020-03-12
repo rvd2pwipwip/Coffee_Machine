@@ -130,7 +130,6 @@ public class CardPresenter extends Presenter {
                 // actual Title.
                 cardView.setTitleText(ContentHelper.getCardViewSubtitle(mContext, content));
 
-
                 cardView.setContentText(content.getTitle());
                 cardView.setMainImageDimensions(mCardWidthDp, mCardHeightDp);
                 GlideHelper.loadImageIntoView(cardView.getMainImageView(),
