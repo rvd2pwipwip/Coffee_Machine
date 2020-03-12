@@ -462,7 +462,7 @@ public class DynamicParser implements IRecipeCooker {
      * @param params List of parameters that the recipe requires.
      * @return A {@link List} of {@link Map}s.
      */
-    private List<Map<String, Object>> parseInput(Recipe recipe, String input, String[] params)
+    public List<Map<String, Object>> parseInput(Recipe recipe, String input, String[] params)
             throws ParserNotFoundException, IParser.InvalidDataException,
             IParser.InvalidQueryException, PathHelper.MalformedInjectionStringException {
 
@@ -654,7 +654,7 @@ public class DynamicParser implements IRecipeCooker {
      * @param map       The data map containing the values that are needed by the match list.
      * @return The newly created object.
      */
-    private Object translateMapToModel(Recipe recipe, IRecipeCookerCallbacks callbacks,
+    public Object translateMapToModel(Recipe recipe, IRecipeCookerCallbacks callbacks,
                                        Map<String, Object> map) {
 
         // If the recipe specifies a translator, create the model using translation.

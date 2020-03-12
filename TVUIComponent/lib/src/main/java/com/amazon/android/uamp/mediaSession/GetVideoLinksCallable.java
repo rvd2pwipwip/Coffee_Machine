@@ -12,29 +12,24 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
-public class GetVideoLinksRunnable implements Runnable {
+public class GetVideoLinksCallable implements Callable<Map<VideoLink.Type, String>> {
     private final static String ENDPOINT = "https://svod-stage.api.stingray.com/v1/content/%s/video-links?hevc-compatible=true";
-    private static final String TAG = GetVideoLinksRunnable.class.getSimpleName();
+    private static final String TAG = GetVideoLinksCallable.class.getSimpleName();
 
     private String assetId;
     private ObjectMapper objectMapper;
 
-    private Map<VideoLink.Type, String> mediaUriByType;
-
-    public GetVideoLinksRunnable(String assetId) {
+    public GetVideoLinksCallable(String assetId) {
         this.assetId = assetId;
         this.objectMapper = new ObjectMapper()
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
 
-    public Map<VideoLink.Type, String> getMediaUriByType() {
-        return mediaUriByType;
-    }
-
     @Override
-    public void run() {
+    public Map<VideoLink.Type, String> call() {
         try {
             String url = String.format(ENDPOINT, assetId);
             String jsonResponse = NetworkUtils.getDataLocatedAtUrl(url);
@@ -56,10 +51,11 @@ public class GetVideoLinksRunnable implements Runnable {
                 }
             }
 
-            this.mediaUriByType = mediaUriByType;
+            return mediaUriByType;
 
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to get videoLink from [%s]", ENDPOINT),e);
+            return new HashMap<>();
         }
     }
 }

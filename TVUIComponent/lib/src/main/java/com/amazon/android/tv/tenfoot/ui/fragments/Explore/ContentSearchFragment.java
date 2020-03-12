@@ -402,8 +402,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             mRowsAdapter.clear();
             HeaderItem header = new HeaderItem(getString(R.string.search_results, mQuery));
 
-            int elementsInRow = (int) getResources().getInteger(R.integer
-                                                                        .num_of_search_elements_in_row);
+            int elementsInRow = (int) getResources().getInteger(R.integer.num_of_search_elements_in_row);
 
             int rows = mListRowAdapter.size() / elementsInRow;
 
