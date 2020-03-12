@@ -95,10 +95,10 @@ public class CardPresenter extends Presenter {
         cardView.setCardType(BaseCardView.CARD_TYPE_MAIN_ONLY);
         cardView.setInfoVisibility(BaseCardView.CARD_REGION_VISIBLE_ALWAYS);
 
-        int CARD_WIDTH_PX = 92;
+        int CARD_WIDTH_PX = 120;
         mCardWidthDp = Helpers.convertPixelToDp(mContext, CARD_WIDTH_PX);
 
-        int CARD_HEIGHT_PX = 120;
+        int CARD_HEIGHT_PX = 160;
         mCardHeightDp = Helpers.convertPixelToDp(mContext, CARD_HEIGHT_PX);
 
         TextView subtitle = (TextView) cardView.findViewById(R.id.content_text);

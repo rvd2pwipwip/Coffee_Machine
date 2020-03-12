@@ -65,9 +65,9 @@ permissions and limitations under the License.
     <!-- Action widget and search orb background color -->
     <color name="search_orb">@color/accent</color>
     <!-- Header text size -->
-    <dimen name="browse_header_text">16sp</dimen>
+    <dimen name="browse_header_text">20sp</dimen>
     <!-- Company logo -->
-    <drawable name="company_logo">@drawable/stingray_qello_white</drawable>
+    <drawable name="company_logo">@drawable/stingray_qello_color</drawable>
     <!-- App icon -->
     <drawable name="app_logo">@mipmap/ic_launcher</drawable>
     <!-- Background color -->

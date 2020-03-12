@@ -43,7 +43,8 @@ permissions and limitations under the License.
             android:layout_height="@dimen/content_image_height"
             android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:alpha="0.9"/>
 
     <RelativeLayout
             android:id="@+id/main_frame"
@@ -55,10 +56,10 @@ permissions and limitations under the License.
             android:layout_width="116dp"
             android:layout_height="46dp"
             android:layout_marginLeft="@dimen/lb_browse_padding_start"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="00dp"
             android:layout_marginBottom="45dp"
             android:scaleType="centerInside"
-            android:src="@drawable/company_logo" />
+            android:src="@drawable/stingray_qello_color" />
 
         <LinearLayout
             android:id="@+id/content_details"
@@ -76,6 +77,7 @@ permissions and limitations under the License.
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
+                android:text="MTV Unplugged"
                 android:textColor="@color/accent"
                 android:textSize="@dimen/lb_details_description_body_text_size" />
 
@@ -86,7 +88,9 @@ permissions and limitations under the License.
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:ellipsize="end"
+                android:fontFamily="sans-serif-black"
                 android:singleLine="true"
+                android:text="MTV Unplugged"
                 android:textColor="#FAFAFA"
                 android:textSize="@dimen/lb_details_description_title_text_size" />
 

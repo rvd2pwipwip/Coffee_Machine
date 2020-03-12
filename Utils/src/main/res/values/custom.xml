@@ -20,7 +20,7 @@ permissions and limitations under the License.
          Also used for button text, Splash screen text, and read more dialog text. -->
     <color name="primary_text">#E6FFFFFF</color>
     <!-- Used for the text on the card views and playback progress bar text. -->
-    <color name="secondary_text">#FFFFFFFF</color>
+    <color name="secondary_text">#F4F4F4</color>
     <!-- Background color for focused action button -->
     <drawable name="action_button_focused">@drawable/btn_generic_focused</drawable>
     <!-- Background color for normal state of action button -->
