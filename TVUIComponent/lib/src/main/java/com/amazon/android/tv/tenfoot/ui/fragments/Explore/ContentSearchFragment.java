@@ -67,8 +67,10 @@ import android.widget.Toast;
 import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.explorepage.ExplorePageCallable;
+import com.amazon.android.contentbrowser.genre.GenreFilterCallable;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.model.content.Content;
+import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.model.content.Genre;
 import com.amazon.android.search.SearchManager;
 import com.amazon.android.tv.tenfoot.BuildConfig;
@@ -174,6 +176,16 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
                     // TODO Load results for genres
                     Log.i(TAG, String.format("Triggered onHover for genre [%s]", genre.getId()));
+
+                    ContentContainer contentContainer = new AsyncCaller<>(new GenreFilterCallable(genre.getId())).getResult();
+
+                    mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+
+                    for (Content entry : contentContainer) {
+                        updateResults(entry, false);
+                    }
+
+                    updateResults(null, true);
                 });
 
                 explorePageGenres.addView(genreButton, buttonLayoutParams);

@@ -21,7 +21,7 @@ limitations under the License.
 
 
     <ScrollView
-        android:layout_width="300dp"
+        android:layout_width="370dp"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -61,5 +61,5 @@ limitations under the License.
         android:id="@+id/lb_results_frame"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="370dp" />
+        android:layout_marginStart="330dp" />
 </FrameLayout>
