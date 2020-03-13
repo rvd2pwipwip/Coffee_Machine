@@ -52,17 +52,23 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.explorepage.ExplorePageCallable;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.model.content.Content;
+import com.amazon.android.model.content.Genre;
 import com.amazon.android.search.SearchManager;
 import com.amazon.android.tv.tenfoot.BuildConfig;
 import com.amazon.android.tv.tenfoot.R;
@@ -70,6 +76,8 @@ import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
 import com.amazon.android.utils.Helpers;
+
+import java.util.List;
 
 
 /**
@@ -145,9 +153,30 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-
-
         if (view != null) {
+            List<Genre> genres = new AsyncCaller<>(new ExplorePageCallable()).getResult();
+
+            LinearLayout explorePageGenres = (LinearLayout) view.findViewById(R.id.explore_page_genres);
+            ViewGroup.LayoutParams buttonLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
+            for (Genre genre: genres) {
+                // TODO Should be replaced by a style
+                Button genreButton = new Button(getActivity());
+                genreButton.setText(genre.getTitle());
+                genreButton.setBackground(getResources().getDrawable(R.drawable.action_button_background));
+                genreButton.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+                genreButton.setAllCaps(false);
+                genreButton.setTextColor(getResources().getColor(R.color.button_text));
+                genreButton.setTextSize(getResources().getDimension(R.dimen.button_text_size));
+                genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
+                    // TODO Load results for genres
+                    Log.i(TAG, String.format("Triggered onHover for genre [%s]", genre.getId()));
+                });
+
+                explorePageGenres.addView(genreButton, buttonLayoutParams);
+            }
+
             // Set background color and drawable.
             view.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color
                     .transparent));

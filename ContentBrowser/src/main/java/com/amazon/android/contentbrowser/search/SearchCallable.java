@@ -1,14 +1,12 @@
 package com.amazon.android.contentbrowser.search;
 
-import android.os.Bundle;
 import android.util.Log;
 
 import com.amazon.android.async.SvodCallable;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
-import com.amazon.android.model.translators.ContentContainerTranslator;
 import com.amazon.android.model.translators.ContentTranslator;
-import com.amazon.android.recipe.IRecipeCookerCallbacks;
+import com.amazon.android.recipe.NoOpRecipeCallbacks;
 import com.amazon.android.recipe.Recipe;
 import com.amazon.dynamicparser.DynamicParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,7 +32,6 @@ public class SearchCallable extends SvodCallable<ContentContainer> {
     public SearchCallable(String query) {
 
         if (RECIPE == null && PARSER == null) {
-
             Map<String, Object> recipeMap = new HashMap<>();
             recipeMap.put("cooker", "DynamicParser");
             recipeMap.put("format", "json");
@@ -62,11 +59,6 @@ public class SearchCallable extends SvodCallable<ContentContainer> {
             PARSER = new DynamicParser();
             // Register content translator in case parser recipes use translation.
             PARSER.addTranslatorImpl(contentTranslator.getName(), contentTranslator);
-            // Register content container translator in case parser recipes use translation.
-            ContentContainerTranslator containerTranslator = new ContentContainerTranslator();
-            PARSER.addTranslatorImpl(containerTranslator.getName(),
-                    containerTranslator);
-
         }
 
         this.query = query;
@@ -84,7 +76,7 @@ public class SearchCallable extends SvodCallable<ContentContainer> {
             List<Map<String, Object>> cookedJson = PARSER.parseInput(RECIPE, jsonResponse, null);
 
             for (Map<String, Object> objectMap: cookedJson) {
-                Content content = (Content) PARSER.translateMapToModel(RECIPE, new Test(), objectMap);
+                Content content = (Content) PARSER.translateMapToModel(RECIPE, new NoOpRecipeCallbacks(), objectMap);
 
                 if (contentTranslator.validateModel(content)) {
                     contentContainer.addContent(content);
@@ -95,39 +87,5 @@ public class SearchCallable extends SvodCallable<ContentContainer> {
         }
 
         return contentContainer;
-    }
-
-
-    private static class Test implements IRecipeCookerCallbacks {
-
-        @Override
-        public void onPreRecipeCook(Recipe recipe, Object output, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onRecipeCooked(Recipe recipe, Object output, Bundle bundle, boolean
-        done) {
-//
-//                        if (!subscriber.isUnsubscribed()) {
-//                            subscriber.onNext(output);
-//                            if (done) {
-//                                subscriber.onCompleted();
-//                            }
-//                        }
-        }
-
-        @Override
-        public void onPostRecipeCooked(Recipe recipe, Object output, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onRecipeError(Recipe recipe, Exception e, String msg) {
-
-//                        if (e instanceof DynamicParser.ValueNotFoundException) {
-//                            Log.e(TAG, "Error during parsing, skipping an item:", e);
-//                        }
-        }
     }
 }

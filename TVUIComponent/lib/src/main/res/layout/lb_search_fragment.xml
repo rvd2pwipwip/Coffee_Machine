@@ -14,90 +14,47 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lb_search_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <LinearLayout
-        android:id="@+id/explore_page_side"
+
+    <ScrollView
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.v17.leanback.widget.SearchBar
-            android:id="@+id/lb_search_bar"
+        <LinearLayout
+            android:id="@+id/explore_page_genres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:clipChildren="false" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="50dp"
-            android:text="Discover (Hardcoded)"
-            android:textSize="20sp" />
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#C2C2C2" />
+            <android.support.v17.leanback.widget.SearchBar
+                android:id="@+id/lb_search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:clipChildren="false" />
 
-        <Button
-            style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
-            android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
-            android:text="Alternative"
-            android:textAllCaps="false"
-            android:textColor="#FAFAFA"
-            android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Discover (Hardcoded)"
+                android:textSize="20sp" />
 
-        <Button
-            style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
-            android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
-            android:text="Blues"
-            android:textAllCaps="false"
-            android:textColor="#FAFAFA"
-            android:textSize="14sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#C2C2C2" />
 
-        <Button
-            style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
-            android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
-            android:text="Christian And Gospel"
-            android:textAllCaps="false"
-            android:textColor="#FAFAFA"
-            android:textSize="14sp" />
+        </LinearLayout>
 
-        <Button
-            style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
-            android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
-            android:text="Classic Rock"
-            android:textAllCaps="false"
-            android:textColor="#FAFAFA"
-            android:textSize="14sp" />
-
-    </LinearLayout>
+    </ScrollView>
 
     <FrameLayout
         android:id="@+id/lb_results_frame"

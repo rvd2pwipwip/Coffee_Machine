@@ -55,5 +55,6 @@ permissions and limitations under the License.
     <color name="error_dialog_bg_color">#13181F</color>
     <color name="faded_accent">#03A4D9</color>
 
+    <color name="button_text">#FAFAFA</color>
 
 </resources>
