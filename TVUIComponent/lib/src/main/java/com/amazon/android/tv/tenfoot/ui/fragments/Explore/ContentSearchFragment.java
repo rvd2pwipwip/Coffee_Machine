@@ -33,6 +33,7 @@ import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
@@ -163,6 +164,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             for (Genre genre: genres) {
                 // TODO Should be replaced by a style
                 Button genreButton = new Button(getActivity());
+                genreButton.setTypeface(Typeface.SANS_SERIF);
                 genreButton.setText(genre.getTitle());
                 genreButton.setBackground(getResources().getDrawable(R.drawable.action_button_background));
                 genreButton.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
@@ -193,7 +195,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 layoutParams.setMarginStart((int) getResources().getDimension(
                         R.dimen.search_bar_margin_left));
                 searchBar.setLayoutParams(layoutParams);
-
 
                 // Move the search bar items next to the search icon.
                 RelativeLayout searchBarItems =
