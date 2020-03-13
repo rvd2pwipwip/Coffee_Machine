@@ -32,7 +32,7 @@ import com.amazon.android.contentbrowser.helper.FontManager;
 import com.amazon.android.contentbrowser.helper.LauncherIntegrationManager;
 import com.amazon.android.contentbrowser.helper.PurchaseHelper;
 import com.amazon.android.contentbrowser.recommendations.RecommendationManager;
-import com.amazon.android.contentbrowser.search.SearchRunnable;
+import com.amazon.android.contentbrowser.search.SearchCallable;
 import com.amazon.android.interfaces.ICancellableLoad;
 import com.amazon.android.interfaces.IContentBrowser;
 import com.amazon.android.model.Action;
@@ -815,7 +815,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             mICustomSearchHandler.onSearchRequested(query, iSearchResult);
         }
         else {
-            ContentContainer contentContainer = new AsyncCaller<>(new SearchRunnable(query)).getResult();
+            ContentContainer contentContainer = new AsyncCaller<>(new SearchCallable(query)).getResult();
             mSearchManager.syncSearch(DEFAULT_SEARCH_ALGO_NAME,
                     query,
                     iSearchResult,

@@ -3,13 +3,13 @@ package com.amazon.android.contentbrowser.search;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.amazon.android.async.SvodCallable;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.model.translators.ContentContainerTranslator;
 import com.amazon.android.model.translators.ContentTranslator;
 import com.amazon.android.recipe.IRecipeCookerCallbacks;
 import com.amazon.android.recipe.Recipe;
-import com.amazon.android.utils.NetworkUtils;
 import com.amazon.dynamicparser.DynamicParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,12 +18,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
-public class SearchRunnable implements Callable<ContentContainer> {
-    private final static String ENDPOINT = "https://svod-stage.api.stingray.com/v1/content-search?text=%s";
+public class SearchCallable extends SvodCallable<ContentContainer> {
+    private final static String ENDPOINT = "/v1/content-search?text=%s";
     private final static String NAME_FORMAT = "Search Results with '%s'";
-    private final static String TAG = SearchRunnable.class.getSimpleName();
+    private final static String TAG = SearchCallable.class.getSimpleName();
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final static ContentTranslator contentTranslator = new ContentTranslator();
 
@@ -32,7 +31,7 @@ public class SearchRunnable implements Callable<ContentContainer> {
 
     private final String query;
 
-    public SearchRunnable(String query) {
+    public SearchCallable(String query) {
 
         if (RECIPE == null && PARSER == null) {
 
@@ -78,7 +77,7 @@ public class SearchRunnable implements Callable<ContentContainer> {
         ContentContainer contentContainer = ContentContainer.newInstance(String.format(NAME_FORMAT, query));
         try {
             String url = String.format(ENDPOINT, query);
-            String jsonResponse = NetworkUtils.getDataLocatedAtUrl(url);
+            String jsonResponse = getData(url);
 
             Log.i(TAG, String.format("Received response: %s", jsonResponse));
 
