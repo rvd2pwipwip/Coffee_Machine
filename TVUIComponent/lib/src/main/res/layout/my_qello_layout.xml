@@ -7,7 +7,7 @@
     android:id="@+id/qello_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_my_qello"
+    android:background="@drawable/background_my_qello_guest"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -20,7 +20,7 @@
         <Button
             android:id="@+id/history_button"
             style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
@@ -34,7 +34,7 @@
         <Button
             android:id="@+id/favorites_button"
             style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
@@ -48,7 +48,7 @@
         <Button
             android:id="@+id/playlists_button"
             style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="88dp"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"

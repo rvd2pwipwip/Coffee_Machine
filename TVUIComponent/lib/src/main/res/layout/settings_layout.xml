@@ -32,7 +32,7 @@
         <Button
             android:id="@+id/faq_button"
             style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
@@ -45,7 +45,7 @@
         <Button
             android:id="@+id/contact_us_button"
             style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
@@ -58,7 +58,7 @@
         <Button
             android:id="@+id/about_button"
             style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
@@ -71,7 +71,7 @@
         <Button
             android:id="@+id/login_logout_button"
             style="@android:style/Widget.Holo.Button.Borderless"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
             android:background="@drawable/action_button_background"
