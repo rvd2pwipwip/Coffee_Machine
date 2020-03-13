@@ -322,26 +322,26 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
         super.onResume();
 
-        if (!mHasResults) {
-            mAutoTextViewFocusHandler.postDelayed(() -> {
-
-                if (mSearchEditText != null) {
-
-                    // Select search edit text, bring up keyboard.
-                    // Always make SpeechOrb not focusable, leanback always tries to bring it back.
-                    mSearchEditText.setFocusable(true);
-                    mSearchEditText.requestFocus();
-                    mSpeechOrbView.setFocusable(false);
-                    InputMethodManager imm = (InputMethodManager) getActivity()
-                            .getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null) {
-                        imm.showSoftInput(mSearchEditText, 0);
-                    }
-                }
-                // There must be a delay to allow SearchOrb to initialize, otherwise no search
-                // results will come back from leanback.
-            }, 1000);
-        }
+//        if (!mHasResults) {
+//            mAutoTextViewFocusHandler.postDelayed(() -> {
+//
+//                if (mSearchEditText != null) {
+//
+//                    // Select search edit text, bring up keyboard.
+//                    // Always make SpeechOrb not focusable, leanback always tries to bring it back.
+//                    mSearchEditText.setFocusable(true);
+//                    mSearchEditText.requestFocus();
+//                    mSpeechOrbView.setFocusable(false);
+//                    InputMethodManager imm = (InputMethodManager) getActivity()
+//                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    if (imm != null) {
+//                        imm.showSoftInput(mSearchEditText, 0);
+//                    }
+//                }
+//                // There must be a delay to allow SearchOrb to initialize, otherwise no search
+//                // results will come back from leanback.
+//            }, 1000);
+//        }
     }
 
     @Override
