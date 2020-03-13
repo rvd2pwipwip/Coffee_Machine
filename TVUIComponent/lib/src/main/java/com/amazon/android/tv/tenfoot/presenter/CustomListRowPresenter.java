@@ -14,6 +14,7 @@
  */
 package com.amazon.android.tv.tenfoot.presenter;
 
+import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public class CustomListRowPresenter extends ListRowPresenter {
 
         ListRowPresenter.ViewHolder viewHolder = (ListRowPresenter.ViewHolder) super
                 .createRowViewHolder(parent);
+        HorizontalGridView gridView = viewHolder.getGridView();
+        gridView.setItemMargin(20);
         return viewHolder;
     }
 

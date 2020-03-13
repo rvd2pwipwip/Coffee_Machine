@@ -20,9 +20,9 @@ permissions and limitations under the License.
 
     <ImageButton
         android:id="@+id/action_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true"
-        android:layout_marginTop="55px"
-        android:background="#1F1F1F"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:background="#1F1F1F"
+        android:focusable="true" />
 </LinearLayout>
