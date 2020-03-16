@@ -114,4 +114,6 @@ permissions and limitations under the License.
     <dimen name="content_image_width">675dp</dimen>
     <dimen name="content_image_height">400dp</dimen>
 
+    <dimen name="button_text_size">14sp</dimen>
+
 </resources>

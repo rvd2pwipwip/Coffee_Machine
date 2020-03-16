@@ -33,6 +33,7 @@ import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
@@ -52,17 +53,25 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.explorepage.ExplorePageCallable;
+import com.amazon.android.contentbrowser.genre.GenreFilterCallable;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.model.content.Content;
+import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.model.content.Genre;
 import com.amazon.android.search.SearchManager;
 import com.amazon.android.tv.tenfoot.BuildConfig;
 import com.amazon.android.tv.tenfoot.R;
@@ -70,6 +79,8 @@ import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.presenter.CustomListRowPresenter;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
 import com.amazon.android.utils.Helpers;
+
+import java.util.List;
 
 
 /**
@@ -145,9 +156,41 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-
-
         if (view != null) {
+            List<Genre> genres = new AsyncCaller<>(new ExplorePageCallable()).getResult();
+
+            LinearLayout explorePageGenres = (LinearLayout) view.findViewById(R.id.explore_page_genres);
+            ViewGroup.LayoutParams buttonLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
+            for (Genre genre: genres) {
+                // TODO Should be replaced by a style
+                Button genreButton = new Button(getActivity());
+                genreButton.setTypeface(Typeface.SANS_SERIF);
+                genreButton.setText(genre.getTitle());
+                genreButton.setBackground(getResources().getDrawable(R.drawable.action_button_background));
+                genreButton.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
+                genreButton.setAllCaps(false);
+                genreButton.setTextColor(getResources().getColor(R.color.button_text));
+                genreButton.setTextSize(getResources().getDimension(R.dimen.button_text_size));
+                genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
+                    // TODO Load results for genres
+                    Log.i(TAG, String.format("Triggered onHover for genre [%s]", genre.getId()));
+
+                    ContentContainer contentContainer = new AsyncCaller<>(new GenreFilterCallable(genre.getId())).getResult();
+
+                    mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+
+                    for (Content entry : contentContainer) {
+                        updateResults(entry, false);
+                    }
+
+                    updateResults(null, true);
+                });
+
+                explorePageGenres.addView(genreButton, buttonLayoutParams);
+            }
+
             // Set background color and drawable.
             view.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color
                     .transparent));
@@ -164,7 +207,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 layoutParams.setMarginStart((int) getResources().getDimension(
                         R.dimen.search_bar_margin_left));
                 searchBar.setLayoutParams(layoutParams);
-
 
                 // Move the search bar items next to the search icon.
                 RelativeLayout searchBarItems =
@@ -280,26 +322,26 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
         super.onResume();
 
-        if (!mHasResults) {
-            mAutoTextViewFocusHandler.postDelayed(() -> {
-
-                if (mSearchEditText != null) {
-
-                    // Select search edit text, bring up keyboard.
-                    // Always make SpeechOrb not focusable, leanback always tries to bring it back.
-                    mSearchEditText.setFocusable(true);
-                    mSearchEditText.requestFocus();
-                    mSpeechOrbView.setFocusable(false);
-                    InputMethodManager imm = (InputMethodManager) getActivity()
-                            .getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null) {
-                        imm.showSoftInput(mSearchEditText, 0);
-                    }
-                }
-                // There must be a delay to allow SearchOrb to initialize, otherwise no search
-                // results will come back from leanback.
-            }, 1000);
-        }
+//        if (!mHasResults) {
+//            mAutoTextViewFocusHandler.postDelayed(() -> {
+//
+//                if (mSearchEditText != null) {
+//
+//                    // Select search edit text, bring up keyboard.
+//                    // Always make SpeechOrb not focusable, leanback always tries to bring it back.
+//                    mSearchEditText.setFocusable(true);
+//                    mSearchEditText.requestFocus();
+//                    mSpeechOrbView.setFocusable(false);
+//                    InputMethodManager imm = (InputMethodManager) getActivity()
+//                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    if (imm != null) {
+//                        imm.showSoftInput(mSearchEditText, 0);
+//                    }
+//                }
+//                // There must be a delay to allow SearchOrb to initialize, otherwise no search
+//                // results will come back from leanback.
+//            }, 1000);
+//        }
     }
 
     @Override
@@ -402,8 +444,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             mRowsAdapter.clear();
             HeaderItem header = new HeaderItem(getString(R.string.search_results, mQuery));
 
-            int elementsInRow = (int) getResources().getInteger(R.integer
-                                                                        .num_of_search_elements_in_row);
+            int elementsInRow = (int) getResources().getInteger(R.integer.num_of_search_elements_in_row);
 
             int rows = mListRowAdapter.size() / elementsInRow;
 

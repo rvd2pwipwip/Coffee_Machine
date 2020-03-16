@@ -58,6 +58,7 @@ import android.widget.ProgressBar;
 import com.amazon.ads.AdMetaData;
 import com.amazon.ads.IAds;
 import com.amazon.analytics.AnalyticsTags;
+import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.amazon.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
@@ -71,9 +72,10 @@ import com.amazon.android.uamp.DrmProvider;
 import com.amazon.android.uamp.UAMP;
 import com.amazon.android.uamp.constants.PreferencesConstants;
 import com.amazon.android.uamp.helper.CaptioningHelper;
-import com.amazon.android.uamp.mediaSession.GetVideoLinksRunnable;
+import com.amazon.android.uamp.mediaSession.GetVideoLinksCallable;
 import com.amazon.android.uamp.mediaSession.MediaSessionController;
 import com.amazon.android.uamp.mediaSession.VideoLinkSelector;
+import com.amazon.android.uamp.model.VideoLink;
 import com.amazon.android.ui.fragments.ErrorDialogFragment;
 import com.amazon.android.utils.ErrorUtils;
 import com.amazon.android.utils.Helpers;
@@ -89,6 +91,7 @@ import com.google.android.exoplayer.text.SubtitleLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -247,89 +250,76 @@ public class PlaybackActivity extends Activity implements
                 (PlaybackOverlayFragment) getFragmentManager()
                         .findFragmentById(R.id.playback_controls_fragment);
 
-        mSelectedContent =
-                (Content) getIntent().getSerializableExtra(Content.class.getSimpleName());
+        mSelectedContent = (Content) getIntent().getSerializableExtra(Content.class.getSimpleName());
 
-        GetVideoLinksRunnable runnable = new GetVideoLinksRunnable(mSelectedContent.getChannelId());
+        // TODO LEO LANUZO - Need to establish a proper way to communicate from Network thread to the UI thread
+        Map<VideoLink.Type, String> mediaUriByType = new AsyncCaller<>(new GetVideoLinksCallable(mSelectedContent.getChannelId())).getResult();
 
-        Thread thread = new Thread(runnable);
-        thread.setDaemon(true);
-        thread.start();
+        mSelectedContent.setUrl(new VideoLinkSelector().select(mediaUriByType));
 
-        try {
-            thread.join();
-
-            // TODO LEO LANUZO - Need to establish a proper way to communicate from Network thread to the UI thread
-            mSelectedContent.setUrl(new VideoLinkSelector().select(runnable.getMediaUriByType()));
-
-            if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
-                AnalyticsHelper.trackError(TAG, "Received an Intent to play content without a " +
-                        "content object or content URL");
-                finish();
-            }
-
-            loadViews();
-            createPlayerAndInitializeListeners();
-            mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            mCaptioningHelper = new CaptioningHelper(this, mSubtitleLayout);
-            mCurrentPlaybackPosition = 0;
-            mTransportControlsUpdateHandler = new Handler(Looper.getMainLooper());
-            mContinualFwdUpdater = new ContinualFwdUpdater();
-            mContinualRewindUpdater = new ContinualRewindUpdater();
-            mIsLongPress = false;
-            mIsNetworkError = false;
-
-            // Auto-play the selected content.
-            mAutoPlay = true;
-
-            //initialize the media session
-            initMediaSession();
-
-            mCaptioningHelper = new CaptioningHelper(this, mSubtitleLayout);
-            mCaptioningChangeListener = new CaptioningManager.CaptioningChangeListener() {
-                @Override
-                public void onEnabledChanged(boolean enabled) {
-
-                    Log.d(TAG, "onEnabledChanged: " + enabled);
-                    super.onEnabledChanged(enabled);
-
-                    if (mCaptioningHelper.useGlobalSetting()) {
-                        mIsClosedCaptionEnabled = enabled;
-                        modifyClosedCaptionState(mIsClosedCaptionEnabled);
-                    }
-                }
-
-                @Override
-                public void onUserStyleChanged(@NonNull CaptioningManager.CaptionStyle userStyle) {
-
-                    Log.d(TAG, "onUserStyleChanged");
-                    super.onUserStyleChanged(userStyle);
-                    mSubtitleLayout.setStyle(CaptionStyleCompat.createFromCaptionStyle(userStyle));
-                }
-
-                @Override
-                public void onLocaleChanged(Locale locale) {
-
-                    Log.d(TAG, "onLocaleChanged");
-                    super.onLocaleChanged(locale);
-                }
-
-                @Override
-                public void onFontScaleChanged(float fontScale) {
-
-                    Log.d(TAG, "onFontScaleChanged");
-                    super.onFontScaleChanged(fontScale);
-                    mSubtitleLayout.setFractionalTextSize(
-                            fontScale * SubtitleLayout.DEFAULT_TEXT_SIZE_FRACTION);
-                }
-            };
-
-            mCaptioningHelper.setCaptioningManagerListener(mCaptioningChangeListener);
-
-        } catch (InterruptedException e) {
-            AnalyticsHelper.trackError(TAG, "Thread to load videoLinks was interrupted");
+        if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
+            AnalyticsHelper.trackError(TAG, "Received an Intent to play content without a " +
+                    "content object or content URL");
             finish();
         }
+
+        loadViews();
+        createPlayerAndInitializeListeners();
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mCaptioningHelper = new CaptioningHelper(this, mSubtitleLayout);
+        mCurrentPlaybackPosition = 0;
+        mTransportControlsUpdateHandler = new Handler(Looper.getMainLooper());
+        mContinualFwdUpdater = new ContinualFwdUpdater();
+        mContinualRewindUpdater = new ContinualRewindUpdater();
+        mIsLongPress = false;
+        mIsNetworkError = false;
+
+        // Auto-play the selected content.
+        mAutoPlay = true;
+
+        //initialize the media session
+        initMediaSession();
+
+        mCaptioningHelper = new CaptioningHelper(this, mSubtitleLayout);
+        mCaptioningChangeListener = new CaptioningManager.CaptioningChangeListener() {
+            @Override
+            public void onEnabledChanged(boolean enabled) {
+
+                Log.d(TAG, "onEnabledChanged: " + enabled);
+                super.onEnabledChanged(enabled);
+
+                if (mCaptioningHelper.useGlobalSetting()) {
+                    mIsClosedCaptionEnabled = enabled;
+                    modifyClosedCaptionState(mIsClosedCaptionEnabled);
+                }
+            }
+
+            @Override
+            public void onUserStyleChanged(@NonNull CaptioningManager.CaptionStyle userStyle) {
+
+                Log.d(TAG, "onUserStyleChanged");
+                super.onUserStyleChanged(userStyle);
+                mSubtitleLayout.setStyle(CaptionStyleCompat.createFromCaptionStyle(userStyle));
+            }
+
+            @Override
+            public void onLocaleChanged(Locale locale) {
+
+                Log.d(TAG, "onLocaleChanged");
+                super.onLocaleChanged(locale);
+            }
+
+            @Override
+            public void onFontScaleChanged(float fontScale) {
+
+                Log.d(TAG, "onFontScaleChanged");
+                super.onFontScaleChanged(fontScale);
+                mSubtitleLayout.setFractionalTextSize(
+                        fontScale * SubtitleLayout.DEFAULT_TEXT_SIZE_FRACTION);
+            }
+        };
+
+        mCaptioningHelper.setCaptioningManagerListener(mCaptioningChangeListener);
     }
 
     /**

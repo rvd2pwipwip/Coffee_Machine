@@ -53,7 +53,8 @@ permissions and limitations under the License.
     <color name="playback_video_details_text_color">@color/primary_text</color>
 
     <color name="error_dialog_bg_color">#13181F</color>
-    <color name="faded_accent">#7D03A4D9</color>
+    <color name="faded_accent">#03A4D9</color>
 
+    <color name="button_text">#FAFAFA</color>
 
 </resources>

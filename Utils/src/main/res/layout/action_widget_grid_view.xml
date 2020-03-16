@@ -18,8 +18,8 @@ permissions and limitations under the License.
 
     <android.support.v17.leanback.widget.VerticalGridView
         android:id="@+id/widget_grid_view"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical|start"
         android:background="#1F1F1F"
         android:clipToPadding="false"

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.util.Log;
 
+import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.amazon.android.contentbrowser.database.helpers.WatchlistDatabaseHelper;
 import com.amazon.android.contentbrowser.database.records.RecentRecord;
@@ -17,6 +18,7 @@ import com.amazon.android.contentbrowser.helper.FontManager;
 import com.amazon.android.contentbrowser.helper.LauncherIntegrationManager;
 import com.amazon.android.contentbrowser.helper.PurchaseHelper;
 import com.amazon.android.contentbrowser.recommendations.RecommendationManager;
+import com.amazon.android.contentbrowser.search.SearchCallable;
 import com.amazon.android.interfaces.ICancellableLoad;
 import com.amazon.android.interfaces.IContentBrowser;
 import com.amazon.android.model.Action;
@@ -796,10 +798,11 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             mICustomSearchHandler.onSearchRequested(query, iSearchResult);
         }
         else {
+            ContentContainer contentContainer = new AsyncCaller<>(new SearchCallable(query)).getResult();
             mSearchManager.syncSearch(DEFAULT_SEARCH_ALGO_NAME,
-                                      query,
-                                      iSearchResult,
-                                      mContentLoader.getRootContentContainer());
+                    query,
+                    iSearchResult,
+                    contentContainer);
         }
     }
 

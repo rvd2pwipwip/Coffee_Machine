@@ -14,9 +14,10 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="60dp"
-             android:layout_height="wrap_content"
-             android:visibility="visible"
-             android:focusableInTouchMode="false">
-    <include layout="@layout/action_widget_grid_view"/>
+    android:layout_width="50dp"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="false"
+    android:visibility="visible">
+
+    <include layout="@layout/action_widget_grid_view" />
 </FrameLayout>

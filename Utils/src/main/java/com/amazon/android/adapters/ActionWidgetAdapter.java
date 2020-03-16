@@ -68,7 +68,7 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
 
         mActionsList.addAll(inputActions);
 
-        setVerticalGridViewSize();
+        //setVerticalGridViewSize();
 
         // Notify the adapter that new items have been added.
         // This call needs to be on the main UI thread.
@@ -145,7 +145,7 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
 
         ViewGroup.LayoutParams params = verticalGridView.getLayoutParams();
 
-        params.width = res.getDimensionPixelSize(R.dimen.action_widget_width) + res.getDimensionPixelSize(R.dimen.grid_view_left_right_padding);
+        params.width = res.getDimensionPixelSize(R.dimen.action_widget_width);
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
         verticalGridView.setLayoutParams(params);
     }
