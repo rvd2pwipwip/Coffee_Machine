@@ -27,6 +27,8 @@ permissions and limitations under the License.
     <drawable name="action_button_normal">@drawable/btn_normal</drawable>
     <!-- URL the end user must visit to authenticate their device for second screen login -->
     <string name="second_screen_login_instruction_line_2">Visit YOUR_AUTHENTICATION_URL</string>
+    <!-- The company logo to display on the second screen login screen -->
+    <drawable name="company_logo">@drawable/logo</drawable>
     <!-- terms of use file -->
     <string name="terms_of_use_file">terms_of_use.html</string>
     <string name="contact_us_file">contact_us.html</string>
