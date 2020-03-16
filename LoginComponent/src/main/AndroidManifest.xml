@@ -36,5 +36,8 @@ permissions and limitations under the License.
 
         <meta-data android:name="AMZNAP@LoginWithULAuthentication"
                    android:value="IAuthentication@com.stingray.qello.android.firetv.login.LoginWithULImplCreator"/>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 </manifest>

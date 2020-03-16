@@ -50,7 +50,6 @@ public class LoginActivity extends Activity {
     private TextView passwordInput;
     private Button continueButton;
     private ImageButton lwaButton;
-    private Button mReturnToAppButton;
     private AmazonAuthorizationManager amazonAuthManager;
     private ProgressBar mLogInProgress;
 
@@ -92,6 +91,8 @@ public class LoginActivity extends Activity {
                 setLoggingInState(true);
                 setLoggedInState();
                 //TODO Login with UL
+                setResult(RESULT_OK);
+                finish();
             }
         });
 
@@ -108,16 +109,6 @@ public class LoginActivity extends Activity {
         });
 
         mLogInProgress = (ProgressBar) findViewById(R.id.log_in_progress);
-
-        // Set the listener on the return button.
-        mReturnToAppButton = (Button) findViewById(R.id.return_to_Mask);
-        mReturnToAppButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_OK);
-                finish();
-            }
-        });
     }
 
     /**
@@ -193,7 +184,6 @@ public class LoginActivity extends Activity {
     private void setLoggedInState() {
         loginWithUP.setVisibility(LinearLayout.GONE);
         lwaButton.setVisibility(Button.GONE);
-        mReturnToAppButton.setVisibility(Button.VISIBLE);
         Preferences.setBoolean(IS_LOGGED_IN, true);
         setLoggingInState(false);
     }
@@ -252,6 +242,8 @@ public class LoginActivity extends Activity {
                     setLoggedInState();
                 }
             });
+            setResult(RESULT_OK);
+            finish();
         }
 
         /**
