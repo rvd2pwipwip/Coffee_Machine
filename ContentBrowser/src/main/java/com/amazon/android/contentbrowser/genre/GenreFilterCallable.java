@@ -3,6 +3,7 @@ package com.amazon.android.contentbrowser.genre;
 import android.util.Log;
 
 import com.amazon.android.async.SvodCallable;
+import com.amazon.android.contentbrowser.ContentContainerExtFactory;
 import com.amazon.android.contentbrowser.metadata.MetadataExtractor;
 import com.amazon.android.model.SvodMetadata;
 import com.amazon.android.model.content.Content;
@@ -23,9 +24,10 @@ import java.util.Map;
 public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
     private final static String ENDPOINT = "/v1/browse-pages/searchpage/sections/%s";
     private final static String TAG = GenreFilterCallable.class.getSimpleName();
+    private final static String NAME_FORMAT = "GenreFilter%s";
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ContentTranslator contentTranslator = new ContentTranslator();
-    private final MetadataExtractor metadataExtractor = new MetadataExtractor();
+    private final ContentContainerExtFactory contentContainerExtFactory = new ContentContainerExtFactory();
 
     private static Recipe RECIPE;
     private static DynamicParser PARSER;
@@ -69,31 +71,15 @@ public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
 
     @Override
     public ContentContainerExt call() {
-        ContentContainer contentContainer = ContentContainer.newInstance(genreId);
-        SvodMetadata svodMetadata = new SvodMetadata();
+        String containerName = String.format(NAME_FORMAT, genreId);
         try {
             String url = String.format(ENDPOINT, genreId);
             String jsonResponse = getData(url);
 
-            Log.i(TAG, String.format("Received response: %s", jsonResponse));
-
-            List<Map<String, Object>> cookedJson = PARSER.parseInput(RECIPE, jsonResponse, null);
-
-            for (Map<String, Object> objectMap: cookedJson) {
-                Content content = (Content) PARSER.translateMapToModel(RECIPE, new NoOpRecipeCallbacks(), objectMap);
-
-                if (contentTranslator.validateModel(content)) {
-                    contentContainer.addContent(content);
-                }
-            }
-
-
-            svodMetadata = metadataExtractor.extractAtFirstLevel(jsonResponse);
-
+            return contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, contentTranslator);
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to get concerts for genreid [%s]", ENDPOINT),e);
+            return new ContentContainerExt(new SvodMetadata(), ContentContainer.newInstance(containerName));
         }
-
-        return new ContentContainerExt(svodMetadata, contentContainer);
     }
 }

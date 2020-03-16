@@ -3,6 +3,7 @@ package com.amazon.android.contentbrowser.search;
 import android.util.Log;
 
 import com.amazon.android.async.SvodCallable;
+import com.amazon.android.contentbrowser.ContentContainerExtFactory;
 import com.amazon.android.contentbrowser.metadata.MetadataExtractor;
 import com.amazon.android.model.SvodMetadata;
 import com.amazon.android.model.content.Content;
@@ -24,14 +25,12 @@ public class SearchCallable extends SvodCallable<ContentContainerExt> {
     private final static String ENDPOINT = "/v1/content-search?text=%s";
     private final static String NAME_FORMAT = "SearchResults%s";
     private final static String TAG = SearchCallable.class.getSimpleName();
+    private final static ContentContainerExtFactory contentContainerExtFactory = new ContentContainerExtFactory();
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final ContentTranslator contentTranslator = new ContentTranslator();
-    private final MetadataExtractor metadataExtractor = new MetadataExtractor();
 
     private static Recipe RECIPE;
     private static DynamicParser PARSER;
-
     private final String query;
 
     public SearchCallable(String query) {
@@ -56,6 +55,7 @@ public class SearchCallable extends SvodCallable<ContentContainerExt> {
             );
 
             try {
+                ObjectMapper objectMapper = new ObjectMapper();
                 RECIPE = Recipe.newInstance(objectMapper.writeValueAsString(recipeMap));
             } catch (JsonProcessingException e) {
                 // Do nothing lol
@@ -71,30 +71,16 @@ public class SearchCallable extends SvodCallable<ContentContainerExt> {
 
     @Override
     public ContentContainerExt call() {
-        ContentContainer contentContainer = ContentContainer.newInstance(String.format(NAME_FORMAT, query));
-        SvodMetadata metadata = new SvodMetadata();
+        String containerName = String.format(NAME_FORMAT, query);
         try {
             String url = String.format(ENDPOINT, query);
             String jsonResponse = getData(url);
 
-            Log.i(TAG, String.format("Received response: %s", jsonResponse));
-
-            List<Map<String, Object>> cookedJson = PARSER.parseInput(RECIPE, jsonResponse, null);
-
-            for (Map<String, Object> objectMap: cookedJson) {
-                Content content = (Content) PARSER.translateMapToModel(RECIPE, new NoOpRecipeCallbacks(), objectMap);
-
-                if (contentTranslator.validateModel(content)) {
-                    contentContainer.addContent(content);
-                }
-            }
-
-            metadata = metadataExtractor.extractAtFirstLevel(jsonResponse);
+            return contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, contentTranslator);
 
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to get search results from [%s]", ENDPOINT),e);
+            return new ContentContainerExt(new SvodMetadata(), ContentContainer.newInstance(containerName));
         }
-
-        return new ContentContainerExt(metadata, contentContainer);
     }
 }
