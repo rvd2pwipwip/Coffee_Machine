@@ -38,6 +38,7 @@ import com.amazon.android.interfaces.IContentBrowser;
 import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.content.constants.PreferencesConstants;
 import com.amazon.android.model.event.ActionUpdateEvent;
 import com.amazon.android.module.ModularApplication;
@@ -815,11 +816,12 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             mICustomSearchHandler.onSearchRequested(query, iSearchResult);
         }
         else {
-            ContentContainer contentContainer = new AsyncCaller<>(new SearchCallable(query)).getResult();
+            ContentContainerExt contentContainerExt = new AsyncCaller<>(new SearchCallable(query)).getResult();
             mSearchManager.syncSearch(DEFAULT_SEARCH_ALGO_NAME,
                     query,
                     iSearchResult,
-                    contentContainer);
+                    contentContainerExt.getContentContainer(),
+                    contentContainerExt.getMetadata());
         }
     }
 
