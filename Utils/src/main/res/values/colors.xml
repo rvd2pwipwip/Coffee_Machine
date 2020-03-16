@@ -32,4 +32,6 @@ permissions and limitations under the License.
     <color name="action_button_text_color_focused">@color/secondary_text</color>
     <!-- Action widget background color -->
     <color name="search_orb">@color/accent</color>
+    <color name="ui_almost_white">#FAFAFA</color>
+    <color name="ui_grey">#787878</color>
 </resources>
