@@ -24,7 +24,7 @@ public class ContentContainerExtFactory {
             IParser.InvalidDataException, PathHelper.MalformedInjectionStringException {
 
         ContentContainer contentContainer = ContentContainer.newInstance(containerName);
-        SvodMetadata metadata = new SvodMetadata();
+        SvodMetadata metadata;
 
         List<Map<String, Object>> cookedJson = dynamicParser.parseInput(recipe, data, null);
 
