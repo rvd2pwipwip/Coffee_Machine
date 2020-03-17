@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android" tools:ignore="MissingDefaultResource">
+    <item android:state_enabled="true" android:drawable="@drawable/grey_frame" />
+    <item android:state_pressed="true" android:drawable="@color/accent" />
+    <item android:state_focused="true" android:state_enabled="true" android:drawable="@drawable/thick_white_frame" />
+    <item android:state_focused="true" android:drawable="@drawable/thick_white_frame" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

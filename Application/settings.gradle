@@ -34,7 +34,7 @@ include ':app',
         /* Implementations */
         ':PassThroughAdsComponent',
         ':AMZNMediaPlayerComponent',
-        ':PassThroughLoginComponent',
+        ':LoginComponent',
         ':LoggerAnalyticsComponent'
 
 /* Frameworks */
@@ -59,7 +59,7 @@ project(':PurchaseInterface').projectDir = new File(rootProject.projectDir, '../
 /* Implementations */
 project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDir, '../AMZNMediaPlayerComponent')
 project(':PassThroughAdsComponent').projectDir = new File(rootProject.projectDir, '../PassThroughAdsComponent')
-project(':PassThroughLoginComponent').projectDir = new File(rootProject.projectDir, '../PassThroughLoginComponent')
+project(':LoginComponent').projectDir = new File(rootProject.projectDir, '../LoginComponent')
 project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../LoggerAnalyticsComponent')
 // Uncomment when using ComScore Analytics
 //project(':comscore').projectDir = new File(rootProject.projectDir, '../ComScoreAnalyticsComponent/libs/comscore')

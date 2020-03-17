@@ -210,8 +210,7 @@ public class AuthHelper {
      */
     private void broadcastAuthenticationStatus(boolean authenticationStatus) {
 
-        mContentBrowser.onAuthenticationStatusUpdateEvent(
-                new AuthenticationStatusUpdateEvent(authenticationStatus));
+        mContentBrowser.onAuthenticationStatusUpdateEvent(new AuthenticationStatusUpdateEvent(authenticationStatus));
         EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(authenticationStatus));
     }
 

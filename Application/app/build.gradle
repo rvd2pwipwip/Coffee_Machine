@@ -40,7 +40,7 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        applicationId "com.stingray.android.qelloTv"
+        applicationId "com.stingray.qello.android.firetv"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 10
@@ -97,6 +97,6 @@ dependencies {
     implementation project(':UAMP')
     implementation project(':AMZNMediaPlayerComponent')
     implementation project(':PassThroughAdsComponent')
-    implementation project(':PassThroughLoginComponent')
+    implementation project(':LoginComponent')
     implementation project(':LoggerAnalyticsComponent')
 }

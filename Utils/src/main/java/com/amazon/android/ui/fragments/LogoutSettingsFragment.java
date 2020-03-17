@@ -73,15 +73,9 @@ public class LogoutSettingsFragment {
      *
      * Creates the fragment based on user's login/logout status.
      */
-    public void createFragment(final Activity activity, final FragmentManager manager,
-                               Action settingsAction) {
-
-        int layoutId = R.layout.login_layout;
-        if (settingsAction.getState() == TYPE_LOGOUT) {
-            layoutId = R.layout.logout_layout;
-        }
+    public void createFragment(final Activity activity, final FragmentManager manager) {
         mActivity = activity;
-        setUpDialog(activity, manager, layoutId);
+        setUpDialog(activity, manager, R.layout.logout_layout);
     }
 
     /**
