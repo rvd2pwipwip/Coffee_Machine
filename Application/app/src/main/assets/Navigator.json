@@ -5,7 +5,8 @@
     "searchAlgo": "basic",
     "enableCEA608": false,
     "enableRecentRow": true,
-    "maxNumberOfRecentItems": 5
+    "maxNumberOfRecentItems": 5,
+    "enableWatchlistRow": false
   },
   "branding": {
     "globalTheme": "AppTheme",
