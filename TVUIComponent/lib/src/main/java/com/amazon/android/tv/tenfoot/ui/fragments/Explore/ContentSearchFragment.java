@@ -36,6 +36,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ImageCardView;
@@ -69,8 +70,9 @@ import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.explorepage.ExplorePageCallable;
 import com.amazon.android.contentbrowser.genre.GenreFilterCallable;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
+import com.amazon.android.model.SvodMetadata;
 import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.content.Genre;
 import com.amazon.android.search.SearchManager;
 import com.amazon.android.tv.tenfoot.BuildConfig;
@@ -177,15 +179,15 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                     // TODO Load results for genres
                     Log.i(TAG, String.format("Triggered onHover for genre [%s]", genre.getId()));
 
-                    ContentContainer contentContainer = new AsyncCaller<>(new GenreFilterCallable(genre.getId())).getResult();
-
+                    ContentContainerExt contentContainerExt = new AsyncCaller<>(new GenreFilterCallable(genre.getId())).getResult();
+                    SvodMetadata metadata = contentContainerExt.getMetadata();
                     mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
-                    for (Content entry : contentContainer) {
-                        updateResults(entry, false);
+                    for (Content entry : contentContainerExt.getContentContainer()) {
+                        updateResults(entry, metadata, false);
                     }
 
-                    updateResults(null, true);
+                    updateResults(null, metadata,true);
                 });
 
                 explorePageGenres.addView(genreButton, buttonLayoutParams);
@@ -424,7 +426,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
         ContentBrowser.getInstance(getActivity())
-                      .search(mQuery, (t, done) -> updateResults(t, done));
+                      .search(mQuery, (t, metadata, done) -> updateResults(t, metadata, done));
     }
 
     /**
@@ -437,12 +439,19 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
      *                     current
      *                     in flight query
      */
-    private void updateResults(Object inputContent, boolean done) {
+    private void updateResults(Object inputContent, @Nullable SvodMetadata metadata, boolean done) {
 
         // If done then add the content to the mRowsAdapter.
         if (done) {
             mRowsAdapter.clear();
-            HeaderItem header = new HeaderItem(getString(R.string.search_results, mQuery));
+
+            String displayName = "";
+
+            if (metadata != null && metadata.getDisplayName() != null) {
+                displayName = metadata.getDisplayName();
+            }
+
+            HeaderItem header = new HeaderItem(displayName);
 
             int elementsInRow = (int) getResources().getInteger(R.integer.num_of_search_elements_in_row);
 

@@ -13,6 +13,8 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
+    <string name="add_to_favorites_1">Add to</string>
+    <string name="add_to_favorites_2">Favorites</string>
     <!-- IMPORTANT: Following 2 strings are concatenated to generate the multi-line title of Watch
     now button, watch_now_1 being the first line of the title and watch_now_2 being the second line
     of the title -->

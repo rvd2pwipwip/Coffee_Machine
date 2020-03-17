@@ -64,10 +64,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.showscreen.RelatedContentCallable;
 import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.presenter.DetailsDescriptionPresenter;
@@ -135,6 +138,25 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View root = super.onCreateView(inflater, container, savedInstanceState);
+
+//        BrowseFrameLayout browseFrameLayout = (BrowseFrameLayout) root.findViewById(R.id.details_fragment_root);
+//        LinearLayout.LayoutParams browseFrameLayoutParams = (LinearLayout.LayoutParams) browseFrameLayout.getLayoutParams();
+//        browseFrameLayoutParams.setMargins(0,0,0,0);
+//        browseFrameLayout.setLayoutParams(browseFrameLayoutParams);
+//
+//        FrameLayout detailsRowsDock = (FrameLayout) root.findViewById(R.id.details_rows_dock);
+//        FrameLayout.LayoutParams detailsRowsDockLayoutParams = (FrameLayout.LayoutParams) detailsRowsDock.getLayoutParams();
+//        detailsRowsDockLayoutParams.setMargins(0,0,0,0);
+//        detailsRowsDock.setLayoutParams(detailsRowsDockLayoutParams);
+
+        return root;
+    }
+
+    @Override
     public void onStart() {
 
         Log.v(TAG, "onStart called.");
@@ -144,9 +166,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             setupAdapter();
             setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
-            if (mShowRelatedContent) {
-                setupRelatedContentRow();
-            }
+            setupRelatedContentRow();
             setupContentListRowPresenter();
             updateBackground(mSelectedContent.getBackgroundImageUrl());
             setOnItemViewClickedListener(new ItemViewClickedListener());
@@ -398,17 +418,15 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
      */
     private void setupRelatedContentRow() {
 
-        ContentContainer recommended =
-                ContentBrowser.getInstance(getActivity())
-                              .getRecommendedListOfAContentAsAContainer(mSelectedContent);
+        ContentContainerExt contentContainerExt = new AsyncCaller<>(new RelatedContentCallable(mSelectedContent.getId())).getResult();
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
-        for (Content c : recommended) {
+        for (Content c : contentContainerExt.getContentContainer()) {
             listRowAdapter.add(c);
         }
         // Only add the header and row for recommendations if there are any recommended content.
         if (listRowAdapter.size() > 0) {
-            HeaderItem header = new HeaderItem(0, recommended.getName());
+            HeaderItem header = new HeaderItem(0, contentContainerExt.getMetadata().getDisplayName());
             mAdapter.add(new ListRow(header, listRowAdapter));
         }
     }

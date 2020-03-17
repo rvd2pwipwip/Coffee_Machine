@@ -3,6 +3,8 @@ package com.amazon.android.contentbrowser.explorepage;
 import android.util.Log;
 
 import com.amazon.android.async.SvodCallable;
+import com.amazon.android.contentbrowser.recipe.GenreSectionRecipe;
+import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.content.Genre;
 import com.amazon.android.model.translators.GenreTranslator;
 import com.amazon.android.recipe.NoOpRecipeCallbacks;
@@ -26,39 +28,30 @@ public class ExplorePageCallable extends SvodCallable<List<Genre>> {
     private static Recipe RECIPE;
     private static DynamicParser PARSER;
 
+    private boolean initializationFailed = false;
+
     public ExplorePageCallable() {
-        if (RECIPE == null && PARSER == null) {
-
-            Map<String, Object> recipeMap = new HashMap<>();
-            recipeMap.put("cooker", "DynamicParser");
-            recipeMap.put("format", "json");
-            recipeMap.put("model", "com.amazon.android.model.content.Genre");
-            recipeMap.put("translator", "GenreTranslator");
-            recipeMap.put("modelType", "array");
-            recipeMap.put("query", "$.data[?(@.data_type == 'GENRE')]");
-            recipeMap.put("matchList", Arrays.asList(
-                    "id@mId",
-                    "data/title@mTitle",
-                    "data/images/0/url@mCardImageUrl"
-                    )
-            );
-
-            try {
-                RECIPE = Recipe.newInstance(OBJECT_MAPPER.writeValueAsString(recipeMap));
-            } catch (JsonProcessingException e) {
-                // Do nothing lol
+        try {
+            if (RECIPE == null && PARSER == null) {
+                RECIPE = new GenreSectionRecipe().getRecipe();
+                PARSER = new DynamicParser();
+                // Register content translator in case parser recipes use translation.
+                PARSER.addTranslatorImpl(genreTranslator.getName(), genreTranslator);
             }
-
-            PARSER = new DynamicParser();
-            // Register content translator in case parser recipes use translation.
-            PARSER.addTranslatorImpl(genreTranslator.getName(), genreTranslator);
+        } catch (Exception e) {
+            Log.e(TAG, String.format("Failed to initialize [%s]", TAG), e);
+            initializationFailed = true;
         }
     }
 
     @Override
     public List<Genre> call() {
-
         List<Genre> genres = new ArrayList<>();
+
+        if (initializationFailed) {
+            return genres;
+        }
+
         try {
             String jsonResponse = getData(ENDPOINT);
 

@@ -1,4 +1,4 @@
-package com.amazon.android.contentbrowser.genre;
+package com.amazon.android.contentbrowser.showscreen;
 
 import android.util.Log;
 
@@ -11,33 +11,31 @@ import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.translators.ContentTranslator;
 import com.amazon.android.recipe.Recipe;
 import com.amazon.dynamicparser.DynamicParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
-    private final static String ENDPOINT = "/v1/browse-pages/searchpage/sections/%s";
-    private final static String TAG = GenreFilterCallable.class.getSimpleName();
-    private final static String NAME_FORMAT = "GenreFilter%s";
+public class RelatedContentCallable extends SvodCallable<ContentContainerExt> {
+    private final static String ENDPOINT = "/v1/content-pages/%s/sections/related_content?limit=6&offset=0";
+    private final static String NAME_FORMAT = "Related Content %s";
+    private final static String TAG = RelatedContentCallable.class.getSimpleName();
+    private final static ContentContainerExtFactory contentContainerExtFactory = new ContentContainerExtFactory();
 
     private final ContentTranslator contentTranslator = new ContentTranslator();
-    private final ContentContainerExtFactory contentContainerExtFactory = new ContentContainerExtFactory();
 
     private static Recipe RECIPE;
     private static DynamicParser PARSER;
 
     private boolean initializationFailed = false;
-    private String genreId;
+    private String contentId;
 
-    public GenreFilterCallable(String genreId) {
+    public RelatedContentCallable(String contentId) {
         try {
-        if (RECIPE == null && PARSER == null) {
-            RECIPE = new ConcertSectionRecipe().getRecipe();
-            PARSER = new DynamicParser();
-            // Register content translator in case parser recipes use translation.
-            PARSER.addTranslatorImpl(contentTranslator.getName(), contentTranslator);
-        }
+            if (RECIPE == null || PARSER == null) {
+                RECIPE = new ConcertSectionRecipe().getRecipe();
+                PARSER = new DynamicParser();
+                // Register content translator in case parser recipes use translation.
+                PARSER.addTranslatorImpl(contentTranslator.getName(), contentTranslator);
+            }
 
-        this.genreId = genreId;
-
+            this.contentId = contentId;
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to initialize [%s]", TAG), e);
             initializationFailed = true;
@@ -50,14 +48,15 @@ public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
             return new ContentContainerExt();
         }
 
-        String containerName = String.format(NAME_FORMAT, genreId);
+        String containerName = String.format(NAME_FORMAT, contentId);
         try {
-            String url = String.format(ENDPOINT, genreId);
+            String url = String.format(ENDPOINT, contentId);
             String jsonResponse = getData(url);
 
             return contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, contentTranslator);
+
         } catch (Exception e) {
-            Log.e(TAG, String.format("Failed to get concerts for genreid [%s]", ENDPOINT),e);
+            Log.e(TAG, String.format("Failed to get related content from [%s]", containerName),e);
             return new ContentContainerExt(new SvodMetadata(), ContentContainer.newInstance(containerName));
         }
     }

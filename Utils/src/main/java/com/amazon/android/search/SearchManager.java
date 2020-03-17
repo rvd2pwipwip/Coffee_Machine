@@ -18,6 +18,8 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
+import com.amazon.android.model.SvodMetadata;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -146,7 +148,8 @@ public class SearchManager<ContainerModel extends Iterable<Model>, Model> {
     public void syncSearch(@NonNull final String searchAlgoName,
                            @NonNull final String queryString,
                            @NonNull final ISearchResult resultCallback,
-                           @NonNull final ContainerModel inputData) {
+                           @NonNull final ContainerModel inputData,
+                           @NonNull final SvodMetadata svodMetadata) {
 
         checkSearchInputs(searchAlgoName, queryString, resultCallback, inputData);
 
@@ -157,12 +160,12 @@ public class SearchManager<ContainerModel extends Iterable<Model>, Model> {
             // Use the search algorithm that is currently set at mSearchAlgo
             if (mSearchAlgo.onCompare(queryString, entry)) {
 
-                resultCallback.onSearchResult(entry, false);
+                resultCallback.onSearchResult(entry, svodMetadata, false);
             }
         }
 
         // Send a callback with the done flag to true, indicating that the search is complete.
-        resultCallback.onSearchResult(null, true);
+        resultCallback.onSearchResult(null, svodMetadata, true);
 
     }
 
@@ -242,7 +245,7 @@ public class SearchManager<ContainerModel extends Iterable<Model>, Model> {
 
                 if (mSearchAlgo.onCompare((String) params[1], entry)) {
 
-                    mISearchResult.onSearchResult(entry, false);
+                    mISearchResult.onSearchResult(entry, null, false);
                 }
             }
 
@@ -259,7 +262,7 @@ public class SearchManager<ContainerModel extends Iterable<Model>, Model> {
         protected void onPostExecute(Void unused) {
 
             // Send a callback with the done flag to true, indicating that the search is complete.
-            mISearchResult.onSearchResult(null, true);
+            mISearchResult.onSearchResult(null, null, true);
         }
 
         /**
@@ -273,7 +276,7 @@ public class SearchManager<ContainerModel extends Iterable<Model>, Model> {
         @Override
         protected void onCancelled(Void unused) {
             // Send a callback with the done flag to true, indicating that the search is complete.
-            mISearchResult.onSearchResult(null, true);
+            mISearchResult.onSearchResult(null, null, true);
         }
 
 
