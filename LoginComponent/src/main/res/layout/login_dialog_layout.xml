@@ -17,7 +17,7 @@ permissions and limitations under the License.
     xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="com.stingray.qello.android.firetv.login.LoginActivity">
+                tools:context="com.stingray.qello.android.firetv.login.activities.LoginActivity">
 
     <LinearLayout
         android:id="@+id/login_with_up"
@@ -25,7 +25,7 @@ permissions and limitations under the License.
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="25dp"
         android:orientation="vertical">
 
         <ImageView
@@ -71,7 +71,7 @@ permissions and limitations under the License.
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@drawable/round_corner_button"
-            android:text="Continue" />
+            android:text="Log In" />
 
         <ProgressBar
             android:id="@+id/log_in_progress"
@@ -79,6 +79,17 @@ permissions and limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" />
+
+        <Button
+            android:id="@+id/forget_password_btn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif-light"
+            android:text="Forgot Password?"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 

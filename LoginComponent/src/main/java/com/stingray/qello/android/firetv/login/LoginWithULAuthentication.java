@@ -21,6 +21,7 @@ import android.os.Bundle;
 import com.amazon.android.utils.Preferences;
 import com.amazon.auth.AuthenticationConstants;
 import com.amazon.auth.IAuthentication;
+import com.stingray.qello.android.firetv.login.activities.LoginActivity;
 
 
 /**

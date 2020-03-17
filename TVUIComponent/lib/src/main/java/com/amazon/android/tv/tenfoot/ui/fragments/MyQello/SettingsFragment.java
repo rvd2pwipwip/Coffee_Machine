@@ -2,6 +2,8 @@ package com.amazon.android.tv.tenfoot.ui.fragments.MyQello;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v17.leanback.widget.ImageCardView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.helper.AuthHelper;
 import com.amazon.android.tv.tenfoot.R;
+import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
 import com.amazon.android.ui.fragments.ContactUsSettingsFragment;
 import com.amazon.android.ui.fragments.FAQSettingsFragment;
 import com.amazon.android.ui.fragments.LogoutSettingsFragment;
@@ -70,6 +73,12 @@ public class SettingsFragment extends Fragment {
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
 
         loginLogOutButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity()).loginLogoutActionTriggered(getActivity()));
+
+        startFreeTrialButton.setOnClickListener( v -> ContentBrowser.getInstance(getActivity())
+                .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null,
+                        null)
+                );
+
 
     }
 

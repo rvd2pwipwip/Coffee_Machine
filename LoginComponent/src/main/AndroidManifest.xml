@@ -20,7 +20,7 @@ permissions and limitations under the License.
             android:supportsRtl="true">
 
         <activity
-                android:name="com.stingray.qello.android.firetv.login.LoginActivity"
+                android:name="com.stingray.qello.android.firetv.login.activities.LoginActivity"
                 android:allowTaskReparenting="true"
                 android:launchMode="singleTask">
             <intent-filter>
@@ -36,8 +36,6 @@ permissions and limitations under the License.
 
         <meta-data android:name="AMZNAP@LoginWithULAuthentication"
                    android:value="IAuthentication@com.stingray.qello.android.firetv.login.LoginWithULImplCreator"/>
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+
     </application>
 </manifest>

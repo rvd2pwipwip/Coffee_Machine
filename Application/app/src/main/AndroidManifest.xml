@@ -53,6 +53,17 @@ permissions and limitations under the License.
             -->
             <!-- Launcher integration intents complete -->
         </activity>
+        <activity
+                android:name="com.stingray.qello.android.firetv.login.activities.CreateAccountActivity"
+                android:screenOrientation="landscape"
+                android:noHistory="true"
+                android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

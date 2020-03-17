@@ -12,7 +12,7 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package com.stingray.qello.android.firetv.login;
+package com.stingray.qello.android.firetv.login.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -34,6 +34,7 @@ import com.amazon.identity.auth.device.authorization.api.AmazonAuthorizationMana
 import com.amazon.identity.auth.device.authorization.api.AuthorizationListener;
 import com.amazon.identity.auth.device.authorization.api.AuthzConstants;
 import com.amazon.identity.auth.device.shared.APIListener;
+import com.stingray.qello.android.firetv.login.R;
 
 /**
  * This activity allows users to login with amazon.

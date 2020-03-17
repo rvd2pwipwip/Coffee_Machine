@@ -45,6 +45,11 @@
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,
       "onAction": "CONTENT_RENDERER_SCREEN"
+    },
+    "com.stingray.qello.android.firetv.login.activities.CreateAccountActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction": "ACCOUNT_CREATION_SCREEN"
     }
   }
 }

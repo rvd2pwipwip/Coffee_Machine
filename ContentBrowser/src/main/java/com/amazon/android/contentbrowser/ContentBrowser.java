@@ -74,6 +74,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public static final String CONTENT_DETAILS_SCREEN = "CONTENT_DETAILS_SCREEN";
     public static final String CONTENT_SUBMENU_SCREEN = "CONTENT_SUBMENU_SCREEN";
     public static final String CONTENT_RENDERER_SCREEN = "CONTENT_RENDERER_SCREEN";
+    public static final String ACCOUNT_CREATION_SCREEN = "ACCOUNT_CREATION_SCREEN";
 
     private static final String FREE_CONTENT = "free";
     private static final String SEARCH = "Search";
