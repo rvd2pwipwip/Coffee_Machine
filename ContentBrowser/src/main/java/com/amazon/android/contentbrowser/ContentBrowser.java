@@ -24,6 +24,7 @@ import com.amazon.android.interfaces.IContentBrowser;
 import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.content.constants.PreferencesConstants;
 import com.amazon.android.model.event.ActionUpdateEvent;
 import com.amazon.android.module.ModularApplication;
@@ -92,6 +93,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public static final int CONTENT_ACTION_LOGIN_LOGOUT = 10;
     private static final int CONTENT_ACTION_ADD_WATCHLIST = 11;
     private static final int CONTENT_ACTION_REMOVE_WATCHLIST = 12;
+    public static final int CONTENT_ACTION_ADD_TO_FAVORITES = 13;
+    public static final int CONTENT_ACTION_REMOVE_FROM_FAVORITES = 14;
 
     private static final String DEFAULT_SEARCH_ALGO_NAME = "basic";
     public static final String RESTORE_ACTIVITY = "restore_last_activity";
@@ -799,11 +802,12 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             mICustomSearchHandler.onSearchRequested(query, iSearchResult);
         }
         else {
-            ContentContainer contentContainer = new AsyncCaller<>(new SearchCallable(query)).getResult();
+            ContentContainerExt contentContainerExt = new AsyncCaller<>(new SearchCallable(query)).getResult();
             mSearchManager.syncSearch(DEFAULT_SEARCH_ALGO_NAME,
                     query,
                     iSearchResult,
-                    contentContainer);
+                    contentContainerExt.getContentContainer(),
+                    contentContainerExt.getMetadata());
         }
     }
 
@@ -876,6 +880,11 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                              R.string.watch_now_1,
                                                              R.string.watch_now_2));
                 }
+
+                // TODO Leo - Toggle remove/add depending if favorited
+                contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES,
+                        R.string.add_to_favorites_1, R.string.add_to_favorites_2));
+
                 if (isWatchlistRowEnabled()) {
                     addWatchlistAction(contentActionList, content.getId());
                 }
@@ -1417,6 +1426,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 break;
             case CONTENT_ACTION_REMOVE_WATCHLIST:
                 watchlistButtonClicked(content.getId(), false, actionAdapter);
+                break;
+            case CONTENT_ACTION_ADD_TO_FAVORITES:
+            case CONTENT_ACTION_REMOVE_FROM_FAVORITES:
+                // TODO Leo - Implement add/remove actions
                 break;
         }
         if (actionCompletedListener != null) {

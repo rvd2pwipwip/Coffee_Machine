@@ -5,9 +5,8 @@ import android.util.Log;
 import com.amazon.android.async.SvodCallable;
 import com.amazon.android.uamp.model.VideoLink;
 import com.amazon.android.uamp.model.VideoLinks;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.amazon.android.utils.SvodObjectMapperProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +21,7 @@ public class GetVideoLinksCallable extends SvodCallable<Map<VideoLink.Type, Stri
 
     public GetVideoLinksCallable(String assetId) {
         this.assetId = assetId;
-        this.objectMapper = new ObjectMapper()
-                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        this.objectMapper = new SvodObjectMapperProvider().get();
     }
 
     @Override

@@ -14,6 +14,10 @@
  */
 package com.amazon.android.search;
 
+import android.support.annotation.Nullable;
+
+import com.amazon.android.model.SvodMetadata;
+
 /**
  * This interface is used as a callback for searching.
  */
@@ -25,5 +29,5 @@ public interface ISearchResult<Model> {
      * @param t    A search result object.
      * @param done A boolean that indicates that searching is done.
      */
-    void onSearchResult(Model t, boolean done);
+    void onSearchResult(Model t, @Nullable SvodMetadata metadata, boolean done);
 }
