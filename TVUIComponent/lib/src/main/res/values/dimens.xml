@@ -27,6 +27,7 @@ permissions and limitations under the License.
     <dimen name="lb_details_description_subtitle_text_size">
         @dimen/details_description_subtitle_text
     </dimen>
+    <dimen name="content_tracklist_row_height_empty">170dp</dimen>
     <dimen name="content_tracklist_row_height">450dp</dimen>
     <dimen name="lb_details_overview_height_large">274dp</dimen>
     <dimen name="lb_details_overview_height_small">159dp</dimen>

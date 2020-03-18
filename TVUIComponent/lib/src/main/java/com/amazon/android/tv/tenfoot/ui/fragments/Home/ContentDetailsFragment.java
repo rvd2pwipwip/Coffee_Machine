@@ -172,8 +172,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             setupAdapter();
             setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
-            setupTrackListContentRow();
-            setupTrackListPresenter();
+            int nbOfTracks = setupTrackListContentRow();
+            setupTrackListPresenter(nbOfTracks);
             setupRelatedContentRow();
             setupContentListRowPresenter();
             updateBackground(mSelectedContent.getBackgroundImageUrl());
@@ -421,7 +421,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
     }
 
-    private void setupTrackListContentRow() {
+    private int setupTrackListContentRow() {
         ContentContainerExt contentContainerExt = new AsyncCaller<>(new ContentTrackListCallable(mSelectedContent.getId())).getResult();
         List<Track> tracks = new ArrayList<>();
 
@@ -432,9 +432,11 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
 
         mAdapter.add(new ContentTrackListRow(contentWithTracks));
+
+        return contentWithTracks.getTracks().size();
     }
 
-    private void setupTrackListPresenter() {
+    private void setupTrackListPresenter(int nbOfTracks) {
         ContentTrackListPresenter presenter = new ContentTrackListPresenter();
 
         DetailsOverviewRowPresenter rowPresenter =
@@ -453,7 +455,11 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         RowPresenter.ViewHolder vh = super.createRowViewHolder(parent);
                         View view = vh.view.findViewById(R.id.details_frame);
                         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-                        layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height);
+                        if (nbOfTracks == 0) {
+                            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height_empty);
+                        } else {
+                            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height);
+                        }
 
                         view.setLayoutParams(layoutParams);
                         return vh;
