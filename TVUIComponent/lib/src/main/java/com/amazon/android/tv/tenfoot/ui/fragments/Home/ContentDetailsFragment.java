@@ -42,9 +42,11 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.ClassPresenterSelector;
 import android.support.v17.leanback.widget.DetailsOverviewRow;
 import android.support.v17.leanback.widget.DetailsOverviewRowPresenter;
+import android.support.v17.leanback.widget.FullWidthDetailsOverviewRowPresenter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ImageCardView;
+import android.support.v17.leanback.widget.ItemAlignmentFacet;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
@@ -66,6 +68,7 @@ import android.widget.Button;
 
 import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.showscreen.ContentTrackListRow;
 import com.amazon.android.contentbrowser.showscreen.RelatedContentCallable;
 import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
@@ -73,6 +76,7 @@ import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
+import com.amazon.android.tv.tenfoot.presenter.ContentTrackListPresenter;
 import com.amazon.android.tv.tenfoot.presenter.DetailsDescriptionPresenter;
 import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
 import com.amazon.android.utils.GlideHelper;
@@ -143,6 +147,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
         View root = super.onCreateView(inflater, container, savedInstanceState);
 
+
 //        BrowseFrameLayout browseFrameLayout = (BrowseFrameLayout) root.findViewById(R.id.details_fragment_root);
 //        LinearLayout.LayoutParams browseFrameLayoutParams = (LinearLayout.LayoutParams) browseFrameLayout.getLayoutParams();
 //        browseFrameLayoutParams.setMargins(0,0,0,0);
@@ -162,10 +167,11 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         Log.v(TAG, "onStart called.");
         super.onStart();
         if (mSelectedContent != null || checkGlobalSearchIntent()) {
-
             setupAdapter();
             setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
+            setupTrackListContentRow();
+            setupTrackListPresenter();
             setupRelatedContentRow();
             setupContentListRowPresenter();
             updateBackground(mSelectedContent.getBackgroundImageUrl());
@@ -412,6 +418,70 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         });
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
     }
+
+    private void setupTrackListContentRow() {
+
+
+        mAdapter.add(new ContentTrackListRow(mSelectedContent));
+    }
+
+    private void setupTrackListPresenter() {
+        ContentTrackListPresenter presenter = new ContentTrackListPresenter();
+
+        DetailsOverviewRowPresenter rowPresenter =
+                new DetailsOverviewRowPresenter(presenter) {
+                    @Override
+                    protected void initializeRowViewHolder(RowPresenter.ViewHolder vh) {
+
+                        super.initializeRowViewHolder(vh);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            vh.view.findViewById(R.id.details_overview_image)
+                                    .setTransitionName(ContentDetailsActivity.SHARED_ELEMENT_NAME);
+                        }
+                    }
+                    @Override
+                    protected RowPresenter.ViewHolder createRowViewHolder(ViewGroup parent) {
+                        RowPresenter.ViewHolder vh = super.createRowViewHolder(parent);
+                        View view = vh.view.findViewById(R.id.details_frame);
+                        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                        layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height);
+
+                        view.setLayoutParams(layoutParams);
+                        return vh;
+                    }
+                };
+        rowPresenter.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        rowPresenter.setStyleLarge(true);
+        // Hook up transition element.
+        rowPresenter.setSharedElementEnterTransition(getActivity(),
+                ContentDetailsActivity
+                        .SHARED_ELEMENT_NAME);
+
+        rowPresenter.setOnActionClickedListener(action -> {
+            try {
+                if (mActionInProgress) {
+                    return;
+                }
+                mActionInProgress = true;
+
+                int actionId = (int) action.getId();
+                Log.v(TAG, "detailsPresenter.setOnActionClicked:" + actionId);
+
+                ContentBrowser.getInstance(getActivity()).actionTriggered(getActivity(),
+                        mSelectedContent,
+                        actionId,
+                        mActionAdapter,
+                        mActionCompletedListener);
+            }
+            catch (Exception e) {
+                Log.e(TAG, "caught exception while clicking action", e);
+                mActionInProgress = false;
+            }
+        });
+
+        mPresenterSelector.addClassPresenter(ContentTrackListRow.class, rowPresenter);
+    }
+
 
     /**
      * Builds the related content row. Uses contents from the selected content's category.

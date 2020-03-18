@@ -27,13 +27,17 @@ permissions and limitations under the License.
     <dimen name="lb_details_description_subtitle_text_size">
         @dimen/details_description_subtitle_text
     </dimen>
+    <dimen name="content_tracklist_row_height">400dp</dimen>
+    <dimen name="lb_details_overview_height_large">274dp</dimen>
+    <dimen name="lb_details_overview_height_small">159dp</dimen>
     <dimen name="lb_details_description_body_text_size">@dimen/details_description_body_text</dimen>
     <dimen name="lb_details_overview_description_margin_top">30dp</dimen>
     <!-- Change to move content_details_activity_layout image right -->
+    <dimen name="lb_details_overview_margin_bottom">0dp</dimen>
     <dimen name="lb_details_overview_margin_start">@dimen/lb_browse_padding_start</dimen>
-    <dimen name="lb_details_overview_margin_end">188dp</dimen>
+    <dimen name="lb_details_overview_margin_end">100dp</dimen>
     <dimen name="lb_details_overview_z">0dp</dimen>
-    <dimen name="lb_details_rows_align_top">114dp</dimen>
+    <dimen name="lb_details_rows_align_top">50dp</dimen>
     <dimen name="lb_details_overview_image_margin_horizontal">0dp</dimen>
     <!-- Can push up buttons but will cut off description if up too high.
          Set to be aligned with bottom of image for now -->
