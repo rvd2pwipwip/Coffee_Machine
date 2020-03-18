@@ -42,11 +42,9 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.ClassPresenterSelector;
 import android.support.v17.leanback.widget.DetailsOverviewRow;
 import android.support.v17.leanback.widget.DetailsOverviewRowPresenter;
-import android.support.v17.leanback.widget.FullWidthDetailsOverviewRowPresenter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ImageCardView;
-import android.support.v17.leanback.widget.ItemAlignmentFacet;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
@@ -68,12 +66,15 @@ import android.widget.Button;
 
 import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.ContentBrowser;
+import com.amazon.android.contentbrowser.showscreen.ContentTrackListCallable;
 import com.amazon.android.contentbrowser.showscreen.ContentTrackListRow;
 import com.amazon.android.contentbrowser.showscreen.RelatedContentCallable;
 import com.amazon.android.model.Action;
+import com.amazon.android.model.content.ContentWithTracks;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.model.content.ContentContainerExt;
+import com.amazon.android.model.content.Track;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.presenter.CardPresenter;
 import com.amazon.android.tv.tenfoot.presenter.ContentTrackListPresenter;
@@ -85,6 +86,7 @@ import com.amazon.android.utils.LeanbackHelpers;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -420,9 +422,16 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     private void setupTrackListContentRow() {
+        ContentContainerExt contentContainerExt = new AsyncCaller<>(new ContentTrackListCallable(mSelectedContent.getId())).getResult();
+        List<Track> tracks = new ArrayList<>();
 
+        for (Content content: contentContainerExt.getContentContainer()) {
+            tracks.add((Track) content);
+        }
 
-        mAdapter.add(new ContentTrackListRow(mSelectedContent));
+        ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
+
+        mAdapter.add(new ContentTrackListRow(contentWithTracks));
     }
 
     private void setupTrackListPresenter() {

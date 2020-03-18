@@ -25,11 +25,17 @@ import android.widget.TextView;
 
 import com.amazon.android.configuration.ConfigurationManager;
 import com.amazon.android.model.content.Content;
+import com.amazon.android.model.content.ContentContainer;
+import com.amazon.android.model.content.ContentWithTracks;
+import com.amazon.android.model.content.Track;
 import com.amazon.android.tv.tenfoot.R;
 import com.amazon.android.tv.tenfoot.base.TenFootApp;
 import com.amazon.android.tv.tenfoot.utils.ContentHelper;
 import com.amazon.android.ui.constants.ConfigurationConstants;
 import com.amazon.android.ui.widget.EllipsizedTextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
@@ -108,23 +114,19 @@ public class ContentTrackListPresenter extends Presenter {
     private void onBindDescription(ViewHolder viewHolder, Object item) {
 
         Log.v(TAG, "onBindDescription called.");
-        Content content = (Content) item;
+        ContentWithTracks contentWithTracks = (ContentWithTracks) item;
 
-        if (content != null) {
-            populateViewHolder(viewHolder, content);
+        if (contentWithTracks != null) {
+            populateViewHolder(viewHolder, contentWithTracks);
         }
         else {
             Log.e(TAG, "Content is null in onBindDescription");
         }
     }
 
-    /**
-     * Populate view holder with content model data.
-     *
-     * @param viewHolder ViewHolder object.
-     * @param content    Content model object.
-     */
-    private void populateViewHolder(ViewHolder viewHolder, Content content) {
+    private void populateViewHolder(ViewHolder viewHolder, ContentWithTracks contentWithTracks) {
+        Content content = contentWithTracks.getContent();
+
         ConfigurationManager config = ConfigurationManager.getInstance(TenFootApp.getInstance());
 
         viewHolder.getTitle().setEllipsize(TextUtils.TruncateAt.END);
