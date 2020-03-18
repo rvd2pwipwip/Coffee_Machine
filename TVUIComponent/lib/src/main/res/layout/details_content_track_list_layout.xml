@@ -7,12 +7,6 @@
         android:layout_height="wrap_content"
         >
 
-    <!--TODO - Leo To delete-->
-    <TextView
-        android:id="@+id/details_description_subtitle"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
-
     <android.support.v17.leanback.widget.ResizingTextView
         android:id="@+id/details_description_title"
         android:layout_width="wrap_content"
@@ -22,141 +16,26 @@
         style="?attr/detailsDescriptionTitleStyle"
         />
 
+
     <TextView
-        style="?attr/detailsDescriptionSubtitleStyle"
+        android:id="@+id/details_description_body"
+        style="?attr/detailsDescriptionBodyStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:textColor="@color/accent"
-        android:textSize="10sp"
-        android:text="XXX Tracks"/>
+        android:textColor="#FAFAFA"
+        android:textSize="14sp"/>
 
-
-    <!--TODO - Leo To delete-->
-    <com.amazon.android.ui.widget.EllipsizedTextView
-        android:id="@+id/ellipsized_description_text"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <TableLayout
+            android:id="@+id/content_track_list_table"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" >
-
-            <!-- first row of the table layout-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".6"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="Track"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".2"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="+"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".2"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="*Heart*"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-            </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".6"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="Track"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".2"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="+"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".2"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="*Heart*"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-            </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".6"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="Track"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".2"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="+"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_weight=".2"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_bg_stroke"
-                    android:padding="18dip"
-                    android:text="*Heart*"
-                    android:textColor="@color/button_text"
-                    android:textSize="@dimen/action_text" />
-
-            </TableRow>
-        </TableLayout>
+            android:layout_height="wrap_content"/>
     </ScrollView>
 
 

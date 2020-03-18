@@ -27,7 +27,7 @@ permissions and limitations under the License.
     <dimen name="lb_details_description_subtitle_text_size">
         @dimen/details_description_subtitle_text
     </dimen>
-    <dimen name="content_tracklist_row_height">400dp</dimen>
+    <dimen name="content_tracklist_row_height">450dp</dimen>
     <dimen name="lb_details_overview_height_large">274dp</dimen>
     <dimen name="lb_details_overview_height_small">159dp</dimen>
     <dimen name="lb_details_description_body_text_size">@dimen/details_description_body_text</dimen>
@@ -119,5 +119,9 @@ permissions and limitations under the License.
     <dimen name="content_image_height">400dp</dimen>
 
     <dimen name="button_text_size">14sp</dimen>
+
+    <dimen name="content_track_info_size">7sp</dimen>
+    <dimen name="content_track_list_btn_padding">5dip</dimen>
+    <dimen name="content_track_list_row_height">15dip</dimen>
 
 </resources>
