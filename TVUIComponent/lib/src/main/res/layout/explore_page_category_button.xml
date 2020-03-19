@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/explore_page_genre_btn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="start|center_vertical"
+    android:background="@drawable/action_button_background"
+    android:textAllCaps="false"
+    android:textColor="@color/button_text"
+    android:textSize="@dimen/explore_category_menu_text_size"
+    tools:text="Category 1"
+    >
+
+</Button>

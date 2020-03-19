@@ -165,15 +165,9 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             ViewGroup.LayoutParams buttonLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
             for (Genre genre: genres) {
-                // TODO Should be replaced by a style
-                Button genreButton = new Button(getActivity());
-                genreButton.setTypeface(Typeface.SANS_SERIF);
+                View cView = inflater.inflate(R.layout.explore_page_category_button, explorePageGenres, false);
+                Button genreButton = (Button) cView.findViewById(R.id.explore_page_genre_btn);
                 genreButton.setText(genre.getTitle());
-                genreButton.setBackground(getResources().getDrawable(R.drawable.action_button_background));
-                genreButton.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-                genreButton.setAllCaps(false);
-                genreButton.setTextColor(getResources().getColor(R.color.button_text));
-                genreButton.setTextSize(getResources().getDimensionPixelSize(R.dimen.explore_category_menu_text_size));
                 genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
                     // TODO Load results for genres
                     Log.i(TAG, String.format("Triggered onHover for genre [%s]", genre.getId()));
