@@ -23,6 +23,7 @@ public class TrackSectionRecipe {
                 "data/title@mTitle",
                 "data/artists@mSubtitle",
                 "id@mId",
+                "data_type@mAssetType",
                 "id@mChannelId",
                 "data/duration@mDuration",
                 "data/parent_id@mParentId",

@@ -72,6 +72,8 @@ public class GenreTranslator extends AModelTranslator<Genre> {
                 case Genre.M_CARD_IMAGE_URL:
                     model.setCardImageUrl(value.toString());
                     break;
+                case Genre.M_ASSET_TYPE:
+                    model.setAssetType(value.toString());
                 default:
                     break;
             }
@@ -91,8 +93,7 @@ public class GenreTranslator extends AModelTranslator<Genre> {
 
         try {
             return !model.getTitle().isEmpty() &&
-                    !model.getId().isEmpty() &&
-                    !model.getCardImageUrl().isEmpty() ;
+                    !model.getId().isEmpty();
         }
         catch (NullPointerException e) {
             Log.e(TAG, "Null pointer found during model validation.", e);

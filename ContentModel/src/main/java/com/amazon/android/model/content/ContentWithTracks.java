@@ -1,9 +1,5 @@
 package com.amazon.android.model.content;
 
-import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainer;
-import com.amazon.android.model.content.Track;
-
 import java.util.List;
 
 public class ContentWithTracks {

@@ -23,6 +23,7 @@ public class ConcertSectionRecipe {
                 "data/title@mTitle",
                 "data/artists@mSubtitle",
                 "id@mId",
+                "data_type@mAssetType",
                 "data/short_description@mDescription",
                 "data/images/0/url@mUrl",
                 "data/images/0/url@mCardImageUrl",

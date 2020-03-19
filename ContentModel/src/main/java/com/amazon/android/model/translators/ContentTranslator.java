@@ -83,6 +83,9 @@ public class ContentTranslator extends AModelTranslator<Content> {
                 case Content.URL_FIELD_NAME:
                     model.setUrl(value.toString());
                     break;
+                case Content.ASSET_TYPE_FIELD_NAME:
+                    model.setAssetType(value.toString());
+                    break;
                 case Content.CARD_IMAGE_URL_FIELD_NAME:
                     model.setCardImageUrl(value.toString());
                     break;

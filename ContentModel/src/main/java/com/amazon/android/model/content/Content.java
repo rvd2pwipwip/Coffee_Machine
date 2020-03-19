@@ -65,6 +65,8 @@ public class Content implements Serializable {
      */
     private String mUrl;
 
+    private String mAssetType;
+
     /**
      * Description of the content.
      */
@@ -165,6 +167,8 @@ public class Content implements Serializable {
      * Constant for matching the url field name.
      */
     public static final String URL_FIELD_NAME = "mUrl";
+
+    public static final String ASSET_TYPE_FIELD_NAME = "mAssetType";
 
     /**
      * Constant for matching the cardImageUrl field name.
@@ -413,6 +417,14 @@ public class Content implements Serializable {
     public void setUrl(String url) {
 
         mUrl = url;
+    }
+
+    public String getAssetType() {
+        return mAssetType;
+    }
+
+    public void setAssetType(String mAssetType) {
+        this.mAssetType = mAssetType;
     }
 
     /**
@@ -957,12 +969,12 @@ public class Content implements Serializable {
 
     @Override
     public String toString() {
-
         return "Content{" +
                 "mId='" + mId + '\'' +
                 ", mTitle='" + mTitle + '\'' +
                 ", mSubtitle='" + mSubtitle + '\'' +
                 ", mUrl='" + mUrl + '\'' +
+                ", mAssetType='" + mAssetType + '\'' +
                 ", mDescription='" + mDescription + '\'' +
                 ", mCardImageUrl='" + mCardImageUrl + '\'' +
                 ", mBackgroundImageUrl='" + mBackgroundImageUrl + '\'' +

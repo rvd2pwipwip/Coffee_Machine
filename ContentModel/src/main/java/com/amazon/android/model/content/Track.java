@@ -28,6 +28,7 @@ public class Track extends Content {
         this.mIsPublic = mIsPublic;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

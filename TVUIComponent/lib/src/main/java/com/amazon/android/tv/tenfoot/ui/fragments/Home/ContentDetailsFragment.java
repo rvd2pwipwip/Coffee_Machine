@@ -422,13 +422,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     private int setupTrackListContentRow() {
-        ContentContainerExt contentContainerExt = new AsyncCaller<>(new ContentTrackListCallable(mSelectedContent.getId())).getResult();
-        List<Track> tracks = new ArrayList<>();
-
-        for (Content content: contentContainerExt.getContentContainer()) {
-            tracks.add((Track) content);
-        }
-
+        List<Track> tracks = new AsyncCaller<>(new ContentTrackListCallable(mSelectedContent.getId())).getResult();
         ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
 
         mAdapter.add(new ContentTrackListRow(contentWithTracks));

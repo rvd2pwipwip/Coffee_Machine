@@ -22,6 +22,7 @@ public class GenreSectionRecipe {
         recipeMap.put("matchList", Arrays.asList(
                 "id@mId",
                 "data/title@mTitle",
+                "data_type@mAssetType",
                 "data/images/0/url@mCardImageUrl"
                 )
         );
