@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_track_list_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|center_vertical"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/content_track_info_col"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.86"
+        android:padding="@dimen/content_track_list_btn_padding"
+        android:background="@drawable/button_bg_stroke"
+        android:focusable="true"
+        android:clickable="true"
+        >
+        <TextView
+            android:id="@+id/track_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            tools:text="Title 1"/>
+
+        <TextView
+            android:id="@+id/track_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/track_title"
+            tools:text="Subtitle 1"/>
+
+        <TextView
+            android:id="@+id/track_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            tools:text="00:13:04"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/add_track_to_playlist_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.07"
+        android:padding="@dimen/content_track_list_btn_padding"
+        android:background="@drawable/button_bg_stroke"
+        android:textColor="@color/button_text"
+        android:textAllCaps="false"
+        android:text="+"/>
+
+    <Button
+        android:id="@+id/add_track_to_favorites"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.07"
+        android:padding="@dimen/content_track_list_btn_padding"
+        android:background="@drawable/button_bg_stroke"
+        android:textColor="@color/button_text"
+        android:textAllCaps="false"
+        android:text="Like"/>
+
+</TableRow>
