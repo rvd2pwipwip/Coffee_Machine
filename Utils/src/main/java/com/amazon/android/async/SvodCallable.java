@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 
 public abstract class SvodCallable<T> implements Callable<T> {
-    private static final String BASE_URL = "https://svod-stage.api.stingray.com";
+    private static final String BASE_URL = "https://svod-test.api.stingray.com";
 
     private String createUrl(String url) {
         return BASE_URL + url;
