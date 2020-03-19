@@ -8,22 +8,26 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GenreSectionRecipe {
+public class TrackItemRecipe {
     private final Recipe recipe;
 
-    public GenreSectionRecipe() throws JsonProcessingException {
+    public TrackItemRecipe() throws JsonProcessingException {
         Map<String, Object> recipeMap = new HashMap<>();
         recipeMap.put("cooker", "DynamicParser");
         recipeMap.put("format", "json");
-        recipeMap.put("model", "com.amazon.android.model.content.Genre");
-        recipeMap.put("translator", "GenreTranslator");
+        recipeMap.put("model", "com.amazon.android.model.content.Track");
+        recipeMap.put("translator", "TrackTranslator");
         recipeMap.put("modelType", "array");
-        recipeMap.put("query", "$.data[?(@.data_type == 'GENRE')]");
+        recipeMap.put("query", "$.data[?(@.data_type == 'TRACK')]");
         recipeMap.put("matchList", Arrays.asList(
-                "id@mId",
                 "data/title@mTitle",
+                "data/artists@mSubtitle",
+                "id@mId",
                 "data_type@mAssetType",
-                "data/images/0/url@mCardImageUrl"
+                "id@mChannelId",
+                "data/duration@mDuration",
+                "data/parent_id@mParentId",
+                "data/is_public@mIsPublic"
                 )
         );
 

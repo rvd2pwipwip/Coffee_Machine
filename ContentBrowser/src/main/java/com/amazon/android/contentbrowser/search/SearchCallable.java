@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.amazon.android.async.SvodCallable;
 import com.amazon.android.contentbrowser.ContentContainerExtFactory;
-import com.amazon.android.contentbrowser.recipe.ConcertSectionRecipe;
+import com.amazon.android.contentbrowser.recipe.ConcertItemRecipe;
 import com.amazon.android.model.SvodMetadata;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.model.content.ContentContainerExt;
@@ -29,7 +29,7 @@ public class SearchCallable extends SvodCallable<ContentContainerExt> {
     public SearchCallable(String query) {
         try {
             if (RECIPE == null || PARSER == null) {
-                RECIPE = new ConcertSectionRecipe().getRecipe();
+                RECIPE = new ConcertItemRecipe().getRecipe();
                 PARSER = new DynamicParser();
                 // Register content translator in case parser recipes use translation.
                 PARSER.addTranslatorImpl(contentTranslator.getName(), contentTranslator);

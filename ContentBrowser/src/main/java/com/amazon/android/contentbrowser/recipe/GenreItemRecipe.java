@@ -8,27 +8,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConcertSectionRecipe {
+public class GenreItemRecipe {
     private final Recipe recipe;
 
-    public ConcertSectionRecipe() throws JsonProcessingException {
+    public GenreItemRecipe() throws JsonProcessingException {
         Map<String, Object> recipeMap = new HashMap<>();
         recipeMap.put("cooker", "DynamicParser");
         recipeMap.put("format", "json");
-        recipeMap.put("model", "com.amazon.android.model.content.Content");
-        recipeMap.put("translator", "ContentTranslator");
+        recipeMap.put("model", "com.amazon.android.model.content.Genre");
+        recipeMap.put("translator", "GenreTranslator");
         recipeMap.put("modelType", "array");
-        recipeMap.put("query", "$.data[?(@.data_type == 'VIDEO')]");
+        recipeMap.put("query", "$.data[?(@.data_type == 'GENRE')]");
         recipeMap.put("matchList", Arrays.asList(
-                "data/title@mTitle",
-                "data/artists@mSubtitle",
                 "id@mId",
+                "data/title@mTitle",
                 "data_type@mAssetType",
-                "data/short_description@mDescription",
-                "data/images/0/url@mUrl",
-                "data/images/0/url@mCardImageUrl",
-                "data/images/1/url@mBackgroundImageUrl",
-                "id@mChannelId")
+                "data/images/0/url@mCardImageUrl"
+                )
         );
 
         ObjectMapper objectMapper = new ObjectMapper();

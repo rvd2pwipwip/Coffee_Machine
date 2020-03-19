@@ -68,7 +68,7 @@ import android.widget.Toast;
 import com.amazon.android.async.AsyncCaller;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.explorepage.ExplorePageCallable;
-import com.amazon.android.contentbrowser.genre.GenreFilterCallable;
+import com.amazon.android.contentbrowser.explorepage.GenreFilterCallable;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.model.SvodMetadata;
 import com.amazon.android.model.content.Content;

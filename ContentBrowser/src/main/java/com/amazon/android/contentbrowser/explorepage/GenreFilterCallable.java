@@ -1,17 +1,16 @@
-package com.amazon.android.contentbrowser.genre;
+package com.amazon.android.contentbrowser.explorepage;
 
 import android.util.Log;
 
 import com.amazon.android.async.SvodCallable;
 import com.amazon.android.contentbrowser.ContentContainerExtFactory;
-import com.amazon.android.contentbrowser.recipe.ConcertSectionRecipe;
+import com.amazon.android.contentbrowser.recipe.ConcertItemRecipe;
 import com.amazon.android.model.SvodMetadata;
 import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.translators.ContentTranslator;
 import com.amazon.android.recipe.Recipe;
 import com.amazon.dynamicparser.DynamicParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
     private final static String ENDPOINT = "/v1/browse-pages/searchpage/sections/%s";
@@ -30,7 +29,7 @@ public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
     public GenreFilterCallable(String genreId) {
         try {
         if (RECIPE == null && PARSER == null) {
-            RECIPE = new ConcertSectionRecipe().getRecipe();
+            RECIPE = new ConcertItemRecipe().getRecipe();
             PARSER = new DynamicParser();
             // Register content translator in case parser recipes use translation.
             PARSER.addTranslatorImpl(contentTranslator.getName(), contentTranslator);

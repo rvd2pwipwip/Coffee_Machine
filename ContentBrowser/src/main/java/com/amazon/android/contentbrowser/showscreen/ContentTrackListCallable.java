@@ -4,10 +4,8 @@ import android.util.Log;
 
 import com.amazon.android.async.SvodCallable;
 import com.amazon.android.contentbrowser.ContentContainerExtFactory;
-import com.amazon.android.contentbrowser.recipe.TrackSectionRecipe;
-import com.amazon.android.model.SvodMetadata;
+import com.amazon.android.contentbrowser.recipe.TrackItemRecipe;
 import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainer;
 import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.content.Track;
 import com.amazon.android.model.translators.TrackTranslator;
@@ -34,7 +32,7 @@ public class ContentTrackListCallable extends SvodCallable<List<Track>> {
     public ContentTrackListCallable(String contentId) {
         try {
             if (RECIPE == null || PARSER == null) {
-                RECIPE = new TrackSectionRecipe().getRecipe();
+                RECIPE = new TrackItemRecipe().getRecipe();
                 PARSER = new DynamicParser();
                 // Register content translator in case parser recipes use translation.
                 PARSER.addTranslatorImpl(trackTranslator.getName(), trackTranslator);
