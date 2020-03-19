@@ -15,19 +15,13 @@
 package com.amazon.android.tv.tenfoot.presenter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v17.leanback.widget.Presenter;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.amazon.android.configuration.ConfigurationManager;
@@ -147,104 +141,26 @@ public class ContentTrackListPresenter extends Presenter {
         viewHolder.getContentTrackListTable().removeAllViews();
 
         for (Track track: contentWithTracks.getTracks()) {
-            viewHolder.getContentTrackListTable()
-                    .addView(createTrackListTableRow(track));
+            TableLayout tableLayout = viewHolder.getContentTrackListTable();
+            View row = LayoutInflater.from(mContext).inflate(R.layout.content_track_list_row_layout, tableLayout, false);
+            TextView titleView = (TextView) row.findViewById(R.id.track_title);
+            titleView.setText(track.getTitle());
+
+            TextView subtitleView = (TextView) row.findViewById(R.id.track_subtitle);
+            subtitleView.setText(track.getSubtitle());
+
+            TextView durationView = (TextView) row.findViewById(R.id.track_duration);
+            DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.US);
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            String duration = formatter.format(new Date(track.getDuration()));
+            durationView.setText(duration);
+
+            // TODO We'll need to bind the actions later
+//            Button addToPlaylistBtn = (Button) row.findViewById(R.id.add_track_to_playlist_button);
+//            Button addToFavoritesBtn = (Button) row.findViewById(R.id.add_track_to_favorites);
+
+            tableLayout.addView(row);
         }
-    }
-
-    public TableRow createTrackListTableRow(Track track) {
-        TableLayout.LayoutParams tableLayoutParams =
-                new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-                        TableLayout.LayoutParams.WRAP_CONTENT, 1);
-
-        TableRow tableRow = new TableRow(mContext);
-        tableRow.setId(View.generateViewId());
-        tableRow.setLayoutParams(tableLayoutParams);
-
-        RelativeLayout trackInfoLayout = createTrackInfoLayout(track);
-
-        Button addToPlaylistButton = createBaseTrackListTableButton(0.07F);
-        addToPlaylistButton.setTextSize( mContext.getResources().getDimension(R.dimen.action_text));
-        addToPlaylistButton.setText("+");
-
-        Button addToFavoritesButton = createBaseTrackListTableButton(0.07F);
-        addToFavoritesButton.setTextSize( mContext.getResources().getDimension(R.dimen.content_track_info_size));
-        addToFavoritesButton.setText("Like");
-
-        tableRow.setMinimumHeight(0);
-
-        tableRow.addView(trackInfoLayout);
-        tableRow.addView(addToPlaylistButton);
-        tableRow.addView(addToFavoritesButton);
-
-        return tableRow;
-    }
-
-    public RelativeLayout createTrackInfoLayout(Track track) {
-        DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.US);
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String duration = formatter.format(new Date(track.getDuration()));
-
-        TableRow.LayoutParams trackInfoLayoutParams =
-                new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, 0.86F);
-
-        RelativeLayout relativeLayout = new RelativeLayout(mContext);
-        int padding = mContext.getResources().getDimensionPixelSize(R.dimen.content_track_list_btn_padding);
-        relativeLayout.setPadding(padding, padding, padding, padding);
-        relativeLayout.setBackground(mContext.getResources().getDrawable(R.drawable.button_bg_stroke));
-        relativeLayout.setLayoutParams(trackInfoLayoutParams);
-        relativeLayout.setClickable(true);
-        relativeLayout.setFocusable(true);
-
-        RelativeLayout.LayoutParams titleViewlayoutParams =
-                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        titleViewlayoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        titleViewlayoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
-
-        TextView titleView = new TextView(mContext);
-        titleView.setId(View.generateViewId());
-        titleView.setText(track.getTitle());
-        titleView.setLayoutParams(titleViewlayoutParams);
-
-        RelativeLayout.LayoutParams subtitleViewlayoutParams =
-                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        subtitleViewlayoutParams.addRule(RelativeLayout.BELOW, titleView.getId());
-
-        TextView subtitleView = new TextView(mContext);
-        subtitleView.setText(track.getSubtitle());
-        subtitleView.setLayoutParams(subtitleViewlayoutParams);
-
-        RelativeLayout.LayoutParams durationViewlayoutParams =
-                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        durationViewlayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-
-        TextView durationView = new TextView(mContext);
-        durationView.setText(duration);
-        durationView.setLayoutParams(durationViewlayoutParams);
-
-        relativeLayout.addView(titleView);
-        relativeLayout.addView(subtitleView);
-        relativeLayout.addView(durationView);
-
-        return relativeLayout;
-    }
-
-
-    public Button createBaseTrackListTableButton(float weight) {
-        Resources resources = mContext.getResources();
-
-        Button tableButton = new Button(mContext);
-        int padding = resources.getDimensionPixelSize(R.dimen.content_track_list_btn_padding);
-        tableButton.setPadding(padding, padding, padding, padding);
-        tableButton.setBackground(mContext.getResources().getDrawable(R.drawable.button_bg_stroke));
-        tableButton.setTextColor(resources.getColor(R.color.button_text));
-        tableButton.setAllCaps(false);
-
-        TableRow.LayoutParams trackInfoButtonLayoutParams =
-                new TableRow.LayoutParams(0, TableRow.LayoutParams.MATCH_PARENT, weight);
-        tableButton.setLayoutParams(trackInfoButtonLayoutParams);
-
-        return tableButton;
     }
 
     /**
