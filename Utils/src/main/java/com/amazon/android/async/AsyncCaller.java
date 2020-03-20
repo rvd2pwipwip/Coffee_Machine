@@ -10,7 +10,7 @@ import rx.observables.BlockingObservable;
 import rx.schedulers.Schedulers;
 
 public class AsyncCaller {
-    public <T> Observable<T> getOnSubscribe(Callable<T> callable) {
+    public <T> Observable<T> getForSubscribe(Callable<T> callable) {
         return Observable.fromCallable(callable)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

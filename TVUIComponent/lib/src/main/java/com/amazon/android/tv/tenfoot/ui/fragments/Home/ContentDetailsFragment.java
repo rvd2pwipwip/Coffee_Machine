@@ -172,12 +172,17 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             setupAdapter();
             setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
-            List<Track> tracks = setupTrackListContentRow();
-            setupTrackListPresenter(tracks.size());
-            setupRelatedContentRow();
             setupContentListRowPresenter();
             updateBackground(mSelectedContent.getBackgroundImageUrl());
             setOnItemViewClickedListener(new ItemViewClickedListener());
+
+            asyncCaller.getForSubscribe(new ContentTrackListCallable(mSelectedContent.getId()))
+                    .subscribe(tracks -> {
+                        ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
+                        setupTrackListPresenter(contentWithTracks.getTracks().size());
+                        mAdapter.add(new ContentTrackListRow(contentWithTracks));
+                        setupRelatedContentRow();
+                    });
         }
         else {
             Log.v(TAG, "Start CONTENT_HOME_SCREEN.");
@@ -421,16 +426,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
     }
 
-    private List<Track> setupTrackListContentRow() {
-        return asyncCaller.getForBlocking(new ContentTrackListCallable(mSelectedContent.getId()))
-                .map(tracks -> {
-                    ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
-
-                    mAdapter.add(new ContentTrackListRow(contentWithTracks));
-                    return tracks;
-                }).toBlocking().single();
-    }
-
     private void setupTrackListPresenter(int nbOfTracks) {
         ContentTrackListPresenter presenter = new ContentTrackListPresenter();
 
@@ -450,10 +445,10 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         RowPresenter.ViewHolder vh = super.createRowViewHolder(parent);
                         View view = vh.view.findViewById(R.id.details_frame);
                         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-                        if (nbOfTracks == 0) {
-                            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height_empty);
-                        } else {
+                        if(nbOfTracks > 0) {
                             layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height);
+                        } else {
+                            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height_empty);
                         }
 
                         view.setLayoutParams(layoutParams);
@@ -491,7 +486,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
         mPresenterSelector.addClassPresenter(ContentTrackListRow.class, rowPresenter);
     }
-
 
     /**
      * Builds the related content row. Uses contents from the selected content's category.

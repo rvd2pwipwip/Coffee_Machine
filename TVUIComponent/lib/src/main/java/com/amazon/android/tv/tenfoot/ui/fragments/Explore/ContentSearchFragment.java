@@ -157,7 +157,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
         if (view != null) {
-            asyncCaller.getOnSubscribe(new ExplorePageCallable())
+            asyncCaller.getForSubscribe(new ExplorePageCallable())
                     .subscribe(genres -> { createGenreButtons(view, inflater, genres); });
 
             // Set background color and drawable.
@@ -464,7 +464,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             genreButton.setText(genre.getTitle());
             genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
                 if (view1.isFocused()) {
-                    asyncCaller.getOnSubscribe(new GenreFilterCallable(genre.getId()))
+                    asyncCaller.getForSubscribe(new GenreFilterCallable(genre.getId()))
                             .subscribe(contentContainerExt -> {
                                 SvodMetadata metadata = contentContainerExt.getMetadata();
                                 mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());

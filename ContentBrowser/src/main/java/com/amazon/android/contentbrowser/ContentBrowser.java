@@ -800,7 +800,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             mICustomSearchHandler.onSearchRequested(query, iSearchResult);
         }
         else {
-            asyncCaller.getOnSubscribe(new SearchCallable(query))
+            asyncCaller.getForSubscribe(new SearchCallable(query))
                     .subscribe(contentContainerExt -> mSearchManager.syncSearch(
                             DEFAULT_SEARCH_ALGO_NAME, query, iSearchResult,
                             contentContainerExt.getContentContainer(),
