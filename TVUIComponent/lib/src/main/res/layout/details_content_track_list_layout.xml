@@ -11,7 +11,7 @@
         android:id="@+id/details_description_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FAFAFA"
+        android:textColor="@color/secondary_text"
         android:fontFamily="sans-serif-black"
         style="?attr/detailsDescriptionTitleStyle"
         />
@@ -23,8 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:textColor="#FAFAFA"
-        android:textSize="14sp"/>
+        android:textColor="@color/secondary_text"
+        android:textSize="14dp"
+        />
 
 
     <ScrollView
