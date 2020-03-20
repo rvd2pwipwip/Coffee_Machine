@@ -33,7 +33,6 @@ import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -54,7 +53,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +70,6 @@ import com.amazon.android.contentbrowser.explorepage.GenreFilterCallable;
 import com.amazon.android.contentbrowser.helper.AnalyticsHelper;
 import com.amazon.android.model.SvodMetadata;
 import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.content.Genre;
 import com.amazon.android.search.SearchManager;
 import com.amazon.android.tv.tenfoot.BuildConfig;
@@ -112,6 +109,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private boolean mHasResults = false;
     private SpeechOrbView mSpeechOrbView = null;
     private SearchEditText mSearchEditText = null;
+    private AsyncCaller asyncCaller = new AsyncCaller();
 
     // A local list row Adapter
     private ArrayObjectAdapter mListRowAdapter;
@@ -159,32 +157,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
         if (view != null) {
-            List<Genre> genres = new AsyncCaller<>(new ExplorePageCallable()).getResult();
-
-            LinearLayout explorePageGenres = (LinearLayout) view.findViewById(R.id.explore_page_genres);
-            ViewGroup.LayoutParams buttonLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-            for (Genre genre: genres) {
-                View cView = inflater.inflate(R.layout.explore_page_category_button, explorePageGenres, false);
-                Button genreButton = (Button) cView.findViewById(R.id.explore_page_genre_btn);
-                genreButton.setText(genre.getTitle());
-                genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
-                    // TODO Load results for genres
-                    Log.i(TAG, String.format("Triggered onHover for genre [%s]", genre.getId()));
-
-                    ContentContainerExt contentContainerExt = new AsyncCaller<>(new GenreFilterCallable(genre.getId())).getResult();
-                    SvodMetadata metadata = contentContainerExt.getMetadata();
-                    mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-
-                    for (Content entry : contentContainerExt.getContentContainer()) {
-                        updateResults(entry, metadata, false);
-                    }
-
-                    updateResults(null, metadata,true);
-                });
-
-                explorePageGenres.addView(genreButton, buttonLayoutParams);
-            }
+            asyncCaller.getOnSubscribe(new ExplorePageCallable())
+                    .subscribe(genres -> { createGenreButtons(view, inflater, genres); });
 
             // Set background color and drawable.
             view.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color
@@ -477,6 +451,34 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             if (mListRowAdapter.indexOf(inputContent) == -1) {
                 mListRowAdapter.add(inputContent);
             }
+        }
+    }
+
+    private void createGenreButtons(View view, LayoutInflater inflater, List<Genre> genres) {
+        LinearLayout explorePageGenres = (LinearLayout) view.findViewById(R.id.explore_page_genres);
+        ViewGroup.LayoutParams buttonLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        for (Genre genre: genres) {
+            View cView = inflater.inflate(R.layout.explore_page_category_button, explorePageGenres, false);
+            Button genreButton = (Button) cView.findViewById(R.id.explore_page_genre_btn);
+            genreButton.setText(genre.getTitle());
+            genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
+                if (view1.isFocused()) {
+                    asyncCaller.getOnSubscribe(new GenreFilterCallable(genre.getId()))
+                            .subscribe(contentContainerExt -> {
+                                SvodMetadata metadata = contentContainerExt.getMetadata();
+                                mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+
+                                for (Content entry : contentContainerExt.getContentContainer()) {
+                                    updateResults(entry, metadata, false);
+                                }
+
+                                updateResults(null, metadata, true);
+                            });
+                }
+            });
+
+            explorePageGenres.addView(genreButton, buttonLayoutParams);
         }
     }
 

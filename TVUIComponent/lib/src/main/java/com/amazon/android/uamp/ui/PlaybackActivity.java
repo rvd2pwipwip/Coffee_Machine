@@ -74,7 +74,6 @@ import com.amazon.android.uamp.constants.PreferencesConstants;
 import com.amazon.android.uamp.helper.CaptioningHelper;
 import com.amazon.android.uamp.mediaSession.GetVideoLinksCallable;
 import com.amazon.android.uamp.mediaSession.MediaSessionController;
-import com.amazon.android.uamp.mediaSession.VideoLinkSelector;
 import com.amazon.android.uamp.model.VideoLink;
 import com.amazon.android.ui.fragments.ErrorDialogFragment;
 import com.amazon.android.utils.ErrorUtils;
@@ -154,6 +153,8 @@ public class PlaybackActivity extends Activity implements
 
     private CaptioningHelper mCaptioningHelper;
     private CaptioningManager.CaptioningChangeListener mCaptioningChangeListener;
+
+    private AsyncCaller asyncCaller = new AsyncCaller();
 
     /**
      * State of CC in Subtitle view.
@@ -253,9 +254,9 @@ public class PlaybackActivity extends Activity implements
         mSelectedContent = (Content) getIntent().getSerializableExtra(Content.class.getSimpleName());
 
         // TODO LEO LANUZO - Need to establish a proper way to communicate from Network thread to the UI thread
-        Map<VideoLink.Type, String> mediaUriByType = new AsyncCaller<>(new GetVideoLinksCallable(mSelectedContent.getChannelId())).getResult();
-
-        mSelectedContent.setUrl(new VideoLinkSelector().select(mediaUriByType));
+        Map<VideoLink.Type, String> videoLinksByType =
+                asyncCaller.getForBlocking(new GetVideoLinksCallable(mSelectedContent.getChannelId()))
+                .toBlocking().single();
 
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
             AnalyticsHelper.trackError(TAG, "Received an Intent to play content without a " +

@@ -86,7 +86,6 @@ import com.amazon.android.utils.LeanbackHelpers;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -109,6 +108,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private BackgroundManager mBackgroundManager;
     private DisplayMetrics mMetrics;
     private boolean mShowRelatedContent;
+    private AsyncCaller asyncCaller = new AsyncCaller();
 
     SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
 
@@ -172,8 +172,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             setupAdapter();
             setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
-            int nbOfTracks = setupTrackListContentRow();
-            setupTrackListPresenter(nbOfTracks);
+            List<Track> tracks = setupTrackListContentRow();
+            setupTrackListPresenter(tracks.size());
             setupRelatedContentRow();
             setupContentListRowPresenter();
             updateBackground(mSelectedContent.getBackgroundImageUrl());
@@ -421,13 +421,14 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
     }
 
-    private int setupTrackListContentRow() {
-        List<Track> tracks = new AsyncCaller<>(new ContentTrackListCallable(mSelectedContent.getId())).getResult();
-        ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
+    private List<Track> setupTrackListContentRow() {
+        return asyncCaller.getForBlocking(new ContentTrackListCallable(mSelectedContent.getId()))
+                .map(tracks -> {
+                    ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
 
-        mAdapter.add(new ContentTrackListRow(contentWithTracks));
-
-        return contentWithTracks.getTracks().size();
+                    mAdapter.add(new ContentTrackListRow(contentWithTracks));
+                    return tracks;
+                }).toBlocking().single();
     }
 
     private void setupTrackListPresenter(int nbOfTracks) {
@@ -495,19 +496,23 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     /**
      * Builds the related content row. Uses contents from the selected content's category.
      */
-    private void setupRelatedContentRow() {
+    private ContentContainerExt setupRelatedContentRow() {
+        return asyncCaller.getForBlocking(new RelatedContentCallable(mSelectedContent.getId()))
+                .map(contentContainerExt -> {
+                    ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
-        ContentContainerExt contentContainerExt = new AsyncCaller<>(new RelatedContentCallable(mSelectedContent.getId())).getResult();
-        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+                    for (Content c : contentContainerExt.getContentContainer()) {
+                        listRowAdapter.add(c);
+                    }
+                    // Only add the header and row for recommendations if there are any recommended content.
+                    if (listRowAdapter.size() > 0) {
+                        HeaderItem header = new HeaderItem(0, contentContainerExt.getMetadata().getDisplayName());
+                        mAdapter.add(new ListRow(header, listRowAdapter));
+                    }
 
-        for (Content c : contentContainerExt.getContentContainer()) {
-            listRowAdapter.add(c);
-        }
-        // Only add the header and row for recommendations if there are any recommended content.
-        if (listRowAdapter.size() > 0) {
-            HeaderItem header = new HeaderItem(0, contentContainerExt.getMetadata().getDisplayName());
-            mAdapter.add(new ListRow(header, listRowAdapter));
-        }
+
+                    return contentContainerExt;
+                }).toBlocking().single();
     }
 
     private void setupContentListRowPresenter() {

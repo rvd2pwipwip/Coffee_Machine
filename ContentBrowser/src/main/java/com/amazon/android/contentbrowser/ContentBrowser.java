@@ -24,7 +24,6 @@ import com.amazon.android.interfaces.IContentBrowser;
 import com.amazon.android.model.Action;
 import com.amazon.android.model.content.Content;
 import com.amazon.android.model.content.ContentContainer;
-import com.amazon.android.model.content.ContentContainerExt;
 import com.amazon.android.model.content.constants.PreferencesConstants;
 import com.amazon.android.model.event.ActionUpdateEvent;
 import com.amazon.android.module.ModularApplication;
@@ -35,8 +34,6 @@ import com.amazon.android.search.ISearchAlgo;
 import com.amazon.android.search.ISearchResult;
 import com.amazon.android.search.SearchManager;
 import com.amazon.android.ui.fragments.AlertDialogFragment;
-import com.amazon.android.ui.fragments.ContactUsSettingsFragment;
-import com.amazon.android.ui.fragments.FAQSettingsFragment;
 import com.amazon.android.ui.fragments.LogoutSettingsFragment;
 import com.amazon.android.utils.ErrorUtils;
 import com.amazon.android.utils.LeanbackHelpers;
@@ -114,6 +111,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     private final List<Action> mGlobalContentActionList = new ArrayList<>();
     private final Map<Integer, List<IContentActionListener>> mContentActionListeners = new HashMap<>();
     private final Map<String, String> mPoweredByLogoUrlMap = new HashMap<>();
+    private final AsyncCaller asyncCaller = new AsyncCaller();
     private AuthHelper mAuthHelper;
     private PurchaseHelper mPurchaseHelper;
     private LauncherIntegrationManager mLauncherIntegrationManager;
@@ -802,12 +800,12 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             mICustomSearchHandler.onSearchRequested(query, iSearchResult);
         }
         else {
-            ContentContainerExt contentContainerExt = new AsyncCaller<>(new SearchCallable(query)).getResult();
-            mSearchManager.syncSearch(DEFAULT_SEARCH_ALGO_NAME,
-                    query,
-                    iSearchResult,
-                    contentContainerExt.getContentContainer(),
-                    contentContainerExt.getMetadata());
+            asyncCaller.getOnSubscribe(new SearchCallable(query))
+                    .subscribe(contentContainerExt -> mSearchManager.syncSearch(
+                            DEFAULT_SEARCH_ALGO_NAME, query, iSearchResult,
+                            contentContainerExt.getContentContainer(),
+                            contentContainerExt.getMetadata())
+                    );
         }
     }
 
