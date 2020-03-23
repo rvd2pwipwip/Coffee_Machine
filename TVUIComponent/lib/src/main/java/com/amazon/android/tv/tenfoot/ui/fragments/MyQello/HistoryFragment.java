@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.ui.fragments.ContactUsSettingsFragment;
-import com.amazon.android.ui.fragments.FAQSettingsFragment;
 import com.amazon.android.utils.Helpers;
 
 public class HistoryFragment extends Fragment {

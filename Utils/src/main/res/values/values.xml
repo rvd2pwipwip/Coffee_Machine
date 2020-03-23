@@ -18,6 +18,9 @@ permissions and limitations under the License.
     <string name="faq_settings_fragment_tag">faq_settings_fragment</string>
     <string name="contact_us_settings_fragment_tag">contact_us_settings_fragment</string>
     <string name="about_settings_fragment_tag">about_settings_fragment</string>
+    <string name="privacy_settings_fragment_tag">faq_settings_fragment</string>
+    <string name="terms_settings_fragment_tag">terms_settings_fragment</string>
 
 </resources>
+
 

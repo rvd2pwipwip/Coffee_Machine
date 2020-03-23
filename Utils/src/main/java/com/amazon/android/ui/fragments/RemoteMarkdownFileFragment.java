@@ -22,11 +22,9 @@ import java.io.IOException;
 
 import io.noties.markwon.Markwon;
 
-public abstract class RemoteMarkdownFileFragment {
+public class RemoteMarkdownFileFragment {
 
     private Activity mActivity;
-
-    public abstract String getTag();
 
     public void createFragment(final Activity activity,  FragmentManager manager, String fragmentTag, String url) {
 
@@ -58,7 +56,7 @@ public abstract class RemoteMarkdownFileFragment {
             content = new LoadDataTask().execute(url).get();
         }
         catch (Exception e) {
-            Log.e(getTag(), "could not read " + url + " data", e);
+            Log.e("RemoteMarkdownFileFra", "could not read " + url + " data", e);
         }
 
         final String fcontent = content;
@@ -86,7 +84,7 @@ public abstract class RemoteMarkdownFileFragment {
             try {
                 return NetworkUtils.getDataLocatedAtUrl(urls[0]);
             } catch (IOException e) {
-                Log.e(getTag(), "Could not read at URL", e);
+                Log.e("RemoteMarkdownFileFrag", "Could not read at URL", e);
             }
             return null;
         }

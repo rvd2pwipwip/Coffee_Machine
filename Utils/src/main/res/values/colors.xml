@@ -33,5 +33,5 @@ permissions and limitations under the License.
     <!-- Action widget background color -->
     <color name="search_orb">@color/accent</color>
     <color name="ui_almost_white">#FAFAFA</color>
-    <color name="ui_grey">#787878</color>
+    <color name="ui_grey">#C2C2C2</color>
 </resources>

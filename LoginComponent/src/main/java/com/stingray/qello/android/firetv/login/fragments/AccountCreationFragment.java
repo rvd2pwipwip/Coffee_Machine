@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazon.android.ui.fragments.RemoteMarkdownFileFragment;
 import com.amazon.android.utils.Helpers;
 import com.amazon.identity.auth.device.AuthError;
 import com.amazon.identity.auth.device.authorization.api.AmazonAuthorizationManager;
@@ -31,6 +32,8 @@ public class AccountCreationFragment extends Fragment {
     private TextView passwordInput;
     private Button createButton;
     private ImageButton lwaButton;
+    private Button termsButton;
+    private Button privacyButton;
     private AmazonAuthorizationManager amazonAuthManager;
     private ProgressBar mLogInProgress;
 

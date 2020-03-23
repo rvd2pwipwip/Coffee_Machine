@@ -71,4 +71,16 @@ permissions and limitations under the License.
     <string name="alexa_media_session_permission" translatable="false">
         com.amazon.permission.media.session.voicecommandcontrol
     </string>
+
+    <string name="stingray_copyright" translatable="false">Stingray Qello © 2019\nStingray Digital Media Group</string>
+    <string name="stingray_rights" translatable="false">All rights reserved STINGRAY® and other related marks and logos are trademarks of Stingray Digital Media Group in Canada, the United States of America and other territories.</string>
+    <string name="version_1_0_0" translatable="false">Version 1.0.0</string>
+    <string name="qello_com" translatable="false">qello.com</string>
+
+    <string name="by_email" translatable="false">Contact us by email:</string>
+    <string name="support_email" translatable="false">stingrayservice@stingray.com</string>
+    <string name="privacy_text" translatable="false">If you have any questions about the privacy aspects of Stingray’s products or services or would like to make a privacy complaint, please contact us by email:</string>
+    <string name="privacy_email" translatable="false">privacy@stingray.com</string>
+
+
 </resources>

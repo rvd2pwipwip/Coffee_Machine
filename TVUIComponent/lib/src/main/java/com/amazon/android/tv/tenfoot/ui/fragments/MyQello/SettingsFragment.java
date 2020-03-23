@@ -2,8 +2,6 @@ package com.amazon.android.tv.tenfoot.ui.fragments.MyQello;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v17.leanback.widget.ImageCardView;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +10,9 @@ import android.widget.Button;
 import com.amazon.android.contentbrowser.ContentBrowser;
 import com.amazon.android.contentbrowser.helper.AuthHelper;
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
-import com.amazon.android.ui.fragments.ContactUsSettingsFragment;
-import com.amazon.android.ui.fragments.FAQSettingsFragment;
-import com.amazon.android.ui.fragments.LogoutSettingsFragment;
+import com.amazon.android.ui.fragments.RemoteMarkdownFileFragment;
 import com.amazon.android.utils.Helpers;
 import com.amazon.android.utils.Preferences;
-import com.amazon.auth.AuthenticationConstants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -60,16 +54,16 @@ public class SettingsFragment extends Fragment {
 
     public void addListenerOnButton(View view)  {
         Button faqButton = (Button) view.findViewById(R.id.faq_button);
-        faqButton.setOnClickListener(v -> new FAQSettingsFragment()
-                .createFragment(getActivity(), getActivity().getFragmentManager()));
+        faqButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                .createFragment(getActivity(), getActivity().getFragmentManager(), getActivity().getString(com.amazon.utils.R.string.faq_settings_fragment_tag), "https://legal.stingray.com/en/qello-faq/markdown"));
+
 
         Button contactUsButton = (Button) view.findViewById(R.id.contact_us_button);
-        contactUsButton.setOnClickListener(v -> new ContactUsSettingsFragment()
+        contactUsButton.setOnClickListener(v -> new ContactUsSettingsDialog()
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
 
-        //TODO fix
         Button aboutButton = (Button) view.findViewById(R.id.about_button);
-        aboutButton.setOnClickListener(v -> new ContactUsSettingsFragment()
+        aboutButton.setOnClickListener(v -> new AboutSettingsDialog()
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
 
         loginLogOutButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity()).loginLogoutActionTriggered(getActivity()));
@@ -81,8 +75,7 @@ public class SettingsFragment extends Fragment {
 
 
     }
-
-    /**
+   /**
      * Listener method to listen for authentication updates, it sets the status of
      * loginLogoutAction action used by the browse activities
      *

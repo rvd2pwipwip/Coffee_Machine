@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.ui.fragments.ContactUsSettingsFragment;
-import com.amazon.android.ui.fragments.FAQSettingsFragment;
+import com.amazon.android.ui.fragments.RemoteMarkdownFileFragment;
 import com.amazon.android.utils.Helpers;
 
 /**
@@ -39,16 +38,16 @@ public class MyAccountFragment extends Fragment{
 
     public void addListenerOnButton(View view)  {
         Button faqButton = (Button) view.findViewById(R.id.faq_button);
-        faqButton.setOnClickListener(v -> new FAQSettingsFragment()
-                .createFragment(getActivity(), getActivity().getFragmentManager()));
+        faqButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                .createFragment(getActivity(), getActivity().getFragmentManager(), getActivity().getString(com.amazon.utils.R.string.faq_settings_fragment_tag), "https://legal.stingray.com/en/qello-faq/markdown"));
 
         Button contactUsButton = (Button) view.findViewById(R.id.contact_us_button);
-        contactUsButton.setOnClickListener(v -> new ContactUsSettingsFragment()
+        contactUsButton.setOnClickListener(v -> new ContactUsSettingsDialog()
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
 
         //TODO fix
         Button aboutButton = (Button) view.findViewById(R.id.about_button);
-        aboutButton.setOnClickListener(v -> new ContactUsSettingsFragment()
+        aboutButton.setOnClickListener(v -> new ContactUsSettingsDialog()
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
     }
 
