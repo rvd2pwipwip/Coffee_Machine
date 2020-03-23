@@ -86,7 +86,6 @@ import com.amazon.android.utils.LeanbackHelpers;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -109,6 +108,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private BackgroundManager mBackgroundManager;
     private DisplayMetrics mMetrics;
     private boolean mShowRelatedContent;
+    private AsyncCaller asyncCaller = new AsyncCaller();
 
     SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
 
@@ -172,12 +172,17 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             setupAdapter();
             setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
-            int nbOfTracks = setupTrackListContentRow();
-            setupTrackListPresenter(nbOfTracks);
-            setupRelatedContentRow();
             setupContentListRowPresenter();
             updateBackground(mSelectedContent.getBackgroundImageUrl());
             setOnItemViewClickedListener(new ItemViewClickedListener());
+
+            asyncCaller.getForSubscribe(new ContentTrackListCallable(mSelectedContent.getId()))
+                    .subscribe(tracks -> {
+                        ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
+                        setupTrackListPresenter(contentWithTracks.getTracks().size());
+                        mAdapter.add(new ContentTrackListRow(contentWithTracks));
+                        setupRelatedContentRow();
+                    });
         }
         else {
             Log.v(TAG, "Start CONTENT_HOME_SCREEN.");
@@ -421,15 +426,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         mPresenterSelector.addClassPresenter(DetailsOverviewRow.class, detailsPresenter);
     }
 
-    private int setupTrackListContentRow() {
-        List<Track> tracks = new AsyncCaller<>(new ContentTrackListCallable(mSelectedContent.getId())).getResult();
-        ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
-
-        mAdapter.add(new ContentTrackListRow(contentWithTracks));
-
-        return contentWithTracks.getTracks().size();
-    }
-
     private void setupTrackListPresenter(int nbOfTracks) {
         ContentTrackListPresenter presenter = new ContentTrackListPresenter();
 
@@ -449,10 +445,10 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         RowPresenter.ViewHolder vh = super.createRowViewHolder(parent);
                         View view = vh.view.findViewById(R.id.details_frame);
                         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-                        if (nbOfTracks == 0) {
-                            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height_empty);
-                        } else {
+                        if(nbOfTracks > 0) {
                             layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height);
+                        } else {
+                            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height_empty);
                         }
 
                         view.setLayoutParams(layoutParams);
@@ -491,23 +487,26 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         mPresenterSelector.addClassPresenter(ContentTrackListRow.class, rowPresenter);
     }
 
-
     /**
      * Builds the related content row. Uses contents from the selected content's category.
      */
-    private void setupRelatedContentRow() {
+    private ContentContainerExt setupRelatedContentRow() {
+        return asyncCaller.getForBlocking(new RelatedContentCallable(mSelectedContent.getId()))
+                .map(contentContainerExt -> {
+                    ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
-        ContentContainerExt contentContainerExt = new AsyncCaller<>(new RelatedContentCallable(mSelectedContent.getId())).getResult();
-        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+                    for (Content c : contentContainerExt.getContentContainer()) {
+                        listRowAdapter.add(c);
+                    }
+                    // Only add the header and row for recommendations if there are any recommended content.
+                    if (listRowAdapter.size() > 0) {
+                        HeaderItem header = new HeaderItem(0, contentContainerExt.getMetadata().getDisplayName());
+                        mAdapter.add(new ListRow(header, listRowAdapter));
+                    }
 
-        for (Content c : contentContainerExt.getContentContainer()) {
-            listRowAdapter.add(c);
-        }
-        // Only add the header and row for recommendations if there are any recommended content.
-        if (listRowAdapter.size() > 0) {
-            HeaderItem header = new HeaderItem(0, contentContainerExt.getMetadata().getDisplayName());
-            mAdapter.add(new ListRow(header, listRowAdapter));
-        }
+
+                    return contentContainerExt;
+                }).toBlocking().single();
     }
 
     private void setupContentListRowPresenter() {
