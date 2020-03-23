@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -37,6 +38,10 @@ public abstract class ULCallable<T> implements Callable<T> {
     }
 
     protected Response post(String path, Map<String, String> formParams) throws IOException {
+        return post(path, formParams, new HashMap<String, String>());
+    }
+
+    protected Response post(String path, Map<String, String> formParams, Map<String, String> additionalHeaders) throws IOException {
 
         List<String> urlEncodedParams = new ArrayList<>();
         for (Map.Entry<String, String> entry: formParams.entrySet()) {
@@ -49,6 +54,10 @@ public abstract class ULCallable<T> implements Callable<T> {
         urlConnection.setRequestMethod("POST");
         urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
+
+        for (Map.Entry<String, String> entry: additionalHeaders.entrySet()) {
+            urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
+        }
 
         try(OutputStream os = urlConnection.getOutputStream()) {
             byte[] input =  TextUtils.join("&", urlEncodedParams).getBytes(StandardCharsets.UTF_8);
