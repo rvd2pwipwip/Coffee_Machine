@@ -49,7 +49,7 @@ public class ExplorePageCallable extends SvodCallable<List<Genre>> {
         }
 
         try {
-            String jsonResponse = getData(ENDPOINT);
+            String jsonResponse = get(ENDPOINT);
 
             Log.i(TAG, String.format("Received response: %s", jsonResponse));
 

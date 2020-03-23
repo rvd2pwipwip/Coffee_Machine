@@ -51,7 +51,7 @@ public class SearchCallable extends SvodCallable<ContentContainerExt> {
         String containerName = String.format(NAME_FORMAT, query);
         try {
             String url = String.format(ENDPOINT, query);
-            String jsonResponse = getData(url);
+            String jsonResponse = get(url);
 
             return contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, contentTranslator);
 

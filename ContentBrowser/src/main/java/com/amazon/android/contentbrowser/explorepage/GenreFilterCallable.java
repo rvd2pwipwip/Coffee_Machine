@@ -52,7 +52,7 @@ public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
         String containerName = String.format(NAME_FORMAT, genreId);
         try {
             String url = String.format(ENDPOINT, genreId);
-            String jsonResponse = getData(url);
+            String jsonResponse = get(url);
 
             return contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, contentTranslator);
         } catch (Exception e) {

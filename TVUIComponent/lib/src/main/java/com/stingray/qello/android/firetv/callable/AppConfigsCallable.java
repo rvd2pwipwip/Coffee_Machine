@@ -16,7 +16,7 @@ public class AppConfigsCallable extends SvodCallable<Map<String,String>> {
     public Map<String, String> call() throws Exception {
         Map<String, String> appConfigs = new HashMap<>();
         try {
-            String jsonResponse = getData(ENDPOINT);
+            String jsonResponse = get(ENDPOINT);
 
             Log.i(TAG, String.format("Received response: %s", jsonResponse));
 

@@ -1,12 +1,9 @@
 package com.amazon.android.async;
 
-import android.util.Log;
-
 import java.util.concurrent.Callable;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.observables.BlockingObservable;
 import rx.schedulers.Schedulers;
 
 public class AsyncCaller {

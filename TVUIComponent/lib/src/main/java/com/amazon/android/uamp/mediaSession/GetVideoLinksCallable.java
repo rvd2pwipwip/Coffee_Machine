@@ -28,7 +28,7 @@ public class GetVideoLinksCallable extends SvodCallable<Map<VideoLink.Type, Stri
     public Map<VideoLink.Type, String> call() {
         try {
             String url = String.format(ENDPOINT, assetId);
-            String jsonResponse = getData(url);
+            String jsonResponse = get(url);
 
             Log.i(TAG, String.format("Received response: %s", jsonResponse));
 

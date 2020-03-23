@@ -51,7 +51,7 @@ public class RelatedContentCallable extends SvodCallable<ContentContainerExt> {
         String containerName = String.format(NAME_FORMAT, contentId);
         try {
             String url = String.format(ENDPOINT, contentId);
-            String jsonResponse = getData(url);
+            String jsonResponse = get(url);
 
             return contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, contentTranslator);
 

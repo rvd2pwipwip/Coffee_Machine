@@ -54,7 +54,7 @@ public class ContentTrackListCallable extends SvodCallable<List<Track>> {
         String containerName = String.format(NAME_FORMAT, contentId);
         try {
             String url = String.format(ENDPOINT, contentId);
-            String jsonResponse = getData(url);
+            String jsonResponse = get(url);
 
             ContentContainerExt contentContainerExt = contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, trackTranslator);
 
