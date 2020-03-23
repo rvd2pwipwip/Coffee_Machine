@@ -1,5 +1,7 @@
 package com.stingray.qello.android.firetv.login.communication;
 
+import android.text.TextUtils;
+
 import com.amazon.android.utils.Helpers;
 
 import java.io.BufferedReader;
@@ -8,7 +10,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public abstract class ULCallable<T> implements Callable<T> {
@@ -27,10 +33,16 @@ public abstract class ULCallable<T> implements Callable<T> {
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
 
-        return getResponse(urlConnection);
+        return getResponseBody(urlConnection);
     }
 
-    protected String post(String path, String body) throws IOException {
+    protected Response post(String path, Map<String, String> formParams) throws IOException {
+
+        List<String> urlEncodedParams = new ArrayList<>();
+        for (Map.Entry<String, String> entry: formParams.entrySet()) {
+            urlEncodedParams.add(entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.toString()));
+        }
+
         URL url = new URL(createUrl(path));
 
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -39,15 +51,15 @@ public abstract class ULCallable<T> implements Callable<T> {
         urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
 
         try(OutputStream os = urlConnection.getOutputStream()) {
-            byte[] input = body.getBytes(StandardCharsets.UTF_8);
+            byte[] input =  TextUtils.join("&", urlEncodedParams).getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
 
-        return getResponse(urlConnection);
+        return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
     }
 
 
-    private String getResponse(HttpURLConnection urlConnection) throws IOException {
+    private String getResponseBody(HttpURLConnection urlConnection) throws IOException {
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), Helpers.getDefaultAppCharset()), 8)) {
             StringBuilder sb = new StringBuilder();
             String line;
@@ -55,6 +67,24 @@ public abstract class ULCallable<T> implements Callable<T> {
                 sb.append(line).append("\n");
             }
             return sb.toString();
+        }
+    }
+
+    protected static class Response {
+        private final int code;
+        private final String body;
+
+        public Response(int code, String body) {
+            this.code = code;
+            this.body = body;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getBody() {
+            return body;
         }
     }
 }
