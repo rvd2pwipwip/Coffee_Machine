@@ -13,8 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazon.android.ui.fragments.RemoteMarkdownFileFragment;
-import com.amazon.android.utils.Helpers;
+import com.stingray.qello.firetv.android.utils.Helpers;
 import com.amazon.identity.auth.device.AuthError;
 import com.amazon.identity.auth.device.authorization.api.AmazonAuthorizationManager;
 import com.amazon.identity.auth.device.authorization.api.AuthorizationListener;

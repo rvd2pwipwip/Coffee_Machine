@@ -1,7 +1,7 @@
 {
   "cooker" : "DynamicParser",
   "format" : "json",
-  "model" : "com.amazon.android.model.content.Content",
+  "model" : "com.stingray.qello.firetv.android.model.content.Content",
   "translator" : "ContentTranslator",
   "modelType"    : "array",
   "query"        : "$.assets[?(@.type == 'awe.Video' && @.assetId in $$par0$$)]",

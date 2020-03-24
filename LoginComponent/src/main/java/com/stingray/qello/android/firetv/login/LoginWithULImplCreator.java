@@ -15,8 +15,8 @@
 package com.stingray.qello.android.firetv.login;
 
 
-import com.amazon.android.module.IImplCreator;
-import com.amazon.auth.IAuthentication;
+import com.stingray.qello.firetv.android.module.IImplCreator;
+import com.stingray.qello.firetv.auth.IAuthentication;
 
 /**
  * This lets modules follow the same protocol for creating an instance.

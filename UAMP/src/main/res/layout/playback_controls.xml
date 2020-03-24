@@ -73,7 +73,7 @@ permissions and limitations under the License.
 
     <fragment
             android:id="@+id/playback_controls_fragment"
-            android:name="com.amazon.android.uamp.ui.PlaybackOverlayFragment"
+            android:name="com.stingray.qello.firetv.android.uamp.ui.PlaybackOverlayFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

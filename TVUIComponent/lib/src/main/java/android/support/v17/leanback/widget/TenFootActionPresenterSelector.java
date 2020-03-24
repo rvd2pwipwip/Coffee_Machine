@@ -28,7 +28,7 @@ package android.support.v17.leanback.widget;
  * the License.
  */
 
-import com.amazon.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.tv.tenfoot.R;
 
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;

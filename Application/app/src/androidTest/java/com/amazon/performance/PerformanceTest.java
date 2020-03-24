@@ -15,11 +15,11 @@
 
 package com.amazon.performance;
 
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainer;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.ui.activities.SplashActivity;
+import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
+import com.stingray.qello.firetv.android.model.content.Content;
+import com.stingray.qello.firetv.android.model.content.ContentContainer;
+import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.SplashActivity;
 import com.amazon.testresources.TestConfig;
 import com.robotium.solo.Solo;
 

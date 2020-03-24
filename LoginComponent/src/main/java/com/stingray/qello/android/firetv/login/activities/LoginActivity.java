@@ -27,8 +27,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazon.android.utils.Preferences;
-import com.amazon.auth.AuthenticationConstants;
+import com.stingray.qello.firetv.android.utils.Preferences;
+import com.stingray.qello.firetv.auth.AuthenticationConstants;
 import com.amazon.identity.auth.device.AuthError;
 import com.amazon.identity.auth.device.authorization.api.AmazonAuthorizationManager;
 import com.amazon.identity.auth.device.authorization.api.AuthorizationListener;

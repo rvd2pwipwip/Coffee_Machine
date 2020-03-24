@@ -2,7 +2,7 @@ package com.stingray.qello.android.firetv.login.communication;
 
 import android.text.TextUtils;
 
-import com.amazon.android.utils.Helpers;
+import com.stingray.qello.firetv.android.utils.Helpers;
 
 import java.io.BufferedReader;
 import java.io.IOException;

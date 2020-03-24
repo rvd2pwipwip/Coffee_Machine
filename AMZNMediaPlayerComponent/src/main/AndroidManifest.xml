@@ -13,7 +13,7 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.amazon.mediaplayer.module">
+          package="com.stingray.qello.firetv.mediaplayer.module">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -23,7 +23,7 @@ permissions and limitations under the License.
     <application
             android:allowBackup="true">
         <meta-data android:name="AMZNAP@AMZNPlayer"
-                   android:value="UAMP@com.amazon.mediaplayer.module.AMZNMediaPlayerImplCreator"/>
+                   android:value="UAMP@com.stingray.qello.firetv.mediaplayer.module.AMZNMediaPlayerImplCreator"/>
     </application>
 
 </manifest>

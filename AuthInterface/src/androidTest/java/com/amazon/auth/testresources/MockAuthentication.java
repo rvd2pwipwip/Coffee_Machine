@@ -20,7 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.test.mock.MockContext;
 
-import com.amazon.auth.IAuthentication;
+import com.stingray.qello.firetv.auth.IAuthentication;
 
 /**
  * Mock authentication class for testing

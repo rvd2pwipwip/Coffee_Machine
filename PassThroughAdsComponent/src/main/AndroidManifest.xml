@@ -13,13 +13,13 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.amazon.ads.passthrough">
+          package="com.stingray.qello.firetv.ads.passthrough">
     <application
             android:allowBackup="true"
             android:label="@string/app_name">
 
         <meta-data android:name="AMZNAP@PassThroughAds"
-                   android:value="IAds@com.amazon.ads.passthrough.PassThroughAdsImplCreator"/>
+                   android:value="IAds@com.stingray.qello.firetv.ads.passthrough.PassThroughAdsImplCreator"/>
     </application>
 
 </manifest>

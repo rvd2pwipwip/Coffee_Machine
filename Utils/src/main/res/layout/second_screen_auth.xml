@@ -19,7 +19,7 @@ permissions and limitations under the License.
               android:layout_height="match_parent"
               android:background="#F1000000"
               android:orientation="vertical"
-              tools:context="com.amazon.android.ui.activities.SecondScreenAuthenticationActivity">
+              tools:context="com.stingray.qello.firetv.android.ui.activities.SecondScreenAuthenticationActivity">
 
     <ImageView
             android:id="@+id/main_logo"

@@ -2,13 +2,10 @@ package com.stingray.qello.android.firetv.login.communication;
 
 import android.util.Log;
 
-import com.amazon.android.async.SvodCallable;
-import com.amazon.android.model.svod.SvodUserInfo;
-import com.amazon.android.utils.SvodObjectMapperProvider;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.stingray.qello.firetv.android.async.SvodCallable;
+import com.stingray.qello.firetv.android.model.svod.SvodUserInfo;
+import com.stingray.qello.firetv.android.utils.SvodObjectMapperProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Map;
 
 public class SvodUserInfoCallable extends SvodCallable<SvodUserInfo> {
     private final static String ENDPOINT = "/v1/profile/user-info";

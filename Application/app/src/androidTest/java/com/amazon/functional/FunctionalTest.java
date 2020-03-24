@@ -25,11 +25,11 @@ import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.amazon.android.contentbrowser.ContentBrowser;
-import com.amazon.android.model.content.Content;
-import com.amazon.android.model.content.ContentContainer;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.tv.tenfoot.ui.activities.SplashActivity;
+import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
+import com.stingray.qello.firetv.android.model.content.Content;
+import com.stingray.qello.firetv.android.model.content.ContentContainer;
+import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.SplashActivity;
 import com.amazon.testresources.TestConfig;
 import com.robotium.solo.Solo;
 

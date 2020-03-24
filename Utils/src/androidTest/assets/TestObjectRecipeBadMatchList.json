@@ -1,7 +1,7 @@
 {
-  "recipeCooker": "com.amazon.dynamicparser.DynamicParser",
+  "recipeCooker": "com.stingray.qello.firetv.dynamicparser.DynamicParser",
   "format": "json",
-  "model": "com.amazon.utils.testresources.DummyModelTranslator.TestObject",
+  "model": "com.stingray.qello.firetv.utils.testresources.DummyModelTranslator.TestObject",
   "modelType": "",
   "conversionType": "",
   "query": "",

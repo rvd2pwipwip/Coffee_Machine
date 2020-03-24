@@ -1,7 +1,7 @@
 {
   "cooker": "DynamicParser",
   "format": "xml",
-  "model": "com.amazon.android.model.content.ContentContainer",
+  "model": "com.stingray.qello.firetv.android.model.content.ContentContainer",
   "translator": "ContentContainerTranslator",
   "modelType": "array",
   "query": "//item/category/text()",

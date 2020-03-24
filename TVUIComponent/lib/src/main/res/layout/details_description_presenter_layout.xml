@@ -55,7 +55,7 @@ permissions and limitations under the License.
         style="?attr/detailsDescriptionTitleStyle"
         />
 
-    <com.amazon.android.ui.widget.EllipsizedTextView
+    <com.stingray.qello.firetv.android.ui.widget.EllipsizedTextView
         android:id="@+id/ellipsized_description_text"
         style="@style/DetailsDescription"
         android:layout_width="wrap_content"

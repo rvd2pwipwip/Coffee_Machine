@@ -30,7 +30,7 @@ permissions and limitations under the License.
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.amazon.android.tv.tenfoot"
+          package="com.stingray.qello.firetv.android.tv.tenfoot"
           android:versionCode="1"
           android:versionName="1.1">
 
@@ -55,10 +55,10 @@ permissions and limitations under the License.
 
     <application>
         <activity
-                android:name="com.amazon.android.tv.tenfoot.ui.activities.MainActivity"
+                android:name="com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.MainActivity"
                 android:screenOrientation="landscape"/>
         <activity
-                android:name="com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity"
+                android:name="com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetailsActivity"
                 android:exported="true">
 
             <!-- Receives the PendingIntent requests to view a specific content. -->
@@ -68,8 +68,8 @@ permissions and limitations under the License.
             </intent-filter>
 
         </activity>
-        <activity android:name="com.amazon.android.tv.tenfoot.ui.activities.SplashActivity"/>
-        <activity android:name="com.amazon.android.uamp.ui.PlaybackActivity"/>
+        <activity android:name="com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.SplashActivity"/>
+        <activity android:name="com.stingray.qello.firetv.android.uamp.ui.PlaybackActivity"/>
     </application>
 
 </manifest>

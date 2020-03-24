@@ -1,5 +1,5 @@
 {
-  "data_downloader.impl": "com.amazon.dataloader.testResources.MockDataDownloader",
+  "data_downloader.impl": "com.stingray.qello.firetv.dataloader.testResources.MockDataDownloader",
   "is_cache_manager_enabled": true,
   "data_updater.duration": 0
 }

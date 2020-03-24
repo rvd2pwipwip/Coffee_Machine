@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.test.InstrumentationTestCase;
 
 import com.amazon.auth.testresources.MockAuthentication;
+import com.stingray.qello.firetv.auth.IAuthentication;
 
 /**
  * Unit tests for mock authentication module

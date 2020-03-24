@@ -20,22 +20,22 @@
     }
   ],
   "graph" : {
-    "com.amazon.android.tv.tenfoot.ui.activities.SplashActivity": {
+    "com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.SplashActivity": {
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,
       "onAction" : "CONTENT_SPLASH_SCREEN"
     },
-    "com.amazon.android.tv.tenfoot.ui.activities.MainActivity": {
+    "com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.MainActivity": {
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,
       "onAction" : "CONTENT_HOME_SCREEN"
     },
-    "com.amazon.android.tv.tenfoot.ui.activities.ContentDetailsActivity": {
+    "com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetailsActivity": {
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,
       "onAction" : "CONTENT_DETAILS_SCREEN"
     },
-    "com.amazon.android.uamp.ui.PlaybackActivity": {
+    "com.stingray.qello.firetv.android.uamp.ui.PlaybackActivity": {
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,
       "onAction" : "CONTENT_RENDERER_SCREEN"

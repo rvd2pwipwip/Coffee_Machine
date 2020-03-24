@@ -29,9 +29,9 @@
 package android.support.v17.leanback.app;
 
 
-import com.amazon.android.configuration.ConfigurationManager;
-import com.amazon.android.tv.tenfoot.R;
-import com.amazon.android.ui.constants.ConfigurationConstants;
+import com.stingray.qello.firetv.android.configuration.ConfigurationManager;
+import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.ui.constants.ConfigurationConstants;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;

@@ -18,7 +18,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 
-import com.amazon.android.utils.Helpers;
+import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.android.firetv.login.fragments.AccountCreationFragment;
 import com.stingray.qello.android.firetv.login.R;
 

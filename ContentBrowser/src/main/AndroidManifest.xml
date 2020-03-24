@@ -13,7 +13,7 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.amazon.android.contentbrowser">
+          package="com.stingray.qello.firetv.android.contentbrowser">
     <!-- Launcher integration -->
     <uses-permission android:name="com.amazon.device.permission.COMRADE_CAPABILITIES"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -24,7 +24,7 @@ permissions and limitations under the License.
         <!-- Launcher integration -->
         <!-- Uncomment the below receiver to enable launcher integration -->
         <!--
-        <receiver android:name="com.amazon.android.contentbrowser.helper.LauncherIntegrationBroadcastReceiver" >
+        <receiver android:name="com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrationBroadcastReceiver" >
             <intent-filter>
                 <action android:name="com.amazon.device.REQUEST_CAPABILITIES" >
                 </action>

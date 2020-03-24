@@ -2,7 +2,7 @@ package com.stingray.qello.android.firetv.callable;
 
 import android.util.Log;
 
-import com.amazon.android.async.SvodCallable;
+import com.stingray.qello.firetv.android.async.SvodCallable;
 
 import java.util.HashMap;
 import java.util.Map;

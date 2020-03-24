@@ -16,7 +16,7 @@ permissions and limitations under the License.
 <view
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        class="com.amazon.android.ui.widget.ReadView"
+        class="com.stingray.qello.firetv.android.ui.widget.ReadView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/synopsis_modal_bg"
@@ -30,7 +30,7 @@ permissions and limitations under the License.
             android:layout_marginRight="@dimen/read_dialog_text_margin_right"
             android:layout_marginTop="@dimen/read_dialog_text_margin_vertical">
 
-        <com.amazon.android.ui.widget.ScrollViewPlus
+        <com.stingray.qello.firetv.android.ui.widget.ScrollViewPlus
                 android:id="@+id/view_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

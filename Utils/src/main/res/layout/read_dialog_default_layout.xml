@@ -15,7 +15,7 @@ permissions and limitations under the License.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.amazon.android.ui.widget.ReadTextView
+    <com.stingray.qello.firetv.android.ui.widget.ReadTextView
         android:id="@+id/txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
