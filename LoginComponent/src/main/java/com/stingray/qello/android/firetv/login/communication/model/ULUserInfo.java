@@ -1,6 +1,6 @@
 package com.stingray.qello.android.firetv.login.communication.model;
 
-public class UserInfo {
+public class ULUserInfo {
     private Boolean canStartGracePeriod;
     private String loginId;
 
