@@ -36,13 +36,13 @@ buildscript {
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.stingray.qello.android.firetv"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode 10
         versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
