@@ -140,16 +140,21 @@ public class ContentTrackListPresenter extends Presenter {
 
         viewHolder.getContentTrackListTable().removeAllViews();
 
-        for (Track track: contentWithTracks.getTracks()) {
+
+        for (int i = 0; i < contentWithTracks.getTracks().size(); i++) {
+            Track track = contentWithTracks.getTracks().get(i);
             TableLayout tableLayout = viewHolder.getContentTrackListTable();
             View row = LayoutInflater.from(mContext).inflate(R.layout.content_track_list_row_layout, tableLayout, false);
-            TextView titleView = (TextView) row.findViewById(R.id.track_title);
+            TextView titleView = row.findViewById(R.id.track_title);
             titleView.setText(track.getTitle());
 
-            TextView subtitleView = (TextView) row.findViewById(R.id.track_subtitle);
+            TextView trackIndex = row.findViewById(R.id.track_index);
+            trackIndex.setText(String.valueOf(i + 1));
+
+            TextView subtitleView = row.findViewById(R.id.track_subtitle);
             subtitleView.setText(track.getSubtitle());
 
-            TextView durationView = (TextView) row.findViewById(R.id.track_duration);
+            TextView durationView = row.findViewById(R.id.track_duration);
             DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.US);
             formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
             String duration = formatter.format(new Date(track.getDuration()));
