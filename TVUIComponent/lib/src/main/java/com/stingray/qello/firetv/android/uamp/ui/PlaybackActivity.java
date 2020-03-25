@@ -74,6 +74,7 @@ import com.stingray.qello.firetv.android.uamp.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.uamp.helper.CaptioningHelper;
 import com.stingray.qello.firetv.android.uamp.mediaSession.GetVideoLinksCallable;
 import com.stingray.qello.firetv.android.uamp.mediaSession.MediaSessionController;
+import com.stingray.qello.firetv.android.uamp.mediaSession.VideoLinkSelector;
 import com.stingray.qello.firetv.android.uamp.model.VideoLink;
 import com.stingray.qello.firetv.android.ui.fragments.ErrorDialogFragment;
 import com.stingray.qello.firetv.android.utils.ErrorUtils;
@@ -258,6 +259,8 @@ public class PlaybackActivity extends Activity implements
                 observableFactory.createDetached(new GetVideoLinksCallable(mSelectedContent.getChannelId()))
                 .toBlocking().single();
 
+        mSelectedContent.setUrl(new VideoLinkSelector().select(videoLinksByType));
+        
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
             AnalyticsHelper.trackError(TAG, "Received an Intent to play content without a " +
                     "content object or content URL");
