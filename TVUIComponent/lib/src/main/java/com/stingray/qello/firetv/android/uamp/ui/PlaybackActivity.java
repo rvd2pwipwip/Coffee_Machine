@@ -58,7 +58,7 @@ import android.widget.ProgressBar;
 import com.stingray.qello.firetv.ads.AdMetaData;
 import com.stingray.qello.firetv.ads.IAds;
 import com.stingray.qello.firetv.analytics.AnalyticsTags;
-import com.stingray.qello.firetv.android.async.AsyncCaller;
+import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
@@ -154,7 +154,7 @@ public class PlaybackActivity extends Activity implements
     private CaptioningHelper mCaptioningHelper;
     private CaptioningManager.CaptioningChangeListener mCaptioningChangeListener;
 
-    private AsyncCaller asyncCaller = new AsyncCaller();
+    private ObservableFactory observableFactory = new ObservableFactory();
 
     /**
      * State of CC in Subtitle view.
@@ -255,7 +255,7 @@ public class PlaybackActivity extends Activity implements
 
         // TODO LEO LANUZO - Need to establish a proper way to communicate from Network thread to the UI thread
         Map<VideoLink.Type, String> videoLinksByType =
-                asyncCaller.getForBlocking(new GetVideoLinksCallable(mSelectedContent.getChannelId()))
+                observableFactory.createDetached(new GetVideoLinksCallable(mSelectedContent.getChannelId()))
                 .toBlocking().single();
 
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {

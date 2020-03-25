@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.util.Log;
 
-import com.stingray.qello.firetv.android.async.AsyncCaller;
+import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.WatchlistDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.records.RecentRecord;
@@ -111,7 +111,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     private final List<Action> mGlobalContentActionList = new ArrayList<>();
     private final Map<Integer, List<IContentActionListener>> mContentActionListeners = new HashMap<>();
     private final Map<String, String> mPoweredByLogoUrlMap = new HashMap<>();
-    private final AsyncCaller asyncCaller = new AsyncCaller();
+    private final ObservableFactory observableFactory = new ObservableFactory();
     private AuthHelper mAuthHelper;
     private PurchaseHelper mPurchaseHelper;
     private LauncherIntegrationManager mLauncherIntegrationManager;
@@ -800,7 +800,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             mICustomSearchHandler.onSearchRequested(query, iSearchResult);
         }
         else {
-            asyncCaller.getForSubscribe(new SearchCallable(query))
+            observableFactory.create(new SearchCallable(query))
                     .subscribe(contentContainerExt -> mSearchManager.syncSearch(
                             DEFAULT_SEARCH_ALGO_NAME, query, iSearchResult,
                             contentContainerExt.getContentContainer(),

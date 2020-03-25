@@ -64,7 +64,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.stingray.qello.firetv.android.async.AsyncCaller;
+import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.showscreen.ContentTrackListCallable;
 import com.stingray.qello.firetv.android.contentbrowser.showscreen.ContentTrackListRow;
@@ -107,7 +107,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private BackgroundManager mBackgroundManager;
     private DisplayMetrics mMetrics;
     private boolean mShowRelatedContent;
-    private AsyncCaller asyncCaller = new AsyncCaller();
+    private ObservableFactory observableFactory = new ObservableFactory();
 
     SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
 
@@ -175,7 +175,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             updateBackground(mSelectedContent.getBackgroundImageUrl());
             setOnItemViewClickedListener(new ItemViewClickedListener());
 
-            asyncCaller.getForSubscribe(new ContentTrackListCallable(mSelectedContent.getId()))
+            observableFactory.create(new ContentTrackListCallable(mSelectedContent.getId()))
                     .subscribe(tracks -> {
                         ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
                         setupTrackListPresenter(contentWithTracks.getTracks().size());
@@ -490,7 +490,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
      * Builds the related content row. Uses contents from the selected content's category.
      */
     private ContentContainerExt setupRelatedContentRow() {
-        return asyncCaller.getForBlocking(new RelatedContentCallable(mSelectedContent.getId()))
+        return observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId()))
                 .map(contentContainerExt -> {
                     ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 

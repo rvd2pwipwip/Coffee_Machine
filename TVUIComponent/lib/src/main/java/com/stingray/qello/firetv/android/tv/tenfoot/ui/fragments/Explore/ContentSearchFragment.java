@@ -63,7 +63,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.stingray.qello.firetv.android.async.AsyncCaller;
+import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.explorepage.ExplorePageCallable;
 import com.stingray.qello.firetv.android.contentbrowser.explorepage.GenreFilterCallable;
@@ -109,7 +109,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private boolean mHasResults = false;
     private SpeechOrbView mSpeechOrbView = null;
     private SearchEditText mSearchEditText = null;
-    private AsyncCaller asyncCaller = new AsyncCaller();
+    private ObservableFactory observableFactory = new ObservableFactory();
 
     // A local list row Adapter
     private ArrayObjectAdapter mListRowAdapter;
@@ -157,7 +157,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
         if (view != null) {
-            asyncCaller.getForSubscribe(new ExplorePageCallable())
+            observableFactory.create(new ExplorePageCallable())
                     .subscribe(genres -> { createGenreButtons(view, inflater, genres); });
 
             // Set background color and drawable.
@@ -464,7 +464,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             genreButton.setText(genre.getTitle());
             genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
                 if (view1.isFocused()) {
-                    asyncCaller.getForSubscribe(new GenreFilterCallable(genre.getId()))
+                    observableFactory.create(new GenreFilterCallable(genre.getId()))
                             .subscribe(contentContainerExt -> {
                                 SvodMetadata metadata = contentContainerExt.getMetadata();
                                 mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());

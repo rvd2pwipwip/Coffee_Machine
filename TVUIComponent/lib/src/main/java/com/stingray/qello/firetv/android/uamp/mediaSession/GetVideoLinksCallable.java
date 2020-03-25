@@ -30,8 +30,6 @@ public class GetVideoLinksCallable extends SvodCallable<Map<VideoLink.Type, Stri
             String url = String.format(ENDPOINT, assetId);
             String jsonResponse = get(url);
 
-            Log.i(TAG, String.format("Received response: %s", jsonResponse));
-
             List<VideoLink> videoLinks = objectMapper.readValue(jsonResponse, VideoLinks.class).getVideoLinks();
 
             Map<VideoLink.Type, String> mediaUriByType = new HashMap<>();
