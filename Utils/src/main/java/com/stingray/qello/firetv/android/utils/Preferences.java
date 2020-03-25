@@ -18,6 +18,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
+
 
 /**
  * Preferences helper class.
@@ -132,5 +134,19 @@ public class Preferences {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(sContext);
         return prefs.contains(key);
+    }
+
+    public static void setLoggedOutState() {
+        Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, false);
+        Preferences.setString(PreferencesConstants.ACCESS_TOKEN, null);
+        Preferences.setBoolean(PreferencesConstants.HAS_SUBSCRIPTION, false);
+    }
+
+    public static void setLoggedInState(String accessToken, String subscriptionPlan) {
+        Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, true);
+        Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
+
+        boolean hasSubscription = subscriptionPlan != null && !subscriptionPlan.equalsIgnoreCase("NONE");
+        Preferences.setBoolean(PreferencesConstants.HAS_SUBSCRIPTION, hasSubscription);
     }
 }

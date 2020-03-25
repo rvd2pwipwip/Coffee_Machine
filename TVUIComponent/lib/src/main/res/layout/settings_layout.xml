@@ -83,14 +83,27 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/login_logout_button"
+            android:id="@+id/login_button"
             style="@android:style/Widget.Holo.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
-            android:text="Login/Log Out"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="#C4C4C4"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/logout_button"
+            style="@android:style/Widget.Holo.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/action_button_background"
+            android:fontFamily="sans-serif-light"
+            android:gravity="left|center_vertical"
+            android:text="Log Out"
             android:textAllCaps="false"
             android:textColor="#C4C4C4"
             android:textSize="14sp" />

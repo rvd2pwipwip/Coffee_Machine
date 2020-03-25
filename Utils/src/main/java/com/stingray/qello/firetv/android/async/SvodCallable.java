@@ -1,6 +1,8 @@
 package com.stingray.qello.firetv.android.async;
 
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.utils.Helpers;
+import com.stingray.qello.firetv.android.utils.Preferences;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,18 +17,25 @@ import java.util.concurrent.Callable;
 public abstract class SvodCallable<T> implements Callable<T> {
     private static final String TAG = SvodCallable.class.getName();
     private static final String BASE_URL = "https://svod-test.api.stingray.com";
-
-    protected static final String CLIENT_ID = "mBasxFOpteXOYwc9";
+    private static final String CLIENT_ID = "mBasxFOpteXOYwc9";
 
     private String createUrl(String url) {
         return BASE_URL + url;
     }
 
     protected String get(String path) throws IOException {
+        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
+    }
+
+    protected String get(String path, String accessToken) throws IOException {
         URL url = new URL(createUrl(path));
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
+
+        if (accessToken != null && !accessToken.isEmpty()) {
+            urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+        }
 
         return getResponseBody(urlConnection);
     }
@@ -38,6 +47,13 @@ public abstract class SvodCallable<T> implements Callable<T> {
         urlConnection.setRequestMethod("POST");
         urlConnection.setRequestProperty("Content-Type", "application/json");
         urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
+
+        String accessToken = Preferences.getString(PreferencesConstants.ACCESS_TOKEN);
+
+        if (accessToken != null && !accessToken.isEmpty()) {
+            urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+        }
+
 
         for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
             urlConnection.setRequestProperty(entry.getKey(), entry.getValue());

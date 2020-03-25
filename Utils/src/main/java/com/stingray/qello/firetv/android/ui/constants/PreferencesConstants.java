@@ -38,4 +38,10 @@ public class PreferencesConstants {
      * Constant for the time the app was last opened.
      */
     public static final String TIME_LAST_SAVED = "last_time_saved";
+
+    public static final String ACCESS_TOKEN = "access_token";
+
+    public static final String HAS_SUBSCRIPTION = "has_subscription";
+
+    public static final String IS_LOGGED_IN = "is_logged_in";
 }
