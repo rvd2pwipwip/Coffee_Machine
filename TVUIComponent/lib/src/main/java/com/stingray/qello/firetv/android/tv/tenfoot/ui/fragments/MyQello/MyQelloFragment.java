@@ -8,9 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
+import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
+import com.stingray.qello.firetv.android.contentbrowser.helper.AuthHelper;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.utils.Helpers;
+import com.stingray.qello.firetv.android.utils.Preferences;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class MyQelloFragment extends Fragment{
 
@@ -18,18 +26,32 @@ public class MyQelloFragment extends Fragment{
 
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
 
+    private final EventBus mEventBus = EventBus.getDefault();
+
+    private LinearLayout userBtnContainer;
+    private LinearLayout loggedOutContainer;
+    private Button loginButton;
+    private Button startFreeTrialButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
+        mEventBus.register(this);
         Helpers.handleActivityEnterFadeTransition(getActivity(), ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.my_qello_layout, container, false);
+
+        userBtnContainer = view.findViewById(R.id.user_btn_container);
+        loggedOutContainer = view.findViewById(R.id.logged_out_container);
+
+        loginButton = view.findViewById((R.id.login_button));
+        startFreeTrialButton = view.findViewById((R.id.free_trial_button));
+
+        toggleAuthenticationViews(Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN));
+
         addListenerOnButton(view);
         return view;
     }
@@ -41,12 +63,16 @@ public class MyQelloFragment extends Fragment{
                 FragmentManager fragmentManager = this.getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                Fragment settingsFragment = fragmentManager.findFragmentByTag(SettingsFragment.class.getSimpleName());
-                if(settingsFragment == null) {
-                    settingsFragment = new SettingsFragment();
-                }
+                // TODO Fix me - Leo - Replace doesn't work if settings fragment was the last thing loaded on page switch
+                Fragment settingsFragment = new SettingsFragment();
+//                Fragment settingsFragment = fragmentManager.findFragmentByTag(SettingsFragment.class.getSimpleName());
+//
+//                if (settingsFragment == null) {
+//                    settingsFragment = new SettingsFragment();
+//                }
 
                 fragmentTransaction.replace(R.id.my_qello_detail, settingsFragment, SettingsFragment.class.getSimpleName());
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -82,6 +108,41 @@ public class MyQelloFragment extends Fragment{
                 fragmentTransaction.commit();
             }
         });
+
+        startFreeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
+                .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null, null));
+
+        loginButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity()).loginActionTriggered(getActivity()));
     }
 
+    /**
+     * Listener method to listen for authentication updates, it sets the status of
+     * loginLogoutAction action used by the browse activities
+     *
+     * @param authenticationStatusUpdateEvent Event for update in authentication status.
+     */
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
+                                                          authenticationStatusUpdateEvent) {
+        toggleAuthenticationViews(authenticationStatusUpdateEvent.isUserAuthenticated());
+    }
+
+    private void toggleAuthenticationViews(boolean isLoggedIn) {
+        if (loggedOutContainer != null) {
+            loggedOutContainer.setVisibility(mapToVisibility(!isLoggedIn));
+        }
+
+        if (userBtnContainer != null) {
+            userBtnContainer.setVisibility(mapToVisibility(isLoggedIn));
+        }
+    }
+
+    private int mapToVisibility(boolean isVisible) {
+        if (isVisible) {
+            return View.VISIBLE;
+        } else {
+            return View.GONE;
+        }
+    }
 }

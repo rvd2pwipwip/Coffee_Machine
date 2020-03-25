@@ -24,11 +24,10 @@ public class SettingsFragment extends Fragment {
 
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
 
-    private Button loginButton;
-    private Button logoutButton;
-    private Button startFreeTrialButton;
     private final EventBus mEventBus = EventBus.getDefault();
 
+    private Button logoutButton;
+    private Button startFreeTrialButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,37 +40,33 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.settings_layout, container, false);
 
-        loginButton = view.findViewById((R.id.login_button));
+        startFreeTrialButton = view.findViewById(R.id.free_trial_button);
         logoutButton = view.findViewById((R.id.logout_button));
-        startFreeTrialButton = view.findViewById((R.id.free_trial_button));
 
-        toggleLoginLogout(Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN));
+        toggleAuthenticationViews(
+                Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN),
+                Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION)
+        );
 
         addListenerOnButton(view);
         return view;
     }
 
     public void addListenerOnButton(View view) {
-        Button faqButton = (Button) view.findViewById(R.id.faq_button);
+        Button faqButton = view.findViewById(R.id.faq_button);
         faqButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
                 .createFragment(getActivity(), getActivity().getFragmentManager(), getActivity().getString(com.stingray.qello.firetv.utils.R.string.faq_settings_fragment_tag), "https://legal.stingray.com/en/qello-faq/markdown"));
 
 
-        Button contactUsButton = (Button) view.findViewById(R.id.contact_us_button);
+        Button contactUsButton = view.findViewById(R.id.contact_us_button);
         contactUsButton.setOnClickListener(v -> new ContactUsSettingsDialog()
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
 
-        Button aboutButton = (Button) view.findViewById(R.id.about_button);
+        Button aboutButton = view.findViewById(R.id.about_button);
         aboutButton.setOnClickListener(v -> new AboutSettingsDialog()
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
 
-        loginButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity()).loginActionTriggered(getActivity()));
         logoutButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity()).logoutActionTriggered());
-
-        startFreeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
-                .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null,
-                        null)
-        );
     }
 
     /**
@@ -84,21 +79,24 @@ public class SettingsFragment extends Fragment {
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
-        if (loginButton != null && logoutButton != null) {
-            toggleLoginLogout(authenticationStatusUpdateEvent.isUserAuthenticated());
+        toggleAuthenticationViews(authenticationStatusUpdateEvent.isUserAuthenticated(), Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION));
+    }
+
+    private void toggleAuthenticationViews(boolean isLoggedIn, boolean hasSubscription) {
+        if (logoutButton != null) {
+            logoutButton.setVisibility(mapToVisibility(isLoggedIn));
+        }
+
+        if (startFreeTrialButton != null) {
+            startFreeTrialButton.setVisibility(mapToVisibility(isLoggedIn && !hasSubscription));
         }
     }
 
-    private void toggleLoginLogout(boolean isLoggedIn) {
-        if (isLoggedIn) {
-            startFreeTrialButton.setVisibility(View.GONE);
-            logoutButton.setVisibility(View.VISIBLE);
-            loginButton.setVisibility(View.GONE);
+    private int mapToVisibility(boolean isVisible) {
+        if (isVisible) {
+            return View.VISIBLE;
         } else {
-            startFreeTrialButton.setVisibility(View.VISIBLE);
-            logoutButton.setVisibility(View.GONE);
-            loginButton.setVisibility(View.VISIBLE);
+            return View.GONE;
         }
     }
-
 }
