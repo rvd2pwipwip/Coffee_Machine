@@ -42,6 +42,33 @@ permissions and limitations under the License.
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="call_to_action_button_style_outline">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/text_input_frame_state</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/ui_almost_white</item>
+        <item name="android:textColorHint">@color/ui_grey</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="call_to_action_button_style_outline_inactive">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/text_input_frame_state</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">#777777</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+    <style name="call_to_action_button_style_outline_small">
+        <item name="android:background">@drawable/text_input_frame_state</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/ui_almost_white</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
     <style name="text_input_style">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -49,7 +76,7 @@ permissions and limitations under the License.
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textColor">@color/ui_almost_white</item>
         <item name="android:textColorHint">@color/ui_grey</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">10dp</item>
     </style>
 
     <style name="secondary_button">
