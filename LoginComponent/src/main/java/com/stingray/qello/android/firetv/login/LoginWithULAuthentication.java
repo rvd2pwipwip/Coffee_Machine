@@ -1,12 +1,12 @@
 /**
  * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * A copy of the License is located at
- *
- *     http://aws.amazon.com/apache2.0/
- *
+ * <p>
+ * http://aws.amazon.com/apache2.0/
+ * <p>
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
@@ -17,11 +17,16 @@ package com.stingray.qello.android.firetv.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.amazon.identity.auth.device.authorization.api.AuthzConstants;
+import com.stingray.qello.android.firetv.login.activities.LoginActivity;
+import com.stingray.qello.android.firetv.login.communication.SvodUserInfoCallable;
+import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
 import com.stingray.qello.firetv.auth.IAuthentication;
-import com.stingray.qello.android.firetv.login.activities.LoginActivity;
 
 
 /**
@@ -31,9 +36,10 @@ public class LoginWithULAuthentication implements IAuthentication {
 
     final static String IMPL_CREATOR_NAME = LoginWithULAuthentication.class.getSimpleName();
     private static final String TAG = LoginWithULAuthentication.class.getName();
-    private static final String IS_LOGGED_IN = "isLoggedIn";
 
     private Context mContext;
+    private ULAuthManager ulAuthManager;
+    private ObservableFactory observableFactory;
 
     /**
      * This method is used for configuration.
@@ -43,6 +49,8 @@ public class LoginWithULAuthentication implements IAuthentication {
     @Override
     public void init(Context context) {
         mContext = context;
+        ulAuthManager = new ULAuthManager();
+        observableFactory = new ObservableFactory();
     }
 
     /**
@@ -74,41 +82,38 @@ public class LoginWithULAuthentication implements IAuthentication {
      */
     @Override
     public void isUserLoggedIn(Context context, final ResponseHandler responseHandler) {
+        final Bundle errorBundle = new Bundle();
+        populateErrorBundle(errorBundle, AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
 
-        final Bundle bundle = new Bundle();
+        String accessToken = Preferences.getString(PreferencesConstants.ACCESS_TOKEN);
 
+        if (!accessToken.isEmpty()) {
+            observableFactory.createDetached(new SvodUserInfoCallable(accessToken))
+                    .doOnError(throwable -> {
+                        logout(context, new ResponseHandler() {
+                            @Override
+                            public void onSuccess(Bundle extras) {
+                                Log.i(TAG, "Logout Success");
+                                // Nothing to do
+                            }
 
-         populateErrorBundle(bundle, AuthenticationConstants
-                                    .AUTHENTICATION_ERROR_CATEGORY);
-                            responseHandler.onFailure(bundle);
-
-        // responseHandler.onSuccess(bundle);
-
-        //TODO Call UL
-
-/*        // Use the auth manager to check if the user token is valid.
-        mAuthManager.getToken(mScopes, new APIListener() {
-            @Override
-            public void onSuccess(Bundle bundle) {
-                // If the token is null then return false.
-                if (bundle.get(mContext.getString(R.string.COM_AMAZON_IDENTITY_AUTH_DEVICE_AUTHORIZATION_TOKEN)) == null) {
-                    populateErrorBundle(bundle, AuthenticationConstants
-                            .AUTHENTICATION_ERROR_CATEGORY);
-                    responseHandler.onFailure(bundle);
-                }
-                else {
-                    responseHandler.onSuccess(bundle);
-
-                }
-            }
-
-            @Override
-            public void onError(AuthError authError) {
-                // There is some other auth issue.
-                populateErrorBundle(bundle, String.valueOf(authError.getCategory()));
-                responseHandler.onFailure(bundle);
-            }
-        });*/
+                            @Override
+                            public void onFailure(Bundle extras) {
+                                Log.i(TAG, "Logout Failed");
+                                responseHandler.onFailure(errorBundle);
+                            }
+                        });
+                        responseHandler.onFailure(errorBundle);
+                    })
+                    .subscribe(userInfo -> {
+                        Bundle bundle = new Bundle();
+                        bundle.putString(AuthzConstants.BUNDLE_KEY.TOKEN.val, accessToken);
+                        bundle.putString("subscriptionPlan", userInfo.getSubscription().getPlan());
+                        responseHandler.onSuccess(bundle);
+                    });
+        } else {
+            responseHandler.onFailure(errorBundle);
+        }
     }
 
     /**
@@ -132,29 +137,8 @@ public class LoginWithULAuthentication implements IAuthentication {
      */
     @Override
     public void logout(Context context, final ResponseHandler responseHandler) {
-
-        final Bundle bundle = new Bundle();
-
-        //TODO call UL
-        Preferences.setBoolean(IS_LOGGED_IN, false);
-        responseHandler.onSuccess(bundle);
-
-        /*mAuthManager.clearAuthorizationState(new APIListener() {
-            @Override
-            public void onSuccess(Bundle results) {
-
-                Preferences.setBoolean(IS_LOGGED_IN, false);
-                responseHandler.onSuccess(bundle);
-            }
-
-            @Override
-            public void onError(AuthError authError) {
-
-                Log.e(TAG, "Error clearing authorization state.", authError);
-                populateErrorBundle(bundle, String.valueOf(authError.getCategory()));
-                responseHandler.onFailure(bundle);
-            }
-        });*/
+        Preferences.setLoggedOutState();
+        responseHandler.onSuccess(new Bundle());
     }
 
     /**
@@ -174,10 +158,7 @@ public class LoginWithULAuthentication implements IAuthentication {
     private void populateErrorBundle(Bundle bundle, String errorCategory) {
 
         Bundle errorBundle = new Bundle();
-        errorBundle.putString(
-                AuthenticationConstants.ERROR_CATEGORY,
-                errorCategory);
-        bundle.putBundle(
-                AuthenticationConstants.ERROR_BUNDLE, errorBundle);
+        errorBundle.putString(AuthenticationConstants.ERROR_CATEGORY, errorCategory);
+        bundle.putBundle(AuthenticationConstants.ERROR_BUNDLE, errorBundle);
     }
 }

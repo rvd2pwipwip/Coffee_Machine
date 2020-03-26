@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.helper.AuthHelper;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
@@ -23,10 +24,10 @@ public class SettingsFragment extends Fragment {
 
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
 
-    private Button loginLogOutButton;
-    private Button startFreeTrialButton;
     private final EventBus mEventBus = EventBus.getDefault();
 
+    private Button logoutButton;
+    private Button startFreeTrialButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,62 +38,65 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.settings_layout, container, false);
+        View view = inflater.inflate(R.layout.settings_layout, container, false);
 
-        loginLogOutButton = (Button) view.findViewById((R.id.login_logout_button));
-        startFreeTrialButton = (Button) view.findViewById((R.id.free_trial_button));
+        startFreeTrialButton = view.findViewById(R.id.free_trial_button);
+        logoutButton = view.findViewById((R.id.logout_button));
 
-        String text = "Login";
-        if (Preferences.getBoolean("isLoggedIn")) {
-            text = "Logout";
-        }
-        loginLogOutButton.setText(text);
+        toggleAuthenticationViews(
+                Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN),
+                Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION)
+        );
 
         addListenerOnButton(view);
         return view;
     }
 
-    public void addListenerOnButton(View view)  {
-        Button faqButton = (Button) view.findViewById(R.id.faq_button);
+    public void addListenerOnButton(View view) {
+        Button faqButton = view.findViewById(R.id.faq_button);
         faqButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
                 .createFragment(getActivity(), getActivity().getFragmentManager(), getActivity().getString(com.stingray.qello.firetv.utils.R.string.faq_settings_fragment_tag), "https://legal.stingray.com/en/qello-faq/markdown"));
 
 
-        Button contactUsButton = (Button) view.findViewById(R.id.contact_us_button);
+        Button contactUsButton = view.findViewById(R.id.contact_us_button);
         contactUsButton.setOnClickListener(v -> new ContactUsSettingsDialog()
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
 
-        Button aboutButton = (Button) view.findViewById(R.id.about_button);
+        Button aboutButton = view.findViewById(R.id.about_button);
         aboutButton.setOnClickListener(v -> new AboutSettingsDialog()
                 .createFragment(getActivity(), getActivity().getFragmentManager()));
 
-        loginLogOutButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity()).loginLogoutActionTriggered(getActivity()));
-
-        startFreeTrialButton.setOnClickListener( v -> ContentBrowser.getInstance(getActivity())
-                .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null,
-                        null)
-                );
-
-
+        logoutButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity()).logoutActionTriggered());
     }
-   /**
+
+    /**
      * Listener method to listen for authentication updates, it sets the status of
      * loginLogoutAction action used by the browse activities
      *
      * @param authenticationStatusUpdateEvent Event for update in authentication status.
      */
+    @SuppressWarnings("unused")
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
-
-        if (loginLogOutButton != null) {
-            String text = authenticationStatusUpdateEvent.isUserAuthenticated() ?
-                    "Logout" :
-                    "Login";
-            loginLogOutButton.setText(text);
-        }
-
-
+        toggleAuthenticationViews(authenticationStatusUpdateEvent.isUserAuthenticated(), Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION));
     }
 
+    private void toggleAuthenticationViews(boolean isLoggedIn, boolean hasSubscription) {
+        if (logoutButton != null) {
+            logoutButton.setVisibility(mapToVisibility(isLoggedIn));
+        }
+
+        if (startFreeTrialButton != null) {
+            startFreeTrialButton.setVisibility(mapToVisibility(isLoggedIn && !hasSubscription));
+        }
+    }
+
+    private int mapToVisibility(boolean isVisible) {
+        if (isVisible) {
+            return View.VISIBLE;
+        } else {
+            return View.GONE;
+        }
+    }
 }

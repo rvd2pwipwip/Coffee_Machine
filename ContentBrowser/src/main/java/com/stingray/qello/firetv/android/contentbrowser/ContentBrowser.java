@@ -812,28 +812,29 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     /**
      * Method to trigger the LogoutSettingsFragment on clicking loginLogout Action.
      *
-     * @param activity       The activity on which fragment needs to be added.
+     * @param activity The activity on which fragment needs to be added.
      */
-    public void loginLogoutActionTriggered(Activity activity) {
+    public void loginActionTriggered(Activity activity) {
 
-        mAuthHelper
-                .isAuthenticated()
-                .subscribe(isAuthenticatedResultBundle -> {
-                    if (isAuthenticatedResultBundle.getBoolean(AuthHelper.RESULT)) {
-                        new LogoutSettingsFragment()
-                                .createFragment(activity,
-                                                activity.getFragmentManager());
-                    }
-                    else {
-                        mAuthHelper.authenticateWithActivity().subscribe(resultBundle -> {
-                            if (resultBundle != null &&
-                                    !resultBundle.getBoolean(AuthHelper.RESULT)) {
-                                getNavigator().runOnUpcomingActivity(() -> mAuthHelper
-                                        .handleErrorBundle(resultBundle));
-                            }
-                        });
+        mAuthHelper.isAuthenticated().subscribe(isAuthenticatedResultBundle -> {
+            if (isAuthenticatedResultBundle.getBoolean(AuthHelper.RESULT)) {
+                new LogoutSettingsFragment()
+                        .createFragment(activity,
+                                activity.getFragmentManager());
+            } else {
+                mAuthHelper.authenticateWithActivity().subscribe(resultBundle -> {
+                    if (resultBundle != null &&
+                            !resultBundle.getBoolean(AuthHelper.RESULT)) {
+                        getNavigator().runOnUpcomingActivity(() -> mAuthHelper
+                                .handleErrorBundle(resultBundle));
                     }
                 });
+            }
+        });
+    }
+
+    public void logoutActionTriggered() {
+        mAuthHelper.logout().subscribe();
     }
 
     /**

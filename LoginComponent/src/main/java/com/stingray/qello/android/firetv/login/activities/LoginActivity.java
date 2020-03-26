@@ -19,7 +19,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -27,14 +26,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.stingray.qello.firetv.android.utils.Preferences;
-import com.stingray.qello.firetv.auth.AuthenticationConstants;
 import com.amazon.identity.auth.device.AuthError;
 import com.amazon.identity.auth.device.authorization.api.AmazonAuthorizationManager;
 import com.amazon.identity.auth.device.authorization.api.AuthorizationListener;
 import com.amazon.identity.auth.device.authorization.api.AuthzConstants;
 import com.amazon.identity.auth.device.shared.APIListener;
 import com.stingray.qello.android.firetv.login.R;
+import com.stingray.qello.android.firetv.login.ULAuthManager;
+import com.stingray.qello.android.firetv.login.communication.UserpassLoginCallable;
+import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
+import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
+import com.stingray.qello.firetv.android.utils.Preferences;
+import com.stingray.qello.firetv.auth.AuthenticationConstants;
 
 /**
  * This activity allows users to login with amazon.
@@ -44,7 +48,6 @@ public class LoginActivity extends Activity {
     private static final String TAG = LoginActivity.class.getName();
 
     private String[] APP_SCOPES;
-    private static final String IS_LOGGED_IN = "isLoggedIn";
 
     private LinearLayout loginWithUP;
     private TextView usernameInput;
@@ -52,6 +55,7 @@ public class LoginActivity extends Activity {
     private Button continueButton;
     private ImageButton lwaButton;
     private AmazonAuthorizationManager amazonAuthManager;
+    private ULAuthManager ulAuthManager;
     private ProgressBar mLogInProgress;
 
 
@@ -63,7 +67,7 @@ public class LoginActivity extends Activity {
         // Confirm that we have the correct API Key.
         try {
             amazonAuthManager = new AmazonAuthorizationManager(this, Bundle.EMPTY);
-            //TODO new UL auth manager
+            ulAuthManager = new ULAuthManager();
         }
         catch (IllegalArgumentException e) {
             showAuthToast(getString(R.string.incorrect_api_key));
@@ -81,35 +85,46 @@ public class LoginActivity extends Activity {
      */
     private void initializeUI() {
 
-        loginWithUP = (LinearLayout) findViewById(R.id.login_with_up);
-        usernameInput = (TextView) findViewById(R.id.username_input);
-        passwordInput = (TextView) findViewById(R.id.password_input);
-        continueButton = (Button) findViewById(R.id.continue_btn);
-        continueButton.setOnClickListener(new View.OnClickListener() {
+        loginWithUP = findViewById(R.id.login_with_up);
+        usernameInput = findViewById(R.id.username_input);
+        passwordInput = findViewById(R.id.password_input);
 
-            @Override
-            public void onClick(View v) {
-                setLoggingInState(true);
-                setLoggedInState();
-                //TODO Login with UL
-                setResult(RESULT_OK);
-                finish();
-            }
+        // TODO Remove
+        usernameInput.setText("lf1@sd-i.ca");
+        passwordInput.setText("12345678");
+
+        continueButton = findViewById(R.id.continue_btn);
+        continueButton.setOnClickListener(v -> {
+            setLoggingInState(true);
+            String username = usernameInput.getText().toString();
+            String password = passwordInput.getText().toString();
+
+            // TODO Get lang and deviceId from system
+            String language = "en";
+            String deviceId = "aDeviceId";
+
+            UserpassLoginRequestBody requestBody = new UserpassLoginRequestBody(username, password, language, deviceId);
+
+            new ObservableFactory().createDetached(new UserpassLoginCallable(requestBody))
+                    .subscribe(response -> {
+                        if (response != null) {
+                            ulAuthManager.authorize(response.getSessionId(), language, deviceId, new AuthListener());
+                        } else {
+                            setResultAndReturn(new Throwable("Invalid Credentials"), AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
+                            finish();
+                        }
+                    });
         });
 
         // Setup the listener on the login button.
-        lwaButton = (ImageButton) findViewById(R.id.login_with_amazon);
+        lwaButton = findViewById(R.id.login_with_amazon);
         lwaButton.setVisibility(Button.VISIBLE);
-        lwaButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                setLoggingInState(true);
-                amazonAuthManager.authorize(APP_SCOPES, Bundle.EMPTY, new AuthListener());
-            }
+        lwaButton.setOnClickListener(v -> {
+            setLoggingInState(true);
+            amazonAuthManager.authorize(APP_SCOPES, Bundle.EMPTY, new AuthListener());
         });
 
-        mLogInProgress = (ProgressBar) findViewById(R.id.log_in_progress);
+        mLogInProgress = findViewById(R.id.log_in_progress);
     }
 
     /**
@@ -128,7 +143,13 @@ public class LoginActivity extends Activity {
          */
         @Override
         public void onSuccess(Bundle response) {
-            amazonAuthManager.getToken(APP_SCOPES, new TokenListener());
+            String authCode = response.getString(AuthzConstants.BUNDLE_KEY.AUTHORIZATION_CODE.val);
+
+            if (authCode == null) {
+                amazonAuthManager.getToken(APP_SCOPES, new TokenListener());
+            } else {
+                ulAuthManager.getToken(authCode, new TokenListener());
+            }
         }
 
         /**
@@ -144,9 +165,9 @@ public class LoginActivity extends Activity {
                 public void run() {
                     showAuthToast(getString(R.string.error_during_auth));
                     setLoggingInState(false);
+                    setLoggedOutState();
                     LoginActivity.this
-                            .setResultAndReturn(
-                                    ae.getCause(),
+                            .setResultAndReturn(ae.getCause(),
                                     AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
                 }
             });
@@ -164,6 +185,7 @@ public class LoginActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    setLoggedOutState();
                     showAuthToast(getString(R.string.auth_cancelled));
                 }
             });
@@ -176,16 +198,16 @@ public class LoginActivity extends Activity {
      */
     private void setLoggedOutState() {
         lwaButton.setVisibility(Button.VISIBLE);
-        Preferences.setBoolean(IS_LOGGED_IN, false);
+        Preferences.setLoggedOutState();
     }
 
     /**
      * Sets the state of the application to reflect that the user is currently authorized.
      */
-    private void setLoggedInState() {
+    private void setLoggedInState(String accessToken, String subscriptionPlan) {
         loginWithUP.setVisibility(LinearLayout.GONE);
         lwaButton.setVisibility(Button.GONE);
-        Preferences.setBoolean(IS_LOGGED_IN, true);
+        Preferences.setLoggedInState(accessToken, subscriptionPlan);
         setLoggingInState(false);
     }
 
@@ -202,7 +224,7 @@ public class LoginActivity extends Activity {
             mLogInProgress.setVisibility(ProgressBar.VISIBLE);
         }
         else {
-            if (!Preferences.getBoolean(IS_LOGGED_IN)) {
+            if (!Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN)) {
                 lwaButton.setVisibility(Button.VISIBLE);
             }
             mLogInProgress.setVisibility(ProgressBar.GONE);
@@ -234,15 +256,9 @@ public class LoginActivity extends Activity {
          */
         @Override
         public void onSuccess(Bundle response) {
-
             final String accessToken = response.getString(AuthzConstants.BUNDLE_KEY.TOKEN.val);
-            //TODO CALL UL with access token
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setLoggedInState();
-                }
-            });
+            final String subscritionPlan = response.getString("subscriptionPlan");
+            runOnUiThread(() -> setLoggedInState(accessToken, subscritionPlan));
             setResult(RESULT_OK);
             finish();
         }
@@ -253,14 +269,9 @@ public class LoginActivity extends Activity {
          */
         @Override
         public void onError(AuthError ae) {
-
             Log.e(TAG, ae.getMessage(), ae);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setLoggingInState(false);
-                }
-            });
+            setLoggedOutState();
+            runOnUiThread(() -> setLoggingInState(false));
         }
     }
 
