@@ -1,12 +1,14 @@
 package com.stingray.qello.firetv.android.async;
 
+import com.stingray.qello.firetv.android.async.requestmodel.TokenRequestBody;
+import com.stingray.qello.firetv.android.async.requestmodel.TokenResponse;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
-import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
 
-import java.io.BufferedReader;
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,10 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public abstract class SvodCallable<T> implements Callable<T> {
+public abstract class SvodCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = SvodCallable.class.getName();
     private static final String BASE_URL = "https://svod-test.api.stingray.com";
-    private static final String CLIENT_ID = "mBasxFOpteXOYwc9";
 
     private String createUrl(String url) {
         return BASE_URL + url;
@@ -28,16 +29,48 @@ public abstract class SvodCallable<T> implements Callable<T> {
     }
 
     protected String get(String path, String accessToken) throws IOException {
-        URL url = new URL(createUrl(path));
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestMethod("GET");
-        urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
+        HttpURLConnection urlConnection;
+        Response response;
+        boolean performRetry = false;
 
-        if (accessToken != null && !accessToken.isEmpty()) {
-            urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-        }
+        do {
+            URL url = new URL(createUrl(path));
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
 
-        return getResponseBody(urlConnection);
+            if (accessToken != null && !accessToken.isEmpty()) {
+                urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+            }
+
+            response = new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+
+            if (response.getCode() == 401 && !performRetry) {
+                String refreshToken = Preferences.getString(PreferencesConstants.REFRESH_TOKEN);
+                boolean performLogout = true;
+
+                if (refreshToken != null) {
+                    TokenRequestBody tokenRequestBody = new TokenRequestBody(refreshToken, CLIENT_ID);
+                    TokenResponse tokenResponse = new TokenCallable(tokenRequestBody).call();
+                    if (tokenResponse != null) {
+                        Preferences.setString(PreferencesConstants.ACCESS_TOKEN, tokenResponse.getAccessToken());
+                        performRetry = true;
+                        performLogout = false;
+                    }
+                }
+
+                if (performLogout) {
+                    Preferences.setLoggedOutState();
+                    EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(false));
+                    performRetry = true;
+                }
+            } else {
+                performRetry = false;
+            }
+
+        } while (performRetry);
+
+        return response.getBody();
     }
 
     protected Response post(String path, String jsonBody, Map<String, String> additionalHeaders) throws IOException {
@@ -65,35 +98,5 @@ public abstract class SvodCallable<T> implements Callable<T> {
         }
 
         return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
-    }
-
-
-    private String getResponseBody(HttpURLConnection urlConnection) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), Helpers.getDefaultAppCharset()), 8)) {
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-            return sb.toString();
-        }
-    }
-
-    protected static class Response {
-        private final int code;
-        private final String body;
-
-        public Response(int code, String body) {
-            this.code = code;
-            this.body = body;
-        }
-
-        public int getCode() {
-            return code;
-        }
-
-        public String getBody() {
-            return body;
-        }
     }
 }
