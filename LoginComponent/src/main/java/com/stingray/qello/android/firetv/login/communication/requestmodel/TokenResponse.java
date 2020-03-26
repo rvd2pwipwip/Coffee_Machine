@@ -1,4 +1,4 @@
-package com.stingray.qello.firetv.android.async.requestmodel;
+package com.stingray.qello.android.firetv.login.communication.requestmodel;
 
 public class TokenResponse {
     private String accessToken;

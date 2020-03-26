@@ -1,8 +1,12 @@
-package com.stingray.qello.firetv.android.async;
+package com.stingray.qello.android.firetv.login.communication;
 
 import android.text.TextUtils;
 
+import com.stingray.qello.firetv.android.utils.Helpers;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,9 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public abstract class ULCallable<T> extends BaseCommunicator implements Callable<T> {
+public abstract class ULCallable<T> implements Callable<T> {
     private static final String TAG = ULCallable.class.getName();
     private static final String BASE_URL = "https://ulogin-proxy-test.stingray.com/loginapi";
+
+    protected static final String CLIENT_ID = "mBasxFOpteXOYwc9";
 
     private String createUrl(String url) {
         return BASE_URL + url;
@@ -59,5 +65,35 @@ public abstract class ULCallable<T> extends BaseCommunicator implements Callable
         }
 
         return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+    }
+
+
+    private String getResponseBody(HttpURLConnection urlConnection) throws IOException {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), Helpers.getDefaultAppCharset()), 8)) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            return sb.toString();
+        }
+    }
+
+    protected static class Response {
+        private final int code;
+        private final String body;
+
+        public Response(int code, String body) {
+            this.code = code;
+            this.body = body;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getBody() {
+            return body;
+        }
     }
 }

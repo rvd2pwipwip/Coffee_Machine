@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
-import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
+import com.stingray.qello.firetv.android.contentbrowser.helper.AuthHelper;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.utils.Helpers;
@@ -123,7 +123,7 @@ public class MyQelloFragment extends Fragment{
      */
     @SuppressWarnings("unused")
     @Subscribe
-    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
+    public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
         toggleAuthenticationViews(authenticationStatusUpdateEvent.isUserAuthenticated());
     }

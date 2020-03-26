@@ -142,9 +142,8 @@ public class Preferences {
         Preferences.setBoolean(PreferencesConstants.HAS_SUBSCRIPTION, false);
     }
 
-    public static void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan) {
+    public static void setLoggedInState(String accessToken, String subscriptionPlan) {
         Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, true);
-        Preferences.setString(PreferencesConstants.REFRESH_TOKEN, refreshToken);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
 
         boolean hasSubscription = subscriptionPlan != null && !subscriptionPlan.equalsIgnoreCase("NONE");

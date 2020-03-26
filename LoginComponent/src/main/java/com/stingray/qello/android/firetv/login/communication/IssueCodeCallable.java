@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.IssueCodeRequestBody;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.IssueCodeResponse;
-import com.stingray.qello.firetv.android.async.ULCallable;
 
 import java.util.Map;
 
