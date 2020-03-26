@@ -97,7 +97,7 @@ permissions and limitations under the License.
     <dimen name="lb_search_browse_rows_align_top">100dp</dimen>
     <dimen name="lb_search_bar_padding_top">29dp</dimen>
     <item name="lb_search_orb_focused_zoom" type="fraction">125%</item>
-    <dimen name="lb_search_bar_text_size">24sp</dimen>
+    <dimen name="lb_search_bar_text_size">20sp</dimen>
     <dimen name="lb_search_browse_row_padding_left">50dp</dimen>
 
     <!-- Details description layout dimensions -->
@@ -121,7 +121,7 @@ permissions and limitations under the License.
 
     <dimen name="button_text_size">14sp</dimen>
 
-    <dimen name="explore_category_menu_text_size">10sp</dimen>
+    <dimen name="explore_category_menu_text_size">16sp</dimen>
 
     <dimen name="content_track_info_size">7sp</dimen>
     <dimen name="content_track_list_btn_padding">5dip</dimen>
