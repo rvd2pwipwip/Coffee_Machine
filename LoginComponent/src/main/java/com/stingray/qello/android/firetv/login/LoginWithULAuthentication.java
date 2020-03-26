@@ -84,32 +84,28 @@ public class LoginWithULAuthentication implements IAuthentication {
     public void isUserLoggedIn(Context context, final ResponseHandler responseHandler) {
         final Bundle errorBundle = new Bundle();
         populateErrorBundle(errorBundle, AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
+        ResponseHandler logoutResponseHandler = new LogoutResponseHandler();
 
         String accessToken = Preferences.getString(PreferencesConstants.ACCESS_TOKEN);
 
         if (!accessToken.isEmpty()) {
             observableFactory.createDetached(new SvodUserInfoCallable(accessToken))
                     .doOnError(throwable -> {
-                        logout(context, new ResponseHandler() {
-                            @Override
-                            public void onSuccess(Bundle extras) {
-                                Log.i(TAG, "Logout Success");
-                                // Nothing to do
-                            }
-
-                            @Override
-                            public void onFailure(Bundle extras) {
-                                Log.i(TAG, "Logout Failed");
-                                responseHandler.onFailure(errorBundle);
-                            }
-                        });
+                        logout(context, logoutResponseHandler);
+                        // A fail means the user is not authenticated
                         responseHandler.onFailure(errorBundle);
                     })
                     .subscribe(userInfo -> {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(AuthzConstants.BUNDLE_KEY.TOKEN.val, accessToken);
-                        bundle.putString("subscriptionPlan", userInfo.getSubscription().getPlan());
-                        responseHandler.onSuccess(bundle);
+                        if (userInfo.getSubscription() == null) {
+                            logout(context, logoutResponseHandler);
+                            // A fail means the user is not authenticated
+                            responseHandler.onFailure(errorBundle);
+                        } else {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(AuthzConstants.BUNDLE_KEY.TOKEN.val, accessToken);
+                            bundle.putString("subscriptionPlan", userInfo.getSubscription().getPlan());
+                            responseHandler.onSuccess(bundle);
+                        }
                     });
         } else {
             responseHandler.onFailure(errorBundle);
@@ -161,4 +157,18 @@ public class LoginWithULAuthentication implements IAuthentication {
         errorBundle.putString(AuthenticationConstants.ERROR_CATEGORY, errorCategory);
         bundle.putBundle(AuthenticationConstants.ERROR_BUNDLE, errorBundle);
     }
+
+     private static class LogoutResponseHandler implements ResponseHandler {
+        @Override
+        public void onSuccess(Bundle extras) {
+            Log.i(TAG, "Logout Success");
+            // Nothing to do
+        }
+
+        @Override
+        public void onFailure(Bundle extras) {
+            Log.i(TAG, "Logout Failed.");
+            // Should never fail
+        }
+    };
 }

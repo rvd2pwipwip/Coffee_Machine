@@ -16,6 +16,7 @@ package com.stingray.qello.firetv.android.contentbrowser.helper;
 
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.R;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.utils.Preferences;
 
 import org.greenrobot.eventbus.EventBus;
@@ -164,7 +165,7 @@ public class LauncherIntegrationManager {
      * @param authenticationStatusUpdateEvent Broadcast event for update in authentication status.
      */
     @Subscribe
-    public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
 
         sendAppAuthenticationStatusBroadcast(mContext, authenticationStatusUpdateEvent

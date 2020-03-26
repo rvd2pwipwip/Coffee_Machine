@@ -204,10 +204,10 @@ public class LoginActivity extends Activity {
     /**
      * Sets the state of the application to reflect that the user is currently authorized.
      */
-    private void setLoggedInState(String accessToken, String subscriptionPlan) {
+    private void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan) {
         loginWithUP.setVisibility(LinearLayout.GONE);
         lwaButton.setVisibility(Button.GONE);
-        Preferences.setLoggedInState(accessToken, subscriptionPlan);
+        Preferences.setLoggedInState(accessToken, refreshToken, subscriptionPlan);
         setLoggingInState(false);
     }
 
@@ -256,9 +256,10 @@ public class LoginActivity extends Activity {
          */
         @Override
         public void onSuccess(Bundle response) {
-            final String accessToken = response.getString(AuthzConstants.BUNDLE_KEY.TOKEN.val);
-            final String subscritionPlan = response.getString("subscriptionPlan");
-            runOnUiThread(() -> setLoggedInState(accessToken, subscritionPlan));
+            final String accessToken = response.getString(ULAuthManager.BUNDLE_ACCESS_TOKEN);
+            final String refreshToken = response.getString(ULAuthManager.BUNDLE_REFRESH_TOKEN);
+            final String subscritionPlan = response.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_PLAN);
+            runOnUiThread(() -> setLoggedInState(accessToken, refreshToken, subscritionPlan));
             setResult(RESULT_OK);
             finish();
         }
@@ -270,8 +271,10 @@ public class LoginActivity extends Activity {
         @Override
         public void onError(AuthError ae) {
             Log.e(TAG, ae.getMessage(), ae);
-            setLoggedOutState();
-            runOnUiThread(() -> setLoggingInState(false));
+            runOnUiThread(() -> {
+                setLoggedOutState();
+                setLoggingInState(false);
+            });
         }
     }
 
