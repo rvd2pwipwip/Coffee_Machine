@@ -16,7 +16,7 @@ import android.support.v17.leanback.widget.VerticalGridView;
 import android.util.Log;
 
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
-import com.stingray.qello.firetv.android.contentbrowser.helper.AuthHelper;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
@@ -106,7 +106,7 @@ public class ContentBrowseFragment extends RowsFragment {
      * @param authenticationStatusUpdateEvent Broadcast event for update in authentication status.
      */
     @Subscribe
-    public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
 
 

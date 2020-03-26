@@ -13,6 +13,7 @@ import com.stingray.qello.firetv.android.contentbrowser.database.helpers.Watchli
 import com.stingray.qello.firetv.android.contentbrowser.database.records.RecentRecord;
 import com.stingray.qello.firetv.android.contentbrowser.helper.AnalyticsHelper;
 import com.stingray.qello.firetv.android.contentbrowser.helper.AuthHelper;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.contentbrowser.helper.ErrorHelper;
 import com.stingray.qello.firetv.android.contentbrowser.helper.FontManager;
 import com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrationManager;
@@ -426,7 +427,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      *
      * @param authenticationStatusUpdateEvent Event for update in authentication status.
      */
-    public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
 
         if (mLoginAction != null) {

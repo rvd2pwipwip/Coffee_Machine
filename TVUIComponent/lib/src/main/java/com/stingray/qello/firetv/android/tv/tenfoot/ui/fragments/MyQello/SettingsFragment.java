@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
-import com.stingray.qello.firetv.android.contentbrowser.helper.AuthHelper;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment;
@@ -77,7 +77,7 @@ public class SettingsFragment extends Fragment {
      */
     @SuppressWarnings("unused")
     @Subscribe
-    public void onAuthenticationStatusUpdateEvent(AuthHelper.AuthenticationStatusUpdateEvent
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
         toggleAuthenticationViews(authenticationStatusUpdateEvent.isUserAuthenticated(), Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION));
     }
