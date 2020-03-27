@@ -35,6 +35,11 @@
       "verifyNetworkConnection": true,
       "onAction" : "CONTENT_DETAILS_SCREEN"
     },
+    "com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ViewMoreActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction": "VIEW_MORE_SCREEN"
+    },
     "com.stingray.qello.firetv.android.uamp.ui.PlaybackActivity": {
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,

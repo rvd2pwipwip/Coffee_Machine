@@ -1,4 +1,4 @@
-package com.stingray.qello.firetv.android.contentbrowser.explorepage;
+package com.stingray.qello.firetv.android.contentbrowser.callable;
 
 import android.util.Log;
 
@@ -12,31 +12,30 @@ import com.stingray.qello.firetv.android.model.translators.ContentTranslator;
 import com.stingray.qello.firetv.android.recipe.Recipe;
 import com.stingray.qello.firetv.dynamicparser.DynamicParser;
 
-public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
-    private final static String ENDPOINT = "/v1/browse-pages/searchpage/sections/%s";
-    private final static String TAG = GenreFilterCallable.class.getSimpleName();
-    private final static String NAME_FORMAT = "GenreFilter%s";
+public class SearchCallable extends SvodCallable<ContentContainerExt> {
+    private final static String ENDPOINT = "/v1/content-search?text=%s";
+    private final static String NAME_FORMAT = "SearchResults%s";
+    private final static String TAG = SearchCallable.class.getSimpleName();
+    private final static ContentContainerExtFactory contentContainerExtFactory = new ContentContainerExtFactory();
 
     private final ContentTranslator contentTranslator = new ContentTranslator();
-    private final ContentContainerExtFactory contentContainerExtFactory = new ContentContainerExtFactory();
 
     private static Recipe RECIPE;
     private static DynamicParser PARSER;
 
     private boolean initializationFailed = false;
-    private String genreId;
+    private String query;
 
-    public GenreFilterCallable(String genreId) {
+    public SearchCallable(String query) {
         try {
-        if (RECIPE == null && PARSER == null) {
-            RECIPE = new ConcertItemRecipe().getRecipe();
-            PARSER = new DynamicParser();
-            // Register content translator in case parser recipes use translation.
-            PARSER.addTranslatorImpl(contentTranslator.getName(), contentTranslator);
-        }
+            if (RECIPE == null || PARSER == null) {
+                RECIPE = new ConcertItemRecipe().getRecipe();
+                PARSER = new DynamicParser();
+                // Register content translator in case parser recipes use translation.
+                PARSER.addTranslatorImpl(contentTranslator.getName(), contentTranslator);
+            }
 
-        this.genreId = genreId;
-
+            this.query = query;
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to initialize [%s]", TAG), e);
             initializationFailed = true;
@@ -49,14 +48,15 @@ public class GenreFilterCallable extends SvodCallable<ContentContainerExt> {
             return new ContentContainerExt();
         }
 
-        String containerName = String.format(NAME_FORMAT, genreId);
+        String containerName = String.format(NAME_FORMAT, query);
         try {
-            String url = String.format(ENDPOINT, genreId);
+            String url = String.format(ENDPOINT, query);
             String jsonResponse = get(url);
 
             return contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, contentTranslator);
+
         } catch (Exception e) {
-            Log.e(TAG, String.format("Failed to get concerts for genreid [%s]", ENDPOINT),e);
+            Log.e(TAG, String.format("Failed to get search results from [%s]", ENDPOINT), e);
             return new ContentContainerExt(new SvodMetadata(), ContentContainer.newInstance(containerName));
         }
     }

@@ -19,6 +19,7 @@ import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
+import com.stingray.qello.firetv.android.model.content.ViewMore;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CustomListRowPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.utils.BrowseHelper;
@@ -134,6 +135,13 @@ public class ContentBrowseFragment extends RowsFragment {
                 ContentBrowser.getInstance(getActivity())
                               .setLastSelectedContentContainer(contentContainer)
                               .switchToScreen(ContentBrowser.CONTENT_SUBMENU_SCREEN);
+            } else if (item instanceof ViewMore) {
+                ViewMore viewMore = (ViewMore) item;
+                Log.d(TAG, "View More for section " + viewMore.getItemId() + " was " +
+                        "clicked");
+                ContentBrowser.getInstance(getActivity())
+                        .setLastSelectedViewMore(viewMore)
+                        .switchToScreen(ContentBrowser.VIEW_MORE_SCREEN);
             }
         }
     }

@@ -31,13 +31,14 @@ package com.stingray.qello.firetv.android.tv.tenfoot.presenter;
 
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
-import com.stingray.qello.firetv.android.tv.tenfoot.utils.ContentHelper;
+import com.stingray.qello.firetv.android.model.content.ViewMore;
 import com.stingray.qello.firetv.android.utils.GlideHelper;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v17.leanback.widget.BaseCardView;
 import android.support.v17.leanback.widget.ImageCardView;
@@ -45,7 +46,6 @@ import android.support.v17.leanback.widget.Presenter;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -57,21 +57,28 @@ public class CardPresenter extends Presenter {
 
     private static final String TAG = CardPresenter.class.getSimpleName();
 
-    private int mCardWidthDp;
-    private int mCardHeightDp;
+    private int mCardWidthPx = 120;
+    private int mCardHeightPx = 160;
 
     private Drawable mDefaultCardImage;
-    private static Drawable sFocusedFadeMask;
-    private View mInfoField;
     private Context mContext;
+    private int cardViewType = BaseCardView.CARD_TYPE_MAIN_ONLY;
+
+    public CardPresenter() {
+    }
+
+    public CardPresenter(int cardViewType, int cardWidthPx, int cardHeightPx) {
+        this.cardViewType = cardViewType;
+        mCardWidthPx = cardWidthPx;
+        mCardHeightPx = cardHeightPx;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
 
         mContext = parent.getContext();
         try {
-            mDefaultCardImage = ContextCompat.getDrawable(mContext, R.drawable.movie);
-            sFocusedFadeMask = ContextCompat.getDrawable(mContext, R.drawable.content_fade_focused);
+            mDefaultCardImage = ContextCompat.getDrawable(mContext, R.drawable.default_poster);
         }
         catch (Resources.NotFoundException e) {
             Log.e(TAG, "Could not find resource ", e);
@@ -81,43 +88,37 @@ public class CardPresenter extends Presenter {
         ImageCardView cardView = new ImageCardView(mContext) {
             @Override
             public void setSelected(boolean selected) {
-
                 super.setSelected(selected);
-                if (mInfoField != null) {
-                    mInfoField.setBackground(sFocusedFadeMask);
-                }
             }
         };
         cardView.setFocusable(true);
         cardView.setFocusableInTouchMode(true);
 
         // Set the type and visibility of the info area.
-        cardView.setCardType(BaseCardView.CARD_TYPE_MAIN_ONLY);
+        cardView.setCardType(cardViewType);
         cardView.setInfoVisibility(BaseCardView.CARD_REGION_VISIBLE_ALWAYS);
-
-        int CARD_WIDTH_PX = 120;
-        mCardWidthDp = Helpers.convertPixelToDp(mContext, CARD_WIDTH_PX);
-
-        int CARD_HEIGHT_PX = 160;
-        mCardHeightDp = Helpers.convertPixelToDp(mContext, CARD_HEIGHT_PX);
+        cardView.setBackgroundColor(Color.TRANSPARENT);
+        cardView.setInfoAreaBackgroundColor(Color.TRANSPARENT);
 
         TextView subtitle = (TextView) cardView.findViewById(R.id.content_text);
         if (subtitle != null) {
             subtitle.setEllipsize(TextUtils.TruncateAt.END);
         }
 
-        mInfoField = cardView.findViewById(R.id.info_field);
-        if (mInfoField != null) {
-            mInfoField.setBackground(sFocusedFadeMask);
-        }
-
         return new ViewHolder(cardView);
     }
+
+    public void test(){
+    }
+
 
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
 
         ImageCardView cardView = (ImageCardView) viewHolder.view;
+
+        int cardWidthDp = Helpers.convertPixelToDp(mContext, mCardWidthPx);
+        int cardHeightDp = Helpers.convertPixelToDp(mContext, mCardHeightPx);
 
         if (item instanceof Content) {
             Content content = (Content) item;
@@ -128,10 +129,9 @@ public class CardPresenter extends Presenter {
                 // the 'TitleText' is actually smaller text compared to 'ContentText',
                 // so we are using TitleText to show subtitle and ContentText to show the
                 // actual Title.
-                cardView.setTitleText(ContentHelper.getCardViewSubtitle(mContext, content));
-
+                cardView.setTitleText(content.getSubtitle());
                 cardView.setContentText(content.getTitle());
-                cardView.setMainImageDimensions(mCardWidthDp, mCardHeightDp);
+                cardView.setMainImageDimensions(cardWidthDp, cardHeightDp);
                 GlideHelper.loadImageIntoView(cardView.getMainImageView(),
                                               viewHolder.view.getContext(),
                                               content.getCardImageUrl(),
@@ -142,8 +142,13 @@ public class CardPresenter extends Presenter {
         else if (item instanceof ContentContainer) {
             ContentContainer contentContainer = (ContentContainer) item;
             cardView.setContentText(contentContainer.getName());
-            cardView.setMainImageDimensions(mCardWidthDp, mCardHeightDp);
+            cardView.setMainImageDimensions(cardWidthDp, cardHeightDp);
             cardView.getMainImageView().setImageDrawable(mDefaultCardImage);
+        }  else if (item instanceof ViewMore) {
+            cardView.setMainImageDimensions(cardWidthDp, cardHeightDp);
+            //TODO update poster
+            cardView.getMainImageView().setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.view_more_poster));
+            cardView.setBackgroundColor(Color.DKGRAY);
         }
     }
 

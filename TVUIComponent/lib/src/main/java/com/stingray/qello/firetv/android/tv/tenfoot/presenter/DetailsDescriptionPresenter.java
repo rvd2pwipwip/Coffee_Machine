@@ -17,7 +17,6 @@ package com.stingray.qello.firetv.android.tv.tenfoot.presenter;
 import com.stingray.qello.firetv.android.configuration.ConfigurationManager;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.tv.tenfoot.base.TenFootApp;
-import com.stingray.qello.firetv.android.tv.tenfoot.utils.ContentHelper;
 import com.stingray.qello.firetv.android.ui.constants.ConfigurationConstants;
 import com.stingray.qello.firetv.android.ui.widget.EllipsizedTextView;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
@@ -133,7 +132,7 @@ public class DetailsDescriptionPresenter extends Presenter {
                                              config.getTypefacePath(ConfigurationConstants
                                                                             .BOLD_FONT));
 
-        viewHolder.getSubtitle().setText(ContentHelper.getDescriptiveSubtitle(mContext, content));
+        viewHolder.getSubtitle().setText(content.getSubtitle());
 
         viewHolder.getBody().setText(content.getDescription().trim());
         CalligraphyUtils.applyFontToTextView(TenFootApp.getInstance(), viewHolder.getBody(),

@@ -19,12 +19,13 @@ import com.stingray.qello.firetv.android.contentbrowser.helper.FontManager;
 import com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrationManager;
 import com.stingray.qello.firetv.android.contentbrowser.helper.PurchaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.recommendations.RecommendationManager;
-import com.stingray.qello.firetv.android.contentbrowser.search.SearchCallable;
+import com.stingray.qello.firetv.android.contentbrowser.callable.SearchCallable;
 import com.stingray.qello.firetv.android.interfaces.ICancellableLoad;
 import com.stingray.qello.firetv.android.interfaces.IContentBrowser;
 import com.stingray.qello.firetv.android.model.Action;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
+import com.stingray.qello.firetv.android.model.content.ViewMore;
 import com.stingray.qello.firetv.android.model.content.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.model.event.ActionUpdateEvent;
 import com.stingray.qello.firetv.android.module.ModularApplication;
@@ -66,14 +67,16 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     private static final String TAG = ContentBrowser.class.getSimpleName();
 
     private static final boolean DEBUG_RECIPE_CHAIN = false;
+
     private static final String REQUEST_FROM_LAUNCHER = "REQUEST_FROM_LAUNCHER";
-    public static final String CONTENT_WILL_UPDATE = "CONTENT_WILL_UPDATE";
     private static final String CONTENT_SPLASH_SCREEN = "CONTENT_SPLASH_SCREEN";
+    public static final String CONTENT_WILL_UPDATE = "CONTENT_WILL_UPDATE";
     public static final String CONTENT_HOME_SCREEN = "CONTENT_HOME_SCREEN";
     public static final String CONTENT_DETAILS_SCREEN = "CONTENT_DETAILS_SCREEN";
     public static final String CONTENT_SUBMENU_SCREEN = "CONTENT_SUBMENU_SCREEN";
     public static final String CONTENT_RENDERER_SCREEN = "CONTENT_RENDERER_SCREEN";
     public static final String ACCOUNT_CREATION_SCREEN = "ACCOUNT_CREATION_SCREEN";
+    public static final String VIEW_MORE_SCREEN = "VIEW_MORE_SCREEN";
 
     private static final String FREE_CONTENT = "free";
     private static final String SEARCH = "Search";
@@ -107,6 +110,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     private ICustomSearchHandler mICustomSearchHandler;
     private IRootContentContainerListener mIRootContentContainerListener;
     private Content mLastSelectedContent;
+    private ViewMore mLastSelectedViewMore;
     private final Navigator mNavigator;
     private final List<Action> mWidgetActionsList = new ArrayList<>();
     private final List<Action> mGlobalContentActionList = new ArrayList<>();
@@ -541,6 +545,15 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public Content getLastSelectedContent() {
 
         return mLastSelectedContent;
+    }
+
+    public ViewMore getLastSelectedViewMore() {
+        return mLastSelectedViewMore;
+    }
+
+    public ContentBrowser setLastSelectedViewMore(ViewMore mLastSelectedViewMore) {
+        this.mLastSelectedViewMore = mLastSelectedViewMore;
+        return this;
     }
 
     /**

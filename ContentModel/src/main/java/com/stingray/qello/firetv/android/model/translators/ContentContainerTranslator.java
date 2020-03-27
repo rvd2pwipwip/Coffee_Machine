@@ -61,6 +61,10 @@ public class ContentContainerTranslator extends AModelTranslator<ContentContaine
         try {
             if (field.equals(ContentContainer.NAME_FIELD_NAME)) {
                 model.setName((String) value);
+            } else if (field.equals(ContentContainer.HAS_VIEW_MORE_FIELD_NAME)) {
+                model.setHasViewMore((Boolean) value);
+            } else if(field.equals(ContentContainer.ID_FIELD_NAME)) {
+                model.setId((String) value);
             }
             else {
                 model.setExtraValue(field, value);

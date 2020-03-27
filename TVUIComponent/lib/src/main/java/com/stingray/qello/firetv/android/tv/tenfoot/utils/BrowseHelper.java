@@ -3,6 +3,7 @@ package com.stingray.qello.firetv.android.tv.tenfoot.utils;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
+import com.stingray.qello.firetv.android.model.content.ViewMore;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
@@ -68,6 +69,11 @@ public class BrowseHelper {
 
             for (Content content : contentContainer.getContents()) {
                 listRowAdapter.add(content);
+            }
+
+            //TODO REMOVE after testing
+            if(contentContainer.hasViewMore() || contentContainer.getName().equals("Top Picks For Dad")) {
+                listRowAdapter.add(new ViewMore(contentContainer.getId(), contentContainer.getName()));
             }
 
             rowsAdapter.add(new ListRow(header, listRowAdapter));

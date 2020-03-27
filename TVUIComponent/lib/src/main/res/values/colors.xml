@@ -27,8 +27,8 @@ permissions and limitations under the License.
     <color name="lb_playback_progress_color_no_theme">@color/progress_bar</color>
     <color name="lb_playback_controls_time_text_color">@color/playback_time_text</color>
 
-    <color name="lb_browse_header_color">@color/browse_header</color>
-    <color name="lb_browse_row_header_color">@color/browse_row_header</color>
+    <color name="lb_browse_header_color">@color/ui_almost_white</color>
+    <color name="lb_browse_row_header_color">@color/ui_almost_white</color>
     <color name="lb_basic_card_info_bg_color">@color/card_info_bg</color>
     <color name="lb_basic_card_title_text_color">@color/card_info_title_text</color>
     <color name="lb_basic_card_content_text_color">@color/card_info_content_text</color>
