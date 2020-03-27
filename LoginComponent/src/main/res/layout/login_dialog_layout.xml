@@ -53,7 +53,7 @@ permissions and limitations under the License.
             style="@style/text_input_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/email"
@@ -72,11 +72,11 @@ permissions and limitations under the License.
 
         <Button
             android:id="@+id/continue_btn"
-            style="@style/call_to_action_button_style_outline_inactive"
+            style="@style/call_to_action_button_style_outline_inactive_blue"
             android:layout_width="384dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="40dp"
             android:text="@string/log_in"
             android:textAllCaps="false" />
 
@@ -85,15 +85,15 @@ permissions and limitations under the License.
             style="@android:style/Widget.ProgressBar.Inverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:visibility="gone" />
 
         <Button
             android:id="@+id/forget_password_btn"
-            style="@style/Widget.AppCompat.Button"
+            style="@style/call_to_action_button_style_outline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@android:color/transparent"
             android:fontFamily="sans-serif-light"
             android:text="@string/forgot_password"
             android:textAllCaps="false" />
