@@ -83,7 +83,7 @@
 
             <Button
                 android:id="@+id/playlists_button"
-                style="@android:style/Widget.Holo.Button.Borderless"
+                style="@style/button_border_highlight"
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
