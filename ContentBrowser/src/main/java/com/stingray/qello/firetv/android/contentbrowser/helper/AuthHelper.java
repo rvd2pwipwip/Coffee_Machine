@@ -17,6 +17,7 @@ package com.stingray.qello.firetv.android.contentbrowser.helper;
 
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.R;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.module.ModuleManager;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
@@ -57,37 +58,6 @@ import rx.Subscriber;
  * Authentication helper class.
  */
 public class AuthHelper {
-
-    /**
-     * Event class to represent Authorization events.
-     */
-    public static class AuthenticationStatusUpdateEvent {
-
-        /**
-         * User authentication flag.
-         */
-        private boolean mUserAuthenticated = false;
-
-        /**
-         * Constructor
-         *
-         * @param flag User authentication flag.
-         */
-        public AuthenticationStatusUpdateEvent(boolean flag) {
-
-            mUserAuthenticated = flag;
-        }
-
-        /**
-         * Returns true if the user is authentication after this event happened, false otherwise
-         *
-         * @return true if the user is authentication after this event happened, false otherwise
-         */
-        public boolean isUserAuthenticated() {
-
-            return mUserAuthenticated;
-        }
-    }
 
     /**
      * Debug TAG.

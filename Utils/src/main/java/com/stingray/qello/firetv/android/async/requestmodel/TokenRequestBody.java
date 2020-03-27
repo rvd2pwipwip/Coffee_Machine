@@ -1,10 +1,13 @@
-package com.stingray.qello.android.firetv.login.communication.requestmodel;
+package com.stingray.qello.firetv.android.async.requestmodel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class TokenRequestBody {
     @JsonIgnore
-    private final static String GRANT_TYPE = "AUTHORIZATION_CODE";
+    private final static String GRANT_TYPE_AUTH_CODE = "AUTHORIZATION_CODE";
+
+    @JsonIgnore
+    private final static String GRANT_TYPE_REFRESH_TOKEN = "REFRESH_TOKEN";
 
     private String grantType;
     private String code;
@@ -12,11 +15,17 @@ public class TokenRequestBody {
     private String clientId;
     private String refreshToken;
 
-    public TokenRequestBody(String code, String redirectUri, String refreshToken) {
-        this.grantType = GRANT_TYPE;
+    public TokenRequestBody(String code) {
+        this.grantType = GRANT_TYPE_AUTH_CODE;
         this.code = code;
-        this.redirectUri = redirectUri;
+        this.redirectUri = "123";
+    }
+
+    public TokenRequestBody(String refreshToken, String clientId) {
+        this.grantType = GRANT_TYPE_REFRESH_TOKEN;
         this.refreshToken = refreshToken;
+        this.redirectUri = "123";
+        this.clientId = clientId;
     }
 
     public void setClientId(String clientId) {

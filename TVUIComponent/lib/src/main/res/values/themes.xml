@@ -63,7 +63,7 @@ permissions and limitations under the License.
     <!-- Start content_details_activity_layout fragment custom styles-->
     <style name="Widget.Leanback.DetailsActionButtonStyle.Custom"
            parent="Widget.Leanback.DetailsActionButtonStyle">
-        <item name="android:background">@drawable/action_button_background</item>
+        <item name="android:background">@drawable/button_bg_stroke</item>
         <item name="android:gravity">center_vertical|start</item>
     </style>
     <style name="TextAppearance.Leanback.DetailsActionButton">
@@ -134,4 +134,11 @@ permissions and limitations under the License.
         <item name="android:windowBackground">@color/error_dialog_bg_color</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
+
+    <style name="button_border_highlight">
+        <item name="android:background">@drawable/button_bg_stroke</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
 </resources>

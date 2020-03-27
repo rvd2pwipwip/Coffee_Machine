@@ -34,4 +34,7 @@ permissions and limitations under the License.
     <color name="search_orb">@color/accent</color>
     <color name="ui_almost_white">#FAFAFA</color>
     <color name="ui_grey">#C2C2C2</color>
+    <!-- Button states -->
+    <color name="disabled_state">#777777</color>
+
 </resources>

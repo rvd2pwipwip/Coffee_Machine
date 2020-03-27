@@ -11,7 +11,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="200dp"
         android:layout_marginBottom="10dp"
         android:text="@string/by_email" />
 
@@ -28,7 +28,7 @@
         android:id="@+id/textView7"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
         android:text="@string/privacy_text"

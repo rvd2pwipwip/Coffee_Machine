@@ -1,4 +1,4 @@
-package com.stingray.qello.android.firetv.login.communication;
+package com.stingray.qello.firetv.android.async;
 
 import android.util.Base64;
 import android.util.Log;
@@ -8,10 +8,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.stingray.qello.android.firetv.login.communication.requestmodel.IssueCodeRequestBody;
-import com.stingray.qello.android.firetv.login.communication.requestmodel.IssueCodeResponse;
-import com.stingray.qello.android.firetv.login.communication.requestmodel.TokenRequestBody;
-import com.stingray.qello.android.firetv.login.communication.requestmodel.TokenResponse;
+import com.stingray.qello.firetv.android.async.requestmodel.TokenRequestBody;
+import com.stingray.qello.firetv.android.async.requestmodel.TokenResponse;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;

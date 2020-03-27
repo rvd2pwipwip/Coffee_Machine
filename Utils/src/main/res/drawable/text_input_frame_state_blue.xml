@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android" tools:ignore="MissingDefaultResource">
-<item android:state_focused="true" android:state_enabled="true" android:drawable="@drawable/thick_white_frame" />
-<item android:drawable="@drawable/white_frame" />
+    <item android:state_focused="true" android:state_enabled="true" android:drawable="@drawable/thick_white_frame" />
+    <item android:drawable="@drawable/blue_frame" />
 </selector>
