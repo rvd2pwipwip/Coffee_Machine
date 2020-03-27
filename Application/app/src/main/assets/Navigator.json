@@ -12,7 +12,7 @@
     "globalTheme": "AppTheme",
     "lightFont" : "fonts/Roboto-Light.ttf",
     "boldFont" : "fonts/Roboto-Bold.ttf",
-    "regularFont" : "fonts/Roboto-Regular.ttf-"
+    "regularFont" : "fonts/Roboto-Regular.ttf"
   },
   "globalRecipes": [
     {
