@@ -8,12 +8,13 @@ import com.stingray.qello.firetv.android.tv.tenfoot.base.BaseActivity;
 import com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.Home.ViewMoreFragment;
 
 public class ViewMoreActivity extends BaseActivity {
+    private final static String TAG = ViewMoreActivity.class.getSimpleName();
     private ViewMoreFragment viewMoreFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("ASDFASFAG", "onCreate called.");
+        Log.v(TAG, "onCreate called.");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_more_layout);
 
