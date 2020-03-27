@@ -29,7 +29,7 @@ permissions and limitations under the License.
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                        android:host="com.sample.amazon.firetvstarterkit"
+                        android:host="com.stingray.qello.android.firetv"
                         android:scheme="amzn"/>
             </intent-filter>
         </activity>
