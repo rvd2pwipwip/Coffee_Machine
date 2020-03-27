@@ -20,10 +20,6 @@ permissions and limitations under the License.
     android:background="@drawable/background_login_create_account"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <LinearLayout
             android:layout_width="384dp"
             android:layout_height="wrap_content"
@@ -181,5 +177,4 @@ permissions and limitations under the License.
                 android:text="Log In"
                 android:textAllCaps="false" />
         </LinearLayout>
-    </ScrollView>
 </LinearLayout>
