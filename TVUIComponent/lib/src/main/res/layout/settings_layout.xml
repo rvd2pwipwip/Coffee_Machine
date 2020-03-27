@@ -18,10 +18,9 @@
 
         <Button
             android:id="@+id/free_trial_button"
-            style="@android:style/Widget.Holo.Button.Borderless"
+            style="@style/button_border_highlight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
             android:text="Start Free Trial"
@@ -31,10 +30,9 @@
 
         <Button
             android:id="@+id/account_button"
-            style="@android:style/Widget.Holo.Button.Borderless"
+            style="@style/button_border_highlight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
             android:text="Account and Settings"
@@ -44,10 +42,9 @@
 
         <Button
             android:id="@+id/faq_button"
-            style="@android:style/Widget.Holo.Button.Borderless"
+            style="@style/button_border_highlight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
             android:text="FAQ"
@@ -57,10 +54,9 @@
 
         <Button
             android:id="@+id/contact_us_button"
-            style="@android:style/Widget.Holo.Button.Borderless"
+            style="@style/button_border_highlight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
             android:text="Contact Us"
@@ -70,10 +66,9 @@
 
         <Button
             android:id="@+id/about_button"
-            style="@android:style/Widget.Holo.Button.Borderless"
+            style="@style/button_border_highlight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
             android:text="About"
@@ -83,11 +78,10 @@
 
         <Button
             android:id="@+id/logout_button"
-            style="@android:style/Widget.Holo.Button.Borderless"
+            style="@style/button_border_highlight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
-            android:background="@drawable/action_button_background"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
             android:text="Log Out"

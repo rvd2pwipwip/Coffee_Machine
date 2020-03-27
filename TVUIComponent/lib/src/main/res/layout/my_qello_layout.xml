@@ -57,10 +57,9 @@
 
             <Button
                 android:id="@+id/history_button"
-                style="@android:style/Widget.Holo.Button.Borderless"
+                style="@style/button_border_highlight"
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/action_button_background"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left|center_vertical"
                 android:text="History"
@@ -71,10 +70,9 @@
 
             <Button
                 android:id="@+id/favorites_button"
-                style="@android:style/Widget.Holo.Button.Borderless"
+                style="@style/button_border_highlight"
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/action_button_background"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left|center_vertical"
                 android:text="Favorites"
@@ -88,7 +86,6 @@
                 style="@android:style/Widget.Holo.Button.Borderless"
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/action_button_background"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left|center_vertical"
                 android:text="Playlists"
@@ -107,10 +104,9 @@
 
         <Button
             android:id="@+id/settings_button"
-            style="@android:style/Widget.Holo.Button.Borderless"
+            style="@style/button_border_highlight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_button_background"
             android:drawableLeft="@drawable/settings_gear"
             android:fontFamily="sans-serif-light"
             android:gravity="left|center_vertical"
