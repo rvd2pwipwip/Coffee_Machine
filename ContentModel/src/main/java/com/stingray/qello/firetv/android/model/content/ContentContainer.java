@@ -46,6 +46,16 @@ public class ContentContainer implements Iterable<Content> {
     private String mName;
 
     /**
+     * Container can be expanded
+     */
+    private Boolean mHasViewMore;
+
+    /*
+    * Container Id
+     */
+    private String mId;
+
+    /**
      * List of ContentContainers in this ContentContainer.
      */
     private LinkedList<ContentContainer> mContentContainers = new LinkedList<>();
@@ -64,6 +74,13 @@ public class ContentContainer implements Iterable<Content> {
      * Constant for title field name.
      */
     public static final String NAME_FIELD_NAME = "mName";
+
+    /**
+     * Constant for has view more field name.
+     */
+    public static final String HAS_VIEW_MORE_FIELD_NAME = "mHasViewMore";
+
+    public static final String ID_FIELD_NAME = "mId";
 
     /**
      * Constructs an empty ContentContainer.
@@ -227,8 +244,23 @@ public class ContentContainer implements Iterable<Content> {
      * @param name Name of this ContentContainer as a String.
      */
     public void setName(String name) {
-
         mName = name;
+    }
+
+    public Boolean hasViewMore() {
+        return mHasViewMore;
+    }
+
+    public void setHasViewMore(Boolean mHasViewMore) {
+        this.mHasViewMore = mHasViewMore;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        this.mId = id;
     }
 
     /**

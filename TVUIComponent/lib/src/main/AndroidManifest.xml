@@ -70,6 +70,7 @@ permissions and limitations under the License.
         </activity>
         <activity android:name="com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.SplashActivity"/>
         <activity android:name="com.stingray.qello.firetv.android.uamp.ui.PlaybackActivity"/>
+        <activity android:name="com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ViewMoreActivity"/>
     </application>
 
 </manifest>

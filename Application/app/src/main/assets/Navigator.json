@@ -12,7 +12,7 @@
     "globalTheme": "AppTheme",
     "lightFont" : "fonts/Roboto-Light.ttf",
     "boldFont" : "fonts/Roboto-Bold.ttf",
-    "regularFont" : "fonts/Roboto-Regular.ttf-"
+    "regularFont" : "fonts/Roboto-Regular.ttf"
   },
   "globalRecipes": [
     {
@@ -46,6 +46,11 @@
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,
       "onAction": "CONTENT_RENDERER_SCREEN"
+    },
+    "com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ViewMoreActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction": "VIEW_MORE_SCREEN"
     },
     "com.stingray.qello.android.firetv.login.activities.CreateAccountActivity": {
       "verifyScreenAccess": false,

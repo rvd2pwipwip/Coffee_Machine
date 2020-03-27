@@ -34,7 +34,6 @@ import com.stingray.qello.firetv.android.contentbrowser.helper.AnalyticsHelper;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
-import com.stingray.qello.firetv.android.tv.tenfoot.utils.ContentHelper;
 import com.stingray.qello.firetv.android.uamp.mediaSession.MediaSessionController;
 import com.stingray.qello.firetv.utils.StringManipulation;
 import com.stingray.qello.firetv.android.utils.GlideHelper;
@@ -630,7 +629,6 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
      * {@inheritDoc}
      */
     protected String getVideoTitle() {
-
         return mSelectedContent.getTitle();
     }
 
@@ -638,8 +636,7 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
      * {@inheritDoc}
      */
     protected String getVideoSubtitle() {
-
-        return ContentHelper.getDescriptiveSubtitle(mContext, mSelectedContent);
+        return mSelectedContent.getSubtitle();
     }
 
     /**

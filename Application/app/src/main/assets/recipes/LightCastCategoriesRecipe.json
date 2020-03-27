@@ -7,7 +7,9 @@
   "query": "$.data[*]",
   "queryResultType": "[]$",
   "matchList": [
-    "metadata/display_name@mName"
+    "id@mId",
+    "metadata/display_name@mName",
+    "metadata/has_view_more@mHasViewMore"
   ],
   "keyDataType": "id@keyDataPath"
 }

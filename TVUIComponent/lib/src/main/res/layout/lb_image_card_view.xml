@@ -37,12 +37,16 @@ permissions and limitations under the License.
         android:id="@+id/main_image"
         style="@style/Widget.Leanback.ImageCardView.ImageStyle"
         android:layout_width="120dp"
-        android:layout_height="160dp" />
+        android:layout_height="160dp"
+        android:background="@android:color/transparent" />
 
     <android.support.v17.leanback.widget.NonOverlappingRelativeLayout
         android:id="@+id/info_field"
-        style="@style/Widget.Leanback.ImageCardView.InfoAreaStyle" android:layout_height="match_parent"
-        android:layout_width="wrap_content">
+        style="@style/Widget.Leanback.ImageCardView.InfoAreaStyle"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:background="@android:color/transparent"
+        >
     </android.support.v17.leanback.widget.NonOverlappingRelativeLayout>
 
 </merge>

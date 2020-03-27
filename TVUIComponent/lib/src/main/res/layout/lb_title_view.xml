@@ -43,11 +43,12 @@ permissions and limitations under the License.
             style="?attr/browseTitleIconStyle"/>
 
     <TextView
-            android:id="@+id/title_text"
-            android:layout_width="@dimen/lb_browse_title_text_width"
-            android:layout_height="@dimen/lb_browse_title_height"
-            android:layout_gravity="center_vertical|end"
-            style="?attr/browseTitleTextStyle"/>
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/ui_almost_white"
+        android:textSize="20sp" />
 
     <android.support.v17.leanback.widget.SearchOrbView
             android:id="@+id/title_orb"
@@ -56,6 +57,5 @@ permissions and limitations under the License.
             android:transitionGroup="true"
             android:layout_gravity="center_vertical|start"
             android:visibility="gone"/>
-    <include layout="@layout/action_widget_grid_view"/>
 
 </merge>
