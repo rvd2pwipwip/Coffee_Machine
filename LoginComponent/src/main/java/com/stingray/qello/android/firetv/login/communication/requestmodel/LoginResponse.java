@@ -2,7 +2,7 @@ package com.stingray.qello.android.firetv.login.communication.requestmodel;
 
 import com.stingray.qello.android.firetv.login.communication.model.ULUserInfo;
 
-public class UserpassLoginResponse {
+public class LoginResponse {
     private String sessionId;
     private ULUserInfo userInfo;
 

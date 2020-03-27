@@ -33,7 +33,10 @@ import com.amazon.identity.auth.device.authorization.api.AuthzConstants;
 import com.amazon.identity.auth.device.shared.APIListener;
 import com.stingray.qello.android.firetv.login.R;
 import com.stingray.qello.android.firetv.login.ULAuthManager;
+import com.stingray.qello.android.firetv.login.communication.AmazonLoginCallable;
 import com.stingray.qello.android.firetv.login.communication.UserpassLoginCallable;
+import com.stingray.qello.android.firetv.login.communication.requestmodel.AmazonLoginRequestBody;
+import com.stingray.qello.android.firetv.login.communication.requestmodel.LoginResponse;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
@@ -44,6 +47,10 @@ import com.stingray.qello.firetv.auth.AuthenticationConstants;
  * This activity allows users to login with amazon.
  */
 public class LoginActivity extends Activity {
+
+    // TODO Get lang and deviceId from system
+    private final static String HARDCODED_LANGUAGE = "en";
+    private final static String HARDCODED_DEVICE_ID = "aDeviceId";
 
     private static final String TAG = LoginActivity.class.getName();
 
@@ -57,6 +64,7 @@ public class LoginActivity extends Activity {
     private AmazonAuthorizationManager amazonAuthManager;
     private ULAuthManager ulAuthManager;
     private ProgressBar mLogInProgress;
+    private ObservableFactory observableFactory = new ObservableFactory();
 
 
     @Override
@@ -99,16 +107,12 @@ public class LoginActivity extends Activity {
             String username = usernameInput.getText().toString();
             String password = passwordInput.getText().toString();
 
-            // TODO Get lang and deviceId from system
-            String language = "en";
-            String deviceId = "aDeviceId";
+            UserpassLoginRequestBody requestBody = new UserpassLoginRequestBody(username, password, HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID);
 
-            UserpassLoginRequestBody requestBody = new UserpassLoginRequestBody(username, password, language, deviceId);
-
-            new ObservableFactory().createDetached(new UserpassLoginCallable(requestBody))
+            observableFactory.createDetached(new UserpassLoginCallable(requestBody))
                     .subscribe(response -> {
                         if (response != null) {
-                            ulAuthManager.authorize(response.getSessionId(), language, deviceId, new AuthListener());
+                            ulAuthManager.authorize(response.getSessionId(), HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID, new AuthListener());
                         } else {
                             setResultAndReturn(new Throwable("Invalid Credentials"), AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
                             finish();
@@ -256,12 +260,25 @@ public class LoginActivity extends Activity {
          */
         @Override
         public void onSuccess(Bundle response) {
-            final String accessToken = response.getString(ULAuthManager.BUNDLE_ACCESS_TOKEN);
-            final String refreshToken = response.getString(ULAuthManager.BUNDLE_REFRESH_TOKEN);
-            final String subscritionPlan = response.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_PLAN);
-            runOnUiThread(() -> setLoggedInState(accessToken, refreshToken, subscritionPlan));
-            setResult(RESULT_OK);
-            finish();
+            final AuthzConstants.FUTURE_TYPE amazonFutureType = (AuthzConstants.FUTURE_TYPE) response.get(AuthzConstants.BUNDLE_KEY.FUTURE.val);
+
+            if (amazonFutureType != null) {
+                if ( AuthzConstants.FUTURE_TYPE.SUCCESS.equals(amazonFutureType)) {
+                    String accessToken = response.getString(ULAuthManager.BUNDLE_ACCESS_TOKEN);
+                    AmazonLoginRequestBody requestBody = new AmazonLoginRequestBody(accessToken, HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID);
+                    observableFactory.createDetached(new AmazonLoginCallable(requestBody))
+                            .subscribe(LoginActivity.this::callULAuthorize);
+                } else {
+                    onError(new AuthError("Failed to login authenticate with Amazon", AuthError.ERROR_TYPE.ERROR_INVALID_GRANT));
+                }
+            } else {
+                final String accessToken = response.getString(ULAuthManager.BUNDLE_ACCESS_TOKEN);
+                final String refreshToken = response.getString(ULAuthManager.BUNDLE_REFRESH_TOKEN);
+                final String subscritionPlan = response.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_PLAN);
+                runOnUiThread(() -> setLoggedInState(accessToken, refreshToken, subscritionPlan));
+                setResult(RESULT_OK);
+                finish();
+            }
         }
 
         /**
@@ -275,6 +292,7 @@ public class LoginActivity extends Activity {
                 setLoggedOutState();
                 setLoggingInState(false);
             });
+            setResultAndReturn(ae, ae.getCategory().name());
         }
     }
 
@@ -292,5 +310,13 @@ public class LoginActivity extends Activity {
         bundle.putSerializable(AuthenticationConstants.ERROR_CAUSE, throwable);
         setResult(RESULT_CANCELED, intent.putExtra(AuthenticationConstants.ERROR_BUNDLE, bundle));
         finish();
+    }
+
+    private void callULAuthorize(LoginResponse response) {
+        if (response != null) {
+            ulAuthManager.authorize(response.getSessionId(), HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID, new AuthListener());
+        } else {
+            setResultAndReturn(new Throwable("Failed to login"), AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
+        }
     }
 }

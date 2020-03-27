@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stingray.qello.android.firetv.login.communication.requestmodel.AmazonLoginRequestBody;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.LoginResponse;
 import com.stingray.qello.firetv.android.async.ULCallable;
@@ -13,18 +14,18 @@ import com.stingray.qello.firetv.android.async.ULCallable;
 import java.io.IOException;
 import java.util.Map;
 
-public class UserpassLoginCallable extends ULCallable<LoginResponse> {
+public class AmazonLoginCallable extends ULCallable<LoginResponse> {
     private final static TypeReference<Map<String, String>> MAP_STRING_STRING = new TypeReference<Map<String, String>>() {};
-    private final static String ENDPOINT = "/user/userpassLogin";
-    private final static String TAG = UserpassLoginCallable.class.getSimpleName();
+    private final static String ENDPOINT = "/user/amazonLogin";
+    private final static String TAG = AmazonLoginCallable.class.getSimpleName();
 
     private ObjectMapper objectMapper =  new ObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-    private UserpassLoginRequestBody requestBody;
+    private AmazonLoginRequestBody requestBody;
 
-    public UserpassLoginCallable(UserpassLoginRequestBody requestBody) {
+    public AmazonLoginCallable(AmazonLoginRequestBody requestBody) {
         requestBody.setClientId(CLIENT_ID);
         this.requestBody = requestBody;
     }
