@@ -18,7 +18,7 @@ import com.stingray.qello.firetv.android.contentbrowser.helper.FontManager;
 import com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrationManager;
 import com.stingray.qello.firetv.android.contentbrowser.helper.PurchaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.recommendations.RecommendationManager;
-import com.stingray.qello.firetv.android.contentbrowser.search.SearchCallable;
+import com.stingray.qello.firetv.android.contentbrowser.callable.SearchCallable;
 import com.stingray.qello.firetv.android.interfaces.ICancellableLoad;
 import com.stingray.qello.firetv.android.interfaces.IContentBrowser;
 import com.stingray.qello.firetv.android.model.Action;

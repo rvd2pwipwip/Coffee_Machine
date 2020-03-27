@@ -1,4 +1,4 @@
-package com.stingray.qello.firetv.android.contentbrowser.explorepage;
+package com.stingray.qello.firetv.android.contentbrowser.callable;
 
 import android.util.Log;
 

@@ -71,6 +71,7 @@ public class BrowseHelper {
                 listRowAdapter.add(content);
             }
 
+            //TODO REMOVE after testing
             if(contentContainer.hasViewMore() || contentContainer.getName().equals("Top Picks For Dad")) {
                 listRowAdapter.add(new ViewMore(contentContainer.getId(), contentContainer.getName()));
             }

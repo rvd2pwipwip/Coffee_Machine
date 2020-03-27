@@ -66,9 +66,9 @@ import android.widget.Button;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
-import com.stingray.qello.firetv.android.contentbrowser.showscreen.ContentTrackListCallable;
+import com.stingray.qello.firetv.android.contentbrowser.callable.ContentTrackListCallable;
 import com.stingray.qello.firetv.android.contentbrowser.showscreen.ContentTrackListRow;
-import com.stingray.qello.firetv.android.contentbrowser.showscreen.RelatedContentCallable;
+import com.stingray.qello.firetv.android.contentbrowser.callable.RelatedContentCallable;
 import com.stingray.qello.firetv.android.model.Action;
 import com.stingray.qello.firetv.android.model.content.ContentWithTracks;
 import com.stingray.qello.firetv.android.model.content.Content;
