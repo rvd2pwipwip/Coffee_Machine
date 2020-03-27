@@ -220,12 +220,12 @@ public class LoginActivity extends Activity {
     private void setLoggingInState(final boolean loggingIn) {
 
         if (loggingIn) {
-            lwaButton.setVisibility(Button.GONE);
+            loginWithUP.setVisibility(Button.GONE);
             mLogInProgress.setVisibility(ProgressBar.VISIBLE);
         }
         else {
             if (!Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN)) {
-                lwaButton.setVisibility(Button.VISIBLE);
+                loginWithUP.setVisibility(Button.VISIBLE);
             }
             mLogInProgress.setVisibility(ProgressBar.GONE);
         }
