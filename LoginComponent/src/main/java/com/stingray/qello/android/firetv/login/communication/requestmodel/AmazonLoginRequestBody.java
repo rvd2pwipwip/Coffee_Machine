@@ -12,12 +12,15 @@ public class AmazonLoginRequestBody {
     public AmazonLoginRequestBody(String amazonAccessToken, String languageTag, String deviceId) {
         this.amazonAccessToken = amazonAccessToken;
         this.languageTag = languageTag;
-        this.setAmazonPasswordUri = "https://login-test.stingray.com/createPasswordAndLink";
         this.deviceId = deviceId;
     }
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
+    }
+
+    public void setSetAmazonPasswordUri(String setAmazonPasswordUri) {
+        this.setAmazonPasswordUri = setAmazonPasswordUri;
     }
 
     public String getAmazonAccessToken() {
