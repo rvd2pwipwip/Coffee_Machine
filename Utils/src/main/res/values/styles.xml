@@ -94,4 +94,11 @@ permissions and limitations under the License.
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="button_border_highlight">
+        <item name="android:background">@drawable/button_bg_stroke</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+
 </resources>

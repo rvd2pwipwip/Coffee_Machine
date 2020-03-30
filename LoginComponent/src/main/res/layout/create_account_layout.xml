@@ -141,12 +141,12 @@ permissions and limitations under the License.
 
             <ImageButton
                 android:id="@+id/login_with_amazon2"
+                style="@style/image_button_border_highlight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:adjustViewBounds="true"
-                android:background="@android:color/transparent"
                 android:contentDescription="@string/login_button_content_description"
                 android:src="@color/login_button_image_state" />
 

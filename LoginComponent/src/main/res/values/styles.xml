@@ -31,4 +31,10 @@ permissions and limitations under the License.
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+
+    <style name="image_button_border_highlight">
+        <item name="android:background">@drawable/image_button_bg_stroke</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
 </resources>
