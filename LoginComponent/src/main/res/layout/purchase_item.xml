@@ -5,8 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="7dp"
     android:background="@drawable/white_frame"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:focusable="true"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/recurrence"
@@ -15,7 +16,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif"
-        android:text="@{product.recurrence}"
         android:textColor="@color/ui_almost_white"
         android:textSize="24sp"
         android:textStyle="bold"
