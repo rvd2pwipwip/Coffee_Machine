@@ -23,13 +23,13 @@
 
     <RelativeLayout
         android:id="@+id/content_track_info_col"
-        android:layout_width="0dp"
+        style="@style/button_border_highlight"
+        android:focusable="true"
         android:layout_height="match_parent"
         android:layout_weight="0.80"
-        android:background="@drawable/button_bg_stroke"
+
         android:clickable="true"
-        android:focusable="true"
-        android:padding="@dimen/content_track_list_btn_padding">
+        android:paddingTop="5dp">
 
         <TextView
             android:id="@+id/track_title"
