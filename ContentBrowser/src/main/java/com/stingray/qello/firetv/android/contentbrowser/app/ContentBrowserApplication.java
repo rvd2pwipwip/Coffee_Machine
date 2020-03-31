@@ -14,18 +14,6 @@
  */
 package com.stingray.qello.firetv.android.contentbrowser.app;
 
-import com.stingray.qello.firetv.ads.IAds;
-import com.stingray.qello.firetv.android.contentbrowser.helper.AnalyticsHelper;
-import com.stingray.qello.firetv.android.contentbrowser.recommendations.UpdateRecommendationsService;
-import com.stingray.qello.firetv.android.module.ModularApplication;
-import com.stingray.qello.firetv.android.module.Module;
-import com.stingray.qello.firetv.android.module.ModuleManager;
-import com.stingray.qello.firetv.android.uamp.UAMP;
-import com.stingray.qello.firetv.android.utils.Preferences;
-import com.stingray.qello.firetv.auth.IAuthentication;
-import com.stingray.qello.firetv.purchase.IPurchase;
-import com.squareup.leakcanary.RefWatcher;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -34,8 +22,16 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.stingray.qello.firetv.analytics.AnalyticsManager;
-import com.stingray.qello.firetv.analytics.IAnalytics;
+import com.squareup.leakcanary.RefWatcher;
+import com.stingray.qello.firetv.ads.IAds;
+import com.stingray.qello.firetv.android.contentbrowser.recommendations.UpdateRecommendationsService;
+import com.stingray.qello.firetv.android.module.ModularApplication;
+import com.stingray.qello.firetv.android.module.Module;
+import com.stingray.qello.firetv.android.module.ModuleManager;
+import com.stingray.qello.firetv.android.uamp.UAMP;
+import com.stingray.qello.firetv.android.utils.Preferences;
+import com.stingray.qello.firetv.auth.IAuthentication;
+import com.stingray.qello.firetv.purchase.IPurchase;
 
 /**
  * Content browser application class.
@@ -69,11 +65,6 @@ public class ContentBrowserApplication extends ModularApplication {
     private RefWatcher mRefWatcher;
 
     /**
-     * Analytics manager reference.
-     */
-    protected AnalyticsManager mAnalyticsManager;
-
-    /**
      * Get singleton instance.
      *
      * @return Content browser application singleton instance.
@@ -105,8 +96,6 @@ public class ContentBrowserApplication extends ModularApplication {
 
         Preferences.setContext(this);
 
-        mAnalyticsManager = AnalyticsManager.getInstance(this);
-
         initAllModules(this.getApplicationContext());
         initializeAuthModule();
         scheduleRecommendationUpdate(this.getApplicationContext(), INITIAL_DELAY);
@@ -136,16 +125,6 @@ public class ContentBrowserApplication extends ModularApplication {
                                        .getModule(IAds.class.getSimpleName())
                                        .getImpl(true);
         ads.setExtra(new Bundle());
-
-        // Setup Analytics.
-        IAnalytics analytics =
-                (IAnalytics) ModuleManager.getInstance()
-                                          .getModule(IAnalytics.class.getSimpleName())
-                                          .getImpl(true);
-
-        mAnalyticsManager.setAnalyticsInterface(analytics);
-        sInstance.registerActivityLifecycleCallbacks(mAnalyticsManager);
-        AnalyticsHelper.trackAppEntry();
         initializeAuthModule();
         // Last call.
         postModulesLoaded();
@@ -159,9 +138,6 @@ public class ContentBrowserApplication extends ModularApplication {
 
         if (UAMP.class.getSimpleName().equals(interfaceName)) {
             ModuleManager.getInstance().setModule(interfaceName, new Module<UAMP>());
-        }
-        else if (IAnalytics.class.getSimpleName().equals(interfaceName)) {
-            ModuleManager.getInstance().setModule(interfaceName, new Module<IAnalytics>());
         }
         else if (IAds.class.getSimpleName().equals(interfaceName)) {
             ModuleManager.getInstance().setModule(interfaceName, new Module<IAds>());

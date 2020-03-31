@@ -55,15 +55,19 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.amazon.mediaplayer.AMZNMediaPlayer;
+import com.amazon.mediaplayer.AMZNMediaPlayer.PlayerState;
+import com.amazon.mediaplayer.playback.text.Cue;
+import com.amazon.mediaplayer.tracks.TrackType;
+import com.google.android.exoplayer.text.CaptionStyleCompat;
+import com.google.android.exoplayer.text.SubtitleLayout;
 import com.stingray.qello.firetv.ads.AdMetaData;
 import com.stingray.qello.firetv.ads.IAds;
-import com.stingray.qello.firetv.analytics.AnalyticsTags;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.records.RecentRecord;
-import com.stingray.qello.firetv.android.contentbrowser.helper.AnalyticsHelper;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.module.ModuleManager;
 import com.stingray.qello.firetv.android.recipe.Recipe;
@@ -80,13 +84,7 @@ import com.stingray.qello.firetv.android.ui.fragments.ErrorDialogFragment;
 import com.stingray.qello.firetv.android.utils.ErrorUtils;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
-import com.amazon.mediaplayer.AMZNMediaPlayer;
-import com.amazon.mediaplayer.AMZNMediaPlayer.PlayerState;
-import com.amazon.mediaplayer.playback.text.Cue;
-import com.amazon.mediaplayer.tracks.TrackType;
 import com.stingray.qello.firetv.utils.DateAndTimeHelper;
-import com.google.android.exoplayer.text.CaptionStyleCompat;
-import com.google.android.exoplayer.text.SubtitleLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -262,8 +260,6 @@ public class PlaybackActivity extends Activity implements
         mSelectedContent.setUrl(new VideoLinkSelector().select(videoLinksByType));
         
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
-            AnalyticsHelper.trackError(TAG, "Received an Intent to play content without a " +
-                    "content object or content URL");
             finish();
         }
 
@@ -545,8 +541,7 @@ public class PlaybackActivity extends Activity implements
 
             storeContentPlaybackState();
             // User has stopped watching content so track it with analytics
-            AnalyticsHelper.trackPlaybackFinished(mSelectedContent, mStartingPlaybackPosition,
-                                                  getCurrentPosition());
+            //TODO SEG track pause?
 
             // After the user has stopped watching the content, send recommendations for related
             // content of the selected content if any exist.
@@ -824,8 +819,7 @@ public class PlaybackActivity extends Activity implements
             storeContentPlaybackState();
 
             // User has stopped watching this content so track it with analytics.
-            AnalyticsHelper.trackPlaybackFinished(mSelectedContent, mStartingPlaybackPosition,
-                                                  getCurrentPosition());
+            //TODO SEG track stop
 
             // Since the user is done watching this content, send recommendations for related
             // content of the selected content (if any exist) before changing to the next content.
@@ -896,7 +890,6 @@ public class PlaybackActivity extends Activity implements
 
                 ContentBrowser.getInstance(this).getRecommendationManager()
                               .dismissRecommendation(mSelectedContent.getId());
-                AnalyticsHelper.trackDismissRecommendationForCompleteContent(mSelectedContent);
             }
         }
 
@@ -1144,28 +1137,16 @@ public class PlaybackActivity extends Activity implements
         switch (keyCode) {
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 playbackOverlayFragment.togglePlayback(false);
-                AnalyticsHelper.trackPlaybackControlAction(
-                        AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY, mSelectedContent,
-                        getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 playbackOverlayFragment.togglePlayback(false);
-                AnalyticsHelper.trackPlaybackControlAction(
-                        AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE, mSelectedContent,
-                        getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (mPlaybackState == LeanbackPlaybackState.PLAYING) {
                     playbackOverlayFragment.togglePlayback(false);
-                    AnalyticsHelper.trackPlaybackControlAction(
-                            AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE, mSelectedContent,
-                            getCurrentPosition());
                 }
                 else {
                     playbackOverlayFragment.togglePlayback(true);
-                    AnalyticsHelper.trackPlaybackControlAction(
-                            AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY, mSelectedContent,
-                            getCurrentPosition());
                 }
                 return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
@@ -1175,8 +1156,6 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastForward();
                 }
-                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF,
-                                                           mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 if (mIsLongPress) {
@@ -1185,9 +1164,6 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastRewind();
                 }
-                AnalyticsHelper.trackPlaybackControlAction(
-                        AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND, mSelectedContent,
-                        getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_BUTTON_R1:
                 if (mIsLongPress) {
@@ -1196,8 +1172,6 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastForward();
                 }
-                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF,
-                                                           mSelectedContent, getCurrentPosition());
                 return true;
             case KeyEvent.KEYCODE_BUTTON_L1:
                 if (mIsLongPress) {
@@ -1206,9 +1180,6 @@ public class PlaybackActivity extends Activity implements
                 else {
                     playbackOverlayFragment.fastRewind();
                 }
-                AnalyticsHelper.trackPlaybackControlAction(
-                        AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND, mSelectedContent,
-                        getCurrentPosition());
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);
@@ -1387,14 +1358,10 @@ public class PlaybackActivity extends Activity implements
             if (mPlayer != null && isPlaying()) {
                 mPlayer.pause();
                 mCurrentPlaybackPosition = getCurrentPosition();
-                AnalyticsHelper.trackPlaybackFinished(mSelectedContent, mStartingPlaybackPosition,
-                                                      mCurrentPlaybackPosition);
                 mStartingPlaybackPosition = mCurrentPlaybackPosition;
             }
 
             hideProgress();
-            AnalyticsHelper.trackAdStarted(mSelectedContent, getCurrentPosition(),
-                                           getAdAnalyticsData(extras));
             switchToAdsView();
             disableMediaSession();
         }
@@ -1414,9 +1381,6 @@ public class PlaybackActivity extends Activity implements
                 switchToVideoView();
                 enableMediaSession();
             }
-
-            AnalyticsHelper.trackAdEnded(mSelectedContent, getCurrentPosition(),
-                                         getAdAnalyticsData(extras));
 
             String adType = null;
             if (extras != null) {
@@ -1489,8 +1453,6 @@ public class PlaybackActivity extends Activity implements
         if (mPlayer != null && mPlayer.getPlayerState() == PlayerState.IDLE) {
             String url = content.getUrl();
             if (TextUtils.isEmpty(url)) {
-                AnalyticsHelper.trackError(TAG, "Content URL is either null or empty for content " +
-                        content.toString());
                 return;
             }
 
@@ -1643,11 +1605,6 @@ public class PlaybackActivity extends Activity implements
             // Just to catch this while under dev
             Log.w(TAG, "Duplicate state change message!!! ");
         }
-        // If buffering stopped
-        if (mPrevState == PlayerState.BUFFERING && mCurrentState != PlayerState.BUFFERING) {
-            AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags.ACTION_PLAYBACK_BUFFER_END,
-                                                       mSelectedContent, getCurrentPosition());
-        }
         switch (newState) {
             case IDLE:
                 mWindow.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -1766,9 +1723,10 @@ public class PlaybackActivity extends Activity implements
                     mMediaSessionController.updatePlaybackState(PlaybackState.STATE_PLAYING,
                                                                 getCurrentPosition());
                 }
-                AnalyticsHelper.trackPlaybackStarted(mSelectedContent, getDuration(),
+                //TODO SEG track play
+                /*AnalyticsHelper.trackPlaybackStarted(mSelectedContent, getDuration(),
                                                      mCurrentPlaybackPosition,
-                                                     mTotalSegments, currentSegment);
+                                                     mTotalSegments, currentSegment);*/
                 break;
             case BUFFERING:
                 showProgress();
@@ -1776,9 +1734,6 @@ public class PlaybackActivity extends Activity implements
                     mMediaSessionController.updatePlaybackState(PlaybackState.STATE_BUFFERING,
                                                                 getCurrentPosition());
                 }
-                AnalyticsHelper.trackPlaybackControlAction(AnalyticsTags
-                                                                   .ACTION_PLAYBACK_BUFFER_START,
-                                                           mSelectedContent, getCurrentPosition());
                 break;
             case SEEKING:
                 showProgress();

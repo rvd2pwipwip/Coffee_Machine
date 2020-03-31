@@ -98,5 +98,5 @@ dependencies {
     implementation project(':AMZNMediaPlayerComponent')
     implementation project(':PassThroughAdsComponent')
     implementation project(':LoginComponent')
-    implementation project(':LoggerAnalyticsComponent')
+    implementation project(':SegmentComponent')
 }

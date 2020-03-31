@@ -15,6 +15,23 @@
 
 package com.stingray.qello.firetv.android.contentbrowser.helper;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.github.droibit.rxactivitylauncher.RxLauncher;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.R;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
@@ -29,27 +46,10 @@ import com.stingray.qello.firetv.android.utils.NetworkUtils;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
 import com.stingray.qello.firetv.auth.IAuthentication;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.github.droibit.rxactivitylauncher.RxLauncher;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -265,13 +265,10 @@ public class AuthHelper {
     public Observable<Bundle> logout() {
 
         Log.v(TAG, "logout called.");
-        AnalyticsHelper.trackLogOutRequest();
         return Observable.create(subscriber -> {
             mIAuthentication.logout(mAppContext, new IAuthentication.ResponseHandler() {
                 @Override
                 public void onSuccess(Bundle extras) {
-
-                    AnalyticsHelper.trackLogOutResultSuccess();
                     broadcastAuthenticationStatus(false);
                     Log.d(TAG, "Account logout success");
                     handleSuccessCase(subscriber, extras);
@@ -279,8 +276,6 @@ public class AuthHelper {
 
                 @Override
                 public void onFailure(Bundle extras) {
-
-                    AnalyticsHelper.trackLogOutResultFailure(retrieveErrorCategory(extras));
                     Log.e(TAG, "Account logout failure");
                     handleFailureCase(subscriber, extras);
                 }
@@ -334,7 +329,6 @@ public class AuthHelper {
 
         //get the requested content
         Content content = mContentBrowser.getLastSelectedContent();
-        AnalyticsHelper.trackAuthorizationRequest(content);
         return Observable.create(subscriber -> {
             // Check if user is logged in. If not, show authentication activity.
             mIAuthentication.isResourceAuthorized(mAppContext, "",
@@ -344,8 +338,6 @@ public class AuthHelper {
 
                                                           Log.d(TAG, "Resource Authorization " +
                                                                   "success");
-                                                          AnalyticsHelper
-                                                                  .trackAuthorizationResultSuccess(content);
                                                           handleSuccessCase(subscriber, extras);
                                                       }
 
@@ -354,8 +346,6 @@ public class AuthHelper {
 
                                                           Log.e(TAG, "Resource Authorization " +
                                                                   "failed");
-                                                          AnalyticsHelper
-                                                                  .trackAuthorizationResultFailure(content, retrieveErrorCategory(extras));
                                                           handleFailureCase(subscriber, extras);
                                                       }
                                                   });
@@ -396,7 +386,6 @@ public class AuthHelper {
      */
     public Observable<Bundle> authenticateWithActivity() {
 
-        AnalyticsHelper.trackAuthenticationRequest();
         return mRxLauncher.from(mContentBrowser.getNavigator()
                                                .getActiveActivity())
                           .startActivityForResult(getIAuthentication()
@@ -418,15 +407,6 @@ public class AuthHelper {
                                   // Cancel auth request.
                                   cancelAllRequests();
                                   return resultBundle;
-                              }
-
-                              //Check if authentication succeeded.
-                              if (activityResult.isOk()) {
-                                  AnalyticsHelper.trackAuthenticationResultSuccess();
-                              }
-                              else {
-                                  AnalyticsHelper.trackAuthenticationResultFailure
-                                          (retrieveErrorCategory(resultBundle));
                               }
 
                               handleAuthenticationActivityResultBundle(resultBundle);
@@ -582,20 +562,15 @@ public class AuthHelper {
     private void logoutFromAccount(Context context) {
 
         Log.v(TAG, "logoutFromAccount called.");
-        AnalyticsHelper.trackLogOutRequest();
         mIAuthentication.logout(context, new IAuthentication.ResponseHandler() {
             @Override
             public void onSuccess(Bundle extras) {
-
-                AnalyticsHelper.trackLogOutResultSuccess();
                 broadcastAuthenticationStatus(false);
                 Log.d(TAG, "Account logout success");
             }
 
             @Override
             public void onFailure(Bundle extras) {
-
-                AnalyticsHelper.trackLogOutResultFailure(retrieveErrorCategory(extras));
                 Log.e(TAG, "Account logout failure");
             }
         });
@@ -643,12 +618,9 @@ public class AuthHelper {
                         mContentBrowser.updateContentActions();
                     }
                     else if (ErrorUtils.ERROR_BUTTON_TYPE.LOGOUT == errorButtonType) {
-                        AnalyticsHelper.trackLogOutRequest();
                         mIAuthentication.logout(activity, new IAuthentication.ResponseHandler() {
                             @Override
                             public void onSuccess(Bundle extras) {
-
-                                AnalyticsHelper.trackLogOutResultSuccess();
                                 broadcastAuthenticationStatus(false);
                                 fragment.dismiss();
                                 mContentBrowser.updateContentActions();
@@ -656,9 +628,6 @@ public class AuthHelper {
 
                             @Override
                             public void onFailure(Bundle extras) {
-
-                                AnalyticsHelper.trackLogOutResultFailure(retrieveErrorCategory
-                                                                                 (extras));
                                 fragment.getArguments()
                                         .putString(ErrorDialogFragment.ARG_ERROR_MESSAGE,
                                                    activity.getResources().getString(

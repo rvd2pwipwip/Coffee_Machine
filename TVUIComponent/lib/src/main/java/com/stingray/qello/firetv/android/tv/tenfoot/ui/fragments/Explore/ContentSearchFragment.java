@@ -67,7 +67,6 @@ import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.callable.ExplorePageCallable;
 import com.stingray.qello.firetv.android.contentbrowser.callable.GenreFilterCallable;
-import com.stingray.qello.firetv.android.contentbrowser.helper.AnalyticsHelper;
 import com.stingray.qello.firetv.android.model.SvodMetadata;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.Genre;
@@ -230,7 +229,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                                 actionId == EditorInfo.IME_ACTION_PREVIOUS) {
 
                             if (mQuery != null) {
-                                AnalyticsHelper.trackSearchQuery(mQuery);
+                                //TODO seg track search?
                             }
                         }
 

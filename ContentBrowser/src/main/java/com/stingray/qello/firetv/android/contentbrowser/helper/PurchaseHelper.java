@@ -14,6 +14,11 @@
  */
 package com.stingray.qello.firetv.android.contentbrowser.helper;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.R;
 import com.stingray.qello.firetv.android.model.content.Content;
@@ -30,11 +35,6 @@ import com.stingray.qello.firetv.purchase.PurchaseManagerListener;
 import com.stingray.qello.firetv.purchase.model.Response;
 
 import org.greenrobot.eventbus.EventBus;
-
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -276,11 +276,9 @@ public class PurchaseHelper {
             setSubscription(validity, sku);
             resultBundle.putString(RESULT_SKU, sku);
             resultBundle.putBoolean(RESULT_VALIDITY, validity);
-            AnalyticsHelper.trackPurchaseResult(sku, validity);
             handleSuccessCase(subscriber, resultBundle);
         }
         else {
-            AnalyticsHelper.trackError(TAG, "Purchase failed "+response);
             resultBundle.putBoolean(RESULT_VALIDITY, false);
             handleFailureCase(subscriber, resultBundle);
         }

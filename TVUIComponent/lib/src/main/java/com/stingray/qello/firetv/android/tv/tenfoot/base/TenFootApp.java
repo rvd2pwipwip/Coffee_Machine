@@ -14,20 +14,14 @@
  */
 package com.stingray.qello.firetv.android.tv.tenfoot.base;
 
-import com.stingray.qello.firetv.android.configuration.ConfigurationManager;
-import com.stingray.qello.firetv.android.contentbrowser.app.ContentBrowserApplication;
-import com.stingray.qello.firetv.android.contentbrowser.constants.ConfigurationConstants;
-import com.stingray.qello.firetv.android.tv.tenfoot.R;
-import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.MainActivity;
-import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
-import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.SplashActivity;
-
 import android.content.res.Resources;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.stingray.qello.firetv.android.uamp.ui.PlaybackActivity;
-import com.stingray.qello.firetv.analytics.AnalyticsTags;
+import com.stingray.qello.firetv.android.configuration.ConfigurationManager;
+import com.stingray.qello.firetv.android.contentbrowser.app.ContentBrowserApplication;
+import com.stingray.qello.firetv.android.contentbrowser.constants.ConfigurationConstants;
+import com.stingray.qello.firetv.android.tv.tenfoot.R;
 
 /**
  * TenFoot Application class.
@@ -64,18 +58,5 @@ public class TenFootApp extends ContentBrowserApplication {
         catch (Resources.NotFoundException exception) {
             Log.e(TAG, "Resources not found", exception);
         }
-
-        // Add analytics constant of embedded activities.
-        mAnalyticsManager.addAnalyticsConstantForActivity(SplashActivity.class.getSimpleName(),
-                                                          AnalyticsTags.SCREEN_SPLASH)
-                         .addAnalyticsConstantForActivity(MainActivity.class
-                                                                  .getSimpleName(),
-                                                          AnalyticsTags.SCREEN_BROWSE)
-                         .addAnalyticsConstantForActivity(ContentDetailsActivity.class
-                                                                  .getSimpleName(),
-                                                          AnalyticsTags.SCREEN_DETAILS)
-                         .addAnalyticsConstantForActivity(PlaybackActivity.class
-                                                                  .getSimpleName(),
-                                                          AnalyticsTags.SCREEN_PLAYBACK);
     }
 }

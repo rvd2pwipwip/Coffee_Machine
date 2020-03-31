@@ -16,13 +16,13 @@
 package com.stingray.qello.firetv.android.contentbrowser.helper;
 
 
-import com.stingray.qello.firetv.android.utils.ErrorUtils;
-import com.stingray.qello.firetv.android.ui.fragments.ErrorDialogFragment;
-import com.stingray.qello.firetv.android.utils.Helpers;
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.util.Log;
+
+import com.stingray.qello.firetv.android.ui.fragments.ErrorDialogFragment;
+import com.stingray.qello.firetv.android.utils.ErrorUtils;
+import com.stingray.qello.firetv.android.utils.Helpers;
 
 /**
  * Error helper class.
@@ -70,9 +70,5 @@ public class ErrorHelper {
                                                                   errorDialogFragmentListener);
         }
         errorDialogFragment.show(fm, ErrorDialogFragment.FRAGMENT_TAG_NAME);
-
-        // Inform analytics that an error occurred.
-        AnalyticsHelper.trackError(activity.getLocalClassName(),
-                                   ErrorUtils.getErrorMessage(activity, error_category));
     }
 }
