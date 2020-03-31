@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settings_layout"
@@ -12,8 +12,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="102px"
-        android:layout_marginTop="85px"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="80dp"
         android:orientation="vertical">
 
         <Button
@@ -22,11 +22,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
+            android:textColor="@color/accent"
             android:gravity="left|center_vertical"
             android:text="Start Free Trial"
             android:textAllCaps="false"
-            android:textColor="#C4C4C4"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/account_button"
@@ -37,8 +37,7 @@
             android:gravity="left|center_vertical"
             android:text="Account and Settings"
             android:textAllCaps="false"
-            android:textColor="#C4C4C4"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/faq_button"
@@ -49,8 +48,7 @@
             android:gravity="left|center_vertical"
             android:text="FAQ"
             android:textAllCaps="false"
-            android:textColor="#C4C4C4"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/contact_us_button"
@@ -61,8 +59,7 @@
             android:gravity="left|center_vertical"
             android:text="Contact Us"
             android:textAllCaps="false"
-            android:textColor="#C4C4C4"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/about_button"
@@ -73,8 +70,7 @@
             android:gravity="left|center_vertical"
             android:text="About"
             android:textAllCaps="false"
-            android:textColor="#C4C4C4"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/logout_button"
@@ -86,8 +82,7 @@
             android:gravity="left|center_vertical"
             android:text="Log Out"
             android:textAllCaps="false"
-            android:textColor="#C4C4C4"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <FrameLayout
