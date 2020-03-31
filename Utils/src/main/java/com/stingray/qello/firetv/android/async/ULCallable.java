@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public abstract class ULCallable<T> extends BaseCommunicator implements Callable
     }
 
     protected Response post(String path, Map<String, String> formParams) throws IOException {
-        return post(path, formParams, new HashMap<String, String>());
+        return post(path, formParams, Collections.emptyMap());
     }
 
     protected Response post(String path, Map<String, String> formParams, Map<String, String> additionalHeaders) throws IOException {

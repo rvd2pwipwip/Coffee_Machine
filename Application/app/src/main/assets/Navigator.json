@@ -56,6 +56,11 @@
       "verifyScreenAccess": false,
       "verifyNetworkConnection": true,
       "onAction": "ACCOUNT_CREATION_SCREEN"
+    },
+    "com.stingray.qello.android.firetv.login.activities.PurchaseActivity": {
+      "verifyScreenAccess": false,
+      "verifyNetworkConnection": true,
+      "onAction": "PURCHASE_SCREEN"
     }
   }
 }

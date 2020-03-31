@@ -53,6 +53,10 @@ public class SettingsFragment extends Fragment {
     }
 
     public void addListenerOnButton(View view) {
+
+        startFreeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
+                .switchToScreen(ContentBrowser.PURCHASE_SCREEN, null, null));
+
         Button faqButton = view.findViewById(R.id.faq_button);
         faqButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
                 .createFragment(getActivity(), getActivity().getFragmentManager(), getActivity().getString(com.stingray.qello.firetv.utils.R.string.faq_settings_fragment_tag), "https://legal.stingray.com/en/qello-faq/markdown"));

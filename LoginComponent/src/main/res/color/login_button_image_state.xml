@@ -13,7 +13,7 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="false" android:drawable="@drawable/btnlwa_gold_loginwithamazon"/>
+    <item android:state_pressed="false" android:drawable="@drawable/btnlwa_gry_loginwithamazon" />
     <item android:state_pressed="true"
-          android:drawable="@drawable/btnlwa_gold_loginwithamazon_pressed"/>
+          android:drawable="@drawable/btnlwa_gry_loginwithamazon_pressed"/>
 </selector>
