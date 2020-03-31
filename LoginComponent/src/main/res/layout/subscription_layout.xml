@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fontFamily="sans-serif"
-        android:paddingTop="10dp"
+        android:paddingTop="20dp"
         android:paddingBottom="0dp"
         android:text="Select your plan"
         android:textColor="@color/accent"
@@ -48,8 +48,15 @@
             android:id="@+id/purchase_item"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            tools:itemCount="2"
+            tools:itemCount="1"
             tools:listitem="@layout/purchase_item" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/purchase_item_rebate"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            tools:itemCount="1"
+            tools:listitem="@layout/purchase_item_rebate" />
 
     </LinearLayout>
 
