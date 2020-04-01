@@ -30,6 +30,7 @@ include ':app',
         ':AuthInterface',
         ':AdsInterface',
         ':ModuleInterface',
+        ':UserTrackingInterface',
         /* Implementations */
         ':PassThroughAdsComponent',
         ':AMZNMediaPlayerComponent',
@@ -53,6 +54,7 @@ project(':ModuleInterface').projectDir = new File(rootProject.projectDir, '../Mo
 project(':AdsInterface').projectDir = new File(rootProject.projectDir, '../AdsInterface')
 project(':AuthInterface').projectDir = new File(rootProject.projectDir, '../AuthInterface')
 project(':PurchaseInterface').projectDir = new File(rootProject.projectDir, '../PurchaseInterface')
+project(':UserTrackingInterface').projectDir = new File(rootProject.projectDir, '../UserTrackingInterface')
 
 /* Implementations */
 project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDir, '../AMZNMediaPlayerComponent')

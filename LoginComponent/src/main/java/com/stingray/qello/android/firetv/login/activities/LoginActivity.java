@@ -208,10 +208,10 @@ public class LoginActivity extends Activity {
     /**
      * Sets the state of the application to reflect that the user is currently authorized.
      */
-    private void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan) {
+    private void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan, String email, String userTrackingId) {
         loginWithUP.setVisibility(LinearLayout.GONE);
         lwaButton.setVisibility(Button.GONE);
-        Preferences.setLoggedInState(accessToken, refreshToken, subscriptionPlan);
+        Preferences.setLoggedInState(accessToken, refreshToken, subscriptionPlan, email, userTrackingId);
         setLoggingInState(false);
     }
 
@@ -274,8 +274,10 @@ public class LoginActivity extends Activity {
             } else {
                 final String accessToken = response.getString(ULAuthManager.BUNDLE_ACCESS_TOKEN);
                 final String refreshToken = response.getString(ULAuthManager.BUNDLE_REFRESH_TOKEN);
-                final String subscritionPlan = response.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_PLAN);
-                runOnUiThread(() -> setLoggedInState(accessToken, refreshToken, subscritionPlan));
+                final String subscriptionPlan = response.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_PLAN);
+                final String email = response.getString(ULAuthManager.BUNDLE_EMAIL);
+                final String userTrackingId = response.getString(ULAuthManager.BNUDLE_USER_TRACKING_ID);
+                runOnUiThread(() -> setLoggedInState(accessToken, refreshToken, subscriptionPlan, email, userTrackingId));
                 setResult(RESULT_OK);
                 finish();
             }

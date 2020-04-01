@@ -46,4 +46,8 @@ public class PreferencesConstants {
     public static final String HAS_SUBSCRIPTION = "has_subscription";
 
     public static final String IS_LOGGED_IN = "is_logged_in";
+
+    public static final String USER_TRACKING_ID = "user_tracking_id";
+
+    public static final String EMAIL = "email";
 }

@@ -70,6 +70,7 @@ dependencies {
     api project(':ContentModel')
     // Global font support
     implementation project(':Calligraphy')
+    compile project(path: ':UserTrackingInterface')
 }
 
 buildscript {

@@ -24,6 +24,8 @@ public class ULAuthManager {
     public final static String BUNDLE_REFRESH_TOKEN = "refreshToken";
     public final static String BUNDLE_EXPIRES_IN = "expiresIn";
     public final static String BUNDLE_SUBSCRIPTION_PLAN = "subscriptionPlan";
+    public final static String BUNDLE_EMAIL = "email";
+    public final static String BNUDLE_USER_TRACKING_ID = "user_trackin_id";
 
     public void authorize(String sessionId, String languageCode, String deviceId, AuthorizationListener authorizationListener) {
         IssueCodeRequestBody issueCodeRequestBody = new IssueCodeRequestBody(sessionId, languageCode, deviceId);
@@ -52,6 +54,8 @@ public class ULAuthManager {
                     bundle.putString(BUNDLE_REFRESH_TOKEN, tokenResponse.getRefreshToken());
                     bundle.putString(BUNDLE_EXPIRES_IN, tokenResponse.getExpiresIn());
                     bundle.putString(BUNDLE_SUBSCRIPTION_PLAN, userInfo.getSubscription().getPlan());
+                    bundle.putString(BUNDLE_EMAIL, userInfo.getEmail());
+                    bundle.putString(BNUDLE_USER_TRACKING_ID, userInfo.getUniqueUserTrackingId());
                     apiListener.onSuccess(bundle);
                 } else {
                     apiListener.onError(new AuthError("Failed to get svod user info", AuthError.ERROR_TYPE.ERROR_INVALID_GRANT));

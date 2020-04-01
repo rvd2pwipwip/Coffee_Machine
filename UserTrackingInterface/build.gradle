@@ -19,12 +19,11 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -34,12 +33,6 @@ android {
         debug {
             testCoverageEnabled true
         }
-    }
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/services/com.fasterxml.jackson.core.JsonFactory'
-        exclude 'META-INF/services/com.fasterxml.jackson.core.ObjectCodec'
     }
     compileOptions {
         sourceCompatibility = 1.8
@@ -52,10 +45,6 @@ jacoco {
     version = "0.7.1.201405082137"
 }
 
-ext {
-    segment_version = "4.3.+"
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -65,16 +54,4 @@ dependencies {
     androidTestImplementation('com.android.support.test:runner:0.4.1') {
         exclude module: 'support-annotations'
     }
-
-    // Segment
-    implementation "com.segment.analytics.android:analytics:$segment_version"
-
-    // Mixpanel
-    implementation 'com.segment.analytics.android.integrations:mixpanel:+'
-    implementation 'com.mixpanel.android:mixpanel-android:5.+'
-    compile project(path: ':UserTrackingInterface')
-    compile project(path: ':ModuleInterface')
-    compile project(path: ':Utils')
-
-
 }

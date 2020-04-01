@@ -32,6 +32,7 @@ import com.stingray.qello.firetv.android.uamp.UAMP;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.IAuthentication;
 import com.stingray.qello.firetv.purchase.IPurchase;
+import com.stingray.qello.firetv.user_tracking.IUserTracking;
 
 /**
  * Content browser application class.
@@ -98,6 +99,7 @@ public class ContentBrowserApplication extends ModularApplication {
 
         initAllModules(this.getApplicationContext());
         initializeAuthModule();
+        initializeSegmentModule();
         scheduleRecommendationUpdate(this.getApplicationContext(), INITIAL_DELAY);
     }
 
@@ -109,6 +111,20 @@ public class ContentBrowserApplication extends ModularApplication {
                                                    .getImpl(true);
             // Init authentication module.
             authentication.init(this);
+        }
+        catch (NoClassDefFoundError error) {
+            //Dont log here, SplashActivity takes care of it
+        }
+    }
+
+    private void initializeSegmentModule() {
+        try {
+            IUserTracking userTracking =
+                    (IUserTracking) ModuleManager.getInstance()
+                            .getModule(IUserTracking.class.getSimpleName())
+                            .getImpl(true);
+            // Init userTracking module.
+            userTracking.init(this);
         }
         catch (NoClassDefFoundError error) {
             //Dont log here, SplashActivity takes care of it
