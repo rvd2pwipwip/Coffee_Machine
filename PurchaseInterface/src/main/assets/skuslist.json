@@ -1,18 +1,18 @@
 {
   "skusList": [
     {
-      "sku": "testSubSku",
+      "sku": "Yearly",
       "productType": "SUBSCRIBE",
-      "purchaseSku": "testSubSku"
+      "purchaseSku": "qc.yearly.amazon.1"
     },
     {
-      "sku": "RentUnPurchased",
-      "productType": "RENT",
-      "purchaseSku": "RentUnPurchased"
+      "sku": "Monthly",
+      "productType": "SUBSCRIBE",
+      "purchaseSku": "com.qello.subscription.1mo.1199.trial14"
     }
   ],
   "actions": {
-    "CONTENT_ACTION_DAILY_PASS": "RentUnPurchased",
-    "CONTENT_ACTION_SUBSCRIPTION": "testSubSku"
+    "CONTENT_ACTION_DAILY_PASS": "Yearly",
+    "CONTENT_ACTION_SUBSCRIPTION": "Monthly"
   }
 }
