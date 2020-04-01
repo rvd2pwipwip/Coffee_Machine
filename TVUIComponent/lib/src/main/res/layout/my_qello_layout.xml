@@ -39,7 +39,7 @@
             <Button
                 android:id="@+id/login_button"
                 style="@style/button_border_highlight"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="left|center_vertical"
@@ -102,7 +102,7 @@
         <Button
             android:id="@+id/settings_button"
             style="@style/button_border_highlight"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/settings_gear"
             android:fontFamily="sans-serif-light"
