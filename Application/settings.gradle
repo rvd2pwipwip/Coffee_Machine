@@ -35,7 +35,8 @@ include ':app',
         ':PassThroughAdsComponent',
         ':AMZNMediaPlayerComponent',
         ':LoginComponent',
-        ':LoggerAnalyticsComponent'
+        ':LoggerAnalyticsComponent',
+        ':AmazonInAppPurchaseComponent'
 
 /* Frameworks */
 project(':TVUIComponent').projectDir = new File(rootProject.projectDir, '../TVUIComponent/lib')
@@ -61,5 +62,6 @@ project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDi
 project(':PassThroughAdsComponent').projectDir = new File(rootProject.projectDir, '../PassThroughAdsComponent')
 project(':LoginComponent').projectDir = new File(rootProject.projectDir, '../LoginComponent')
 project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../LoggerAnalyticsComponent')
+project(':AmazonInAppPurchaseComponent').projectDir = new File(rootProject.projectDir, '../AmazonInAppPurchaseComponent')
 // Uncomment when using ComScore Analytics
 //project(':comscore').projectDir = new File(rootProject.projectDir, '../ComScoreAnalyticsComponent/libs/comscore')

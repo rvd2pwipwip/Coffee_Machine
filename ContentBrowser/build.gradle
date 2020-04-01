@@ -65,6 +65,7 @@ dependencies {
     api project(':AdsInterface')
     implementation project(':PurchaseInterface')
     implementation project(':UAMP')
+    implementation project(':AmazonInAppPurchaseComponent')
     implementation project(':DataLoader')
     implementation project(':DynamicParser')
     implementation project(':Utils')

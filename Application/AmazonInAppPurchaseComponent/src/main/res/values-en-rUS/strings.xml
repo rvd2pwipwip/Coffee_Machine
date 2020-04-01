@@ -13,8 +13,4 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <!-- Receipt verification service for Amazon InApp purchase -->
-    <string name="receipt_verification_service_iap">
-        com.stingray.qello.firetv.inapppurchase.DefaultReceiptVerificationService
-    </string>
 </resources>

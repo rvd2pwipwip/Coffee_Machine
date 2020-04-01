@@ -13,7 +13,7 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.stingray.qello.firetv.inapppurchase">
+          package="com.amazon.inapppurchase">
 
     <application
             android:allowBackup="true"
