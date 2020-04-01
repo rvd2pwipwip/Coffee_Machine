@@ -29,6 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
+                android:textColor="@color/accent"
+                android:textStyle="bold"
                 android:gravity="left|center_vertical"
                 android:text="Start Free Trial"
                 android:textAllCaps="false"
@@ -51,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <Button
                 android:id="@+id/history_button"
