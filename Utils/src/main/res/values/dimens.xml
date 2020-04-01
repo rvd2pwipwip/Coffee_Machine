@@ -49,7 +49,7 @@ permissions and limitations under the License.
     <!-- Error Dialog Fragment dimensions -->
     <dimen name="error_image_max_height">120dp</dimen>
     <dimen name="error_message_max_width">650dp</dimen>
-    <dimen name="error_image_margin_up">154dp</dimen>
+    <dimen name="error_image_margin_up">180dp</dimen>
     <dimen name="error_image_margin_bottom">24dp</dimen>
     <dimen name="error_message_margin_bottom">24dp</dimen>
     <dimen name="error_buttonrow_margin_bottom">150dp</dimen>
