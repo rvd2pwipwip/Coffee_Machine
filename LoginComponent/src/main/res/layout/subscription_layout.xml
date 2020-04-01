@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="sans-serif"
-                android:paddingTop="10dp"
+                android:paddingTop="20dp"
                 android:paddingBottom="0dp"
                 android:text="Select your plan"
                 android:textColor="@color/accent"
@@ -42,12 +42,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="6dp"
+                android:textStyle="bold"
+                android:textColor="@color/ui_almost_white"
                 android:text="Enjoy Stingray Qello uninterrupted after your FREE trial ends." />
 
             <LinearLayout
                 android:id="@+id/purchase_items"
-                android:layout_width="300dp"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"

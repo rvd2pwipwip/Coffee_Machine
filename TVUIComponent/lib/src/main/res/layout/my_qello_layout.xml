@@ -3,17 +3,17 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_my_qello_loggedin"
     android:id="@+id/qello_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_my_qello_guest"
     android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="85px"
-        android:layout_marginTop="85px"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="80dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -32,8 +32,7 @@
                 android:gravity="left|center_vertical"
                 android:text="Start Free Trial"
                 android:textAllCaps="false"
-                android:textColor="#C4C4C4"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/login_button"
@@ -44,8 +43,7 @@
                 android:gravity="left|center_vertical"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="#C4C4C4"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <Button
                 android:id="@+id/history_button"
@@ -64,9 +62,8 @@
                 android:gravity="left|center_vertical"
                 android:text="History"
                 android:textAllCaps="false"
-                android:textColor="#C4C4C4"
                 android:textColorHighlight="#FAFAFA"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/favorites_button"
@@ -77,9 +74,8 @@
                 android:gravity="left|center_vertical"
                 android:text="Favorites"
                 android:textAllCaps="false"
-                android:textColor="#C4C4C4"
                 android:textColorHighlight="#FAFAFA"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/playlists_button"
@@ -90,15 +86,14 @@
                 android:gravity="left|center_vertical"
                 android:text="Playlists"
                 android:textAllCaps="false"
-                android:textColor="#C4C4C4"
                 android:textColorHighlight="#FAFAFA"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
 
         <View
             android:id="@+id/divider"
-            android:layout_width="428px"
+            android:layout_width="260px"
             android:layout_height="1px"
             android:background="#C2C2C2" />
 
@@ -112,9 +107,8 @@
             android:gravity="left|center_vertical"
             android:text="    Settings"
             android:textAllCaps="false"
-            android:textColor="#C4C4C4"
             android:textColorHighlight="#FAFAFA"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <FrameLayout

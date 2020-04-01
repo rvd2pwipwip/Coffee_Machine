@@ -33,8 +33,6 @@ import com.amazon.purchase.IPurchase;
 import com.amazon.purchase.model.Receipt;
 import com.amazon.purchase.model.Response;
 import com.amazon.purchase.model.UserData;
-import com.stingray.qello.firetv.inapppurchase.AReceiptVerifier;
-import com.stingray.qello.firetv.inapppurchase.AmazonInAppPurchase;
 
 import org.junit.Before;
 import org.junit.Rule;

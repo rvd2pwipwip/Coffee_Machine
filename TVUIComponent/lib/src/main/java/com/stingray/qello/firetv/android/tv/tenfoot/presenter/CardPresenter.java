@@ -146,7 +146,6 @@ public class CardPresenter extends Presenter {
             cardView.getMainImageView().setImageDrawable(mDefaultCardImage);
         }  else if (item instanceof ViewMore) {
             cardView.setMainImageDimensions(cardWidthDp, cardHeightDp);
-            //TODO update poster
             cardView.getMainImageView().setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.view_more_poster));
             cardView.setBackgroundColor(Color.DKGRAY);
         }
