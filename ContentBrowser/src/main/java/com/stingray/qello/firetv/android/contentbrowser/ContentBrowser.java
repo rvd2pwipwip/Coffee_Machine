@@ -908,6 +908,15 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                          R.string.watch_now_1,
                                                          R.string.watch_now_2));
             }
+
+            // TODO Properly add logic to add action buttons
+            contentActionList.add(createActionButton(CONTENT_ACTION_SUBSCRIPTION,
+                    R.string.premium_1,
+                    R.string.premium_2));
+
+            contentActionList.add(createActionButton(CONTENT_ACTION_DAILY_PASS,
+                    R.string.daily_pass_1,
+                    R.string.daily_pass_2));
         }
         else {
             contentActionList.add(createActionButton(CONTENT_ACTION_SUBSCRIPTION,
@@ -1342,7 +1351,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      */
     private void handleRendererScreenSwitch(Activity activity, Content content, int actionId, boolean showErrorDialog) {
 
-        if (mIAPDisabled) {
+        if (mIAPDisabled || !content.isSubscriptionRequired()) {
             switchToRendererScreen(content, actionId);
         }
         else {

@@ -376,6 +376,8 @@ public class PurchaseManager {
             public void onProductDataResponse(Response response, Map<String, Product>
                     productDetails, Set<String> invalidSkus) {
                 // Not required for this system.
+                Log.e(TAG, String.format("IPurchase.PurchaseListener.onProductDataResponse was" +
+                        " called even if it's not supposed to be used by the system: Response [%s]", response.toString()));
             }
 
             /**
@@ -384,6 +386,8 @@ public class PurchaseManager {
             @Override
             public void onGetUserDataResponse(Response response, UserData userData) {
                 // Not required for this system.
+                Log.e(TAG, String.format("IPurchase.PurchaseListener.onGetUserDataResponse was" +
+                        " called even if it's not supposed to be used by the system: Response [%s]", response.toString()));
             }
 
             /**

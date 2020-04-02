@@ -15,7 +15,7 @@ permissions and limitations under the License.
 -->
 <resources>
 
-    <bool name="override_all_contents_subscription_flag">true</bool>
+    <bool name="override_all_contents_subscription_flag">false</bool>
     <!-- Flag for enabling Amazon In App Purchase -->
     <bool name="is_iap_disabled">false</bool>
     <!-- Flag for enabling Launcher integration -->
