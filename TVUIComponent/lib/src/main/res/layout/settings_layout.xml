@@ -75,7 +75,7 @@
         <Button
             android:id="@+id/logout_button"
             style="@style/button_border_highlight"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
             android:fontFamily="sans-serif-light"
