@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -46,6 +48,10 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
         });
 
         return response.getBody();
+    }
+
+    protected Response post(String path, String jsonBody) {
+        return post(path, jsonBody, Collections.emptyMap());
     }
 
     protected Response post(String path, String jsonBody, Map<String, String> additionalHeaders) {

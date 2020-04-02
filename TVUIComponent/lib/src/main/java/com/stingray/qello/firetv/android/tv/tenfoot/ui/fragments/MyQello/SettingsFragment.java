@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
+import com.stingray.qello.firetv.android.event.PurchaseUpdateEvent;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment;
@@ -83,7 +84,20 @@ public class SettingsFragment extends Fragment {
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
-        toggleAuthenticationViews(authenticationStatusUpdateEvent.isUserAuthenticated(), Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION));
+        toggle();
+    }
+
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onPurchaseUpdateEventEvent(PurchaseUpdateEvent purchaseUpdateEvent) {
+        toggle();
+    }
+
+    private void toggle() {
+        // TODO Meld amazon in app permissions with svod subscription
+        toggleAuthenticationViews(Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN), Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION)
+        );
     }
 
     private void toggleAuthenticationViews(boolean isLoggedIn, boolean hasSubscription) {

@@ -12,33 +12,29 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package com.stingray.qello.firetv.android.contentbrowser.helper;
-
-import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
-import com.stingray.qello.firetv.android.contentbrowser.R;
-import com.stingray.qello.firetv.android.event.PurchaseUpdateEvent;
-import com.stingray.qello.firetv.android.model.content.Content;
-import com.stingray.qello.firetv.android.model.event.ProgressOverlayDismissEvent;
-import com.stingray.qello.firetv.android.module.ModuleManager;
-import com.stingray.qello.firetv.android.recipe.Recipe;
-import com.stingray.qello.firetv.android.ui.fragments.ProgressDialogFragment;
-import com.stingray.qello.firetv.android.utils.ErrorUtils;
-import com.stingray.qello.firetv.android.utils.FileHelper;
-import com.stingray.qello.firetv.android.utils.Preferences;
-import com.stingray.qello.firetv.purchase.IPurchase;
-import com.stingray.qello.firetv.purchase.PurchaseManager;
-import com.stingray.qello.firetv.purchase.PurchaseManagerListener;
-import com.stingray.qello.firetv.purchase.PurchaseUtils;
-import com.stingray.qello.firetv.purchase.model.Response;
-
-import org.greenrobot.eventbus.EventBus;
+package com.stingray.qello.firetv.inapppurchase;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.io.IOException;
+import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.event.PurchaseUpdateEvent;
+import com.stingray.qello.firetv.android.model.event.ProgressOverlayDismissEvent;
+import com.stingray.qello.firetv.android.module.ModuleManager;
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
+import com.stingray.qello.firetv.android.ui.fragments.ProgressDialogFragment;
+import com.stingray.qello.firetv.android.utils.Preferences;
+import com.stingray.qello.firetv.inapppurchase.communication.PostSubscriptionCallable;
+import com.stingray.qello.firetv.inapppurchase.communication.requestmodel.PostSubscriptionRequest;
+import com.stingray.qello.firetv.purchase.IPurchase;
+import com.stingray.qello.firetv.purchase.PurchaseManager;
+import com.stingray.qello.firetv.purchase.PurchaseManagerListener;
+import com.stingray.qello.firetv.purchase.model.Response;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,25 +44,16 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+//import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
+//import com.stingray.qello.firetv.android.model.content.Content;
+
 /**
  * Helper class to perform purchase related actions.
  */
 public class PurchaseHelper {
-
-
-    public static final String CONFIG_PURCHASE_VERIFIED = "CONFIG_PURCHASE_VERIFIED";
-    public static final String CONFIG_PURCHASED_SKU = "CONFIG_PURCHASED_SKU";
-
     private static final String TAG = PurchaseHelper.class.getName();
-    private PurchaseUtils purchaseUtils = new PurchaseUtils();
-
-    public static final String ACTIONS = "actions";
-    private final ContentBrowser mContentBrowser;
     private PurchaseManager mPurchaseManager;
     private final Context mContext;
-    private final Map<String, String> mActionsMap;
-    private String mDailyPassSKU;
-    private String mSubscriptionSKU;
     /**
      * Event bus reference.
      */
@@ -92,24 +79,16 @@ public class PurchaseHelper {
      * Constructor. Initializes member variables and configures the purchase system.
      *
      * @param context        The context.
-     * @param contentBrowser The content browser.
      */
-    public PurchaseHelper(Context context, ContentBrowser contentBrowser) {
-
-        this.mContentBrowser = contentBrowser;
+    public PurchaseHelper(Context context, List<Map<String, String>> skuSet) {
         this.mContext = context;
-        this.mActionsMap = new HashMap<>();
-
-        //If Iap is disabled, do not proceed with initializing purchase system
-        if (!contentBrowser.isIapDisabled()) {
-            initializePurchaseSystem();
-        }
+        initializePurchaseSystem(skuSet);
     }
 
     /**
      * Method to initialize purchase system
      */
-    private void initializePurchaseSystem() {
+    private void initializePurchaseSystem(List<Map<String, String>> skuSet) {
 
         // The purchase system should be initialized by the module initializer, if there is no
         // initializer available that means the purchase system is not needed.
@@ -122,18 +101,10 @@ public class PurchaseHelper {
             return;
         }
 
-        try {
-            registerSkuForActions();
-        }
-        catch (Exception e) {
-            Log.e(TAG, "Could not register actions!!", e);
-        }
-
         // Register the purchase system received via ModuleManager and configure the purchase
         // listener.
         this.mPurchaseManager = PurchaseManager.getInstance(mContext.getApplicationContext());
         try {
-            List<Map<String, String>> skuSet = purchaseUtils.readSkusFromConfigFile(mContext);
             mPurchaseManager.init(purchaseSystem, new PurchaseManagerListener() {
                 @Override
                 public void onRegisterSkusResponse(Response response) {
@@ -154,7 +125,6 @@ public class PurchaseHelper {
                         }
                         Log.d(TAG, "Register products complete.");
                     }
-                    mContentBrowser.updateContentActions();
                 }
 
                 @Override
@@ -171,33 +141,14 @@ public class PurchaseHelper {
     }
 
     /**
-     * Reads the SKUs from the configuration file and registers them in the system.
-     */
-    private void registerSkuForActions() throws IOException {
-
-        Recipe recipe = Recipe.newInstance(
-                FileHelper.readFile(mContext, mContext.getString(R.string.skus_file)));
-        Map<String, String> actions = (Map<String, String>) recipe.getMap().get(ACTIONS);
-        for (String key : actions.keySet()) {
-            mActionsMap.put(key, actions.get(key));
-        }
-        Log.d(TAG, "actions registered " + mActionsMap);
-        mSubscriptionSKU = mActionsMap.get("CONTENT_ACTION_SUBSCRIPTION");
-        mDailyPassSKU = mActionsMap.get("CONTENT_ACTION_DAILY_PASS");
-    }
-
-
-    /**
      * Sets the subscription data in Preferences.
      */
     private void setSubscription(boolean subscribe, String sku) {
-
-        mContentBrowser.setSubscribed(subscribe);
         //Send purchase status update event
         mEventBus.post(new PurchaseUpdateEvent(subscribe));
-        Preferences.setBoolean(PurchaseHelper.CONFIG_PURCHASE_VERIFIED, subscribe);
+        Preferences.setBoolean(PreferencesConstants.CONFIG_PURCHASE_VERIFIED, subscribe);
         if (sku != null) {
-            Preferences.setString(PurchaseHelper.CONFIG_PURCHASED_SKU, sku);
+            Preferences.setString(PreferencesConstants.CONFIG_PURCHASED_SKU, sku);
         }
     }
 
@@ -251,11 +202,17 @@ public class PurchaseHelper {
             setSubscription(validity, sku);
             resultBundle.putString(RESULT_SKU, sku);
             resultBundle.putBoolean(RESULT_VALIDITY, validity);
-            AnalyticsHelper.trackPurchaseResult(sku, validity);
+            // TODO Validate
+            //AnalyticsHelper.trackPurchaseResult(sku, validity);
+
+            PostSubscriptionRequest request = new PostSubscriptionRequest(mPurchaseManager.getReceipt(sku).getReceiptId(), "aDeviceId");
+            new PostSubscriptionCallable(request).call();
+
             handleSuccessCase(subscriber, resultBundle);
         }
         else {
-            AnalyticsHelper.trackError(TAG, "Purchase failed "+response);
+            // TODO Validate
+            //AnalyticsHelper.trackError(TAG, "Purchase failed "+response);
             resultBundle.putBoolean(RESULT_VALIDITY, false);
             handleFailureCase(subscriber, resultBundle);
         }
@@ -299,47 +256,9 @@ public class PurchaseHelper {
 
         Log.v(TAG, "purchaseSku called:" + sku);
 
-        return Observable.create(subscriber -> mPurchaseManager
-                                  .purchaseSku(sku,
-                                               createObservablePurchaseManagerListener(
-                                                       subscriber))
+        return Observable.create(subscriber ->
+                mPurchaseManager.purchaseSku(sku, createObservablePurchaseManagerListener(subscriber))
         );
-    }
-
-    /**
-     * Is purchase valid observable.
-     *
-     * @param purchasedSku Purchased sku name.
-     * @return Purchase valid observable result.
-     */
-    public Observable<Bundle> isPurchaseValidObservable(String purchasedSku) {
-
-        Log.v(TAG, "isPurchaseValid called:" + purchasedSku);
-
-        return Observable.create(subscriber -> mPurchaseManager
-                                  .isPurchaseValid(purchasedSku,
-                                                   createObservablePurchaseManagerListener(
-                                                           subscriber))
-        );
-    }
-
-    /**
-     * Is subscription valid observable.
-     *
-     * @return Subscription valid observable result.
-     */
-    public Observable<Bundle> isSubscriptionValidObservable() {
-
-        return isPurchaseValidObservable(mSubscriptionSKU)
-                .concatMap(resultBundle -> {
-                    if (resultBundle.getBoolean(RESULT) &&
-                            !resultBundle.getBoolean(RESULT_VALIDITY)) {
-                        return isPurchaseValidObservable(mDailyPassSKU);
-                    }
-                    else {
-                        return Observable.just(resultBundle);
-                    }
-                });
     }
 
     /**
@@ -348,43 +267,25 @@ public class PurchaseHelper {
      * @param activity Activity.
      * @param sku      Sku name.
      */
-    private void handlePurchaseChain(Activity activity, String sku) {
-
+    public void handlePurchaseChain(Activity activity, String sku) {
+        triggerProgress(activity);
         purchaseSkuObservable(sku)
                 .subscribeOn(Schedulers.newThread()) //this needs to be first make sure
                 .observeOn(AndroidSchedulers.mainThread()) //this needs to be last to
                         // make sure rest is running on separate thread.
                 .subscribe(resultBundle -> {
-                    Log.e(TAG, "isPurchaseValid subscribe called");
-                    mContentBrowser.updateContentActions();
+                    Log.i(TAG, "isPurchaseValid subscribe called");
                     EventBus.getDefault().post(new ProgressOverlayDismissEvent(true));
                 }, throwable -> {
                     EventBus.getDefault().post(new ProgressOverlayDismissEvent(true));
-
-                    ErrorHelper.injectErrorFragment(activity, ErrorUtils.ERROR_CATEGORY
-                            .NETWORK_ERROR, (errorDialogFragment, errorButtonType, errorCategory)
-                                                            -> {
-                        errorDialogFragment.dismiss();
-                    });
+                    Log.e(TAG, "isPurchaseValid onError called", throwable);
+                    // TODO Validate
+//                    ErrorHelper.injectErrorFragment(activity, ErrorUtils.ERROR_CATEGORY
+//                            .NETWORK_ERROR, (errorDialogFragment, errorButtonType, errorCategory)
+//                                                            -> {
+//                        errorDialogFragment.dismiss();
+//                    });
                 });
-    }
-
-    /**
-     * Handles the action corresponding to the purchase buttons.
-     *
-     * @param activity Activity instance that triggered the action.
-     * @param content  The content triggered by the action.
-     * @param actionId The id of the action.
-     */
-    public void handleAction(Activity activity, Content content, int actionId) {
-
-        triggerProgress(activity);
-        if (actionId == ContentBrowser.CONTENT_ACTION_DAILY_PASS) {
-            handlePurchaseChain(activity, mDailyPassSKU);
-        }
-        else if (actionId == ContentBrowser.CONTENT_ACTION_SUBSCRIPTION) {
-            handlePurchaseChain(activity, mSubscriptionSKU);
-        }
     }
 
     /**

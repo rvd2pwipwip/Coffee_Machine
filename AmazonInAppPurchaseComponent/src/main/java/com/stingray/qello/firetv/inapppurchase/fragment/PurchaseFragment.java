@@ -13,12 +13,15 @@ import android.widget.Toast;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.utils.Helpers;
+import com.stingray.qello.firetv.inapppurchase.PurchaseHelper;
 import com.stingray.qello.firetv.inapppurchase.R;
-import com.stingray.qello.firetv.inapppurchase.communication.SubscriptionsCallable;
-import com.stingray.qello.firetv.inapppurchase.communication.SvodSubscription;
+import com.stingray.qello.firetv.inapppurchase.communication.GetSubscriptionsCallable;
+import com.stingray.qello.firetv.inapppurchase.communication.requestmodel.SvodSubscription;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PurchaseFragment extends Fragment {
 
@@ -27,13 +30,14 @@ public class PurchaseFragment extends Fragment {
 
     private final ObservableFactory observableFactory = new ObservableFactory();
 
+    private PurchaseHelper purchaseHelper;
+
     private LinearLayout purchaseItemsLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Helpers.handleActivityEnterFadeTransition(getActivity(), ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
-
     }
 
     @Override
@@ -41,11 +45,26 @@ public class PurchaseFragment extends Fragment {
         View view = inflater.inflate(R.layout.subscription_layout, container, false);
 
         View errorSubscriptionView = view.findViewById(R.id.error_subscriptions_load);
+
         purchaseItemsLayout = view.findViewById(R.id.purchase_items);
 
-        observableFactory.create(new SubscriptionsCallable())
+        observableFactory.create(new GetSubscriptionsCallable())
                 .subscribe(response -> {
                     errorSubscriptionView.setVisibility(View.GONE);
+
+                    List<Map<String, String>> skuSet = new ArrayList<>();
+
+                    for (SvodSubscription sub : response.getSubscriptionOffers()) {
+                        Map<String, String> sku = new HashMap<>();
+
+                        sku.put("sku", sub.getProductId());
+                        sku.put("productType", "SUBSCRIBE");
+                        sku.put("purchaseSku", sub.getProductId());
+
+                        skuSet.add(sku);
+                    }
+
+                    purchaseHelper = new PurchaseHelper(this.getActivity(), skuSet);
 
                     for (SvodSubscription sub : response.getSubscriptionOffers()) {
                         boolean isMonthly = sub.getRecurrence().equalsIgnoreCase("MONTHLY");
@@ -76,8 +95,13 @@ public class PurchaseFragment extends Fragment {
                             TextView savings = purchaseItemLayout.findViewById(R.id.percentage_savings);
                             savings.setText("30%");
                         }
+
+                        purchaseItemLayout.setOnClickListener(v -> {
+                            purchaseHelper.handlePurchaseChain(getActivity(), sub.getProductId());
+                        });
                         purchaseItemsLayout.addView(purchaseItemLayout);
                     }
+
                 }, throwable -> {
                     Log.e(TAG, "Failed to load subscriptions. Displaying error message", throwable);
                     errorSubscriptionView.setVisibility(View.VISIBLE);

@@ -1,4 +1,4 @@
-package com.stingray.qello.firetv.inapppurchase.communication;
+package com.stingray.qello.firetv.inapppurchase.communication.requestmodel;
 
 import java.util.ArrayList;
 import java.util.List;

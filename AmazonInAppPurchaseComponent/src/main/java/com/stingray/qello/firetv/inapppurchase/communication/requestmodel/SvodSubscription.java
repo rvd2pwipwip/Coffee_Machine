@@ -1,4 +1,4 @@
-package com.stingray.qello.firetv.inapppurchase.communication;
+package com.stingray.qello.firetv.inapppurchase.communication.requestmodel;
 
 public class SvodSubscription {
     private String productId;
