@@ -16,8 +16,7 @@ public class SubscriptionsCallable extends SvodCallable<SubscriptionsResponse> {
     @Override
     public SubscriptionsResponse call() throws IOException {
         String response = get(ENDPOINT);
-
-        throw new IOException();
-        //return objectMapper.readValue(response, SubscriptionsResponse.class);
+        
+        return objectMapper.readValue(response, SubscriptionsResponse.class);
     }
 }
