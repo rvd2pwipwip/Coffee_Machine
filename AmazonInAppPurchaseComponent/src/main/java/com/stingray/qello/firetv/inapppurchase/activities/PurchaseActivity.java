@@ -1,12 +1,12 @@
-package com.stingray.qello.android.firetv.login.activities;
+package com.stingray.qello.firetv.inapppurchase.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 
-import com.stingray.qello.android.firetv.login.R;
-import com.stingray.qello.android.firetv.login.fragments.PurchaseFragment;
 import com.stingray.qello.firetv.android.utils.Helpers;
+import com.stingray.qello.firetv.inapppurchase.R;
+import com.stingray.qello.firetv.inapppurchase.fragment.PurchaseFragment;
 
 public class PurchaseActivity extends Activity {
     @Override

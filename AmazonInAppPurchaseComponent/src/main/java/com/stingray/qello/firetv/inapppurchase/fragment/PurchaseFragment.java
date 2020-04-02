@@ -1,4 +1,4 @@
-package com.stingray.qello.android.firetv.login.fragments;
+package com.stingray.qello.firetv.inapppurchase.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.stingray.qello.android.firetv.login.R;
-import com.stingray.qello.android.firetv.login.communication.model.SvodSubscription;
 import com.stingray.qello.firetv.android.utils.Helpers;
+import com.stingray.qello.firetv.inapppurchase.R;
+import com.stingray.qello.firetv.inapppurchase.communication.SvodSubscription;
 
 import java.util.Arrays;
 import java.util.List;

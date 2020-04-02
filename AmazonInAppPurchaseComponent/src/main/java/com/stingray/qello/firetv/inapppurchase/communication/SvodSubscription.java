@@ -1,4 +1,4 @@
-package com.stingray.qello.android.firetv.login.communication.model;
+package com.stingray.qello.firetv.inapppurchase.communication;
 
 public class SvodSubscription {
     private final String productId;
