@@ -29,11 +29,11 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
     }
 
     protected String get(String path) throws IOException {
-        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
+        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN)).getBody();
     }
 
-    protected String get(String path, String accessToken) {
-        Response response = performWithTokenRefresh(() -> {
+    protected Response get(String path, String accessToken) {
+        return performWithTokenRefresh(() -> {
             HttpURLConnection urlConnection;
             URL url = new URL(createUrl(path));
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -46,8 +46,6 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
 
             return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
         });
-
-        return response.getBody();
     }
 
     protected Response post(String path, String jsonBody) {

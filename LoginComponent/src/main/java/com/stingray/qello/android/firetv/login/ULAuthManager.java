@@ -20,10 +20,12 @@ import java.io.IOException;
 public class ULAuthManager {
     private static final String TAG = ULAuthManager.class.getName();
 
-    public final static String BUNDLE_ACCESS_TOKEN = AuthzConstants.BUNDLE_KEY.TOKEN.val;
-    public final static String BUNDLE_REFRESH_TOKEN = "refreshToken";
-    public final static String BUNDLE_EXPIRES_IN = "expiresIn";
-    public final static String BUNDLE_SUBSCRIPTION_PLAN = "subscriptionPlan";
+    final static String BUNDLE_ACCESS_TOKEN = AuthzConstants.BUNDLE_KEY.TOKEN.val;
+    final static String BUNDLE_REFRESH_TOKEN = "refreshToken";
+    final static String BUNDLE_EXPIRES_IN = "expiresIn";
+    final static String BUNDLE_STINGRAY_EMAIL = "stingrayEmail";
+    final static String BUNDLE_SUBSCRIPTION_PLAN = "subscriptionPlan";
+    final static String BUNDLE_SUBSCRIPTION_END = "subscriptionEnd";
 
     public void authorize(String sessionId, String languageCode, String deviceId, AuthorizationListener authorizationListener) {
         IssueCodeRequestBody issueCodeRequestBody = new IssueCodeRequestBody(sessionId, languageCode, deviceId);
@@ -47,12 +49,7 @@ public class ULAuthManager {
             try {
                 SvodUserInfo userInfo = new SvodUserInfoCallable(tokenResponse.getAccessToken()).call();
                 if (userInfo != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(BUNDLE_ACCESS_TOKEN, tokenResponse.getAccessToken());
-                    bundle.putString(BUNDLE_REFRESH_TOKEN, tokenResponse.getRefreshToken());
-                    bundle.putString(BUNDLE_EXPIRES_IN, tokenResponse.getExpiresIn());
-                    bundle.putString(BUNDLE_SUBSCRIPTION_PLAN, userInfo.getSubscription().getPlan());
-                    apiListener.onSuccess(bundle);
+                    apiListener.onSuccess(createBundle(userInfo, tokenResponse));
                 } else {
                     apiListener.onError(new AuthError("Failed to get svod user info", AuthError.ERROR_TYPE.ERROR_INVALID_GRANT));
                 }
@@ -61,4 +58,19 @@ public class ULAuthManager {
             }
         }
     }
+
+    private Bundle createBundle(SvodUserInfo userInfo, TokenResponse tokenResponse) {
+        Bundle bundle = new Bundle();
+        bundle.putString(BUNDLE_STINGRAY_EMAIL, userInfo.getEmail());
+        bundle.putString(BUNDLE_ACCESS_TOKEN, tokenResponse.getAccessToken());
+        bundle.putString(BUNDLE_REFRESH_TOKEN, tokenResponse.getRefreshToken());
+        bundle.putString(BUNDLE_EXPIRES_IN, tokenResponse.getExpiresIn());
+        if (userInfo.getSubscription() != null) {
+            bundle.putString(BUNDLE_SUBSCRIPTION_PLAN, userInfo.getSubscription().getPlan());
+            bundle.putString(BUNDLE_SUBSCRIPTION_END, userInfo.getSubscription().getEndDate());
+        }
+
+        return bundle;
+    }
+
 }

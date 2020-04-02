@@ -97,8 +97,7 @@ public class PurchaseFragment extends Fragment {
                         }
 
                         purchaseItemLayout.setOnClickListener(v -> {
-                            // TODO Uncomment later
-                            //  purchaseHelper.handlePurchaseChain(getActivity(), sub.getProductId());
+                            purchaseHelper.handlePurchaseChain(getActivity(), sub.getProductId());
                         });
                         purchaseItemsLayout.addView(purchaseItemLayout);
                     }

@@ -139,15 +139,22 @@ public class Preferences {
     public static void setLoggedOutState() {
         Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, false);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, null);
+        Preferences.setString(PreferencesConstants.REFRESH_TOKEN, null);
+        Preferences.setString(PreferencesConstants.SUBSCRIPTION_END_DATE, null);
+        Preferences.setString(PreferencesConstants.STINGRAY_EMAIL, null);
         Preferences.setBoolean(PreferencesConstants.HAS_SUBSCRIPTION, false);
     }
 
-    public static void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan) {
+    public static void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan,
+                                        String subscriptionEnd, String email) {
+
+        boolean hasSubscription = subscriptionPlan != null && !subscriptionPlan.equalsIgnoreCase("NONE");
+
         Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, true);
         Preferences.setString(PreferencesConstants.REFRESH_TOKEN, refreshToken);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
-
-        boolean hasSubscription = subscriptionPlan != null && !subscriptionPlan.equalsIgnoreCase("NONE");
+        Preferences.setString(PreferencesConstants.SUBSCRIPTION_END_DATE, subscriptionEnd);
+        Preferences.setString(PreferencesConstants.STINGRAY_EMAIL, email);
         Preferences.setBoolean(PreferencesConstants.HAS_SUBSCRIPTION, hasSubscription);
     }
 }
