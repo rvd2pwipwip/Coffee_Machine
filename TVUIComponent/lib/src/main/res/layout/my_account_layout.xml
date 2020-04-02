@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/background_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_settings"
     android:orientation="vertical"
     android:paddingStart="85px"
     android:paddingTop="85px">
@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
+        android:paddingBottom="2dp"
         android:text="Account"
         android:textSize="24sp" />
 
@@ -28,9 +29,10 @@
         android:fontFamily="sans-serif-light"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:text="stingray@stingray.com"
+        android:text="useremail@stingray.com"
         android:textColor="@color/accent"
-        android:textSize="18sp" />
+        android:textStyle="bold"
+        android:textSize="20sp" />
 
     <TableLayout
         android:layout_width="600dp"
@@ -47,7 +49,9 @@
                 android:fontFamily="sans-serif-light"
                 android:text="Monthly"
                 android:textColor="@color/accent"
-                android:textSize="24sp" />
+                android:paddingTop="15dp"
+                android:textStyle="bold"
+                android:textSize="20sp" />
 
         </TableRow>
 
@@ -61,23 +65,18 @@
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_vertical"
-                android:text="Renew on 6/12/12 for 9.99 CAD"
+                android:paddingRight="100dp"
+                android:paddingTop="6dp"
+                android:text="Automatically renew on 6/12/12 for 9.99 CAD"
                 android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textStyle="bold"
+                android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/button2"
-                style="@android:style/Widget.Material.Button"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:background="@drawable/button_bg_stroke"
-                android:fontFamily="sans-serif-light"
-                android:minHeight="35dip"
-                android:text="Manage Plan"
-                android:textAllCaps="false"
-                android:textSize="18sp" />
-
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:paddingTop="6dp"
+                android:text="Log in to stingray.com/account to manage your account." />
 
         </TableRow>
 
@@ -85,36 +84,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
         </TableRow>
 
     </TableLayout>
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/button_bg_stroke"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center_horizontal|center_vertical"
-        android:minHeight="35dip"
-        android:text="LOG OUT"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/textView66"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Settings"
-        android:textSize="24sp" />
-
-    <View
-        android:id="@+id/divider4"
-        android:layout_width="600dp"
-        android:layout_height="1px"
-        android:background="#C2C2C2" />
 
 </LinearLayout>
