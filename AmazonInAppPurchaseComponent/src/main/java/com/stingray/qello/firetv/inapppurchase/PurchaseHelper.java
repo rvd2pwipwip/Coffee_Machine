@@ -35,7 +35,6 @@ import com.stingray.qello.firetv.purchase.model.Response;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,8 +43,6 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-//import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
-//import com.stingray.qello.firetv.android.model.content.Content;
 
 /**
  * Helper class to perform purchase related actions.
@@ -54,6 +51,8 @@ public class PurchaseHelper {
     private static final String TAG = PurchaseHelper.class.getName();
     private PurchaseManager mPurchaseManager;
     private final Context mContext;
+    private final ObservableFactory observableFactory = new ObservableFactory();
+
     /**
      * Event bus reference.
      */
@@ -198,17 +197,23 @@ public class PurchaseHelper {
         Bundle resultBundle = new Bundle();
 
         if (response != null && Response.Status.SUCCESSFUL.equals(response.getStatus())) {
-            Log.d(TAG, "purchase succeeded " + response);
-            setSubscription(validity, sku);
-            resultBundle.putString(RESULT_SKU, sku);
-            resultBundle.putBoolean(RESULT_VALIDITY, validity);
-            // TODO Validate
-            //AnalyticsHelper.trackPurchaseResult(sku, validity);
-
             PostSubscriptionRequest request = new PostSubscriptionRequest(mPurchaseManager.getReceipt(sku).getReceiptId(), "aDeviceId");
-            new PostSubscriptionCallable(request).call();
-
-            handleSuccessCase(subscriber, resultBundle);
+            observableFactory.create(new PostSubscriptionCallable(request))
+                    .subscribe(aVoid -> {
+                        Log.d(TAG, "purchase succeeded " + response);
+                        setSubscription(validity, sku);
+                        resultBundle.putString(RESULT_SKU, sku);
+                        resultBundle.putBoolean(RESULT_VALIDITY, validity);
+                        // TODO Validate
+                        //AnalyticsHelper.trackPurchaseResult(sku, validity);
+                        handleSuccessCase(subscriber, resultBundle);
+                    }, throwable -> {
+                        Log.e(TAG, "Failed to complete purchase", throwable);
+                        // TODO Validate
+                        //AnalyticsHelper.trackError(TAG, "Purchase failed "+response);
+                        resultBundle.putBoolean(RESULT_VALIDITY, false);
+                        handleFailureCase(subscriber, resultBundle);
+                    });
         }
         else {
             // TODO Validate
