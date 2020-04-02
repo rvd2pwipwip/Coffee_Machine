@@ -867,7 +867,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             isSubscriptionNotRequired = false;
         }
 
-        if (mSubscribed || isSubscriptionNotRequired || mIAPDisabled) {
+        if (mSubscribed || isSubscriptionNotRequired) {
 
             // Check if the content is meant for live watching. Live content requires only a
             // watch now button.
@@ -908,8 +908,9 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                          R.string.watch_now_1,
                                                          R.string.watch_now_2));
             }
+        }
 
-            // TODO Properly add logic to add action buttons
+        if (!mIAPDisabled) {
             contentActionList.add(createActionButton(CONTENT_ACTION_SUBSCRIPTION,
                     R.string.premium_1,
                     R.string.premium_2));
@@ -917,15 +918,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             contentActionList.add(createActionButton(CONTENT_ACTION_DAILY_PASS,
                     R.string.daily_pass_1,
                     R.string.daily_pass_2));
-        }
-        else {
-            contentActionList.add(createActionButton(CONTENT_ACTION_SUBSCRIPTION,
-                                                     R.string.premium_1,
-                                                     R.string.premium_2));
-
-            contentActionList.add(createActionButton(CONTENT_ACTION_DAILY_PASS,
-                                                     R.string.daily_pass_1,
-                                                     R.string.daily_pass_2));
         }
 
         contentActionList.addAll(mGlobalContentActionList);

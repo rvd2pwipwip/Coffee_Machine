@@ -17,7 +17,7 @@ permissions and limitations under the License.
 
     <bool name="override_all_contents_subscription_flag">false</bool>
     <!-- Flag for enabling Amazon In App Purchase -->
-    <bool name="is_iap_disabled">false</bool>
+    <bool name="is_iap_disabled">true</bool>
     <!-- Flag for enabling Launcher integration -->
     <bool name="is_launcher_integration_enabled">true</bool>
     <!-- your partner Id provided during catalog integration process -->
