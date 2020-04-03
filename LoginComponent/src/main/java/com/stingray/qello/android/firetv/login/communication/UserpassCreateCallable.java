@@ -6,24 +6,25 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.LoginResponse;
+import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassCreateRequestBody;
+import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
 import com.stingray.qello.firetv.android.async.ULCallable;
 
 import java.io.IOException;
 import java.util.Map;
 
-public class UserpassLoginCallable extends ULCallable<LoginResponse> {
-    private final static String ENDPOINT = "/user/userpassLogin";
-    private final static String TAG = UserpassLoginCallable.class.getSimpleName();
+public class UserpassCreateCallable extends ULCallable<LoginResponse> {
+    private final static String ENDPOINT = "/user/userpassCreate";
+    private final static String TAG = UserpassCreateCallable.class.getSimpleName();
 
     private ObjectMapper objectMapper =  new ObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-    private UserpassLoginRequestBody requestBody;
+    private UserpassCreateRequestBody requestBody;
 
-    public UserpassLoginCallable(UserpassLoginRequestBody requestBody) {
+    public UserpassCreateCallable(UserpassCreateRequestBody requestBody) {
         requestBody.setClientId(CLIENT_ID);
         this.requestBody = requestBody;
     }
