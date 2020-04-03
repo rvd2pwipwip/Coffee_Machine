@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingStart="56dp"
-    android:paddingTop="80dp"
-    android:paddingEnd="56dp" >
+    android:paddingStart="40dp"
+    android:paddingTop="40dp"
+    android:paddingEnd="40dp" >
 
     <TextView
         android:id="@+id/textView"
@@ -18,7 +18,7 @@
 
     <View
         android:id="@+id/divider3"
-        android:layout_width="865dp"
+        android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="#C2C2C2" />
 
@@ -46,6 +46,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:fontFamily="sans-serif-light"
                 android:text="No Current Subscription"
                 android:paddingTop="15dp"
@@ -59,11 +60,11 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="400dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-light"
+                android:layout_weight="0.5"
                 android:gravity="center_vertical"
-                android:paddingEnd="180dp"
                 android:paddingTop="6dp"
                 android:text="Subscribe to get full access to Qello Concerts"
                 android:textColor="@android:color/white"
@@ -71,8 +72,9 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:layout_width="300dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:paddingTop="6dp"
                 android:text="Log in to stingray.com/account to manage your account." />
 
