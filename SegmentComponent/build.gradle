@@ -76,5 +76,4 @@ dependencies {
 
     implementation project(path: ':TrackingInterface')
     compile project(path: ':Utils')
-
 }
