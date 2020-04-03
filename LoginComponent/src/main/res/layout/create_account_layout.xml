@@ -133,24 +133,24 @@ permissions and limitations under the License.
                 android:text="Create Account"
                 android:textAllCaps="false" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="or"
-                android:textAlignment="center" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView3"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:text="or"-->
+<!--                android:textAlignment="center" />-->
 
-            <ImageButton
-                android:id="@+id/login_with_amazon2"
-                style="@style/image_button_border_highlight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/login_button_content_description"
-                android:src="@color/login_button_image_state" />
+<!--            <ImageButton-->
+<!--                android:id="@+id/login_with_amazon2"-->
+<!--                style="@style/image_button_border_highlight"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:contentDescription="@string/login_button_content_description"-->
+<!--                android:src="@color/login_button_image_state" />-->
 
             <ProgressBar
                 android:id="@+id/progressBar2"

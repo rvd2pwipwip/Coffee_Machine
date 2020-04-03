@@ -24,6 +24,7 @@ import com.amazon.identity.auth.device.shared.APIListener;
 import com.stingray.qello.android.firetv.login.R;
 import com.stingray.qello.android.firetv.login.ULAuthManager;
 import com.stingray.qello.android.firetv.login.UserInfoBundle;
+import com.stingray.qello.android.firetv.login.activities.LoginActivity;
 import com.stingray.qello.android.firetv.login.communication.UserpassCreateCallable;
 import com.stingray.qello.android.firetv.login.communication.UserpassLoginCallable;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassCreateRequestBody;
@@ -54,6 +55,7 @@ public class AccountCreationFragment extends Fragment {
     private TextView passwordInput;
     private Button createButton;
     private ImageButton lwaButton;
+    private View switchToLoginButton;
     private Button termsButton;
     private Button privacyButton;
     private AmazonAuthorizationManager amazonAuthManager;
@@ -110,9 +112,18 @@ public class AccountCreationFragment extends Fragment {
         });
 
         // Setup the listener on the login button.
-        lwaButton = view.findViewById(R.id.login_with_amazon2);
-        lwaButton.setVisibility(Button.VISIBLE);
-        //lwaButton.setOnClickListener(v -> amazonAuthManager.authorize(APP_SCOPES, Bundle.EMPTY, new AuthListener()));
+//        lwaButton = view.findViewById(R.id.login_with_amazon2);
+//        lwaButton.setVisibility(Button.VISIBLE);
+//        lwaButton.setOnClickListener(v -> amazonAuthManager.authorize(APP_SCOPES, Bundle.EMPTY, new AuthListener()));
+
+        // Setup the listener on the login button.
+        switchToLoginButton = view.findViewById(R.id.log_in_btn);
+        switchToLoginButton.setVisibility(Button.VISIBLE);
+
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        switchToLoginButton.setOnClickListener(v -> {
+            startActivity(intent);
+        });
 
         mLogInProgress = view.findViewById(R.id.progressBar2);
 
