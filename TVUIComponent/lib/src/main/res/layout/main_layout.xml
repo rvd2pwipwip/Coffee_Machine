@@ -37,12 +37,12 @@ permissions and limitations under the License.
                 android:background="@color/browse_background_color">
 
 
-    <include layout="@layout/action_widget_container"/>
+    <include layout="@layout/action_widget_container" />
 
     <FrameLayout
         android:id="@+id/main_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
+        android:background="@color/background"
         />
 </LinearLayout>

@@ -55,7 +55,7 @@ permissions and limitations under the License.
             android:id="@+id/main_logo"
             android:layout_width="116dp"
             android:layout_height="46dp"
-            android:layout_marginLeft="@dimen/lb_browse_padding_start"
+            android:layout_marginStart="@dimen/lb_browse_padding_start"
             android:layout_marginTop="00dp"
             android:layout_marginBottom="45dp"
             android:scaleType="centerInside"
@@ -66,7 +66,7 @@ permissions and limitations under the License.
             android:layout_width="360dp"
             android:layout_height="145dp"
             android:layout_below="@id/main_logo"
-            android:layout_marginLeft="@dimen/lb_browse_padding_start"
+            android:layout_marginStart="@dimen/lb_browse_padding_start"
             android:layout_marginBottom="50dp"
             android:orientation="vertical">
 

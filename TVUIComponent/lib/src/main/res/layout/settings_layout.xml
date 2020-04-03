@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="80dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="80dp"
         android:orientation="vertical">
 
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/accent"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:text="Start Free Trial"
             android:textAllCaps="false"
             android:textSize="16sp" />
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:text="Account and Settings"
             android:textAllCaps="false"
             android:textSize="16sp" />
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:text="FAQ"
             android:textAllCaps="false"
             android:textSize="16sp" />
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:text="Contact Us"
             android:textAllCaps="false"
             android:textSize="16sp" />
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:text="About"
             android:textAllCaps="false"
             android:textSize="16sp" />
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
             android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:text="Log Out"
             android:textAllCaps="false"
             android:textSize="16sp" />
