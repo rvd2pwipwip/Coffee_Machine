@@ -54,7 +54,7 @@ public class AccountCreationFragment extends Fragment {
     private TextView usernameInput;
     private TextView passwordInput;
     private Button createButton;
-    private ImageButton lwaButton;
+//    private ImageButton lwaButton;
     private View switchToLoginButton;
     private Button termsButton;
     private Button privacyButton;
@@ -142,7 +142,7 @@ public class AccountCreationFragment extends Fragment {
      * Sets the state of the application to reflect that the user is not currently authorized.
      */
     private void setLoggedOutState() {
-        lwaButton.setVisibility(Button.VISIBLE);
+//        lwaButton.setVisibility(Button.VISIBLE);
         Preferences.setLoggedOutState();
         EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(false));
     }
@@ -152,7 +152,7 @@ public class AccountCreationFragment extends Fragment {
      */
     private void setLoggedInState(UserInfoBundle userInfoBundle) {
         createButton.setVisibility(LinearLayout.GONE);
-        lwaButton.setVisibility(Button.GONE);
+//        lwaButton.setVisibility(Button.GONE);
         Preferences.setLoggedInState(
                 userInfoBundle.getAccessToken(),
                 userInfoBundle.getRefreshToken(),
