@@ -149,7 +149,7 @@ public class Preferences {
         Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, true);
         Preferences.setString(PreferencesConstants.REFRESH_TOKEN, refreshToken);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
-        Preferences.setString(PreferencesConstants.EMAIL, email);
+        Preferences.setString(PreferencesConstants.STINGRAY_EMAIL, email);
         Preferences.setString(PreferencesConstants.USER_TRACKING_ID, userTrackingId);
         Preferences.setString(PreferencesConstants.REFRESH_TOKEN, refreshToken);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
