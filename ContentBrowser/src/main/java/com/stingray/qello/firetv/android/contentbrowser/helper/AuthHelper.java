@@ -168,7 +168,8 @@ public class AuthHelper {
         //AuthHelper is initialized, broadcast initial authentication status
         isAuthenticated().subscribe(isAuthenticatedResultBundle -> {
             boolean result = isAuthenticatedResultBundle.getBoolean(AuthHelper.RESULT);
-            broadcastAuthenticationStatus(result);
+
+//            broadcastAuthenticationStatus(result);
         });
     }
 
@@ -302,7 +303,7 @@ public class AuthHelper {
                 public void onSuccess(Bundle extras) {
 
                     Log.d(TAG, "User is authenticated");
-                    broadcastAuthenticationStatus(true);
+                    //broadcastAuthenticationStatus(true);
                     handleSuccessCase(subscriber, extras);
                     // Try getting the MVPD provider name from extras to set the display logo.
                     String mvpdName = extras.getString(PreferencesConstants.MVPD_DISPLAY_NAME);

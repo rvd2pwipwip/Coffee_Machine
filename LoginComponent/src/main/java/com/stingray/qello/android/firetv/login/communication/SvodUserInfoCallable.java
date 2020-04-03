@@ -23,6 +23,8 @@ public class SvodUserInfoCallable extends SvodCallable<SvodUserInfo> {
     @Override
     public SvodUserInfo call() throws IOException {
         Response response = get(ENDPOINT, accessToken);
+        // TODO Remove, leaving this here to track how many times to is actually called
+        Log.i(TAG, String.format("User info is called. Response [%s]", response));
         if (response.getCode() != 200) {
             Log.e(TAG, String.format("User info called failed with code [%s]: [%s]", response.getCode(), response.getBody()));
             return null;

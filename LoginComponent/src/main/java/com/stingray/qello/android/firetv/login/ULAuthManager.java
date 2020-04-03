@@ -46,10 +46,11 @@ public class ULAuthManager {
         if (tokenResponse == null) {
             apiListener.onError(new AuthError("Failed to get access token", AuthError.ERROR_TYPE.ERROR_INVALID_GRANT));
         } else {
+            Bundle bundle = addTokenResponse(new Bundle(), tokenResponse);
             try {
                 SvodUserInfo userInfo = new SvodUserInfoCallable(tokenResponse.getAccessToken()).call();
                 if (userInfo != null) {
-                    apiListener.onSuccess(createBundle(userInfo, tokenResponse));
+                    apiListener.onSuccess(addUserInfo(bundle, userInfo));
                 } else {
                     apiListener.onError(new AuthError("Failed to get svod user info", AuthError.ERROR_TYPE.ERROR_INVALID_GRANT));
                 }
@@ -59,12 +60,16 @@ public class ULAuthManager {
         }
     }
 
-    private Bundle createBundle(SvodUserInfo userInfo, TokenResponse tokenResponse) {
-        Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_STINGRAY_EMAIL, userInfo.getEmail());
+    private Bundle addTokenResponse(Bundle bundle, TokenResponse tokenResponse) {
         bundle.putString(BUNDLE_ACCESS_TOKEN, tokenResponse.getAccessToken());
         bundle.putString(BUNDLE_REFRESH_TOKEN, tokenResponse.getRefreshToken());
         bundle.putString(BUNDLE_EXPIRES_IN, tokenResponse.getExpiresIn());
+
+        return bundle;
+    }
+
+    private Bundle addUserInfo(Bundle bundle, SvodUserInfo userInfo) {
+        bundle.putString(BUNDLE_STINGRAY_EMAIL, userInfo.getEmail());
         if (userInfo.getSubscription() != null) {
             bundle.putString(BUNDLE_SUBSCRIPTION_PLAN, userInfo.getSubscription().getPlan());
             bundle.putString(BUNDLE_SUBSCRIPTION_END, userInfo.getSubscription().getEndDate());
@@ -72,5 +77,4 @@ public class ULAuthManager {
 
         return bundle;
     }
-
 }

@@ -20,12 +20,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
-import com.stingray.qello.firetv.android.event.PurchaseUpdateEvent;
 import com.stingray.qello.firetv.android.model.event.ProgressOverlayDismissEvent;
 import com.stingray.qello.firetv.android.module.ModuleManager;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.ui.fragments.ProgressDialogFragment;
 import com.stingray.qello.firetv.android.utils.Preferences;
+import com.stingray.qello.firetv.auth.IAuthentication;
 import com.stingray.qello.firetv.inapppurchase.communication.PostSubscriptionCallable;
 import com.stingray.qello.firetv.inapppurchase.communication.requestmodel.PostSubscriptionRequest;
 import com.stingray.qello.firetv.purchase.IPurchase;
@@ -50,6 +50,7 @@ import rx.schedulers.Schedulers;
 public class PurchaseHelper {
     private static final String TAG = PurchaseHelper.class.getName();
     private PurchaseManager mPurchaseManager;
+    private IAuthentication mIAuthentication;
     private final Context mContext;
     private final ObservableFactory observableFactory = new ObservableFactory();
 
@@ -95,10 +96,23 @@ public class PurchaseHelper {
                                                             .getModule(
                                                                     IPurchase.class.getSimpleName())
                                                             .getImpl(true);
+
+
+        // Get default Auth interface without creating a new one.
+        try {
+            mIAuthentication = (IAuthentication) ModuleManager.getInstance()
+                            .getModule(IAuthentication.class.getSimpleName())
+                            .getImpl(true);
+        } catch (Exception e) {
+            Log.e(TAG, "No Auth Interface interface attached.", e);
+        }
+
+
         if (purchaseSystem == null) {
             Log.i(TAG, "Purchase system not registered.");
             return;
         }
+
 
         // Register the purchase system received via ModuleManager and configure the purchase
         // listener.
@@ -107,12 +121,10 @@ public class PurchaseHelper {
             mPurchaseManager.init(purchaseSystem, new PurchaseManagerListener() {
                 @Override
                 public void onRegisterSkusResponse(Response response) {
-
-                    if (response == null || !Response.Status.SUCCESSFUL.equals(response.getStatus
-                            ())) {
+                    if (response == null || !Response.Status.SUCCESSFUL.equals(response.getStatus())) {
+                        setSubscription(false, null);
                         Log.e(TAG, "Register products failed " + response);
-                    }
-                    else {
+                    } else {
                         // If there is a valid receipt available in the system, set content browser
                         // variable as true.
                         String sku = mPurchaseManager.getPurchasedSku();
@@ -143,12 +155,24 @@ public class PurchaseHelper {
      * Sets the subscription data in Preferences.
      */
     private void setSubscription(boolean subscribe, String sku) {
-        //Send purchase status update event
-        mEventBus.post(new PurchaseUpdateEvent(subscribe));
-        Preferences.setBoolean(PreferencesConstants.CONFIG_PURCHASE_VERIFIED, subscribe);
-        if (sku != null) {
-            Preferences.setString(PreferencesConstants.CONFIG_PURCHASED_SKU, sku);
-        }
+        // Trigger update of userInfo
+        mIAuthentication.isUserLoggedIn(mContext, new IAuthentication.ResponseHandler() {
+            @Override
+            public void onSuccess(Bundle extras) {
+                Preferences.setBoolean(PreferencesConstants.CONFIG_PURCHASE_VERIFIED, subscribe);
+                if (sku != null) {
+                    Preferences.setString(PreferencesConstants.CONFIG_PURCHASED_SKU, sku);
+                }
+            }
+
+            @Override
+            public void onFailure(Bundle extras) {
+                String format = "Failed to update subscription state isSubscribed [%s], sku [%s]" +
+                        "failed to refresh user info state. Returned bundle [%s].";
+                Preferences.setBoolean(PreferencesConstants.GET_USER_INFO_CALL_REQUIRED, true);
+                Log.e(TAG, String.format(format, subscribe, sku, extras));
+            }
+        });
     }
 
     /**
@@ -211,6 +235,7 @@ public class PurchaseHelper {
                         Log.e(TAG, "Failed to complete purchase", throwable);
                         // TODO Validate
                         //AnalyticsHelper.trackError(TAG, "Purchase failed "+response);
+                        setSubscription(false, null);
                         resultBundle.putBoolean(RESULT_VALIDITY, false);
                         handleFailureCase(subscriber, resultBundle);
                     });
