@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
 
     android:orientation="vertical"
-    android:paddingStart="80dp"
-    android:paddingTop="80dp"
-    android:paddingEnd="80dp" >
+    android:paddingStart="40dp"
+    android:paddingTop="40dp"
+    android:paddingEnd="40dp" >
 
     <TextView
         android:id="@+id/textView"
@@ -19,7 +19,7 @@
 
     <View
         android:id="@+id/divider3"
-        android:layout_width="870dp"
+        android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="#C2C2C2" />
 
@@ -42,7 +42,6 @@
         android:fontFamily="sans-serif-light"
         android:gravity="center_vertical"
         android:paddingTop="0dp"
-        android:paddingRight="180dp"
         android:text="Start Free Trial and get full access to Qello Concerts"
         android:textColor="@android:color/white"
         android:textSize="14sp"
