@@ -54,4 +54,6 @@ public class PreferencesConstants {
     public static final String CONFIG_PURCHASE_VERIFIED = "CONFIG_PURCHASE_VERIFIED";
 
     public static final String CONFIG_PURCHASED_SKU = "CONFIG_PURCHASED_SKU";
+
+    public static final String GET_USER_INFO_CALL_REQUIRED = "GET_USER_INFO_CALL_REQUIRED";
 }
