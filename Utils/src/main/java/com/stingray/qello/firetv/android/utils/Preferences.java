@@ -143,24 +143,22 @@ public class Preferences {
         Preferences.setString(PreferencesConstants.SUBSCRIPTION_END_DATE, null);
         Preferences.setString(PreferencesConstants.STINGRAY_EMAIL, null);
         Preferences.setBoolean(PreferencesConstants.HAS_SUBSCRIPTION, false);
+        Preferences.setString(PreferencesConstants.USER_TRACKING_ID, null);
     }
 
     public static void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan, String userTrackingId, String subscriptionEnd, String email) {
         Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, true);
         Preferences.setString(PreferencesConstants.REFRESH_TOKEN, refreshToken);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
-        Preferences.setString(PreferencesConstants.EMAIL, email);
-        Preferences.setString(PreferencesConstants.USER_TRACKING_ID, userTrackingId);
-        Preferences.setString(PreferencesConstants.REFRESH_TOKEN, refreshToken);
-        Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
-        updateUserInfo(subscriptionPlan, subscriptionEnd, email);
+        updateUserInfo(subscriptionPlan, subscriptionEnd, email, userTrackingId);
     }
 
-    public static void updateUserInfo(String subscriptionPlan, String subscriptionEnd, String email) {
+    public static void updateUserInfo(String subscriptionPlan, String subscriptionEnd, String email, String userTrackingId) {
         boolean hasSubscription = subscriptionPlan != null && !subscriptionPlan.equalsIgnoreCase("NONE");
         Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, true);
         Preferences.setString(PreferencesConstants.SUBSCRIPTION_END_DATE, subscriptionEnd);
         Preferences.setString(PreferencesConstants.STINGRAY_EMAIL, email);
         Preferences.setBoolean(PreferencesConstants.HAS_SUBSCRIPTION, hasSubscription);
+        Preferences.setString(PreferencesConstants.USER_TRACKING_ID, userTrackingId);
     }
 }

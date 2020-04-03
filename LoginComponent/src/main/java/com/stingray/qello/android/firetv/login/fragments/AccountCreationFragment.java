@@ -129,6 +129,7 @@ public class AccountCreationFragment extends Fragment {
                 userInfoBundle.getAccessToken(),
                 userInfoBundle.getRefreshToken(),
                 userInfoBundle.getSubscriptionPlan(),
+                userInfoBundle.getUserTrackingId(),
                 userInfoBundle.getSubscriptionEnd(),
                 userInfoBundle.getStingrayEmail()
         );
