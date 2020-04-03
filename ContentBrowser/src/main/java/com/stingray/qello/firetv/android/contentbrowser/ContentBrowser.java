@@ -16,7 +16,6 @@ import com.stingray.qello.firetv.android.contentbrowser.helper.AuthHelper;
 import com.stingray.qello.firetv.android.contentbrowser.helper.ErrorHelper;
 import com.stingray.qello.firetv.android.contentbrowser.helper.FontManager;
 import com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrationManager;
-import com.stingray.qello.firetv.android.contentbrowser.helper.PurchaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.recommendations.RecommendationManager;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.interfaces.ICancellableLoad;
@@ -39,10 +38,12 @@ import com.stingray.qello.firetv.android.ui.fragments.LogoutSettingsFragment;
 import com.stingray.qello.firetv.android.utils.ErrorUtils;
 import com.stingray.qello.firetv.android.utils.LeanbackHelpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
+import com.stingray.qello.firetv.inapppurchase.PurchaseHelper;
 import com.stingray.qello.firetv.utils.DateAndTimeHelper;
 import com.stingray.qello.firetv.utils.StringManipulation;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,7 +117,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     private final Map<String, String> mPoweredByLogoUrlMap = new HashMap<>();
     private final ObservableFactory observableFactory = new ObservableFactory();
     private AuthHelper mAuthHelper;
-    private PurchaseHelper mPurchaseHelper;
+    //private PurchaseHelper mPurchaseHelper;
     private LauncherIntegrationManager mLauncherIntegrationManager;
     private boolean mSubscribed;
     private boolean mIAPDisabled;
@@ -295,7 +296,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
 
         mAppContext = activity.getApplicationContext();
         mNavigator = new Navigator(activity);
-        mSubscribed = Preferences.getBoolean(PurchaseHelper.CONFIG_PURCHASE_VERIFIED);
+        mSubscribed = Preferences.getBoolean(com.stingray.qello.firetv.android.ui.constants.PreferencesConstants.HAS_SUBSCRIPTION);
 
         mContentLoader = ContentLoader.getInstance(mAppContext);
 
@@ -472,7 +473,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         mAuthHelper.handleOnActivityResult(AuthHelper.AUTH_ON_ACTIVITY_RESULT_REQUEST_CODE, 0,
                                            null);
 
-        mPurchaseHelper = new PurchaseHelper(mAppContext, this);
+        //mPurchaseHelper = new PurchaseHelper(mAppContext, this);
         // Launcher integration requires the content authorization system initialized before this
         // manager is initialized. Otherwise it will incorrectly set that authorization is not
         // required for content playing. Hence initializing this after initializing AuthHelper
@@ -864,7 +865,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             isSubscriptionNotRequired = false;
         }
 
-        if (mSubscribed || isSubscriptionNotRequired || mIAPDisabled) {
+        if (mSubscribed || isSubscriptionNotRequired) {
 
             // Check if the content is meant for live watching. Live content requires only a
             // watch now button.
@@ -906,14 +907,15 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                          R.string.watch_now_2));
             }
         }
-        else {
+
+        if (!mIAPDisabled && !mSubscribed) {
             contentActionList.add(createActionButton(CONTENT_ACTION_SUBSCRIPTION,
-                                                     R.string.premium_1,
-                                                     R.string.premium_2));
+                    R.string.premium_1,
+                    R.string.premium_2));
 
             contentActionList.add(createActionButton(CONTENT_ACTION_DAILY_PASS,
-                                                     R.string.daily_pass_1,
-                                                     R.string.daily_pass_2));
+                    R.string.daily_pass_1,
+                    R.string.daily_pass_2));
         }
 
         contentActionList.addAll(mGlobalContentActionList);
@@ -1339,62 +1341,62 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      */
     private void handleRendererScreenSwitch(Activity activity, Content content, int actionId, boolean showErrorDialog) {
 
-        if (mIAPDisabled) {
+        if (mIAPDisabled || !content.isSubscriptionRequired()) {
             switchToRendererScreen(content, actionId);
         }
         else {
             Log.d(TAG, "validating purchase while handleRendererScreenSwitch");
-            mPurchaseHelper
-                    .isSubscriptionValidObservable()
-                    .subscribe(resultBundle -> {
-                        if (resultBundle.getBoolean(PurchaseHelper.RESULT) &&
-                                resultBundle.getBoolean(PurchaseHelper.RESULT_VALIDITY)) {
-                            // Switch to renderer screen.
-                            switchToRendererScreen(content, actionId);
-                        }
-                        else if (resultBundle.getBoolean(PurchaseHelper.RESULT) &&
-                                !resultBundle.getBoolean(PurchaseHelper.RESULT_VALIDITY)) {
-
-                            if (showErrorDialog) {
-                                AlertDialogFragment.createAndShowAlertDialogFragment(
-                                        mNavigator.getActiveActivity(),
-                                        mAppContext.getString(R.string.iap_error_dialog_title),
-                                        mAppContext.getString(R.string.subscription_expired),
-                                        null,
-                                        mAppContext.getString(R.string.ok),
-                                        new AlertDialogFragment.IAlertDialogListener() {
-
-                                            @Override
-                                            public void onDialogPositiveButton
-                                                    (AlertDialogFragment alertDialogFragment) {
-
-                                            }
-
-                                            @Override
-                                            public void onDialogNegativeButton
-                                                    (AlertDialogFragment alertDialogFragment) {
-
-                                                alertDialogFragment.dismiss();
-                                            }
-                                        });
-                            }
-                            else {
-                                Log.e(TAG, "Purchase expired while handleRendererScreenSwitch");
-                                ContentBrowser.getInstance(activity).setLastSelectedContent(content)
-                                              .switchToScreen(ContentBrowser
-                                                                      .CONTENT_DETAILS_SCREEN,
-                                                              content);
-                            }
-                            updateContentActions();
-                        }
-                        else {
-                            // IAP errors are handled by IAP sdk.
-                            Log.e(TAG, "IAP error!!!");
-                        }
-                    }, throwable -> {
-                        // IAP errors are handled by IAP sdk.
-                        Log.e(TAG, "IAP error!!!", throwable);
-                    });
+//            mPurchaseHelper
+//                    .isSubscriptionValidObservable()
+//                    .subscribe(resultBundle -> {
+//                        if (resultBundle.getBoolean(PurchaseHelper.RESULT) &&
+//                                resultBundle.getBoolean(PurchaseHelper.RESULT_VALIDITY)) {
+//                            // Switch to renderer screen.
+//                            switchToRendererScreen(content, actionId);
+//                        }
+//                        else if (resultBundle.getBoolean(PurchaseHelper.RESULT) &&
+//                                !resultBundle.getBoolean(PurchaseHelper.RESULT_VALIDITY)) {
+//
+//                            if (showErrorDialog) {
+//                                AlertDialogFragment.createAndShowAlertDialogFragment(
+//                                        mNavigator.getActiveActivity(),
+//                                        mAppContext.getString(R.string.iap_error_dialog_title),
+//                                        mAppContext.getString(R.string.subscription_expired),
+//                                        null,
+//                                        mAppContext.getString(R.string.ok),
+//                                        new AlertDialogFragment.IAlertDialogListener() {
+//
+//                                            @Override
+//                                            public void onDialogPositiveButton
+//                                                    (AlertDialogFragment alertDialogFragment) {
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onDialogNegativeButton
+//                                                    (AlertDialogFragment alertDialogFragment) {
+//
+//                                                alertDialogFragment.dismiss();
+//                                            }
+//                                        });
+//                            }
+//                            else {
+//                                Log.e(TAG, "Purchase expired while handleRendererScreenSwitch");
+//                                ContentBrowser.getInstance(activity).setLastSelectedContent(content)
+//                                              .switchToScreen(ContentBrowser
+//                                                                      .CONTENT_DETAILS_SCREEN,
+//                                                              content);
+//                            }
+//                            updateContentActions();
+//                        }
+//                        else {
+//                            // IAP errors are handled by IAP sdk.
+//                            Log.e(TAG, "IAP error!!!");
+//                        }
+//                    }, throwable -> {
+//                        // IAP errors are handled by IAP sdk.
+//                        Log.e(TAG, "IAP error!!!", throwable);
+//                    });
         }
     }
 
@@ -1427,10 +1429,10 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             case CONTENT_ACTION_RESUME:
                 handleRendererScreenSwitch(activity, content, actionId, true);
                 break;
-            case CONTENT_ACTION_SUBSCRIPTION:
-            case CONTENT_ACTION_DAILY_PASS:
-                mPurchaseHelper.handleAction(activity, content, actionId);
-                break;
+//            case CONTENT_ACTION_SUBSCRIPTION:
+//            case CONTENT_ACTION_DAILY_PASS:
+//                mPurchaseHelper.handleAction(activity, content, actionId);
+//                break;
             case CONTENT_ACTION_ADD_WATCHLIST:
                 watchlistButtonClicked(content.getId(), true, actionAdapter);
                 break;

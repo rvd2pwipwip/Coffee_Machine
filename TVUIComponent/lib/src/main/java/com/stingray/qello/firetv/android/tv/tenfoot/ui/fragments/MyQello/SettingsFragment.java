@@ -57,10 +57,14 @@ public class SettingsFragment extends Fragment {
         startFreeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
                 .switchToScreen(ContentBrowser.PURCHASE_SCREEN, null, null));
 
+        Button accountButton = view.findViewById(R.id.account_button);
+
+        accountButton.setOnClickListener(v -> new MyAccountSettingsDialog()
+               .createFragment(getActivity(), getActivity().getFragmentManager()));
+
         Button faqButton = view.findViewById(R.id.faq_button);
         faqButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
                 .createFragment(getActivity(), getActivity().getFragmentManager(), getActivity().getString(com.stingray.qello.firetv.utils.R.string.faq_settings_fragment_tag), "https://legal.stingray.com/en/qello-faq/markdown"));
-
 
         Button contactUsButton = view.findViewById(R.id.contact_us_button);
         contactUsButton.setOnClickListener(v -> new ContactUsSettingsDialog()
@@ -83,7 +87,9 @@ public class SettingsFragment extends Fragment {
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
-        toggleAuthenticationViews(authenticationStatusUpdateEvent.isUserAuthenticated(), Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION));
+        toggleAuthenticationViews(
+                Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN),
+                Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION));
     }
 
     private void toggleAuthenticationViews(boolean isLoggedIn, boolean hasSubscription) {

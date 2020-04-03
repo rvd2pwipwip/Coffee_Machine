@@ -33,7 +33,6 @@ public class ViewMoreFragment extends VerticalGridFragment  {
     private static String TAG = ViewMoreFragment.class.getSimpleName();
 
     private ArrayObjectAdapter mAdapter;
-    private ArrayAdapter<String> spinnerAdapter;
     private ViewMore viewMoreItem;
 
     private ObservableFactory observableFactory = new ObservableFactory();
@@ -74,6 +73,7 @@ public class ViewMoreFragment extends VerticalGridFragment  {
                 .subscribe(contentContainerExt -> {
                     for (Content entry : contentContainerExt.getContentContainer()) {
                         mAdapter.add(entry);
+                        //TODO Marie REMOOOOOVE
                         mAdapter.add(entry);
                     }
                 });

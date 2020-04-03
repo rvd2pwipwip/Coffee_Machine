@@ -19,18 +19,18 @@ permissions and limitations under the License.
         class="com.stingray.qello.firetv.android.ui.widget.ReadView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/synopsis_modal_bg"
+        android:background="@drawable/background_favorites"
         >
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/read_dialog_text_margin_vertical"
-            android:layout_marginLeft="@dimen/read_dialog_text_margin_left"
-            android:layout_marginRight="@dimen/read_dialog_text_margin_right"
+            android:layout_marginStart="@dimen/read_dialog_text_margin_left"
+            android:layout_marginEnd="@dimen/read_dialog_text_margin_right"
             android:layout_marginTop="@dimen/read_dialog_text_margin_vertical">
 
-        <com.stingray.qello.firetv.android.ui.widget.ScrollViewPlus
+        <ScrollView
                 android:id="@+id/view_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

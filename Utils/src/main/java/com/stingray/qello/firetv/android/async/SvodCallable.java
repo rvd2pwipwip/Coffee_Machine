@@ -15,23 +15,25 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 public abstract class SvodCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = SvodCallable.class.getName();
-    private static final String BASE_URL = "https://svod-test.api.stingray.com";
+    private static final String BASE_URL = "https://svod-stage.api.stingray.com";
 
     private String createUrl(String url) {
         return BASE_URL + url;
     }
 
     protected String get(String path) throws IOException {
-        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
+        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN)).getBody();
     }
 
-    protected String get(String path, String accessToken) {
-        Response response = performWithTokenRefresh(() -> {
+    protected Response get(String path, String accessToken) {
+        return performWithTokenRefresh(() -> {
             HttpURLConnection urlConnection;
             URL url = new URL(createUrl(path));
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -44,8 +46,10 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
 
             return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
         });
+    }
 
-        return response.getBody();
+    protected Response post(String path, String jsonBody) {
+        return post(path, jsonBody, Collections.emptyMap());
     }
 
     protected Response post(String path, String jsonBody, Map<String, String> additionalHeaders) {

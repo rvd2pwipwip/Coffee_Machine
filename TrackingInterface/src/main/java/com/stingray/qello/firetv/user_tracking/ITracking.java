@@ -26,12 +26,6 @@ public interface ITracking {
 
     void init(Context context);
 
-    public void trackAccountCreation(Context context);
-
-    public void trackAccountLogin(Context context);
-
-    public void screen(Context context, String pageId);
-
     public void trackPlaybackStarted(Context context, String sessionId, String assetId, long totalLength, long position);
     public void trackPlaybackPaused(Context context, String sessionId, String assetId, long totalLength, long position);
     public void trackPlaybackInterrupted(Context context, String sessionId, String assetId, long totalLength, long position, String error);

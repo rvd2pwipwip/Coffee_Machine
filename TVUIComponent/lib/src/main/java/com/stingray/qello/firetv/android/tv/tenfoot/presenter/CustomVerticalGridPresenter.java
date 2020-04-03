@@ -16,7 +16,9 @@ public class CustomVerticalGridPresenter extends VerticalGridPresenter {
     protected ViewHolder createGridViewHolder(ViewGroup parent) {
         ViewHolder gridViewHolder = super.createGridViewHolder(parent);
         VerticalGridView gridView = gridViewHolder.getGridView();
-        gridView.setItemMargin(45);
+        gridView.setVerticalMargin(100);
+        gridView.setHorizontalMargin(45);
+
         ViewGroup.LayoutParams params = gridView.getLayoutParams();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;

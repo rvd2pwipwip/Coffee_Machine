@@ -34,11 +34,6 @@ permissions and limitations under the License.
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.stingray.qello.android.firetv.login.activities.PurchaseActivity"
-            android:allowTaskReparenting="true"
-            android:launchMode="singleTask"/>
-
         <meta-data android:name="AMZNAP@LoginWithULAuthentication"
                    android:value="IAuthentication@com.stingray.qello.android.firetv.login.LoginWithULImplCreator"/>
 

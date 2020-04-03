@@ -123,9 +123,8 @@ public class MyQelloFragment extends Fragment{
      */
     @SuppressWarnings("unused")
     @Subscribe
-    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
-                                                          authenticationStatusUpdateEvent) {
-        toggleAuthenticationViews(authenticationStatusUpdateEvent.isUserAuthenticated());
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent authenticationStatusUpdateEvent) {
+        toggleAuthenticationViews(Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN));
     }
 
     private void toggleAuthenticationViews(boolean isLoggedIn) {

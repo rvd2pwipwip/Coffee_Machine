@@ -23,10 +23,13 @@ import com.amazon.identity.auth.device.authorization.api.AuthzConstants;
 import com.stingray.qello.android.firetv.login.activities.LoginActivity;
 import com.stingray.qello.android.firetv.login.communication.SvodUserInfoCallable;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
 import com.stingray.qello.firetv.auth.IAuthentication;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -96,15 +99,21 @@ public class LoginWithULAuthentication implements IAuthentication {
                         responseHandler.onFailure(errorBundle);
                     })
                     .subscribe(userInfo -> {
-                        if (userInfo.getSubscription() == null) {
+                        // If the user is logged in with no subscription subscription is PLAN = NONE
+                        // Thus, this is how we check
+                        if (userInfo == null || userInfo.getSubscription() == null) {
                             logout(context, logoutResponseHandler);
                             // A fail means the user is not authenticated
                             responseHandler.onFailure(errorBundle);
                         } else {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(AuthzConstants.BUNDLE_KEY.TOKEN.val, accessToken);
-                            bundle.putString("subscriptionPlan", userInfo.getSubscription().getPlan());
-                            responseHandler.onSuccess(bundle);
+                            String subscriptionPlan = userInfo.getSubscription().getPlan();
+                            String subscriptionEnd = userInfo.getSubscription().getEndDate();
+                            String email = userInfo.getEmail();
+
+                            Preferences.updateUserInfo(subscriptionPlan, subscriptionEnd, email);
+                            // No need to pass user info data
+                            EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
+                            responseHandler.onSuccess(new Bundle());
                         }
                     });
         } else {

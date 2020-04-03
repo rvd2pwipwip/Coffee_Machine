@@ -103,30 +103,4 @@ public class SegmentTracking implements ITracking {
         );
     }
 
-    @Override
-    public void trackAccountCreation(Context context)
-    {
-        identifyUser(context);
-        String userTrackingId = Preferences.getString(PreferencesConstants.USER_TRACKING_ID);
-        Analytics.with(context).alias(userTrackingId);
-        Analytics.with(context).track("Account Created", new Properties().putValue("authentication", "Email"));
-    }
-
-    @Override
-    public void trackAccountLogin(Context context) {
-        identifyUser(context);
-        Analytics.with(context).track("Account Logged In", new Properties().putValue("authentication", "Email"));
-    }
-
-    @Override
-    public void screen(Context context, String pageId) {
-        Analytics.with(context).screen(pageId);
-    }
-
-    private void identifyUser(Context context) {
-        String email = Preferences.getString(PreferencesConstants.EMAIL);
-        String userTrackingId = Preferences.getString(PreferencesConstants.USER_TRACKING_ID);
-
-        Analytics.with(context).identify(userTrackingId, new Traits().putEmail(email).putName(email), null);
-    }
 }

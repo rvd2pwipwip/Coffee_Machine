@@ -21,14 +21,14 @@ permissions and limitations under the License.
     <!-- Default App Colors -->
 
     <!-- The background color of the screens. -->
-    <color name="background">#0b0c0d</color>
+    <color name="background">#121212</color>
     <!-- Used for card background. -->
-    <color name="card_background">#2B2B2B</color>
+    <color name="card_background">#FF2B2B2B</color>
     <!-- The color of button highlights and widgets. -->
-    <color name="accent">#03A4D9</color>
+    <color name="accent">#FF03A4D9</color>
     <!-- Used for the text of a selected item's title and description.
          Also used for button text, Splash screen text, and read more dialog text. -->
-    <color name="primary_text">#03A4D9FF</color>
+    <color name="primary_text">#FF03A4D9</color>
     <!-- Used for the text on the card views and playback progress bar text. -->
     <color name="secondary_text">#FAFAFAFF</color>
     <!-- Used for the category titles and content subtitles -->
@@ -43,7 +43,7 @@ permissions and limitations under the License.
     <!-- Company logo to show on Splash Screen -->
     <drawable name="splash_logo">@drawable/stingray_qello_white</drawable>
     <!-- Color of splash screen loader -->
-    <color name="spinner_color">##03A4D9</color>
+    <color name="spinner_color">#FF03A4D9</color>
     <!-- Alpha of spinner -->
     <integer name="spinner_alpha">60</integer>
     <!-- color of loading and reloading text-->

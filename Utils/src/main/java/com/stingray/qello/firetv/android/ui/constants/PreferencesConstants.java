@@ -49,5 +49,13 @@ public class PreferencesConstants {
 
     public static final String USER_TRACKING_ID = "user_tracking_id";
 
-    public static final String EMAIL = "email";
+    public static final String STINGRAY_EMAIL = "email";
+
+    public static final String SUBSCRIPTION_END_DATE = "subscription_end_date";
+
+    public static final String CONFIG_PURCHASE_VERIFIED = "CONFIG_PURCHASE_VERIFIED";
+
+    public static final String CONFIG_PURCHASED_SKU = "CONFIG_PURCHASED_SKU";
+
+    public static final String GET_USER_INFO_CALL_REQUIRED = "GET_USER_INFO_CALL_REQUIRED";
 }

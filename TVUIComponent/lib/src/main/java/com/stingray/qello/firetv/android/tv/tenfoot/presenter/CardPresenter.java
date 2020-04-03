@@ -147,7 +147,7 @@ public class CardPresenter extends Presenter {
         }  else if (item instanceof ViewMore) {
             cardView.setMainImageDimensions(cardWidthDp, cardHeightDp);
             cardView.getMainImageView().setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.view_more_poster));
-            cardView.setBackgroundColor(Color.DKGRAY);
+            cardView.setBackgroundColor(ContextCompat.getColor(viewHolder.view.getContext(), R.color.grey_1F1F1F));
         }
     }
 

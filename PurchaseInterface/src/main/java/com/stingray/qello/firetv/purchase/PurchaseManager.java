@@ -203,7 +203,7 @@ public class PurchaseManager {
      * @throws Exception if there were any uncaught errors.
      */
     public void init(IPurchase purchaseSystem, PurchaseManagerListener
-            purchaseManagerListener) throws Exception {
+            purchaseManagerListener, List<Map<String, String>> skuSet) throws Exception {
 
         setPurchaseUpdateStatus(PurchaseUpdateStatus.ON_GOING);
         try {
@@ -212,7 +212,7 @@ public class PurchaseManager {
             // Init purchaseSystem and register listener.
             mPurchaseSystem.init(sContext, null);
             mPurchaseSystem.registerDefaultPurchaseListener(createPurchaseListener());
-            registerSkusAndPurchases(purchaseManagerListener);
+            registerSkusAndPurchases(purchaseManagerListener, skuSet);
         }
         catch (Exception e) {
             setPurchaseUpdateStatus(PurchaseUpdateStatus.FAILED);
@@ -232,9 +232,7 @@ public class PurchaseManager {
      *
      * @param listener The listener.
      */
-    private void registerSkusAndPurchases(PurchaseManagerListener listener) throws Exception {
-
-        List<Map<String, String>> skuSet = purchaseUtils.readSkusFromConfigFile(sContext);
+    private void registerSkusAndPurchases(PurchaseManagerListener listener, List<Map<String, String>> skuSet) throws Exception {
         mSkuDataMap.putAll(purchaseUtils.updateSkuSet(skuSet));
         UpdatePurchasesAction.setListener(listener);
         new UpdatePurchasesAction(this, true).execute();
@@ -376,6 +374,8 @@ public class PurchaseManager {
             public void onProductDataResponse(Response response, Map<String, Product>
                     productDetails, Set<String> invalidSkus) {
                 // Not required for this system.
+                Log.e(TAG, String.format("IPurchase.PurchaseListener.onProductDataResponse was" +
+                        " called even if it's not supposed to be used by the system: Response [%s]", response.toString()));
             }
 
             /**
@@ -384,6 +384,8 @@ public class PurchaseManager {
             @Override
             public void onGetUserDataResponse(Response response, UserData userData) {
                 // Not required for this system.
+                Log.e(TAG, String.format("IPurchase.PurchaseListener.onGetUserDataResponse was" +
+                        " called even if it's not supposed to be used by the system: Response [%s]", response.toString()));
             }
 
             /**
@@ -501,6 +503,7 @@ public class PurchaseManager {
                     else {
                         Log.d(TAG, "purchase valid " + response);
                         // Purchase is not valid, register it into the system.
+
                         registerReceiptSku(receipt);
                         result = true;
                     }
@@ -647,5 +650,7 @@ public class PurchaseManager {
         this.purchaseUtils = purchaseUtils;
     }
 
-
+    public Receipt getReceipt(String sku) {
+        return mReceiptMap.get(sku);
+    }
 }
