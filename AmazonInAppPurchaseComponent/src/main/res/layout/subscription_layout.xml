@@ -75,6 +75,17 @@
                     tools:listitem="@layout/purchase_item_rebate"
                     tools:visibility="visible" />
 
+
+                <TextView
+                    android:id="@+id/error_subscriptions_load"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/lb_error_message"
+                    android:text="@string/error_subscriptions_load"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
             <Button

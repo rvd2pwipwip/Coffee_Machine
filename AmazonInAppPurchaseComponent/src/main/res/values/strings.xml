@@ -13,4 +13,6 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
+    <string name="plan_disclaimer">By selecting a plan, you accept the Terms and Conditions and Privacy Policy. By subscribing to Stingray Qello, you will obtain seven days for free. Your subscription will be charged at the end of the free period . Your monthly subscription will automatically renew unless you turn off the auto-renewal at least 24 hours before the end of the subscription on My Account > Manage Subscription. Any unused portion of a free trial period, if offered, will be forfeited when the user purchases a subscription to that publication, where applicable. For more information about your subscription fees and renewals, please consult our Terms and Conditions.</string>
+    <string name="error_subscriptions_load">Failed to load subscriptions. Please try again later</string>
 </resources>

@@ -33,6 +33,7 @@ import com.amazon.identity.auth.device.authorization.api.AuthzConstants;
 import com.amazon.identity.auth.device.shared.APIListener;
 import com.stingray.qello.android.firetv.login.R;
 import com.stingray.qello.android.firetv.login.ULAuthManager;
+import com.stingray.qello.android.firetv.login.UserInfoBundle;
 import com.stingray.qello.android.firetv.login.communication.AmazonLoginCallable;
 import com.stingray.qello.android.firetv.login.communication.UserpassLoginCallable;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.AmazonLoginRequestBody;
@@ -208,10 +209,16 @@ public class LoginActivity extends Activity {
     /**
      * Sets the state of the application to reflect that the user is currently authorized.
      */
-    private void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan) {
+    private void setLoggedInState(UserInfoBundle userInfoBundle) {
         loginWithUP.setVisibility(LinearLayout.GONE);
         lwaButton.setVisibility(Button.GONE);
-        Preferences.setLoggedInState(accessToken, refreshToken, subscriptionPlan);
+        Preferences.setLoggedInState(
+                userInfoBundle.getAccessToken(),
+                userInfoBundle.getRefreshToken(),
+                userInfoBundle.getSubscriptionPlan(),
+                userInfoBundle.getSubscriptionEnd(),
+                userInfoBundle.getStingrayEmail()
+        );
         setLoggingInState(false);
     }
 
@@ -264,7 +271,7 @@ public class LoginActivity extends Activity {
 
             if (amazonFutureType != null) {
                 if ( AuthzConstants.FUTURE_TYPE.SUCCESS.equals(amazonFutureType)) {
-                    String accessToken = response.getString(ULAuthManager.BUNDLE_ACCESS_TOKEN);
+                    String accessToken = response.getString(AuthzConstants.BUNDLE_KEY.TOKEN.val);
                     AmazonLoginRequestBody requestBody = new AmazonLoginRequestBody(accessToken, HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID);
                     observableFactory.createDetached(new AmazonLoginCallable(requestBody))
                             .subscribe(LoginActivity.this::callULAuthorize);
@@ -272,10 +279,7 @@ public class LoginActivity extends Activity {
                     onError(new AuthError("Failed to login authenticate with Amazon", AuthError.ERROR_TYPE.ERROR_INVALID_GRANT));
                 }
             } else {
-                final String accessToken = response.getString(ULAuthManager.BUNDLE_ACCESS_TOKEN);
-                final String refreshToken = response.getString(ULAuthManager.BUNDLE_REFRESH_TOKEN);
-                final String subscritionPlan = response.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_PLAN);
-                runOnUiThread(() -> setLoggedInState(accessToken, refreshToken, subscritionPlan));
+                runOnUiThread(() -> setLoggedInState(new UserInfoBundle(response)));
                 setResult(RESULT_OK);
                 finish();
             }
@@ -306,7 +310,7 @@ public class LoginActivity extends Activity {
 
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putString(AuthenticationConstants.ERROR_CATEGORY, category);
+        bundle.putString(AuthenticationConstants.ERROR_CATEGORY, AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
         bundle.putSerializable(AuthenticationConstants.ERROR_CAUSE, throwable);
         setResult(RESULT_CANCELED, intent.putExtra(AuthenticationConstants.ERROR_BUNDLE, bundle));
         finish();

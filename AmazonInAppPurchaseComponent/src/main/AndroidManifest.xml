@@ -19,6 +19,11 @@ permissions and limitations under the License.
             android:allowBackup="true"
             android:supportsRtl="true">
 
+        <activity
+            android:name="com.stingray.qello.firetv.inapppurchase.activities.PurchaseActivity"
+            android:allowTaskReparenting="true"
+            android:launchMode="singleTask"/>
+
         <meta-data android:name="AMZNAP@AmazonInAppPurchase"
                    android:value="IPurchase@com.stingray.qello.firetv.inapppurchase.AmazonInAppPurchaseImplCreator"/>
         <receiver android:name="com.amazon.device.iap.ResponseReceiver">

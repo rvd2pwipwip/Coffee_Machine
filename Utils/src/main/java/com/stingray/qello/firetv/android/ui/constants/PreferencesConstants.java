@@ -46,4 +46,12 @@ public class PreferencesConstants {
     public static final String HAS_SUBSCRIPTION = "has_subscription";
 
     public static final String IS_LOGGED_IN = "is_logged_in";
+
+    public static final String STINGRAY_EMAIL = "email";
+
+    public static final String SUBSCRIPTION_END_DATE = "subscription_end_date";
+
+    public static final String CONFIG_PURCHASE_VERIFIED = "CONFIG_PURCHASE_VERIFIED";
+
+    public static final String CONFIG_PURCHASED_SKU = "CONFIG_PURCHASED_SKU";
 }

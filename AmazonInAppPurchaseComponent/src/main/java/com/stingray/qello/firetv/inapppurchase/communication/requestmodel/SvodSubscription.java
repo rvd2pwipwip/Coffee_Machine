@@ -1,11 +1,16 @@
-package com.stingray.qello.android.firetv.login.communication.model;
+package com.stingray.qello.firetv.inapppurchase.communication.requestmodel;
 
 public class SvodSubscription {
-    private final String productId;
-    private final Boolean freeTrialAvailable;
-    private final String recurrence;
-    private final String recurrenceTitle;
-    private final Boolean consumable;
+    private String productId;
+    private Boolean freeTrialAvailable;
+    private String recurrence;
+    private String recurrenceTitle;
+    private Boolean consumable;
+
+    // For Deserialization
+    private SvodSubscription() {
+
+    }
 
     public SvodSubscription(String productId, Boolean freeTrialAvailable, String recurrence, String recurrenceTitle, Boolean consumable) {
         this.productId = productId;

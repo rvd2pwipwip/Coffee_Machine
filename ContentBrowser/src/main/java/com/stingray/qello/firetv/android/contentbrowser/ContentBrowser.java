@@ -20,6 +20,7 @@ import com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrati
 import com.stingray.qello.firetv.android.contentbrowser.helper.PurchaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.recommendations.RecommendationManager;
 import com.stingray.qello.firetv.android.contentbrowser.callable.SearchCallable;
+import com.stingray.qello.firetv.android.event.PurchaseUpdateEvent;
 import com.stingray.qello.firetv.android.interfaces.ICancellableLoad;
 import com.stingray.qello.firetv.android.interfaces.IContentBrowser;
 import com.stingray.qello.firetv.android.model.Action;
@@ -44,6 +45,7 @@ import com.stingray.qello.firetv.utils.DateAndTimeHelper;
 import com.stingray.qello.firetv.utils.StringManipulation;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -910,7 +912,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             }
         }
 
-        if (!mIAPDisabled) {
+        if (!mIAPDisabled && !mSubscribed) {
             contentActionList.add(createActionButton(CONTENT_ACTION_SUBSCRIPTION,
                     R.string.premium_1,
                     R.string.premium_2));
@@ -1782,5 +1784,11 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         mContentLoader.setContentLoaded(false);
 
         runGlobalRecipes(activity, ContentBrowser.this);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onPurchaseUpdateEventEvent(PurchaseUpdateEvent purchaseUpdateEvent) {
+        setSubscribed(purchaseUpdateEvent.isPurchaseValid());
     }
 }
