@@ -47,6 +47,8 @@ public class PreferencesConstants {
 
     public static final String IS_LOGGED_IN = "is_logged_in";
 
+    public static final String USER_TRACKING_ID = "user_tracking_id";
+
     public static final String STINGRAY_EMAIL = "email";
 
     public static final String SUBSCRIPTION_END_DATE = "subscription_end_date";

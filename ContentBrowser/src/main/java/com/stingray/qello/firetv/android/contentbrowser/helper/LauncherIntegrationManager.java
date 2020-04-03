@@ -14,6 +14,10 @@
  */
 package com.stingray.qello.firetv.android.contentbrowser.helper;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.R;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
@@ -21,10 +25,6 @@ import com.stingray.qello.firetv.android.utils.Preferences;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 
 /**
  * Manager class to manage launcher integration. It interacts with ContentBrowser and listens to
@@ -221,7 +221,6 @@ public class LauncherIntegrationManager {
         }
         // Send the intent to the Launcher
         context.sendBroadcast(intent);
-        AnalyticsHelper.trackAppAuthenticationStatusBroadcasted(isUserAuthenticated);
     }
 
     /**

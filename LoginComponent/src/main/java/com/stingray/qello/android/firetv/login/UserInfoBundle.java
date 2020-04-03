@@ -9,6 +9,7 @@ public class UserInfoBundle {
     private final String expiresIn;
     private final String subscriptionPlan;
     private final String subscriptionEnd;
+    private final String userTrackingId;
 
     public UserInfoBundle(Bundle bundle) {
         this.stingrayEmail = bundle.getString(ULAuthManager.BUNDLE_STINGRAY_EMAIL);
@@ -17,6 +18,7 @@ public class UserInfoBundle {
         this.expiresIn = bundle.getString(ULAuthManager.BUNDLE_EXPIRES_IN);
         this.subscriptionPlan = bundle.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_PLAN);
         this.subscriptionEnd = bundle.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_END);
+        this.userTrackingId = bundle.getString(ULAuthManager.BUNDLE_USER_TRACKING_ID);
     }
 
     public String getStingrayEmail() {
@@ -42,4 +44,6 @@ public class UserInfoBundle {
     public String getSubscriptionEnd() {
         return subscriptionEnd;
     }
+
+    public String getUserTrackingId() { return userTrackingId; }
 }

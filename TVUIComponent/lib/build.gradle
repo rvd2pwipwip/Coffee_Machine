@@ -86,7 +86,6 @@ dependencies {
     implementation project(':Utils')
     implementation project(':ModuleInterface')
     implementation project(':AuthInterface')
-    implementation project(':AnalyticsInterface')
     implementation project(':UAMP')
     implementation project(':ContentBrowser')
     // Global font support

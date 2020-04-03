@@ -28,19 +28,6 @@
  */
 package com.stingray.qello.firetv.android.uamp.ui;
 
-import com.stingray.qello.firetv.analytics.AnalyticsTags;
-import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
-import com.stingray.qello.firetv.android.contentbrowser.helper.AnalyticsHelper;
-import com.stingray.qello.firetv.android.model.content.Content;
-import com.stingray.qello.firetv.android.tv.tenfoot.R;
-import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
-import com.stingray.qello.firetv.android.uamp.mediaSession.MediaSessionController;
-import com.stingray.qello.firetv.utils.StringManipulation;
-import com.stingray.qello.firetv.android.utils.GlideHelper;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -78,6 +65,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
+import com.stingray.qello.firetv.android.model.content.Content;
+import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
+import com.stingray.qello.firetv.android.uamp.mediaSession.MediaSessionController;
+import com.stingray.qello.firetv.android.utils.GlideHelper;
+import com.stingray.qello.firetv.utils.StringManipulation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -360,15 +358,8 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
                 if (action.getId() == mPlayPauseAction.getId()) {
                     boolean actionIndex = mPlayPauseAction.getIndex() == PlayPauseAction.PLAY;
                     togglePlayback(actionIndex);
-                    if (actionIndex) {
-                        trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PLAY);
-                    }
-                    else {
-                        trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PAUSE);
-                    }
                 }
                 else if (action.getId() == mSkipNextAction.getId()) {
-                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_NEXT);
                     ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
                                                                                          .CONTENT_RENDERER_SCREEN,
                                                                                  mRelatedContentList.get(mCurrentItem + 1), extra -> next(),
@@ -377,10 +368,8 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
                 }
                 else if (action.getId() == mClosedCaptioningAction.getId()) {
                     toggleCloseCaption();
-                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_TOGGLE_CC);
                 }
                 else if (action.getId() == mSkipPreviousAction.getId()) {
-                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_PRE);
                     ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
                                                                                          .CONTENT_RENDERER_SCREEN,
                                                                                  mRelatedContentList.get(mCurrentItem - 1), extra -> prev(),
@@ -389,16 +378,13 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
                 }
                 else if (action.getId() == mFastForwardAction.getId()) {
                     fastForward();
-                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_FF);
                 }
                 else if (action.getId() == mRewindAction.getId()) {
                     fastRewind();
-                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_REWIND);
                 }
                 else if (action instanceof PlaybackControlsRow.MultiAction) {
                     ((PlaybackControlsRow.MultiAction) action).nextIndex();
                     notifyChanged(action);
-                    trackAnalyticsAction(AnalyticsTags.ACTION_PLAYBACK_CONTROL_MULTI_ACTION);
                 }
             }
         });
@@ -434,33 +420,6 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
         }
 
         setAdapter(mRowsAdapter);
-    }
-
-    /**
-     * Helper method to track a playback action.
-     *
-     * @param action The playback action to track.
-     */
-    private void trackAnalyticsAction(String action) {
-
-        trackAnalyticsAction(action, mSelectedContent);
-    }
-
-
-    /**
-     * Helper method to track a playback action.
-     *
-     * @param action  The playback action to track.
-     * @param content The content.
-     */
-    private void trackAnalyticsAction(String action, Content content) {
-
-        if (isAdded() && getActivity() != null) {
-
-            AnalyticsHelper.trackPlaybackControlAction(action, content,
-                                                       ((PlaybackActivity) getActivity())
-                                                               .getCurrentPosition());
-        }
     }
 
     /**
@@ -993,8 +952,6 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
 
             if (item instanceof Content) {
                 Content content = (Content) item;
-                trackAnalyticsAction(AnalyticsTags.ACTION_RECOMMENDED_CONTENT_CLICKED, content);
-
                 ContentBrowser.getInstance(getActivity()).verifyScreenSwitch(ContentBrowser
                                                                                      .CONTENT_RENDERER_SCREEN,
                                                                              content,

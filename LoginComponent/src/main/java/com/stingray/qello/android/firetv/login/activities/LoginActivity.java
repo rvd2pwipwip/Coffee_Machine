@@ -216,6 +216,7 @@ public class LoginActivity extends Activity {
                 userInfoBundle.getAccessToken(),
                 userInfoBundle.getRefreshToken(),
                 userInfoBundle.getSubscriptionPlan(),
+                userInfoBundle.getUserTrackingId(),
                 userInfoBundle.getSubscriptionEnd(),
                 userInfoBundle.getStingrayEmail()
         );

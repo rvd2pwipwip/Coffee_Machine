@@ -29,13 +29,13 @@ include ':app',
         ':PurchaseInterface',
         ':AuthInterface',
         ':AdsInterface',
-        ':AnalyticsInterface',
         ':ModuleInterface',
+        ':TrackingInterface',
         /* Implementations */
         ':PassThroughAdsComponent',
         ':AMZNMediaPlayerComponent',
         ':LoginComponent',
-        ':LoggerAnalyticsComponent',
+        ':SegmentComponent',
         ':AmazonInAppPurchaseComponent'
 
 /* Frameworks */
@@ -54,14 +54,14 @@ project(':Utils').projectDir = new File(rootProject.projectDir, '../Utils')
 project(':ModuleInterface').projectDir = new File(rootProject.projectDir, '../ModuleInterface')
 project(':AdsInterface').projectDir = new File(rootProject.projectDir, '../AdsInterface')
 project(':AuthInterface').projectDir = new File(rootProject.projectDir, '../AuthInterface')
-project(':AnalyticsInterface').projectDir = new File(rootProject.projectDir, '../AnalyticsInterface')
 project(':PurchaseInterface').projectDir = new File(rootProject.projectDir, '../PurchaseInterface')
+project(':TrackingInterface').projectDir = new File(rootProject.projectDir, '../TrackingInterface')
 
 /* Implementations */
 project(':AMZNMediaPlayerComponent').projectDir = new File(rootProject.projectDir, '../AMZNMediaPlayerComponent')
 project(':PassThroughAdsComponent').projectDir = new File(rootProject.projectDir, '../PassThroughAdsComponent')
 project(':LoginComponent').projectDir = new File(rootProject.projectDir, '../LoginComponent')
-project(':LoggerAnalyticsComponent').projectDir = new File(rootProject.projectDir, '../LoggerAnalyticsComponent')
+project(':SegmentComponent').projectDir = new File(rootProject.projectDir, '../SegmentComponent')
 project(':AmazonInAppPurchaseComponent').projectDir = new File(rootProject.projectDir, '../AmazonInAppPurchaseComponent')
 // Uncomment when using ComScore Analytics
 //project(':comscore').projectDir = new File(rootProject.projectDir, '../ComScoreAnalyticsComponent/libs/comscore')

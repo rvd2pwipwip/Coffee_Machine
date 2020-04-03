@@ -15,8 +15,6 @@
 package com.stingray.qello.firetv.android.contentbrowser.recommendations;
 
 
-import com.stingray.qello.firetv.android.contentbrowser.helper.AnalyticsHelper;
-
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
@@ -48,6 +46,5 @@ public class DeleteRecommendationService extends IntentService {
 
         RecommendationManager manager = new RecommendationManager(getApplicationContext());
         manager.dismissRecommendation(id);
-        AnalyticsHelper.trackDeleteRecommendationServiceCalled(id);
     }
 }

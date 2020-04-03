@@ -61,7 +61,6 @@ dependencies {
 
     implementation project(':ModuleInterface')
     implementation project(':AuthInterface')
-    implementation project(':AnalyticsInterface')
     api project(':AdsInterface')
     implementation project(':PurchaseInterface')
     implementation project(':UAMP')
@@ -72,6 +71,7 @@ dependencies {
     api project(':ContentModel')
     // Global font support
     implementation project(':Calligraphy')
+    compile project(path: ':TrackingInterface')
 }
 
 buildscript {

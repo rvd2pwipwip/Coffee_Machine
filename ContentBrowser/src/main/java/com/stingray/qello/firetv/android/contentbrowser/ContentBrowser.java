@@ -8,17 +8,16 @@ import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.util.Log;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.contentbrowser.callable.SearchCallable;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.WatchlistDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.records.RecentRecord;
-import com.stingray.qello.firetv.android.contentbrowser.helper.AnalyticsHelper;
 import com.stingray.qello.firetv.android.contentbrowser.helper.AuthHelper;
-import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.contentbrowser.helper.ErrorHelper;
 import com.stingray.qello.firetv.android.contentbrowser.helper.FontManager;
 import com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrationManager;
 import com.stingray.qello.firetv.android.contentbrowser.recommendations.RecommendationManager;
-import com.stingray.qello.firetv.android.contentbrowser.callable.SearchCallable;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.interfaces.ICancellableLoad;
 import com.stingray.qello.firetv.android.interfaces.IContentBrowser;
 import com.stingray.qello.firetv.android.model.Action;
@@ -57,8 +56,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-
-import static com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrationManager.getSourceOfContentPlayRequest;
 
 /**
  * This class is the controller of the content browsing solution.
@@ -1426,7 +1423,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             }
         }
 
-        AnalyticsHelper.trackContentDetailsAction(content, actionId);
         switch (actionId) {
             case CONTENT_ACTION_WATCH_NOW:
             case CONTENT_ACTION_WATCH_FROM_BEGINNING:
@@ -1562,8 +1558,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                                                      "contentId "
                                                                                      + contentId);
                                       }
-                                      AnalyticsHelper.trackLauncherRequest(contentId, content,
-                                                                           getSourceOfContentPlayRequest(activity.getIntent()));
                                       Intent intent = new Intent();
                                       intent.putExtra(Content.class.getSimpleName(), content);
                                       intent.putExtra(REQUEST_FROM_LAUNCHER, true);
@@ -1574,8 +1568,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                   }
                                   catch (Exception e) {
                                       Log.e(TAG, e.getLocalizedMessage(), e);
-                                      AnalyticsHelper.trackLauncherRequest(contentId, null,
-                                                                           getSourceOfContentPlayRequest(activity.getIntent()));
                                       AlertDialogFragment.createAndShowAlertDialogFragment
                                               (mNavigator.getActiveActivity(),
                                                "Error",
