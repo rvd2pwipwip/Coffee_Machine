@@ -19,8 +19,8 @@ permissions and limitations under the License.
         android:allowBackup="true"
         android:supportsRtl="true">
 
-        <meta-data android:name="AMZNAP@SegmentUserTracking"
-            android:value="IUserTracking@com.stingray.qello.firetv.segment.SegmentUserTrackingImplCreator"/>
+        <meta-data android:name="AMZNAP@SegmentTracking"
+            android:value="ITracking@com.stingray.qello.firetv.segment.SegmentTrackingImplCreator"/>
 
     </application>
 

@@ -16,19 +16,19 @@ package com.stingray.qello.firetv.segment;
 
 
 import com.stingray.qello.firetv.android.module.IImplCreator;
-import com.stingray.qello.firetv.user_tracking.IUserTracking;
+import com.stingray.qello.firetv.user_tracking.ITracking;
 
 /**
  * This lets modules follow the same protocol for creating an instance.
  */
-public class SegmentUserTrackingImplCreator implements IImplCreator<IUserTracking> {
+public class SegmentTrackingImplCreator implements IImplCreator<ITracking> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public IUserTracking createImpl() {
+    public ITracking createImpl() {
 
-        return new SegmentUserTracking();
+        return new SegmentTracking();
     }
 }

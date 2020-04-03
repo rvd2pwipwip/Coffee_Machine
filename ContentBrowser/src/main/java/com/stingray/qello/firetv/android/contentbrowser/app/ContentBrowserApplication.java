@@ -32,7 +32,7 @@ import com.stingray.qello.firetv.android.uamp.UAMP;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.IAuthentication;
 import com.stingray.qello.firetv.purchase.IPurchase;
-import com.stingray.qello.firetv.user_tracking.IUserTracking;
+import com.stingray.qello.firetv.user_tracking.ITracking;
 
 /**
  * Content browser application class.
@@ -119,9 +119,9 @@ public class ContentBrowserApplication extends ModularApplication {
 
     private void initializeSegmentModule() {
         try {
-            IUserTracking userTracking =
-                    (IUserTracking) ModuleManager.getInstance()
-                            .getModule(IUserTracking.class.getSimpleName())
+            ITracking userTracking =
+                    (ITracking) ModuleManager.getInstance()
+                            .getModule(ITracking.class.getSimpleName())
                             .getImpl(true);
             // Init userTracking module.
             userTracking.init(this);

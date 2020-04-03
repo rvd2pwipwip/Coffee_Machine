@@ -499,7 +499,6 @@ public class AMZNPlayer implements UAMP, SurfaceHolder.Callback {
      */
     @Override
     public void play() {
-
         mPlayer.play();
     }
 

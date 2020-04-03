@@ -72,9 +72,6 @@ dependencies {
     // Mixpanel
     implementation 'com.segment.analytics.android.integrations:mixpanel:+'
     implementation 'com.mixpanel.android:mixpanel-android:5.+'
-    compile project(path: ':UserTrackingInterface')
-    compile project(path: ':ModuleInterface')
-    compile project(path: ':Utils')
 
-
+    implementation project(path: ':TrackingInterface')
 }
