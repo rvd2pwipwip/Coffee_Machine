@@ -87,9 +87,11 @@ public class SettingsFragment extends Fragment {
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
-        toggleAuthenticationViews(
-                Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN),
-                Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION));
+        getActivity().runOnUiThread(() -> {
+            toggleAuthenticationViews(
+                    Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN),
+                    Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION));
+        });
     }
 
     private void toggleAuthenticationViews(boolean isLoggedIn, boolean hasSubscription) {
