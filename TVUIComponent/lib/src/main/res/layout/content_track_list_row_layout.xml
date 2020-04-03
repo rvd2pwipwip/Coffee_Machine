@@ -58,20 +58,22 @@
 
     <ImageButton
         android:id="@+id/add_track_to_playlist_button"
-        android:alpha="0.4"
-        android:background="@drawable/button_bg_stroke"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:alpha="0.4"
+        android:background="@drawable/button_bg_stroke"
         android:padding="14dp"
-        android:src="@drawable/add_icon"/>
+        android:src="@drawable/add_icon"
+        android:visibility="gone" />
 
     <ImageButton
         android:id="@+id/add_track_to_favorites"
-        android:alpha="0.4"
-        android:background="@drawable/button_bg_stroke"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:alpha="0.4"
+        android:background="@drawable/button_bg_stroke"
         android:padding="14dp"
-        android:src="@drawable/like_icon"/>
+        android:src="@drawable/like_icon"
+        android:visibility="gone" />
 
 </TableRow>
