@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_settings"
     android:orientation="vertical"
-    android:paddingStart="85px"
-    android:paddingTop="85px">
+    android:paddingStart="80dp"
+    android:paddingTop="80dp"
+    android:paddingEnd="80dp">
 
     <TextView
         android:id="@+id/textView"
@@ -32,8 +32,8 @@
         android:paddingBottom="15dp"
         android:text="useremail@stingray.com"
         android:textColor="@color/accent"
-        android:textStyle="bold"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -48,23 +48,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-light"
+                android:paddingTop="15dp"
                 android:text="Monthly"
                 android:textColor="@color/accent"
-                android:paddingTop="15dp"
-                android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5">
+
                 <TextView
                     android:id="@+id/my_account_sub_desc"
                     android:layout_width="wrap_content"
@@ -74,8 +74,8 @@
                     android:paddingTop="6dp"
                     android:text="Automatically renew on"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/my_account_sub_end"
@@ -84,9 +84,9 @@
                     android:layout_below="@+id/my_account_sub_desc"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    tools:text="9/99/99"/>
+                    android:textStyle="bold"
+                    tools:text="9/99/99" />
 
 
                 <TextView
@@ -95,13 +95,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/my_account_sub_end"
                     android:layout_toEndOf="@+id/my_account_sub_end"
+                    android:fontFamily="sans-serif-light"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
-                    android:fontFamily="sans-serif-light"
+                    android:text="for"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    android:text="for"/>
+                    android:textStyle="bold" />
 
 
                 <TextView
@@ -112,9 +112,9 @@
                     android:layout_toEndOf="@+id/my_account_sub_for"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    tools:text="9.99$"/>
+                    android:textStyle="bold"
+                    tools:text="9.99$" />
             </RelativeLayout>
 
 
