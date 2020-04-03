@@ -18,7 +18,7 @@
 
     <View
         android:id="@+id/divider3"
-        android:layout_width="600dp"
+        android:layout_width="865dp"
         android:layout_height="1px"
         android:background="#C2C2C2" />
 
@@ -35,7 +35,7 @@
         android:textSize="20sp" />
 
     <TableLayout
-        android:layout_width="600dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TableRow
@@ -59,11 +59,11 @@
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="300dp"
+                android:layout_width="400dp"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_vertical"
-                android:paddingRight="100dp"
+                android:paddingRight="180dp"
                 android:paddingTop="6dp"
                 android:text="Subscribe to get full access to Qello Concerts"
                 android:textColor="@android:color/white"

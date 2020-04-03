@@ -18,7 +18,7 @@
 
     <View
         android:id="@+id/divider3"
-        android:layout_width="600dp"
+        android:layout_width="870dp"
         android:layout_height="1px"
         android:background="#C2C2C2" />
 
@@ -36,12 +36,12 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="300dp"
+        android:layout_width="400dp"
         android:layout_height="51dp"
         android:fontFamily="sans-serif-light"
         android:gravity="center_vertical"
         android:paddingTop="0dp"
-        android:paddingRight="100dp"
+        android:paddingRight="180dp"
         android:text="Start Free Trial and get full access to Qello Concerts"
         android:textColor="@android:color/white"
         android:textSize="14sp"
