@@ -1,5 +1,6 @@
 package com.stingray.qello.android.firetv.login.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.stingray.qello.android.firetv.login.communication.requestmodel.Userpa
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
+import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
@@ -73,6 +75,21 @@ public class AccountCreationFragment extends Fragment {
 
         usernameInput = view.findViewById(R.id.userName);
         passwordInput = view.findViewById(R.id.password);
+
+
+        Activity activity = getActivity();
+
+        // TODO Centralize Terms and PP links
+
+        Button termsButton = view.findViewById(R.id.create_account_terms);
+        termsButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                .createFragment(activity, activity.getFragmentManager(), activity.getString(com.stingray.qello.firetv.utils.R.string.terms_settings_fragment_tag), "https://legal.stingray.com/en/qello-terms-and-conditions/markdown"));
+
+        Button privacyButton = view.findViewById(R.id.create_account_pp);
+        privacyButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                .createFragment(activity, activity.getFragmentManager(), activity.getString(com.stingray.qello.firetv.utils.R.string.privacy_settings_fragment_tag), "https://legal.stingray.com/en/privacy-policy/markdown"));
+
+
 //      For Testing
 //        usernameInput.setText("clf2@sd-i.ca");
 //        passwordInput.setText("12345678");
