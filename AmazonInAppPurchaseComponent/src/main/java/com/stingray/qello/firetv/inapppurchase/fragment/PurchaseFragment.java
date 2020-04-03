@@ -97,7 +97,8 @@ public class PurchaseFragment extends Fragment {
                         }
 
                         purchaseItemLayout.setOnClickListener(v -> {
-                            purchaseHelper.handlePurchaseChain(getActivity(), sub.getProductId());
+                            //TODO Remove, commenting because it freezes in the emulator
+                            //purchaseHelper.handlePurchaseChain(getActivity(), sub.getProductId());
                         });
                         purchaseItemsLayout.addView(purchaseItemLayout);
                     }
