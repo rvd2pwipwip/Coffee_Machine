@@ -616,7 +616,6 @@ public class AuthHelper {
                 (fragment, errorButtonType, errorCategory) -> {
                     if (ErrorUtils.ERROR_BUTTON_TYPE.DISMISS == errorButtonType) {
                         fragment.dismiss();
-                        mContentBrowser.updateContentActions();
                     }
                     else if (ErrorUtils.ERROR_BUTTON_TYPE.LOGOUT == errorButtonType) {
                         mIAuthentication.logout(activity, new IAuthentication.ResponseHandler() {
@@ -624,7 +623,6 @@ public class AuthHelper {
                             public void onSuccess(Bundle extras) {
                                 broadcastAuthenticationStatus(false);
                                 fragment.dismiss();
-                                mContentBrowser.updateContentActions();
                             }
 
                             @Override

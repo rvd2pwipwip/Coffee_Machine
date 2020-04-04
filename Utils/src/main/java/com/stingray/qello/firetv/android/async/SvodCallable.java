@@ -28,8 +28,13 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
         return BASE_URL + url;
     }
 
+    @Deprecated
     protected String get(String path) throws IOException {
         return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN)).getBody();
+    }
+
+    protected Response performGet(String path) {
+        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
     }
 
     protected Response get(String path, String accessToken) {

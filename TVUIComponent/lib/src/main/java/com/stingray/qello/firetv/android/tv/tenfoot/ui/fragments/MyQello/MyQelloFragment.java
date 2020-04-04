@@ -56,6 +56,12 @@ public class MyQelloFragment extends Fragment{
         return view;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     public void addListenerOnButton(View view)  {
         Button settingsButton = (Button) view.findViewById(R.id.settings_button);
         settingsButton.setOnFocusChangeListener((v, hasFocus) -> {

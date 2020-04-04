@@ -100,6 +100,12 @@ public class ContentBrowseFragment extends RowsFragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     /**
      * Event bus listener method to listen for authentication updates from AuthHelper and update
      * the login action status in settings.

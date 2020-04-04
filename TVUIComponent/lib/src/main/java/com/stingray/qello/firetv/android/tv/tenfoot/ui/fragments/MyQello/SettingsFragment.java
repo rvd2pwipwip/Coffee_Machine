@@ -52,6 +52,12 @@ public class SettingsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     public void addListenerOnButton(View view) {
 
         startFreeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
