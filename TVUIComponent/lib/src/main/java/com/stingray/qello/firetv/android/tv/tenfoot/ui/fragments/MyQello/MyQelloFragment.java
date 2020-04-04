@@ -32,6 +32,7 @@ public class MyQelloFragment extends Fragment{
     private LinearLayout loggedOutContainer;
     private Button loginButton;
     private Button startFreeTrialButton;
+    private Button settingsButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class MyQelloFragment extends Fragment{
     }
 
     public void addListenerOnButton(View view)  {
-        Button settingsButton = (Button) view.findViewById(R.id.settings_button);
+        settingsButton = view.findViewById(R.id.settings_button);
         settingsButton.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus) {
                 FragmentManager fragmentManager = this.getFragmentManager();
@@ -135,6 +136,9 @@ public class MyQelloFragment extends Fragment{
 
     private void toggleAuthenticationViews(boolean isLoggedIn) {
         if (loggedOutContainer != null) {
+            if (settingsButton != null && loggedOutContainer.getVisibility() == View.GONE && !isLoggedIn) {
+                settingsButton.requestFocus();
+            }
             loggedOutContainer.setVisibility(mapToVisibility(!isLoggedIn));
         }
 
