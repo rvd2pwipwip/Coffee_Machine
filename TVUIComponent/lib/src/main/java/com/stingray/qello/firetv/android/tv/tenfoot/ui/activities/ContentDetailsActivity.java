@@ -77,23 +77,23 @@ public class ContentDetailsActivity extends BaseActivity {
                             DateAndTimeHelper.getCurrentDate().getTime());
     }
 
-    @Subscribe
-    public void onActionListUpdateRequired(ActionUpdateEvent actionUpdateEvent) {
-
-        mContentDetailsFragment.updateActions();
-    }
+//    @Subscribe
+//    public void onActionListUpdateRequired(ActionUpdateEvent actionUpdateEvent) {
+//
+//        mContentDetailsFragment.updateActions();
+//    }
 
     @Override
     protected void onStart() {
 
         super.onStart();
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
-
-        EventBus.getDefault().unregister(this);
+//
+//        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 }

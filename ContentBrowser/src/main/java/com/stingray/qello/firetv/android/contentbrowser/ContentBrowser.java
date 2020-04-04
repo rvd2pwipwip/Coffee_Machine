@@ -856,7 +856,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param content Content.
      * @return List of action for provided content.
      */
-    public List<Action> getContentActionList(Content content) {
+    public List<Action> getContentActionList(Content content, boolean isFavorite) {
 
         List<Action> contentActionList = new ArrayList<>();
 
@@ -893,9 +893,11 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                              R.string.watch_now_2));
                 }
 
-                // TODO Leo - Toggle remove/add depending if favorited
-                contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES,
-                        R.string.add_to_favorites_1, R.string.add_to_favorites_2));
+                if (isFavorite) {
+                    contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.remove_from_favorites_1, R.string.remove_from_favorites_2));
+                } else {
+                    contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.add_to_favorites_1, R.string.add_to_favorites_2));
+                }
 
                 if (isWatchlistRowEnabled()) {
                     addWatchlistAction(contentActionList, content.getId());
@@ -1110,13 +1112,13 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         mSubscribed = flag;
     }
 
-    /**
-     * Update content actions.
-     */
-    public void updateContentActions() {
-
-        mEventBus.post(new ActionUpdateEvent(true));
-    }
+//    /**
+//     * Update content actions.
+//     */
+//    public void updateContentActions() {
+//
+//        mEventBus.post(new ActionUpdateEvent(true));
+//    }
 
     /**
      * Handle on activity result.
