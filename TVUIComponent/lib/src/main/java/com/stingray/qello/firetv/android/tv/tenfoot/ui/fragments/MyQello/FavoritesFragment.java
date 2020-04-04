@@ -13,11 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.callable.BrowsePageCallable;
+import com.stingray.qello.firetv.android.contentbrowser.callable.ClearFavoritesCallable;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
 import com.stingray.qello.firetv.android.model.content.ContentContainerExt;
@@ -36,6 +38,7 @@ public class FavoritesFragment extends VerticalGridFragment {
 
     private View progressView;
     private View emptyView;
+    private Button actionButton1;
     private ArrayObjectAdapter mAdapter;
 
     @Override
@@ -66,6 +69,8 @@ public class FavoritesFragment extends VerticalGridFragment {
                             progressView.setVisibility(View.GONE);
                         },
                         throwable -> {
+                            emptyView.setVisibility(View.VISIBLE);
+                            progressView.setVisibility(View.GONE);
                             Log.e(TAG, "Failed to load favorites.", throwable);
                         });
     }
@@ -79,19 +84,37 @@ public class FavoritesFragment extends VerticalGridFragment {
             emptyView = view.findViewById(R.id.empty_container);
 
             ImageView imageView1 = emptyView.findViewById(R.id.imageView1);
-            imageView1.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.empty_favorites_msg));
+            imageView1.setImageDrawable(getResources().getDrawable(R.drawable.empty_favorites_msg));
             ImageView imageView2 = emptyView.findViewById(R.id.imageView2);
-            imageView2.setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.like));
+            imageView2.setImageDrawable(getResources().getDrawable(R.drawable.like));
+
+            actionButton1 = view.findViewById(R.id.actionButton1);
+            actionButton1.setText(getResources().getText(R.string.clear_favorites));
+            actionButton1.setVisibility(View.VISIBLE);
+            actionButton1.setOnClickListener(v -> {
+                // Clear Favorites
+                observableFactory.create(new ClearFavoritesCallable())
+                        .subscribe(voidObject -> {
+                            clearContents();
+                        }, throwable -> {
+                           Log.e(TAG, "Failed to clear favorites");
+                        });
+            });
         }
 
         return view;
+    }
+
+    private void clearContents() {
+        mAdapter.clear();
+        emptyView.setVisibility(View.VISIBLE);
     }
 
     private void loadContent(ContentContainerExt favoritesContent) {
         ContentContainer contentContainer = favoritesContent.getContentContainer();
 
         if (contentContainer != null && contentContainer.getContentCount() > 0) {
-            setTitle(favoritesContent.getMetadata().getDisplayName());
+//            setTitle(favoritesContent.getMetadata().getDisplayName());
             for (Content entry : contentContainer) {
                 mAdapter.add(entry);
             }

@@ -14,60 +14,81 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/browse_dummy"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v17.leanback.widget.BrowseFrameLayout
-        android:id="@+id/grid_frame"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:descendantFocusability="afterDescendants"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <Button
+        android:id="@+id/actionButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/button_border_highlight"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Clear Favorites"/>
 
-        <FrameLayout
-            android:id="@+id/browse_grid_dock"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <include layout="@layout/lb_browse_title" />
-
-    </android.support.v17.leanback.widget.BrowseFrameLayout>
-
-    <RelativeLayout
-        android:id="@+id/progress_container"
+    <FrameLayout android:id="@+id/browse_dummy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:indeterminateDrawable="@drawable/custom_progress" />
-    </RelativeLayout>
+        android:layout_below="@+id/actionButton1">
 
-    <RelativeLayout
-        android:id="@+id/empty_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/imageView1"
+        <android.support.v17.leanback.widget.BrowseFrameLayout
+            android:id="@+id/grid_frame"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="afterDescendants"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
+            android:layout_height="match_parent" >
 
-        <ImageView
-            android:id="@+id/imageView2"
+            <FrameLayout
+                android:id="@+id/browse_grid_dock"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <android.support.v17.leanback.widget.TitleView
+                android:id="@+id/browse_title_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?attr/browseTitleViewStyle" />
+
+        </android.support.v17.leanback.widget.BrowseFrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/progress_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView1"/>
-    </RelativeLayout>
-</FrameLayout>
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateDrawable="@drawable/custom_progress" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/empty_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView1"/>
+        </RelativeLayout>
+    </FrameLayout>
+</RelativeLayout>
+
