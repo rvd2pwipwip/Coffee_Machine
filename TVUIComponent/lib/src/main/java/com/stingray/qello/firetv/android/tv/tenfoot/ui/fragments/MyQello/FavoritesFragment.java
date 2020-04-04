@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.contentbrowser.callable.BrowsePageCallable;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.utils.Helpers;
 
@@ -15,6 +17,7 @@ public class FavoritesFragment extends Fragment {
 
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
 
+    private ObservableFactory observableFactory = new ObservableFactory();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,12 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.favorites_layout, container, false);
+        View view = inflater.inflate(R.layout.favorites_layout, container, false);
+        observableFactory.create(new BrowsePageCallable("MY_SERVICE", "FAVORITE"))
+                .subscribe(contentContainerExt -> {
+                   contentContainerExt.getMetadata();
+                });
+        return view;
     }
 
 }
