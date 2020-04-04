@@ -29,6 +29,7 @@
 package com.stingray.qello.firetv.android.tv.tenfoot.ui.activities;
 
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.model.event.ActionUpdateEvent;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.base.BaseActivity;
@@ -77,23 +78,28 @@ public class ContentDetailsActivity extends BaseActivity {
                             DateAndTimeHelper.getCurrentDate().getTime());
     }
 
-//    @Subscribe
-//    public void onActionListUpdateRequired(ActionUpdateEvent actionUpdateEvent) {
-//
-//        mContentDetailsFragment.updateActions();
-//    }
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onActionListUpdateRequired(ActionUpdateEvent actionUpdateEvent) {
+        mContentDetailsFragment.updateActions();
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent authenticationStatusUpdateEvent) {
+        mContentDetailsFragment.updateActions();
+    }
 
     @Override
     protected void onStart() {
-
         super.onStart();
-        //EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
-//
-//        EventBus.getDefault().unregister(this);
+
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 }

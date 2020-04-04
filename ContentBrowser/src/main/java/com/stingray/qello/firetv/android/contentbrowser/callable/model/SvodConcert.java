@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 
 public class SvodConcert {
-    public enum LikeStatus { LIKED };
+    ;
 
     private String id;
     private String title;
@@ -75,6 +75,10 @@ public class SvodConcert {
 
     public String getLikeStatus() {
         return likeStatus;
+    }
+
+    public boolean isLiked() {
+        return likeStatus != null && likeStatus.equalsIgnoreCase("LIKED");
     }
 
     public Long getPlayPosition() {

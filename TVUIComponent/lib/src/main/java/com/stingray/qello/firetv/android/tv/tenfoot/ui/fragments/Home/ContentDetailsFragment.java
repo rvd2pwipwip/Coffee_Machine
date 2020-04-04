@@ -195,13 +195,9 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                     ContentPageWrapper::new
             ).subscribe(contentPageWrapper ->  {
                 getActivity().runOnUiThread(() -> {
-                    if (contentPageWrapper.getContentInfoItem() != null) {
+                    if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
                         SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
-
-                        boolean isLiked = concert.getLikeStatus() != null
-                                && concert.getLikeStatus().equalsIgnoreCase("LIKED");
-
-                        setupDetailsOverviewRow(isLiked);
+                        setupDetailsOverviewRow(concert.isLiked());
                     } else {
                         setupDetailsOverviewRow(false);
                     }
@@ -307,6 +303,16 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         mPresenterSelector = new ClassPresenterSelector();
         mAdapter = new ArrayObjectAdapter(mPresenterSelector);
         setAdapter(mAdapter);
+    }
+
+    public void updateActions() {
+        observableFactory.create(new ContentInfoCallable(mSelectedContent.getId()))
+                .subscribe(contentInfoItem -> {
+                    if (contentInfoItem.getData() != null) {
+                        SvodConcert concert = contentInfoItem.getData().getData();
+                        updateActions(concert.isLiked());
+                    }
+                });
     }
 
     public void updateActions(boolean isFavorited) {
