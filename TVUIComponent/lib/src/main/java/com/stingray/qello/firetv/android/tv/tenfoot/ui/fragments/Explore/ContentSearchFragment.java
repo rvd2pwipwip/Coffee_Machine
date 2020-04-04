@@ -78,6 +78,7 @@ import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CustomListRowPrese
 import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
 import com.stingray.qello.firetv.android.utils.Helpers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -109,6 +110,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private SpeechOrbView mSpeechOrbView = null;
     private SearchEditText mSearchEditText = null;
     private ObservableFactory observableFactory = new ObservableFactory();
+    private View focusedGenreButton = null;
+    private List<View> genreButtons = new ArrayList<>();
 
     // A local list row Adapter
     private ArrayObjectAdapter mListRowAdapter;
@@ -454,15 +457,33 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     }
 
     private void createGenreButtons(View view, LayoutInflater inflater, List<Genre> genres) {
-        LinearLayout explorePageGenres = (LinearLayout) view.findViewById(R.id.explore_page_genres);
+        LinearLayout explorePageGenres = view.findViewById(R.id.explore_page_genres);
+        explorePageGenres.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
+            boolean oldFocusInGenresMenu = genreButtons.contains(oldFocus);
+            boolean newFocusInGenresMenu = genreButtons.contains(newFocus);
+
+            boolean enteringGenresMenu = !oldFocusInGenresMenu && newFocusInGenresMenu;
+            boolean leavingGenreMenu = oldFocusInGenresMenu && !newFocusInGenresMenu;
+
+            if (focusedGenreButton != null) {
+                if (enteringGenresMenu) {
+                    focusedGenreButton.requestFocus();
+                    focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke));
+                } else if (leavingGenreMenu) {
+                    focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke_focused));
+                }
+            }
+        });
+
         ViewGroup.LayoutParams buttonLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         for (Genre genre: genres) {
             View cView = inflater.inflate(R.layout.explore_page_category_button, explorePageGenres, false);
-            Button genreButton = (Button) cView.findViewById(R.id.explore_page_genre_btn);
+            Button genreButton = cView.findViewById(R.id.explore_page_genre_btn);
             genreButton.setText(genre.getTitle());
             genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
-                if (view1.isFocused()) {
+                if (view1.isFocused() && !view1.equals(focusedGenreButton)) {
+                    focusedGenreButton = view1;
                     observableFactory.create(new GenreFilterCallable(genre.getId()))
                             .subscribe(contentContainerExt -> {
                                 SvodMetadata metadata = contentContainerExt.getMetadata();
@@ -476,7 +497,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                             });
                 }
             });
-
+            genreButtons.add(genreButton);
             explorePageGenres.addView(genreButton, buttonLayoutParams);
         }
     }
