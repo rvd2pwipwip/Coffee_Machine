@@ -8,7 +8,6 @@ import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +19,19 @@ import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.callable.BrowsePageCallable;
 import com.stingray.qello.firetv.android.contentbrowser.callable.ClearFavoritesCallable;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
 import com.stingray.qello.firetv.android.model.content.ContentContainerExt;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CustomVerticalGridPresenter;
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.utils.Helpers;
+import com.stingray.qello.firetv.android.utils.Preferences;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class FavoritesFragment extends VerticalGridFragment {
 
@@ -44,7 +49,7 @@ public class FavoritesFragment extends VerticalGridFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        EventBus.getDefault().register(this);
         CustomVerticalGridPresenter gridPresenter = new CustomVerticalGridPresenter();
         gridPresenter.setNumberOfColumns(3);
         setGridPresenter(gridPresenter);
@@ -90,14 +95,13 @@ public class FavoritesFragment extends VerticalGridFragment {
 
             actionButton1 = view.findViewById(R.id.actionButton1);
             actionButton1.setText(getResources().getText(R.string.clear_favorites));
-            actionButton1.setVisibility(View.VISIBLE);
             actionButton1.setOnClickListener(v -> {
                 // Clear Favorites
                 observableFactory.create(new ClearFavoritesCallable())
                         .subscribe(voidObject -> {
                             clearContents();
                         }, throwable -> {
-                           Log.e(TAG, "Failed to clear favorites");
+                            Log.e(TAG, "Failed to clear favorites");
                         });
             });
         }
@@ -105,23 +109,42 @@ public class FavoritesFragment extends VerticalGridFragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     private void clearContents() {
         mAdapter.clear();
         emptyView.setVisibility(View.VISIBLE);
     }
 
+    private void updateActionButtonVisibility() {
+        actionButton1.setVisibility(mapToVisibility(Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION)));
+    }
+
+    private void toggleEmpty(boolean isEmpty) {
+        emptyView.setVisibility(mapToVisibility(isEmpty));
+        updateActionButtonVisibility();
+    }
+
     private void loadContent(ContentContainerExt favoritesContent) {
         ContentContainer contentContainer = favoritesContent.getContentContainer();
+        toggleEmpty(contentContainer.getContentCount() < 1);
 
-        if (contentContainer != null && contentContainer.getContentCount() > 0) {
-//            setTitle(favoritesContent.getMetadata().getDisplayName());
-            for (Content entry : contentContainer) {
-                mAdapter.add(entry);
-            }
-        } else {
-            emptyView.setVisibility(View.VISIBLE);
+        for (Content entry : contentContainer) {
+            mAdapter.add(entry);
         }
     }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
+                                                          authenticationStatusUpdateEvent) {
+        getActivity().runOnUiThread(this::updateActionButtonVisibility);
+    }
+
 
     private final class ContentClickedListener implements OnItemViewClickedListener {
 
@@ -137,6 +160,14 @@ public class FavoritesFragment extends VerticalGridFragment {
                         .setLastSelectedContent(content)
                         .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content);
             }
+        }
+    }
+
+    private int mapToVisibility(boolean isVisible) {
+        if (isVisible) {
+            return View.VISIBLE;
+        } else {
+            return View.GONE;
         }
     }
 }
