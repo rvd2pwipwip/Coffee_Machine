@@ -95,7 +95,7 @@
 
         <View
             android:id="@+id/divider"
-            android:layout_width="260dp"
+            android:layout_width="210dp"
             android:layout_height="1px"
             android:background="#C2C2C2" />
 

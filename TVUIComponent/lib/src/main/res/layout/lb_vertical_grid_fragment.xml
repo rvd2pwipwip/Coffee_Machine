@@ -22,17 +22,17 @@
 
     <Button
         android:id="@+id/actionButton1"
+        style="@style/button_border_highlight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/button_border_highlight"
         android:layout_alignParentEnd="true"
-        android:visibility="gone"
-        tools:visibility="visible"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="50dp"
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="100dp"
-        tools:text="Clear Favorites"/>
+        android:visibility="gone"
+        tools:text="Clear Favorites"
+        tools:visibility="visible" />
 
     <FrameLayout android:id="@+id/browse_dummy"
         android:layout_width="match_parent"
@@ -56,7 +56,8 @@
                 android:id="@+id/browse_title_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="?attr/browseTitleViewStyle" />
+                style="?attr/browseTitleViewStyle"
+                />
 
         </android.support.v17.leanback.widget.BrowseFrameLayout>
 

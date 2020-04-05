@@ -113,7 +113,7 @@ public class ContentLoader {
             // Register content container translator in case parser recipes use translation.
             ContentContainerTranslator containerTranslator = new ContentContainerTranslator();
             mDynamicParser.addTranslatorImpl(containerTranslator.getName(),
-                                             containerTranslator);
+            containerTranslator);
 
             mDataLoadManager.registerUpdateListener(new DataLoadManager.IDataUpdateListener() {
                 @Override
