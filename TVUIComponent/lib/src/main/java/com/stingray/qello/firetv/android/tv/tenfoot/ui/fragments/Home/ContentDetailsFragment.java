@@ -197,6 +197,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 getActivity().runOnUiThread(() -> {
                     if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
                         SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
+                        mSelectedContent.setDescription(concert.getFullDescription());
                         setupDetailsOverviewRow(concert.isLiked());
                     } else {
                         setupDetailsOverviewRow(false);
