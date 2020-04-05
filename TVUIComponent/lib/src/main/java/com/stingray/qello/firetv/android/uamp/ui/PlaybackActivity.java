@@ -78,6 +78,7 @@ import com.stingray.qello.firetv.android.uamp.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.uamp.helper.CaptioningHelper;
 import com.stingray.qello.firetv.android.uamp.mediaSession.GetVideoLinksCallable;
 import com.stingray.qello.firetv.android.uamp.mediaSession.MediaSessionController;
+import com.stingray.qello.firetv.android.uamp.mediaSession.VideoLinkSelector;
 import com.stingray.qello.firetv.android.uamp.model.VideoLink;
 import com.stingray.qello.firetv.android.ui.fragments.ErrorDialogFragment;
 import com.stingray.qello.firetv.android.utils.ErrorUtils;
@@ -265,9 +266,8 @@ public class PlaybackActivity extends Activity implements
                 observableFactory.createDetached(new GetVideoLinksCallable(mSelectedContent.getChannelId()))
                 .toBlocking().single();
 
-        //mSelectedContent.setUrl(new VideoLinkSelector().select(videoLinksByType));
-        mSelectedContent.setUrl("https://d2ns1j5tbz0a1h.cloudfront.net/assets/2379385/88133241/1080p.m3u8?Expires=1585835852&Signature=PKz7UNZDZMINKum2LW7VSdM0GjVmK1p~qkhTfprlxshg5lZ~2P-j5Z3QYGYGuZGJQR5-GRmAJ~5-Fhq99g6OhJAxXQHImEntBZ3OwQRIPS6K-slFo~OyhkpoMRbaDYXK-Koa-uPY6Rw-iyYc1BnJNWjup~cqaS9pzAJThTs-br30nQ~I0RFdv2gE~JTU5iqFGiHrgIGG1tPqOHDtNTWOVoXyZymVl7ROkwsf8NOwyP14UA5LTXU6E4VV9RvXsoRD2d75VPst7JH~mIIpQy7FOc5GEMZNrw6USrsRWc4H0QzG2sXofBWJeY1Nl3M2i1BA7y1rgYMvOQjCIiKzlPKH5g__&Key-Pair-Id=APKAILAUMFTX572YB7EA");
-        
+        mSelectedContent.setUrl(new VideoLinkSelector().select(videoLinksByType));
+
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
             finish();
         }
