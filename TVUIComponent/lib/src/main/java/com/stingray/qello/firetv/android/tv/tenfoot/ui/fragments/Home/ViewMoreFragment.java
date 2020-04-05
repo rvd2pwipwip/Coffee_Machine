@@ -67,8 +67,6 @@ public class ViewMoreFragment extends VerticalGridFragment  {
                 .subscribe(contentContainerExt -> {
                     for (Content entry : contentContainerExt.getContentContainer()) {
                         mAdapter.add(entry);
-                        //TODO Marie REMOOOOOVE
-                        //mAdapter.add(entry);
                     }
                 });
 

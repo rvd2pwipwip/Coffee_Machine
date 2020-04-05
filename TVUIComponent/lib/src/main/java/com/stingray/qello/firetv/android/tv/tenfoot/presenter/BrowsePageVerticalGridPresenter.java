@@ -6,9 +6,9 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-public class HistoryVerticalGridPresenter extends VerticalGridPresenter {
+public class BrowsePageVerticalGridPresenter extends VerticalGridPresenter {
 
-    public HistoryVerticalGridPresenter() {
+    public BrowsePageVerticalGridPresenter() {
 
         super();
     }
@@ -25,6 +25,12 @@ public class HistoryVerticalGridPresenter extends VerticalGridPresenter {
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         gridView.setLayoutParams(params);
+
+        int top = 30;//this is the new value for top padding
+        int bottom = gridView.getPaddingBottom();
+        int right = gridView.getPaddingRight();
+        int left = gridView.getPaddingLeft();
+        gridView.setPadding(left,top,right,bottom);
 
         return gridViewHolder;
     }
