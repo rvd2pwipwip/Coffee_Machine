@@ -13,20 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.callable.ViewMoreCallable;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ViewMore;
-import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
-import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CustomVerticalGridPresenter;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.stingray.qello.firetv.android.tv.tenfoot.presenter.ViewMoreVerticalGridPresenter;
 
 public class ViewMoreFragment extends VerticalGridFragment  {
 
@@ -39,7 +33,7 @@ public class ViewMoreFragment extends VerticalGridFragment  {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        CustomVerticalGridPresenter gridPresenter = new CustomVerticalGridPresenter();
+        ViewMoreVerticalGridPresenter gridPresenter = new ViewMoreVerticalGridPresenter();
         gridPresenter.setNumberOfColumns(5);
         setGridPresenter(gridPresenter);
 
@@ -74,7 +68,7 @@ public class ViewMoreFragment extends VerticalGridFragment  {
                     for (Content entry : contentContainerExt.getContentContainer()) {
                         mAdapter.add(entry);
                         //TODO Marie REMOOOOOVE
-                        mAdapter.add(entry);
+                        //mAdapter.add(entry);
                     }
                 });
 

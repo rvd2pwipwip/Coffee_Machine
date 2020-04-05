@@ -72,7 +72,6 @@ public class MyQelloFragment extends Fragment{
 //                }
 
                 fragmentTransaction.replace(R.id.my_qello_detail, settingsFragment, SettingsFragment.class.getSimpleName());
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });

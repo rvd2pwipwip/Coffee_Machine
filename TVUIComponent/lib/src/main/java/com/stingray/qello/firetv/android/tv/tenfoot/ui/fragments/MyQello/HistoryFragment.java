@@ -19,7 +19,8 @@ import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.callable.HistoryCallable;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
-import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CustomVerticalGridPresenter;
+import com.stingray.qello.firetv.android.tv.tenfoot.presenter.HistoryVerticalGridPresenter;
+import com.stingray.qello.firetv.android.tv.tenfoot.presenter.ViewMoreVerticalGridPresenter;
 
 public class HistoryFragment extends VerticalGridFragment {
 
@@ -31,8 +32,9 @@ public class HistoryFragment extends VerticalGridFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        CustomVerticalGridPresenter gridPresenter = new CustomVerticalGridPresenter();
+        HistoryVerticalGridPresenter gridPresenter = new HistoryVerticalGridPresenter();
         gridPresenter.setNumberOfColumns(4);
+        gridPresenter.setShadowEnabled(true);
         setGridPresenter(gridPresenter);
 
         setOnItemViewClickedListener(new ContentClickedListener());
@@ -44,7 +46,7 @@ public class HistoryFragment extends VerticalGridFragment {
     public void onStart() {
         Log.v(TAG, "onStart called.");
         super.onStart();
-        CardPresenter cardPresenter = new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 150, 200);
+        CardPresenter cardPresenter = new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 135, 180);
         mAdapter = new ArrayObjectAdapter(cardPresenter);
         setAdapter(mAdapter);
 

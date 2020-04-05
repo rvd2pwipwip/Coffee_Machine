@@ -61,6 +61,8 @@ import com.amazon.mediaplayer.playback.text.Cue;
 import com.amazon.mediaplayer.tracks.TrackType;
 import com.google.android.exoplayer.text.CaptionStyleCompat;
 import com.google.android.exoplayer.text.SubtitleLayout;
+import com.stingray.qello.android.firetv.callable.PostLogPlayActionCallable;
+import com.stingray.qello.android.firetv.callable.PostLogPlayActionRequest;
 import com.stingray.qello.firetv.ads.AdMetaData;
 import com.stingray.qello.firetv.ads.IAds;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
@@ -205,7 +207,6 @@ public class PlaybackActivity extends Activity implements
     private ITracking playbackTracking;
     private ScheduledExecutorService playbackTrackingExecutorService;
     private String trackingSessionId;
-
     /**
      * Called when the activity is first created.
      */
@@ -1696,9 +1697,7 @@ public class PlaybackActivity extends Activity implements
                     // One of the causes for the player state transition might be due to
                     // a new content being selected from recommended content.
                     if (mAutoPlay || mIsContentChangeRequested) {
-                        playbackTracking.trackPlaybackStarted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition());
-                        playbackTracking.trackContentStarted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition());
-                        startContentPlayingTracking();
+                        logPlayStart();
                         play();
                         mAutoPlay = false;
                         if (mIsContentChangeRequested) {
@@ -1815,6 +1814,19 @@ public class PlaybackActivity extends Activity implements
                 Log.e(TAG, "Unknown state!!!!!");
                 break;
         }
+    }
+
+    private void logPlayStart() {
+        playbackTracking.trackPlaybackStarted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition());
+        playbackTracking.trackContentStarted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition());
+        startContentPlayingTracking();
+
+        PostLogPlayActionRequest request = new PostLogPlayActionRequest(mSelectedContent.getId(), String.valueOf(getCurrentPosition()));
+        observableFactory.create(new PostLogPlayActionCallable(request)).subscribe(aVoid -> {
+            Log.d(TAG, "Log play action succeeded");
+        }, throwable -> {
+            Log.e(TAG, "Failed to log play action", throwable);
+        });
     }
 
     /**
