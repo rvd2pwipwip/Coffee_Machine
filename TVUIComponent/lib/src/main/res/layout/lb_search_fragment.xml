@@ -44,7 +44,7 @@ limitations under the License.
                     android:clipChildren="false" />
 
 
-                <TextView
+                <TextView android:id="@+id/genres_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"

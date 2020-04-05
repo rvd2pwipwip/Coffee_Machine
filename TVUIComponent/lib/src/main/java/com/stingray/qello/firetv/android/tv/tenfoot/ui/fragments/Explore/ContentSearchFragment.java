@@ -434,6 +434,10 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     }
 
     private void focusTextView(int delay) {
+        focusTextView(delay, () -> {});
+    }
+
+    private void focusTextView(int delay, Runnable runnable) {
         mAutoTextViewFocusHandler.postDelayed(() -> {
             if (mSearchEditText != null) {
                 // Select search edit text, bring up keyboard.
@@ -441,6 +445,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 mSearchEditText.setFocusable(true);
                 mSearchEditText.requestFocus();
                 mSpeechOrbView.setFocusable(false);
+                runnable.run();
 //                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 //                    if (imm != null) {
 //                        imm.showSoftInput(mSearchEditText, 0);
@@ -450,6 +455,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     }
 
     private void createGenreButtons(View view, LayoutInflater inflater, List<Genre> genres) {
+        View titleView = view.findViewById(R.id.genres_title);
         LinearLayout explorePageGenres = view.findViewById(R.id.explore_page_genres);
         explorePageGenres.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
             boolean oldFocusInGenresMenu = genreButtons.contains(oldFocus);
@@ -462,7 +468,10 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 boolean leavingGrid = oldFocus instanceof ImageCardView;
 
                 if (returnToSearch && leavingGrid) {
-                    mSearchEditText.requestFocus();
+                    // TODO Leo - This is a hack to allow keyboard to open when focusing searchEditText without making leaving visual cues
+                    titleView.setFocusable(true);
+                    titleView.requestFocus();
+                    focusTextView(0, () -> titleView.setFocusable(false));
                     returnToSearch = false;
                 } else if (focusedGenreButton != null) {
                     if (enteringGenresMenu) {
