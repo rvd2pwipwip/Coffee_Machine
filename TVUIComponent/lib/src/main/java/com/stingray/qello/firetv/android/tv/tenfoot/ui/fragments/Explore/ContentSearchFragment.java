@@ -309,13 +309,13 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
     @Override
     public void onResume() {
-        super.onResume();
-        mSpeechOrbView.setFocusable(false);
 
-        if (!hasResults && mRowsAdapter.size() > 0) {
-            showNoResultsView();
-        } else {
-            hideNoResultsView();
+        super.onResume();
+
+        if (!hasResults) {
+            // There must be a delay to allow SearchOrb to initialize, otherwise no search
+            // results will come back from leanback.
+            focusTextView(1000);
         }
     }
 
@@ -393,7 +393,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             hasResults = mListRowAdapter.size() > 0;
 
             if (hasResults) {
-                hideNoResultsView();
+                noResultsView.setVisibility(View.GONE);
 
                 int elementsInRow = getResources().getInteger(R.integer.num_of_search_elements_in_row);
 
@@ -424,7 +424,12 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             } else {
                 ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter());
                 mRowsAdapter.add(new ListRow(header, row));
-                showNoResultsView();
+                noResultsView.setAlpha(0f);
+                noResultsView.setVisibility(View.VISIBLE);
+                noResultsView.animate()
+                        .alpha(1f)
+                        .setDuration(500)
+                        .setListener(null);
             }
             RowsFragment rowsFragment = (RowsFragment) getChildFragmentManager()
                     .findFragmentById(R.id.lb_results_frame);;
@@ -439,19 +444,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 mListRowAdapter.add(inputContent);
             }
         }
-    }
-
-    private void hideNoResultsView() {
-        noResultsView.setVisibility(View.GONE);
-    }
-
-    private void showNoResultsView() {
-        noResultsView.setAlpha(0f);
-        noResultsView.setVisibility(View.VISIBLE);
-        noResultsView.animate()
-                .alpha(1f)
-                .setDuration(500)
-                .setListener(null);
     }
 
     private void focusTextView() {
@@ -503,6 +495,11 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke));
                     }
 
+                    if (!hasResults && newFocus.getId() == R.id.row_content) {
+                        focusedGenreButton.requestFocus();
+                        return;
+                    }
+
                     if (enteringGenresMenu && leavingGrid) {
                         focusedGenreButton.requestFocus();
                     } else if (leavingGenreMenu && enteringGrid) {
@@ -526,7 +523,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 if (view1.isFocused() && !view1.equals(focusedGenreButton)) {
                     mQuery = null;
                     focusedGenreButton = view1;
-                    mHandler.removeCallbacksAndMessages(null);
+                    mHandler.removeCallbacks(delayedGenreLoad);
                     delayedGenreLoad = () -> observableFactory.create(new GenreFilterCallable(genre.getId())).subscribe(this::loadGenreAssets);
                     mHandler.postDelayed(delayedGenreLoad, SEARCH_DELAY_MS);
                 }
