@@ -59,6 +59,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -69,6 +70,7 @@ import com.stingray.qello.firetv.android.contentbrowser.callable.ExplorePageCall
 import com.stingray.qello.firetv.android.contentbrowser.callable.GenreFilterCallable;
 import com.stingray.qello.firetv.android.model.SvodMetadata;
 import com.stingray.qello.firetv.android.model.content.Content;
+import com.stingray.qello.firetv.android.model.content.ContentContainerExt;
 import com.stingray.qello.firetv.android.model.content.Genre;
 import com.stingray.qello.firetv.android.search.SearchManager;
 import com.stingray.qello.firetv.android.tv.tenfoot.BuildConfig;
@@ -93,25 +95,20 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
     private static final String TAG = ContentSearchFragment.class.getSimpleName();
     private static final boolean DEBUG = BuildConfig.DEBUG;
-    private static final long SEARCH_DELAY_MS = 1000L;
+    private static final long SEARCH_DELAY_MS = 700L;
 
     private final Handler mHandler = new Handler();
-    private final Runnable mDelayedLoad = new Runnable() {
-        @Override
-        public void run() {
-
-            loadRows();
-            //TODO this will change to update any listeners of query Changes.
-        }
-    };
+    private final Runnable mDelayedLoad = this::loadRows;
     private ArrayObjectAdapter mRowsAdapter;
     private String mQuery;
-    private boolean mHasResults = false;
     private SpeechOrbView mSpeechOrbView = null;
     private SearchEditText mSearchEditText = null;
     private ObservableFactory observableFactory = new ObservableFactory();
     private View focusedGenreButton = null;
+    private Runnable delayedGenreLoad = null;
     private List<View> genreButtons = new ArrayList<>();
+    private boolean returnToSearch = false;
+    private FrameLayout searchResultsLayout;
 
     // A local list row Adapter
     private ArrayObjectAdapter mListRowAdapter;
@@ -160,15 +157,15 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
         if (view != null) {
             observableFactory.create(new ExplorePageCallable())
-                    .subscribe(genres -> { createGenreButtons(view, inflater, genres); });
+                    .subscribe(genres -> createGenreButtons(view, inflater, genres));
+
+            searchResultsLayout = view.findViewById(R.id.lb_results_frame);
 
             // Set background color and drawable.
-            view.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color
-                    .transparent));
-            view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable
-                    .background_explore));
+            view.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+            view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.background_explore));
 
-            final SearchBar searchBar = (SearchBar) view.findViewById(R.id.lb_search_bar);
+            final SearchBar searchBar = view.findViewById(R.id.lb_search_bar);
             if (searchBar != null) {
 
                 // Set the left margin of the search bar.
@@ -180,8 +177,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 searchBar.setLayoutParams(layoutParams);
 
                 // Move the search bar items next to the search icon.
-                RelativeLayout searchBarItems =
-                        (RelativeLayout) searchBar.findViewById(R.id.lb_search_bar_items);
+                RelativeLayout searchBarItems = searchBar.findViewById(R.id.lb_search_bar_items);
 
                 if (searchBarItems != null) {
 
@@ -194,14 +190,11 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                     searchBarItems.setLayoutParams(searchBarItemsLayoutParams);
 
                     // Set the search bar items background selector.
-                    searchBarItems.setBackground(
-                            ContextCompat.getDrawable(getActivity(), R.drawable
-                                                              .search_edit_text_bg_color_selector));
+                    searchBarItems.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.search_edit_text_bg_color_selector));
                 }
 
                 // Set speech orb icon.
-                mSpeechOrbView =
-                        (SpeechOrbView) searchBar.findViewById(R.id.lb_search_bar_speech_orb);
+                mSpeechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
 
                 if (mSpeechOrbView != null) {
                     mSpeechOrbView.setOrbIcon(ContextCompat.getDrawable(getActivity(),
@@ -214,12 +207,24 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                     mSpeechOrbView.setLayoutParams(mSpeechOrbViewLayoutParams);
                 }
 
-                final SearchEditText searchEditText =
-                        (SearchEditText) searchBar.findViewById(R.id.lb_search_text_editor);
+                searchBar.getViewTreeObserver().addOnGlobalFocusChangeListener(((oldFocus, newFocus) -> {
+                    if (oldFocus.getId() == R.id.lb_search_text_editor && newFocus instanceof ImageCardView) {
+                        returnToSearch = true;
+                    }
+                }));
+
+                final SearchEditText searchEditText = searchBar.findViewById(R.id.lb_search_text_editor);
 
                 if (searchEditText != null) {
 
                     mSearchEditText = searchEditText;
+                    mSearchEditText.setOnFocusChangeListener((view1, motionEvent) -> {
+                        if (view1.isFocused() && isValidQuery(mQuery)) {
+                            mHandler.removeCallbacks(mDelayedLoad);
+                            mHandler.removeCallbacks(delayedGenreLoad);
+                            mHandler.postDelayed(mDelayedLoad, SEARCH_DELAY_MS);
+                        }
+                    });
 
                     // Handle keyboard being dismissed to prevent focus going to SearchOrb
                     // If user presses back from keyboard, you don't get KeyboardDismissListener
@@ -228,47 +233,42 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
                         // Track search if keyboard is closed with IME_ACTION_PREVIOUS or
                         // if IME_ACTION_SEARCH occurs.
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                                actionId == EditorInfo.IME_ACTION_PREVIOUS) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_PREVIOUS) {
 
                             if (mQuery != null) {
                                 //TODO seg track search?
                             }
                         }
 
-                        if (actionId == EditorInfo.IME_ACTION_PREVIOUS) {
-
-                            // Prevent highlighting SearchOrb
-                            mSpeechOrbView.setFocusable(false);
-                            mSpeechOrbView.clearFocus();
-                            // If there are results allow first result to be selected
-                            if (mHasResults) {
-                                mSearchEditText.clearFocus();
-                            }
-
-                            // Hide keyboard since we are handling the action
-                            if (isAdded()) {
-                                // Ensure we are added before calling getActivity
-                                InputMethodManager inputManager =
-                                        (InputMethodManager) getActivity().getSystemService(
-                                                Context.INPUT_METHOD_SERVICE);
-                                if (inputManager != null) {
-                                    inputManager.hideSoftInputFromWindow(
-                                            getActivity().getCurrentFocus().getWindowToken(),
-                                            InputMethodManager.HIDE_NOT_ALWAYS);
-                                }
-                            }
-                            else {
-                                Log.e(TAG, "Cannot find activity, can't dismiss keyboard");
-                                // Couldn't handle action.
-                                // Will expose other focus issues potentially.
-                                return false;
-                            }
-                            // No more processing of this action.
-                            return true;
+                        // Prevent highlighting SearchOrb
+                        mSpeechOrbView.setFocusable(false);
+                        mSpeechOrbView.clearFocus();
+                        // If there are results allow first result to be selected
+                        if (hasResults()) {
+                            searchResultsLayout.requestFocus();
+                        } else {
+                            searchEditText.requestFocus();
                         }
-                        // Someone else needs to handle this action.
-                        return false;
+
+                        // Hide keyboard since we are handling the action
+                        if (isAdded()) {
+                            // Ensure we are added before calling getActivity
+                            InputMethodManager inputManager =
+                                    (InputMethodManager) getActivity().getSystemService(
+                                            Context.INPUT_METHOD_SERVICE);
+                            if (inputManager != null) {
+                                inputManager.hideSoftInputFromWindow(
+                                        getActivity().getCurrentFocus().getWindowToken(),
+                                        InputMethodManager.HIDE_NOT_ALWAYS);
+                            }
+                        } else {
+                            Log.e(TAG, "Cannot find activity, can't dismiss keyboard");
+                            // Couldn't handle action.
+                            // Will expose other focus issues potentially.
+                            return false;
+                        }
+                        // No more processing of this action.
+                        return true;
                     });
 
                     // Override the dismiss listener to get around keyboard issue where dismissing
@@ -281,6 +281,11 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         mSpeechOrbView.clearFocus();
                         // We don't need to clearFocus on SearchEditText here, the first
                         // result will be selected already.
+                        if (hasResults()) {
+                            searchResultsLayout.requestFocus();
+                        } else {
+                            searchEditText.requestFocus();
+                        }
                     });
                 }
             }
@@ -288,31 +293,32 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         return view;
     }
 
+    private boolean isValidQuery(String mQuery) {
+        return mQuery != null && mQuery.length() > 1;
+    }
+
     @Override
     public void onResume() {
 
         super.onResume();
 
-//        if (!mHasResults) {
-//            mAutoTextViewFocusHandler.postDelayed(() -> {
-//
-//                if (mSearchEditText != null) {
-//
-//                    // Select search edit text, bring up keyboard.
-//                    // Always make SpeechOrb not focusable, leanback always tries to bring it back.
-//                    mSearchEditText.setFocusable(true);
-//                    mSearchEditText.requestFocus();
-//                    mSpeechOrbView.setFocusable(false);
-//                    InputMethodManager imm = (InputMethodManager) getActivity()
-//                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (!hasResults()) {
+            mAutoTextViewFocusHandler.postDelayed(() -> {
+                if (mSearchEditText != null) {
+                    // Select search edit text, bring up keyboard.
+                    // Always make SpeechOrb not focusable, leanback always tries to bring it back.
+                    mSearchEditText.setFocusable(true);
+                    mSearchEditText.requestFocus();
+                    mSpeechOrbView.setFocusable(false);
+//                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 //                    if (imm != null) {
 //                        imm.showSoftInput(mSearchEditText, 0);
 //                    }
-//                }
-//                // There must be a delay to allow SearchOrb to initialize, otherwise no search
-//                // results will come back from leanback.
-//            }, 1000);
-//        }
+                }
+                // There must be a delay to allow SearchOrb to initialize, otherwise no search
+                // results will come back from leanback.
+            }, 1000);
+        }
     }
 
     @Override
@@ -343,12 +349,10 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         Log.i(TAG, String.format("Search Query Text Submit %s", query));
 
         // Focus on the SearchEditText when "Next" is pressed and has no results.
-        if ((TextUtils.isEmpty(query) && query.equals("nil")) || !mHasResults) {
+        if ((TextUtils.isEmpty(query) && query.equals("nil")) || !hasResults()) {
             mSearchEditText.setFocusable(true);
             mSearchEditText.requestFocus();
-        }
-        // Focus on the result list when "Next" is pressed and has results.
-        else {
+        } else {
             if (getView() != null) {
                 if (getView().findViewById(R.id.row_content) != null) {
                     getView().findViewById(R.id.row_content).requestFocus();
@@ -382,11 +386,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         if (!TextUtils.isEmpty(query) && !query.equals("nil")) {
             mQuery = query;
             mHandler.postDelayed(mDelayedLoad, SEARCH_DELAY_MS);
-        }
-        // If search query is empty, clear the previous results.
-        else {
+        } else {
             mRowsAdapter.clear();
-            mHasResults = false;
         }
     }
 
@@ -446,9 +447,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
                 index += elementsInRow;
             }
-        }
-        // Add the found content to the mListRowAdapter
-        else {
+        } else {
             // Only add the content if the adapter does not already contain it.
             if (mListRowAdapter.indexOf(inputContent) == -1) {
                 mListRowAdapter.add(inputContent);
@@ -465,11 +464,20 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             boolean enteringGenresMenu = !oldFocusInGenresMenu && newFocusInGenresMenu;
             boolean leavingGenreMenu = oldFocusInGenresMenu && !newFocusInGenresMenu;
 
-            if (focusedGenreButton != null) {
+            boolean enteringGrid = newFocus instanceof ImageCardView;
+            boolean leavingGrid = oldFocus instanceof ImageCardView;
+
+            if (returnToSearch && leavingGrid) {
+                mSearchEditText.requestFocus();
+                returnToSearch = false;
+            } else if (focusedGenreButton != null) {
                 if (enteringGenresMenu) {
-                    focusedGenreButton.requestFocus();
                     focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke));
-                } else if (leavingGenreMenu) {
+                }
+
+                if (enteringGenresMenu && leavingGrid) {
+                    focusedGenreButton.requestFocus();
+                } else if (leavingGenreMenu && enteringGrid) {
                     focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke_focused));
                 }
             }
@@ -484,22 +492,25 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
                 if (view1.isFocused() && !view1.equals(focusedGenreButton)) {
                     focusedGenreButton = view1;
-                    observableFactory.create(new GenreFilterCallable(genre.getId()))
-                            .subscribe(contentContainerExt -> {
-                                SvodMetadata metadata = contentContainerExt.getMetadata();
-                                mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-
-                                for (Content entry : contentContainerExt.getContentContainer()) {
-                                    updateResults(entry, metadata, false);
-                                }
-
-                                updateResults(null, metadata, true);
-                            });
+                    mHandler.removeCallbacks(delayedGenreLoad);
+                    delayedGenreLoad = () -> observableFactory.create(new GenreFilterCallable(genre.getId())).subscribe(this::loadGenreAssets);
+                    mHandler.postDelayed(delayedGenreLoad, SEARCH_DELAY_MS);
                 }
             });
             genreButtons.add(genreButton);
             explorePageGenres.addView(genreButton, buttonLayoutParams);
         }
+    }
+
+    public void loadGenreAssets(ContentContainerExt genreAssets) {
+        SvodMetadata metadata = genreAssets.getMetadata();
+        mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+
+        for (Content entry : genreAssets.getContentContainer()) {
+            updateResults(entry, metadata, false);
+        }
+
+        updateResults(null, metadata, true);
     }
 
     private final class ItemViewClickedListener implements OnItemViewClickedListener {
