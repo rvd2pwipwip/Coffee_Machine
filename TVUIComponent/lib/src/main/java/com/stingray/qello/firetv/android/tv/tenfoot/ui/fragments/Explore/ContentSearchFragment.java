@@ -36,6 +36,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v17.leanback.app.RowsFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ImageCardView;
@@ -53,7 +54,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -423,6 +423,14 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
                 index += elementsInRow;
             }
+
+            RowsFragment rowsFragment = (RowsFragment) getChildFragmentManager()
+                    .findFragmentById(R.id.lb_results_frame);;
+
+            if (rowsFragment != null) {
+                rowsFragment.setSelectedPosition(0);
+            }
+
         } else {
             // Only add the content if the adapter does not already contain it.
             if (mListRowAdapter.indexOf(inputContent) == -1) {
