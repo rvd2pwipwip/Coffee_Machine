@@ -110,6 +110,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private List<View> genreButtons = new ArrayList<>();
     private boolean returnToSearch = false;
     private FrameLayout searchResultsLayout;
+    private View noResultsView;
+    private boolean hasResults = false;
 
     // A local list row Adapter
     private ArrayObjectAdapter mListRowAdapter;
@@ -157,6 +159,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
         if (view != null) {
+            noResultsView = view.findViewById(R.id.no_results_container);
+
             observableFactory.create(new ExplorePageCallable())
                     .subscribe(genres -> createGenreButtons(view, inflater, genres));
 
@@ -250,7 +254,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         mSpeechOrbView.setFocusable(false);
                         mSpeechOrbView.clearFocus();
                         // If there are results allow first result to be selected
-                        if (hasResults()) {
+                        if (hasResults) {
                             searchResultsLayout.requestFocus();
                         } else {
                             focusTextView();
@@ -287,7 +291,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         mSpeechOrbView.clearFocus();
                         // We don't need to clearFocus on SearchEditText here, the first
                         // result will be selected already.
-                        if (hasResults()) {
+                        if (hasResults) {
                             searchResultsLayout.requestFocus();
                         } else {
                             focusTextView();
@@ -308,7 +312,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
         super.onResume();
 
-        if (!hasResults()) {
+        if (!hasResults) {
             // There must be a delay to allow SearchOrb to initialize, otherwise no search
             // results will come back from leanback.
             focusTextView(1000);
@@ -338,16 +342,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     public boolean onQueryTextSubmit(String query) {
         Log.i(TAG, String.format("Search Query Text Submit %s", query));
         return true;
-    }
-
-    /**
-     * Returns if the search resulted in any matches.
-     *
-     * @return True if there are search results; false otherwise.
-     */
-    public boolean hasResults() {
-
-        return mRowsAdapter.size() > 0;
     }
 
     private boolean hasPermission(final String permission) {
@@ -396,34 +390,47 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
             HeaderItem header = new HeaderItem(displayName);
 
-            int elementsInRow = (int) getResources().getInteger(R.integer.num_of_search_elements_in_row);
+            hasResults = mListRowAdapter.size() > 0;
 
-            int rows = mListRowAdapter.size() / elementsInRow;
+            if (hasResults) { noResultsView.setVisibility(View.GONE);
 
-            if (mListRowAdapter.size() % elementsInRow > 0) {
-                rows++;
-            }
+                int elementsInRow = getResources().getInteger(R.integer.num_of_search_elements_in_row);
 
-            int index = 0;
+                int rows = mListRowAdapter.size() / elementsInRow;
 
-            for (int i = 0; i < rows; i++) {
+                if (mListRowAdapter.size() % elementsInRow > 0) {
+                    rows++;
+                }
+
+                int index = 0;
+
+                for (int i = 0; i < rows; i++) {
+                    ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter());
+
+                    for (int j = index; j < (index + elementsInRow) && (j < mListRowAdapter.size()); j++) {
+                        row.add(mListRowAdapter.get(j));
+                    }
+
+                    if (i > 0) {
+                        mRowsAdapter.add(new ListRow(row));
+                    }
+                    else {
+                        mRowsAdapter.add(new ListRow(header, row));
+                    }
+
+                    index += elementsInRow;
+                }
+
+            } else {
                 ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter());
-
-                for (int j = index; j < (index + elementsInRow) && (j < mListRowAdapter.size());
-                     j++) {
-                    row.add(mListRowAdapter.get(j));
-                }
-
-                if (i > 0) {
-                    mRowsAdapter.add(new ListRow(row));
-                }
-                else {
-                    mRowsAdapter.add(new ListRow(header, row));
-                }
-
-                index += elementsInRow;
+                mRowsAdapter.add(new ListRow(header, row));
+                noResultsView.setAlpha(0f);
+                noResultsView.setVisibility(View.VISIBLE);
+                noResultsView.animate()
+                        .alpha(1f)
+                        .setDuration(500)
+                        .setListener(null);
             }
-
             RowsFragment rowsFragment = (RowsFragment) getChildFragmentManager()
                     .findFragmentById(R.id.lb_results_frame);;
 
