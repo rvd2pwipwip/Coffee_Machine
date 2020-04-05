@@ -366,8 +366,10 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     }
 
     private void loadRows() {
-        mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-        ContentBrowser.getInstance(getActivity()).search(mQuery, this::updateResults);
+        if (mQuery != null) {
+            mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+            ContentBrowser.getInstance(getActivity()).search(mQuery, this::updateResults);
+        }
     }
 
     /**
