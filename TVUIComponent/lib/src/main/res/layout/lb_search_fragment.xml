@@ -91,13 +91,6 @@ limitations under the License.
                 android:visibility="gone"
                 tools:visibility="visible"
                 >
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/like"/>
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -105,7 +98,6 @@ limitations under the License.
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_below="@+id/imageView1"
                     android:background="@drawable/empty_favorites_msg"/>
             </RelativeLayout>
 

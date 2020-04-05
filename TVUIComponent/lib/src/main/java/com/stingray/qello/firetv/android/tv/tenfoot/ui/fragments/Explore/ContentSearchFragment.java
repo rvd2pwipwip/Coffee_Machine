@@ -392,7 +392,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
             hasResults = mListRowAdapter.size() > 0;
 
-            if (hasResults) { noResultsView.setVisibility(View.GONE);
+            if (hasResults) {
+                noResultsView.setVisibility(View.GONE);
 
                 int elementsInRow = getResources().getInteger(R.integer.num_of_search_elements_in_row);
 
@@ -420,7 +421,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
                     index += elementsInRow;
                 }
-
             } else {
                 ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter());
                 mRowsAdapter.add(new ListRow(header, row));
@@ -493,6 +493,11 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 } else if (focusedGenreButton != null) {
                     if (enteringGenresMenu) {
                         focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke));
+                    }
+
+                    if (!hasResults && newFocus.getId() == R.id.row_content) {
+                        focusedGenreButton.requestFocus();
+                        return;
                     }
 
                     if (enteringGenresMenu && leavingGrid) {
