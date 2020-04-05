@@ -24,7 +24,8 @@ limitations under the License.
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:padding="30dp">
+        android:paddingStart="56dp"
+        android:paddingTop="20dp">
         <LinearLayout
             android:layout_width="240dp"
             android:layout_height="match_parent"

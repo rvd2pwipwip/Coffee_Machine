@@ -8,7 +8,10 @@ import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.util.Log;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.contentbrowser.callable.AddToFavoriteCallable;
+import com.stingray.qello.firetv.android.contentbrowser.callable.RemoveFromFavoriteCallable;
 import com.stingray.qello.firetv.android.contentbrowser.callable.SearchCallable;
+import com.stingray.qello.firetv.android.contentbrowser.callable.model.LikeStatus;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.WatchlistDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.records.RecentRecord;
@@ -38,12 +41,10 @@ import com.stingray.qello.firetv.android.ui.fragments.LogoutSettingsFragment;
 import com.stingray.qello.firetv.android.utils.ErrorUtils;
 import com.stingray.qello.firetv.android.utils.LeanbackHelpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
-import com.stingray.qello.firetv.inapppurchase.PurchaseHelper;
 import com.stingray.qello.firetv.utils.DateAndTimeHelper;
 import com.stingray.qello.firetv.utils.StringManipulation;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,7 +157,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * Recommendation manager instance.
      */
     private RecommendationManager mRecommendationManager;
-    
+
     /**
      * Returns AuthHelper instance.
      *
@@ -186,7 +187,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     public List<Content> getWatchlistContent() {
 
         List<Content> contentList = new ArrayList<>();
-        
+
         WatchlistDatabaseHelper databaseHelper = WatchlistDatabaseHelper.getInstance();
         if (databaseHelper != null) {
 
@@ -312,7 +313,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         addWidgetsAction(createHomeAction());
         addWidgetsAction(createSearchAction());
         addWidgetsAction(createMyQelloAction());
-        
+
         mSearchManager.addSearchAlgo(DEFAULT_SEARCH_ALGO_NAME, (ISearchAlgo<Content>) (query, content) -> content.searchInFields(query, new String[]{
                 Content.TITLE_FIELD_NAME,
                 Content.DESCRIPTION_FIELD_NAME
@@ -430,15 +431,14 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      *
      * @param authenticationStatusUpdateEvent Event for update in authentication status.
      */
-    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
-                                                          authenticationStatusUpdateEvent) {
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent authenticationStatusUpdateEvent) {
 
         if (mLoginAction != null) {
             mLoginAction.setState(authenticationStatusUpdateEvent.isUserAuthenticated() ?
                                           LogoutSettingsFragment.TYPE_LOGOUT :
                                           LogoutSettingsFragment.TYPE_LOGIN);
         }
-
+        mSubscribed = Preferences.getBoolean(com.stingray.qello.firetv.android.ui.constants.PreferencesConstants.HAS_SUBSCRIPTION);
     }
 
     /**
@@ -485,7 +485,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         mRecommendationManager = new RecommendationManager(mAppContext);
         // First reading of the database upon app launch. Created off of main thread.
         mRecommendationManager.cleanDatabase();
-        
+
         // The app successfully loaded its modules so clear out the crash number.
         Preferences.setLong(ModularApplication.APP_CRASHES_KEY, 0);
 
@@ -856,7 +856,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param content Content.
      * @return List of action for provided content.
      */
-    public List<Action> getContentActionList(Content content) {
+    public List<Action> getContentActionList(Content content, boolean isFavorite) {
 
         List<Action> contentActionList = new ArrayList<>();
 
@@ -893,18 +893,20 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                              R.string.watch_now_2));
                 }
 
-                // TODO Leo - Toggle remove/add depending if favorited
-                contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES,
-                        R.string.add_to_favorites_1, R.string.add_to_favorites_2));
+                if (mSubscribed) {
+                    if (isFavorite) {
+                        contentActionList.add(createActionButton(CONTENT_ACTION_REMOVE_FROM_FAVORITES, R.string.remove_from_favorites_1, R.string.remove_from_favorites_2));
+                    } else {
+                        contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.add_to_favorites_1, R.string.add_to_favorites_2));
+                    }
+                }
 
                 if (isWatchlistRowEnabled()) {
                     addWatchlistAction(contentActionList, content.getId());
                 }
             }
             else {
-                contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW,
-                                                         R.string.watch_now_1,
-                                                         R.string.watch_now_2));
+                contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW, R.string.watch_now_1, R.string.watch_now_2));
             }
         }
 
@@ -968,7 +970,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @return True if the watchlist contains the content; false otherwise.
      */
     private boolean isContentInWatchlist(String id) {
-        
+
         WatchlistDatabaseHelper databaseHelper = WatchlistDatabaseHelper.getInstance();
         if (databaseHelper != null) {
             return databaseHelper.recordExists(mAppContext, id);
@@ -987,9 +989,9 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      */
     private void watchlistButtonClicked(String contentId, boolean addContent,
                                         SparseArrayObjectAdapter actionAdapter) {
-    
+
         WatchlistDatabaseHelper databaseHelper = WatchlistDatabaseHelper.getInstance();
-    
+
         if (databaseHelper != null) {
             if (addContent) {
                 databaseHelper.addRecord(mAppContext, contentId);
@@ -1003,6 +1005,46 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         }
         toggleWatchlistButton(addContent, actionAdapter);
     }
+
+    private void favoriteButtonClicked(String contentId, boolean like, SparseArrayObjectAdapter actionAdapter) {
+        Observable<Void> observable;
+        if (like) {
+            observable = observableFactory.create(new AddToFavoriteCallable(contentId, LikeStatus.LIKED));
+        } else {
+            observable = observableFactory.create(new RemoveFromFavoriteCallable(contentId));
+        }
+
+        observable.subscribe(
+                voidObject -> toggleFavoriteButton(like, actionAdapter),
+                throwable -> Log.e(TAG, String.format("Failed to update like status for asset [%s] to like [%s]", contentId, like), throwable)
+        );
+    }
+
+    private void toggleFavoriteButton(boolean isLiked, SparseArrayObjectAdapter actionAdapter) {
+
+        for (int i = 0; i < actionAdapter.size(); i++) {
+            Action action = LeanbackHelpers.translateActionAdapterObjectToAction(actionAdapter.get(i));
+
+            if (action.getId() == CONTENT_ACTION_ADD_TO_FAVORITES || action.getId() == CONTENT_ACTION_REMOVE_FROM_FAVORITES) {
+
+                // Update the button text.
+                if (isLiked) {
+                    action.setLabel1(mAppContext.getResources().getString(R.string.remove_from_favorites_1));
+                    action.setLabel2(mAppContext.getResources().getString(R.string.remove_from_favorites_2));
+                    action.setId(CONTENT_ACTION_REMOVE_FROM_FAVORITES);
+                } else {
+                    action.setLabel1(mAppContext.getResources().getString(R.string.add_to_favorites_1));
+                    action.setLabel2(mAppContext.getResources().getString(R.string.add_to_favorites_2));
+                    action.setId(CONTENT_ACTION_ADD_TO_FAVORITES);
+                }
+                // Reset the action in the adapter and notify change.
+                actionAdapter.set(i, LeanbackHelpers.translateActionToLeanBackAction(action));
+                actionAdapter.notifyArrayItemRangeChanged(i, 1);
+                break;
+            }
+        }
+    }
+
 
     /**
      * Get content time remaining
@@ -1440,8 +1482,9 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 watchlistButtonClicked(content.getId(), false, actionAdapter);
                 break;
             case CONTENT_ACTION_ADD_TO_FAVORITES:
+                favoriteButtonClicked(content.getId(), true, actionAdapter);
             case CONTENT_ACTION_REMOVE_FROM_FAVORITES:
-                // TODO Leo - Implement add/remove actions
+                favoriteButtonClicked(content.getId(), false, actionAdapter);
                 break;
         }
         if (actionCompletedListener != null) {

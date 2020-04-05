@@ -64,16 +64,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
+import com.stingray.qello.firetv.android.contentbrowser.callable.ContentInfoCallable;
 import com.stingray.qello.firetv.android.contentbrowser.callable.ContentTrackListCallable;
-import com.stingray.qello.firetv.android.contentbrowser.showscreen.ContentTrackListRow;
 import com.stingray.qello.firetv.android.contentbrowser.callable.RelatedContentCallable;
+import com.stingray.qello.firetv.android.contentbrowser.callable.model.Item;
+import com.stingray.qello.firetv.android.contentbrowser.callable.model.SvodConcert;
+import com.stingray.qello.firetv.android.contentbrowser.showscreen.ContentTrackListRow;
 import com.stingray.qello.firetv.android.model.Action;
-import com.stingray.qello.firetv.android.model.content.ContentWithTracks;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
 import com.stingray.qello.firetv.android.model.content.ContentContainerExt;
+import com.stingray.qello.firetv.android.model.content.ContentWithTracks;
+import com.stingray.qello.firetv.android.model.content.Track;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.ContentTrackListPresenter;
@@ -82,10 +88,10 @@ import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetails
 import com.stingray.qello.firetv.android.utils.GlideHelper;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.LeanbackHelpers;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.util.List;
+
+import rx.Observable;
 
 
 public class ContentDetailsFragment extends android.support.v17.leanback.app.DetailsFragment {
@@ -168,22 +174,46 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         Log.v(TAG, "onStart called.");
         super.onStart();
         if (mSelectedContent != null || checkGlobalSearchIntent()) {
+            // TODO Refactor this to be more optimal
+
             setupAdapter();
-            setupDetailsOverviewRow();
             setupDetailsOverviewRowPresenter();
             setupContentListRowPresenter();
             updateBackground(mSelectedContent.getBackgroundImageUrl());
             setOnItemViewClickedListener(new ItemViewClickedListener());
 
-            observableFactory.create(new ContentTrackListCallable(mSelectedContent.getId()))
-                    .subscribe(tracks -> {
-                        ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, tracks);
+            Observable.zip(
+                    observableFactory.createDetached(new ContentInfoCallable(mSelectedContent.getId()))
+                            .doOnError(t ->  Log.e(TAG, "Failed to get concert info.", t))
+                            .onErrorReturn(t -> null),
+                    observableFactory.createDetached(new ContentTrackListCallable(mSelectedContent.getId()))
+                            .doOnError(t ->  Log.e(TAG, "Failed to get track list.", t))
+                            .onErrorReturn(t -> null),
+                    observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId()))
+                            .doOnError(t ->  Log.e(TAG, "Failed to get related content.", t))
+                            .onErrorReturn(t -> null),
+                    ContentPageWrapper::new
+            ).subscribe(contentPageWrapper ->  {
+                getActivity().runOnUiThread(() -> {
+                    if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
+                        SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
+                        setupDetailsOverviewRow(concert.isLiked());
+                    } else {
+                        setupDetailsOverviewRow(false);
+                    }
+
+                    if (contentPageWrapper.getTrackList() != null && !contentPageWrapper.getTrackList().isEmpty()) {
+                        ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
                         setupTrackListPresenter(contentWithTracks.getTracks().size());
                         mAdapter.add(new ContentTrackListRow(contentWithTracks));
-                        setupRelatedContentRow();
-                    });
-        }
-        else {
+                    }
+
+                    if (contentPageWrapper.getRelatedContentContainer() != null) {
+                        setupRelatedContentRow(contentPageWrapper.getRelatedContentContainer());
+                    }
+                });
+            });
+        } else {
             Log.v(TAG, "Start CONTENT_HOME_SCREEN.");
             ContentBrowser.getInstance(getActivity())
                           .switchToScreen(ContentBrowser.CONTENT_HOME_SCREEN);
@@ -276,9 +306,19 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     public void updateActions() {
+        observableFactory.create(new ContentInfoCallable(mSelectedContent.getId()))
+                .subscribe(contentInfoItem -> {
+                    if (contentInfoItem.getData() != null) {
+                        SvodConcert concert = contentInfoItem.getData().getData();
+                        updateActions(concert.isLiked());
+                    }
+                });
+    }
+
+    public void updateActions(boolean isFavorited) {
 
         List<Action> contentActionList = ContentBrowser.getInstance(getActivity())
-                                                       .getContentActionList(mSelectedContent);
+                                                       .getContentActionList(mSelectedContent, isFavorited);
 
         int i = 0;
         mActionAdapter.clear();
@@ -289,7 +329,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         mActionInProgress = false;
     }
 
-    private void setupDetailsOverviewRow() {
+    private void setupDetailsOverviewRow(boolean isLiked) {
 
         Log.d(TAG, "doInBackground");
         if (Helpers.DEBUG) {
@@ -370,7 +410,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                                                     android.R.color.transparent,
                                                     bitmapTarget);
 
-        updateActions();
+        updateActions(isLiked);
         row.setActionsAdapter(mActionAdapter);
 
         mAdapter.add(row);
@@ -489,23 +529,17 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     /**
      * Builds the related content row. Uses contents from the selected content's category.
      */
-    private ContentContainerExt setupRelatedContentRow() {
-        return observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId()))
-                .map(contentContainerExt -> {
-                    ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+    private void setupRelatedContentRow(ContentContainerExt contentContainerExt) {
+        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
-                    for (Content c : contentContainerExt.getContentContainer()) {
-                        listRowAdapter.add(c);
-                    }
-                    // Only add the header and row for recommendations if there are any recommended content.
-                    if (listRowAdapter.size() > 0) {
-                        HeaderItem header = new HeaderItem(0, contentContainerExt.getMetadata().getDisplayName());
-                        mAdapter.add(new ListRow(header, listRowAdapter));
-                    }
-
-
-                    return contentContainerExt;
-                }).toBlocking().single();
+        for (Content c : contentContainerExt.getContentContainer()) {
+            listRowAdapter.add(c);
+        }
+        // Only add the header and row for recommendations if there are any recommended content.
+        if (listRowAdapter.size() > 0) {
+            HeaderItem header = new HeaderItem(0, contentContainerExt.getMetadata().getDisplayName());
+            mAdapter.add(new ListRow(header, listRowAdapter));
+        }
     }
 
     private void setupContentListRowPresenter() {
@@ -587,5 +621,29 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 }
             }
         }, 400);
+    }
+
+    private class ContentPageWrapper {
+        private Item<Item<SvodConcert>> contentInfoItem;
+        private List<Track> trackList;
+        private ContentContainerExt relatedContentContainer;
+
+        public ContentPageWrapper(Item<Item<SvodConcert>> contentInfoItem, List<Track> trackList, ContentContainerExt relatedContentContainer) {
+            this.contentInfoItem = contentInfoItem;
+            this.trackList = trackList;
+            this.relatedContentContainer = relatedContentContainer;
+        }
+
+        public Item<Item<SvodConcert>> getContentInfoItem() {
+            return contentInfoItem;
+        }
+
+        public List<Track> getTrackList() {
+            return trackList;
+        }
+
+        public ContentContainerExt getRelatedContentContainer() {
+            return relatedContentContainer;
+        }
     }
 }

@@ -28,22 +28,18 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
         return BASE_URL + url;
     }
 
+    @Deprecated
     protected String get(String path) throws IOException {
         return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN)).getBody();
     }
 
+    protected Response performGet(String path) {
+        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
+    }
+
     protected Response get(String path, String accessToken) {
         return performWithTokenRefresh(() -> {
-            HttpURLConnection urlConnection;
-            URL url = new URL(createUrl(path));
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
-
-            if (accessToken != null && !accessToken.isEmpty()) {
-                urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-            }
-
+            HttpURLConnection urlConnection = createUrlConnection(path, "GET", accessToken);
             return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
         });
     }
@@ -55,19 +51,7 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
     protected Response post(String path, String jsonBody, Map<String, String> additionalHeaders) {
 
         return performWithTokenRefresh(() -> {
-            URL url = new URL(createUrl(path));
-
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
-
-            String accessToken = Preferences.getString(PreferencesConstants.ACCESS_TOKEN);
-
-            if (accessToken != null && !accessToken.isEmpty()) {
-                urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-            }
-
+            HttpURLConnection urlConnection = createUrlConnection(path, "POST", Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
 
             for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
                 urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
@@ -80,6 +64,28 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
 
             return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
         });
+    }
+
+    protected Response delete(String path) {
+        return performWithTokenRefresh(() -> {
+            HttpURLConnection urlConnection =  createUrlConnection(path, "DELETE", Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
+            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+        });
+    }
+
+    private HttpURLConnection createUrlConnection(String path, String method, String accessToken) throws IOException {
+        HttpURLConnection urlConnection;
+        URL url = new URL(createUrl(path));
+        urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod(method);
+        urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
+        urlConnection.setRequestProperty("Content-Type", "application/json");
+
+        if (accessToken != null && !accessToken.isEmpty()) {
+            urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+        }
+
+        return urlConnection;
     }
 
     private Response performWithTokenRefresh(Callable<Response> responseCallable) {
