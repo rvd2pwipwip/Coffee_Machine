@@ -1,6 +1,8 @@
 package com.stingray.qello.android.firetv.login.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -9,19 +11,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.stingray.qello.firetv.android.utils.Helpers;
 import com.amazon.identity.auth.device.AuthError;
 import com.amazon.identity.auth.device.authorization.api.AmazonAuthorizationManager;
 import com.amazon.identity.auth.device.authorization.api.AuthorizationListener;
 import com.amazon.identity.auth.device.authorization.api.AuthzConstants;
 import com.amazon.identity.auth.device.shared.APIListener;
 import com.stingray.qello.android.firetv.login.R;
+import com.stingray.qello.android.firetv.login.ULAuthManager;
+import com.stingray.qello.android.firetv.login.UserInfoBundle;
+import com.stingray.qello.android.firetv.login.communication.UserpassCreateCallable;
+import com.stingray.qello.android.firetv.login.communication.UserpassLoginCallable;
+import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassCreateRequestBody;
+import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
+import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
+import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
+import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment;
+import com.stingray.qello.firetv.android.utils.Helpers;
+import com.stingray.qello.firetv.android.utils.Preferences;
+import com.stingray.qello.firetv.auth.AuthenticationConstants;
+
+import org.greenrobot.eventbus.EventBus;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class AccountCreationFragment extends Fragment {
+    // TODO Get lang and deviceId from system
+    private final static String HARDCODED_LANGUAGE = "en";
+    private final static String HARDCODED_DEVICE_ID = "aDeviceId";
 
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
     private static final String TAG = AccountCreationFragment.class.getName();
@@ -35,49 +58,63 @@ public class AccountCreationFragment extends Fragment {
     private Button privacyButton;
     private AmazonAuthorizationManager amazonAuthManager;
     private ProgressBar mLogInProgress;
+    private ULAuthManager ulAuthManager;
+    private ObservableFactory observableFactory = new ObservableFactory();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Helpers.handleActivityEnterFadeTransition(getActivity(), ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
 
-        // Confirm that we have the correct API Key.
-        try {
-            amazonAuthManager = new AmazonAuthorizationManager(getActivity(), Bundle.EMPTY);
-            //TODO new UL auth manager
-        }
-        catch (IllegalArgumentException e) {
-            showAuthToast(getString(R.string.incorrect_api_key));
-            Log.e(TAG, getString(R.string.incorrect_api_key), e);
-        }
+        ulAuthManager = new ULAuthManager();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.create_account_layout, container, false);
 
-        usernameInput = (TextView) view.findViewById(R.id.userName);
-        passwordInput = (TextView) view.findViewById(R.id.password);
-        createButton = (Button) view.findViewById(R.id.create_button);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO call UL
-            }
+        usernameInput = view.findViewById(R.id.userName);
+        passwordInput = view.findViewById(R.id.password);
+
+
+        Activity activity = getActivity();
+
+        // TODO Centralize Terms and PP links
+
+        Button termsButton = view.findViewById(R.id.create_account_terms);
+        termsButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                .createFragment(activity, activity.getFragmentManager(), activity.getString(com.stingray.qello.firetv.utils.R.string.terms_settings_fragment_tag), "https://legal.stingray.com/en/qello-terms-and-conditions/markdown"));
+
+        Button privacyButton = view.findViewById(R.id.create_account_pp);
+        privacyButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                .createFragment(activity, activity.getFragmentManager(), activity.getString(com.stingray.qello.firetv.utils.R.string.privacy_settings_fragment_tag), "https://legal.stingray.com/en/privacy-policy/markdown"));
+
+
+//      For Testing
+//        usernameInput.setText("clf2@sd-i.ca");
+//        passwordInput.setText("12345678");
+
+        createButton = view.findViewById(R.id.create_button);
+        createButton.setOnClickListener(v -> {
+            setLoggingInState(true);
+            String username = usernameInput.getText().toString();
+            String password = passwordInput.getText().toString();
+
+            UserpassCreateRequestBody requestBody = new UserpassCreateRequestBody(username, password, HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID);
+
+            observableFactory.createDetached(new UserpassCreateCallable(requestBody))
+                    .subscribe(
+                            response -> ulAuthManager.authorize(response.getSessionId(), HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID, new AuthListener()),
+                            throwable -> onFailure(getString(R.string.error_during_create_account), throwable)
+                    );
         });
 
         // Setup the listener on the login button.
-        lwaButton = (ImageButton) view.findViewById(R.id.login_with_amazon2);
+        lwaButton = view.findViewById(R.id.login_with_amazon2);
         lwaButton.setVisibility(Button.VISIBLE);
-        lwaButton.setOnClickListener(new View.OnClickListener() {
+        //lwaButton.setOnClickListener(v -> amazonAuthManager.authorize(APP_SCOPES, Bundle.EMPTY, new AuthListener()));
 
-            @Override
-            public void onClick(View v) {
-                amazonAuthManager.authorize(APP_SCOPES, Bundle.EMPTY, new AccountCreationFragment.AuthListener());
-            }
-        });
-
-        mLogInProgress = (ProgressBar) view.findViewById(R.id.progressBar2);
+        mLogInProgress = view.findViewById(R.id.progressBar2);
 
         return view;
     }
@@ -91,68 +128,91 @@ public class AccountCreationFragment extends Fragment {
     }
 
     /**
-     * {@link AuthorizationListener} which is passed in to authorize calls made on the {@link
-     * AmazonAuthorizationManager} member.
-     * Starts getToken workflow if the authorization was successful, or displays a toast if the
-     * user cancels authorization.
+     * Sets the state of the application to reflect that the user is not currently authorized.
      */
-    private class AuthListener implements AuthorizationListener {
+    private void setLoggedOutState() {
+        lwaButton.setVisibility(Button.VISIBLE);
+        Preferences.setLoggedOutState();
+        EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(false));
+    }
 
-        /**
-         * Authorization was completed successfully.
-         * Display the profile of the user who just completed authorization.
-         *
-         * @param response The bundle containing authorization response. Not used.
-         */
+    /**
+     * Sets the state of the application to reflect that the user is currently authorized.
+     */
+    private void setLoggedInState(UserInfoBundle userInfoBundle) {
+        createButton.setVisibility(LinearLayout.GONE);
+        lwaButton.setVisibility(Button.GONE);
+        Preferences.setLoggedInState(
+                userInfoBundle.getAccessToken(),
+                userInfoBundle.getRefreshToken(),
+                userInfoBundle.getSubscriptionPlan(),
+                userInfoBundle.getUserTrackingId(),
+                userInfoBundle.getSubscriptionEnd(),
+                userInfoBundle.getStingrayEmail()
+        );
+        EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
+        setLoggingInState(false);
+    }
+
+    private void setLoggingInState(final boolean loggingIn) {
+
+        if (loggingIn) {
+            createButton.setVisibility(Button.GONE);
+            mLogInProgress.setVisibility(ProgressBar.VISIBLE);
+        }
+        else {
+            if (!Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN)) {
+                createButton.setVisibility(Button.VISIBLE);
+            }
+            mLogInProgress.setVisibility(ProgressBar.GONE);
+        }
+    }
+
+    private class AuthListener implements AuthorizationListener {
         @Override
         public void onSuccess(Bundle response) {
-            amazonAuthManager.getToken(APP_SCOPES, new AccountCreationFragment.TokenListener());
+            String authCode = response.getString(AuthzConstants.BUNDLE_KEY.AUTHORIZATION_CODE.val);
+            ulAuthManager.getToken(authCode, new TokenListener());
         }
 
-        /**
-         * There was an error during the attempt to authorize the application.
-         * Log the error, and reset the profile text view.
-         *
-         * @param ae The error that occurred during authorization.
-         */
         @Override
         public void onError(final AuthError ae) {
-            //TODO manage error
+            onFailure(getString(R.string.error_during_auth), ae);
         }
-
-        /**
-         * Authorization was cancelled before it could be completed.
-         * A toast is shown to the user, to confirm that the operation was cancelled, and the
-         * profile text view is reset.
-         *
-         * @param cause The bundle containing the cause of the cancellation. Not used.
-         */
         @Override
         public void onCancel(Bundle cause) {
-            //TODO manage cancel
+            onFailure(getString(R.string.error_during_auth), new Throwable("Hit a state that should never happen"));
         }
-
     }
 
     private class TokenListener implements APIListener {
-
-        /**
-         * Updates the profile view with data from the successful getProfile response.
-         * Sets app state to logged in.
-         */
         @Override
         public void onSuccess(Bundle response) {
-            final String accessToken = response.getString(AuthzConstants.BUNDLE_KEY.TOKEN.val);
-            //TODO CALL UL with access token
+                getActivity().runOnUiThread(() -> setLoggedInState(new UserInfoBundle(response)));
+                EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
+                getActivity().setResult(RESULT_OK);
+                getActivity().finish();
         }
-
-        /**
-         * Updates profile view to reflect that there was an error while retrieving profile
-         * information.
-         */
         @Override
         public void onError(AuthError ae) {
-            Log.e(TAG, ae.getMessage(), ae);
+            onFailure(getString(R.string.error_during_auth), ae);
         }
+    }
+
+    private void onFailure(String message, Throwable throwable) {
+        getActivity().runOnUiThread(() -> {
+            showAuthToast(message);
+            setLoggingInState(false);
+            setLoggedOutState();
+        });
+
+        EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(false));
+
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString(AuthenticationConstants.ERROR_CATEGORY, AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
+        bundle.putSerializable(AuthenticationConstants.ERROR_CAUSE, throwable);
+        getActivity().setResult(RESULT_CANCELED, intent.putExtra(AuthenticationConstants.ERROR_BUNDLE, bundle));
+        getActivity().finish();
     }
 }
