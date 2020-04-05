@@ -323,6 +323,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     public void onPause() {
         mAutoTextViewFocusHandler.removeCallbacksAndMessages(null);
         mHandler.removeCallbacksAndMessages(null);
+        mRowsAdapter.clear();
+        hasResults = false;
         super.onPause();
     }
 
