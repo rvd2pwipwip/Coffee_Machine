@@ -18,6 +18,7 @@ import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.callable.HistoryCallable;
 import com.stingray.qello.firetv.android.model.content.Content;
+import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.HistoryVerticalGridPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.ViewMoreVerticalGridPresenter;
@@ -51,12 +52,20 @@ public class HistoryFragment extends VerticalGridFragment {
         setAdapter(mAdapter);
 
         loadContent();
+
+        if(mAdapter.size() == 0) {
+            getView().findViewById(R.id.empty_history).setVisibility(View.VISIBLE);
+        } else {
+            getView().findViewById(R.id.empty_history).setVisibility(View.GONE);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.v(TAG, "onCreateView called.");
         View  view = super.onCreateView(inflater, container, savedInstanceState);
         setTitle(null);
+        view.findViewById(R.id.empty_history).setVisibility(View.GONE);
         return view;
     }
 
@@ -64,7 +73,7 @@ public class HistoryFragment extends VerticalGridFragment {
         observableFactory.create(new HistoryCallable())
                 .subscribe(contentContainerExt -> {
                     for (Content entry : contentContainerExt.getContentContainer()) {
-                        mAdapter.add(entry);
+                        //mAdapter.add(entry);
                     }
                 });
 
