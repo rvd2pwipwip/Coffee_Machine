@@ -40,9 +40,12 @@ import com.stingray.qello.android.firetv.login.communication.requestmodel.Amazon
 import com.stingray.qello.android.firetv.login.communication.requestmodel.LoginResponse;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * This activity allows users to login with amazon.
@@ -171,8 +174,7 @@ public class LoginActivity extends Activity {
                     showAuthToast(getString(R.string.error_during_auth));
                     setLoggingInState(false);
                     setLoggedOutState();
-                    LoginActivity.this
-                            .setResultAndReturn(ae.getCause(),
+                    LoginActivity.this.setResultAndReturn(ae.getCause(),
                                     AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
                 }
             });
@@ -204,6 +206,7 @@ public class LoginActivity extends Activity {
     private void setLoggedOutState() {
         lwaButton.setVisibility(Button.VISIBLE);
         Preferences.setLoggedOutState();
+        EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(false));
     }
 
     /**
@@ -220,6 +223,7 @@ public class LoginActivity extends Activity {
                 userInfoBundle.getSubscriptionEnd(),
                 userInfoBundle.getStingrayEmail()
         );
+        EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
         setLoggingInState(false);
     }
 

@@ -79,7 +79,6 @@ public class MyQelloFragment extends Fragment{
 //                }
 
                 fragmentTransaction.replace(R.id.my_qello_detail, settingsFragment, SettingsFragment.class.getSimpleName());
-                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -131,7 +130,9 @@ public class MyQelloFragment extends Fragment{
     @SuppressWarnings("unused")
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent authenticationStatusUpdateEvent) {
-        toggleAuthenticationViews(Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN));
+        getActivity().runOnUiThread(() -> {
+            toggleAuthenticationViews(Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN));
+        });
     }
 
     private void toggleAuthenticationViews(boolean isLoggedIn) {

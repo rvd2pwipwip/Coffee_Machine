@@ -165,6 +165,7 @@ public abstract class BaseActivity extends Activity {
                 }
 
                 fragmentTransaction.replace(R.id.main_detail, homeFragment, HomeFragment.class.getSimpleName());
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
             case ContentBrowser.CONTENT_ACTION_MY_QELLO:
@@ -176,6 +177,7 @@ public abstract class BaseActivity extends Activity {
                 }
 
                 fragmentTransaction.replace(R.id.main_detail, myQelloFragment, MyQelloFragment.class.getSimpleName());
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
             case ContentBrowser.CONTENT_ACTION_LOGIN_LOGOUT: {

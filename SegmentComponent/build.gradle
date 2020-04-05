@@ -58,6 +58,7 @@ ext {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':ModuleInterface')
 
     // Set this dependency to use JUnit 4 rules
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
@@ -75,5 +76,4 @@ dependencies {
 
     implementation project(path: ':TrackingInterface')
     compile project(path: ':Utils')
-    compile project(path: ':ModuleInterface')
 }

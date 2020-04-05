@@ -24,6 +24,7 @@ permissions and limitations under the License.
     <string name="return_to_app">Return</string>
     <string name="incorrect_api_key">APIKey is incorrect or does not exist.</string>
     <string name="profile_Login">profile</string>
+    <string name="error_during_create_account">Failed to create account.</string>
     <string name="error_during_auth">Error during authorization. Please try again.</string>
     <string name="error_getting_profile">Error retrieving profile information.\nPlease log in
         again

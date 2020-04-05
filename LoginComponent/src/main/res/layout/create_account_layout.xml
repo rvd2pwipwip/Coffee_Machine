@@ -101,6 +101,7 @@ permissions and limitations under the License.
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/create_account_terms"
                     style="@style/call_to_action_button_style_outline_small"
                     android:layout_width="187dp"
                     android:layout_height="27dp"
@@ -111,6 +112,7 @@ permissions and limitations under the License.
                     android:textSize="12dp" />
 
                 <Button
+                    android:id="@+id/create_account_pp"
                     style="@style/call_to_action_button_style_outline_small"
                     android:layout_width="187dp"
                     android:layout_height="match_parent"

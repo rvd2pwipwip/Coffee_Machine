@@ -109,8 +109,9 @@ public class LoginWithULAuthentication implements IAuthentication {
                             String subscriptionPlan = userInfo.getSubscription().getPlan();
                             String subscriptionEnd = userInfo.getSubscription().getEndDate();
                             String email = userInfo.getEmail();
+                            String uniqueUserTrackingId = userInfo.getUniqueUserTrackingId();
 
-                            Preferences.updateUserInfo(subscriptionPlan, subscriptionEnd, email);
+                            Preferences.updateUserInfo(subscriptionPlan, subscriptionEnd, email, uniqueUserTrackingId);
                             // No need to pass user info data
                             EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
                             responseHandler.onSuccess(new Bundle());
