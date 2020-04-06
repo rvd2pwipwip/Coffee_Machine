@@ -40,11 +40,11 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        applicationId "com.stingray.qello.android.firetv"
+        applicationId "com.qello.amazon"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 10
-        versionName "1.0.7"
+        versionCode 20581
+        versionName "3.0.0-alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
