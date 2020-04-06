@@ -98,7 +98,7 @@ dependencies {
     androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
     // Add Robotium tests to android tests.
     androidTestImplementation 'com.jayway.android.robotium:robotium-solo:5.3.1'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:0.4.1'
     testImplementation 'junit:junit:4.12'
     testImplementation('org.robolectric:robolectric:3.0') {
         exclude group: 'commons-logging', module: 'commons-logging'
@@ -114,7 +114,7 @@ dependencies {
     testImplementation 'org.powermock:powermock-module-junit4-rule:1.6.2'
     testImplementation 'org.powermock:powermock-api-mockito:1.6.2'
     testImplementation 'org.powermock:powermock-classloading-xstream:1.6.2'
-    testImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'com.android.support.test:runner:0.4.1'
     implementation project(':Calligraphy')
 
     implementation 'io.noties.markwon:core:4.2.1'

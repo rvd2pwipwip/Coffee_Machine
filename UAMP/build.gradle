@@ -66,11 +66,7 @@ dependencies {
     implementation 'com.android.support:support-v4:23.4.0'
 
     // Set this dependency to use JUnit 4 rules
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-
-    androidTestImplementation('com.android.support.test:runner:0.4.1') {
-        exclude module: 'support-annotations'
-    }
+    androidTestImplementation('com.android.support.test:runner:0.4.1')
 
     implementation project(':ModuleInterface')
     implementation project(':ContentModel')

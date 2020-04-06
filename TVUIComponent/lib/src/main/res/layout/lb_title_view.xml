@@ -58,4 +58,9 @@ permissions and limitations under the License.
             android:layout_gravity="center_vertical|start"
             android:visibility="gone"/>
 
+    <!-- Needed to compile -->
+    <View android:id="@+id/details_background_view"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:visibility="gone" />
 </merge>

@@ -318,7 +318,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             mSpeechOrbView.setFocusable(false);
         }, 1000);
 
-        if (!hasResults) {
+        if (!hasResults && mRowsAdapter.size() > 0) {
             noResultsView.setVisibility(View.VISIBLE);
         }
     }

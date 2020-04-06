@@ -58,14 +58,10 @@ ext {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':ModuleInterface')
+    api project(':ModuleInterface')
 
     // Set this dependency to use JUnit 4 rules
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-
-    androidTestImplementation('com.android.support.test:runner:0.4.1') {
-        exclude module: 'support-annotations'
-    }
+    androidTestImplementation('com.android.support.test:runner:0.4.1')
 
     // Segment
     implementation "com.segment.analytics.android:analytics:$segment_version"
@@ -74,6 +70,6 @@ dependencies {
     implementation 'com.segment.analytics.android.integrations:mixpanel:+'
     implementation 'com.mixpanel.android:mixpanel-android:5.+'
 
-    implementation project(path: ':TrackingInterface')
-    compile project(path: ':Utils')
+    api project(path: ':TrackingInterface')
+    implementation project(path: ':Utils')
 }

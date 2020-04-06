@@ -75,11 +75,7 @@ dependencies {
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'org.mockito:mockito-core:3.1.0'
     // Set this dependency to use JUnit 4 rules
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
-
-    androidTestImplementation('com.android.support.test:runner:0.4.1') {
-        exclude module: 'support-annotations'
-    }
+    androidTestImplementation('com.android.support.test:runner:0.4.1')
     androidTestImplementation 'com.google.dexmaker:dexmaker:1.2'
     androidTestImplementation 'com.google.dexmaker:dexmaker-mockito:1.2'
 
@@ -90,6 +86,7 @@ dependencies {
     implementation project(':ContentBrowser')
     // Global font support
     implementation project(':Calligraphy')
+    implementation project(':TrackingInterface')
 }
 
 buildscript {
