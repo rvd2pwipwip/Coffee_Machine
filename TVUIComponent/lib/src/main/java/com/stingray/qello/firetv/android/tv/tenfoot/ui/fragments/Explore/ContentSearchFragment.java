@@ -109,6 +109,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private Runnable delayedGenreLoad = null;
     private List<View> genreButtons = new ArrayList<>();
     private boolean returnToSearch = false;
+    private boolean returningToSearch = false;
     private FrameLayout searchResultsLayout;
     private View noResultsView;
     private boolean hasResults = false;
@@ -254,11 +255,11 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         mSpeechOrbView.setFocusable(false);
                         mSpeechOrbView.clearFocus();
                         // If there are results allow first result to be selected
-                        if (hasResults) {
-                            searchResultsLayout.requestFocus();
-                        } else {
-                            focusTextView();
-                        }
+//                        if (hasResults) {
+//                            searchResultsLayout.requestFocus();
+//                        } else {
+//                            focusTextView();
+//                        }
 
                         // Hide keyboard since we are handling the action
                         if (isAdded()) {
@@ -291,11 +292,11 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         mSpeechOrbView.clearFocus();
                         // We don't need to clearFocus on SearchEditText here, the first
                         // result will be selected already.
-                        if (hasResults) {
-                            searchResultsLayout.requestFocus();
-                        } else {
-                            focusTextView();
-                        }
+//                        if (hasResults) {
+//                            searchResultsLayout.requestFocus();
+//                        } else {
+//                            focusTextView();
+//                        }
                     });
                 }
             }
@@ -311,11 +312,14 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     public void onResume() {
 
         super.onResume();
+        // There must be a delay to allow SearchOrb to initialize, otherwise no search
+        // results will come back from leanback.
+        mAutoTextViewFocusHandler.postDelayed(() -> {
+            mSpeechOrbView.setFocusable(false);
+        }, 1000);
 
         if (!hasResults) {
-            // There must be a delay to allow SearchOrb to initialize, otherwise no search
-            // results will come back from leanback.
-            focusTextView(1000);
+            noResultsView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -323,8 +327,9 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     public void onPause() {
         mAutoTextViewFocusHandler.removeCallbacksAndMessages(null);
         mHandler.removeCallbacksAndMessages(null);
-        mRowsAdapter.clear();
-        hasResults = false;
+        if (mSearchEditText != null) {
+            mSearchEditText.setText("");
+        }
         super.onPause();
     }
 
@@ -448,33 +453,19 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         }
     }
 
-    private void focusTextView() {
-        focusTextView(0);
-    }
-
     private void focusTextView(int delay) {
-        focusTextView(delay, () -> {});
-    }
-
-    private void focusTextView(int delay, Runnable runnable) {
         mAutoTextViewFocusHandler.postDelayed(() -> {
             if (mSearchEditText != null) {
                 // Select search edit text, bring up keyboard.
                 // Always make SpeechOrb not focusable, leanback always tries to bring it back.
                 mSearchEditText.setFocusable(true);
                 mSearchEditText.requestFocus();
-                mSpeechOrbView.setFocusable(false);
-                runnable.run();
-//                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    if (imm != null) {
-//                        imm.showSoftInput(mSearchEditText, 0);
-//                    }
             }
         }, delay);
     }
 
+
     private void createGenreButtons(View view, LayoutInflater inflater, List<Genre> genres) {
-        View titleView = view.findViewById(R.id.genres_title);
         LinearLayout explorePageGenres = view.findViewById(R.id.explore_page_genres);
         explorePageGenres.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
             boolean oldFocusInGenresMenu = genreButtons.contains(oldFocus);
@@ -486,16 +477,14 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 boolean enteringGrid = newFocus instanceof ImageCardView;
                 boolean leavingGrid = oldFocus instanceof ImageCardView;
 
+                boolean enteringSearchTextEdit = newFocus instanceof SearchEditText;
+
                 if (returnToSearch && leavingGrid) {
-                    // TODO Leo - This is a hack to allow keyboard to open when focusing searchEditText without making leaving visual cues
-                    titleView.setFocusable(true);
-                    titleView.requestFocus();
-                    focusTextView(0, () -> titleView.setFocusable(false));
+                    focusTextView(0);
                     returnToSearch = false;
+                    returningToSearch = true;
                 } else if (focusedGenreButton != null) {
-                    if (enteringGenresMenu) {
-                        focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke));
-                    }
+                    focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke));
 
                     if (!hasResults && newFocus.getId() == R.id.row_content) {
                         focusedGenreButton.requestFocus();
@@ -523,11 +512,17 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             genreButton.setText(genre.getTitle());
             genreButton.setOnFocusChangeListener((view1, motionEvent) -> {
                 if (view1.isFocused() && !view1.equals(focusedGenreButton)) {
-                    mQuery = null;
-                    focusedGenreButton = view1;
-                    mHandler.removeCallbacks(delayedGenreLoad);
-                    delayedGenreLoad = () -> observableFactory.create(new GenreFilterCallable(genre.getId())).subscribe(this::loadGenreAssets);
-                    mHandler.postDelayed(delayedGenreLoad, SEARCH_DELAY_MS);
+                    if (returningToSearch) {
+                        focusedGenreButton = view1;
+                        focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke_no_focus));
+                        returningToSearch = false;
+                    } else {
+                        mQuery = null;
+                        focusedGenreButton = view1;
+                        mHandler.removeCallbacks(delayedGenreLoad);
+                        delayedGenreLoad = () -> observableFactory.create(new GenreFilterCallable(genre.getId())).subscribe(this::loadGenreAssets);
+                        mHandler.postDelayed(delayedGenreLoad, SEARCH_DELAY_MS);
+                    }
                 }
             });
             genreButtons.add(genreButton);
