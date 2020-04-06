@@ -1,32 +1,42 @@
 package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello;
 
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
 
+import com.stingray.qello.firetv.android.contentbrowser.callable.ClearBrowsePageCallable;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
-import com.stingray.qello.firetv.android.utils.Helpers;
 
-public class HistoryFragment extends Fragment {
-
-    private final String TAG = HistoryFragment.class.getSimpleName();
-
-    private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
-
+public class HistoryFragment extends BrowsePageFragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-
-        Helpers.handleActivityEnterFadeTransition(getActivity(), ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
+    protected String getBrowsePage() {
+        return "HISTORY";
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.history_layout, container, false);
+    protected int getEmptyMsgDrawable() {
+        return R.drawable.empty_history_msg;
     }
 
+    @Override
+    protected int getEmptyImageDrawable() {
+        return R.drawable.history;
+    }
+
+    @Override
+    protected String getClearButtonText() {
+        return "Clear History";
+    }
+
+    @Override
+    protected void setActionButtonListener() {
+        actionButton1.setOnClickListener(v -> {
+            // Clear Favorites
+            observableFactory.create(new ClearBrowsePageCallable("history"))
+                    .subscribe(voidObject -> {
+                        clearContents();
+                    }, throwable -> {
+                        Log.e(getTag(), "Failed to clear history");
+                    });
+        });
+    }
 }

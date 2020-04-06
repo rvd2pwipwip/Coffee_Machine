@@ -2,12 +2,13 @@ package com.stingray.qello.firetv.android.tv.tenfoot.presenter;
 
 import android.support.v17.leanback.widget.VerticalGridPresenter;
 import android.support.v17.leanback.widget.VerticalGridView;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-public class CustomVerticalGridPresenter extends VerticalGridPresenter {
+public class ViewMoreVerticalGridPresenter extends VerticalGridPresenter {
 
-    public CustomVerticalGridPresenter() {
+    public ViewMoreVerticalGridPresenter() {
 
         super();
     }
@@ -18,6 +19,7 @@ public class CustomVerticalGridPresenter extends VerticalGridPresenter {
         VerticalGridView gridView = gridViewHolder.getGridView();
         gridView.setVerticalMargin(100);
         gridView.setHorizontalMargin(45);
+        gridView.setGravity(Gravity.CENTER_HORIZONTAL);
 
         ViewGroup.LayoutParams params = gridView.getLayoutParams();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;

@@ -61,6 +61,8 @@ import com.amazon.mediaplayer.playback.text.Cue;
 import com.amazon.mediaplayer.tracks.TrackType;
 import com.google.android.exoplayer.text.CaptionStyleCompat;
 import com.google.android.exoplayer.text.SubtitleLayout;
+import com.stingray.qello.android.firetv.callable.PostLogPlayActionCallable;
+import com.stingray.qello.android.firetv.callable.PostLogPlayActionRequest;
 import com.stingray.qello.firetv.ads.AdMetaData;
 import com.stingray.qello.firetv.ads.IAds;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
@@ -78,6 +80,7 @@ import com.stingray.qello.firetv.android.uamp.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.uamp.helper.CaptioningHelper;
 import com.stingray.qello.firetv.android.uamp.mediaSession.GetVideoLinksCallable;
 import com.stingray.qello.firetv.android.uamp.mediaSession.MediaSessionController;
+import com.stingray.qello.firetv.android.uamp.mediaSession.VideoLinkSelector;
 import com.stingray.qello.firetv.android.uamp.model.VideoLink;
 import com.stingray.qello.firetv.android.ui.fragments.ErrorDialogFragment;
 import com.stingray.qello.firetv.android.utils.ErrorUtils;
@@ -205,7 +208,6 @@ public class PlaybackActivity extends Activity implements
     private ITracking playbackTracking;
     private ScheduledExecutorService playbackTrackingExecutorService;
     private String trackingSessionId;
-
     /**
      * Called when the activity is first created.
      */
@@ -265,9 +267,8 @@ public class PlaybackActivity extends Activity implements
                 observableFactory.createDetached(new GetVideoLinksCallable(mSelectedContent.getChannelId()))
                 .toBlocking().single();
 
-        //mSelectedContent.setUrl(new VideoLinkSelector().select(videoLinksByType));
-        mSelectedContent.setUrl("https://d2ns1j5tbz0a1h.cloudfront.net/assets/2379385/88133241/1080p.m3u8?Expires=1585835852&Signature=PKz7UNZDZMINKum2LW7VSdM0GjVmK1p~qkhTfprlxshg5lZ~2P-j5Z3QYGYGuZGJQR5-GRmAJ~5-Fhq99g6OhJAxXQHImEntBZ3OwQRIPS6K-slFo~OyhkpoMRbaDYXK-Koa-uPY6Rw-iyYc1BnJNWjup~cqaS9pzAJThTs-br30nQ~I0RFdv2gE~JTU5iqFGiHrgIGG1tPqOHDtNTWOVoXyZymVl7ROkwsf8NOwyP14UA5LTXU6E4VV9RvXsoRD2d75VPst7JH~mIIpQy7FOc5GEMZNrw6USrsRWc4H0QzG2sXofBWJeY1Nl3M2i1BA7y1rgYMvOQjCIiKzlPKH5g__&Key-Pair-Id=APKAILAUMFTX572YB7EA");
-        
+        mSelectedContent.setUrl(new VideoLinkSelector().select(videoLinksByType));
+
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
             finish();
         }
@@ -1696,9 +1697,7 @@ public class PlaybackActivity extends Activity implements
                     // One of the causes for the player state transition might be due to
                     // a new content being selected from recommended content.
                     if (mAutoPlay || mIsContentChangeRequested) {
-                        playbackTracking.trackPlaybackStarted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition());
-                        playbackTracking.trackContentStarted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition());
-                        startContentPlayingTracking();
+                        logPlayStart();
                         play();
                         mAutoPlay = false;
                         if (mIsContentChangeRequested) {
@@ -1815,6 +1814,19 @@ public class PlaybackActivity extends Activity implements
                 Log.e(TAG, "Unknown state!!!!!");
                 break;
         }
+    }
+
+    private void logPlayStart() {
+        playbackTracking.trackPlaybackStarted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition());
+        playbackTracking.trackContentStarted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition());
+        startContentPlayingTracking();
+
+        PostLogPlayActionRequest request = new PostLogPlayActionRequest(mSelectedContent.getId(), String.valueOf(getCurrentPosition()));
+        observableFactory.create(new PostLogPlayActionCallable(request)).subscribe(aVoid -> {
+            Log.d(TAG, "Log play action succeeded");
+        }, throwable -> {
+            Log.e(TAG, "Failed to log play action", throwable);
+        });
     }
 
     /**

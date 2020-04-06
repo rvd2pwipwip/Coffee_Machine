@@ -108,10 +108,6 @@ public class CardPresenter extends Presenter {
         return new ViewHolder(cardView);
     }
 
-    public void test(){
-    }
-
-
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
 

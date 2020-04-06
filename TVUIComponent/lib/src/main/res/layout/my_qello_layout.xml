@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="80dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="80dp"
         android:orientation="vertical">
 
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:gravity="left|center_vertical"
+                android:gravity="start|center_vertical"
                 android:text="Login"
                 android:textAllCaps="false"
                 android:textSize="16sp" />
@@ -61,7 +61,7 @@
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:gravity="left|center_vertical"
+                android:gravity="start|center_vertical"
                 android:text="History"
                 android:textAllCaps="false"
                 android:textColorHighlight="#FAFAFA"
@@ -73,7 +73,7 @@
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:gravity="left|center_vertical"
+                android:gravity="start|center_vertical"
                 android:text="Favorites"
                 android:textAllCaps="false"
                 android:textColorHighlight="#FAFAFA"
@@ -85,7 +85,7 @@
                 android:layout_width="88dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:gravity="left|center_vertical"
+                android:gravity="start|center_vertical"
                 android:text="Playlists"
                 android:textAllCaps="false"
                 android:textColorHighlight="#FAFAFA"
@@ -95,7 +95,7 @@
 
         <View
             android:id="@+id/divider"
-            android:layout_width="260px"
+            android:layout_width="210dp"
             android:layout_height="1px"
             android:background="#C2C2C2" />
 
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/settings_gear"
             android:fontFamily="sans-serif-light"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:text="    Settings"
             android:textAllCaps="false"
             android:textColorHighlight="#FAFAFA"
