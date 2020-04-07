@@ -15,7 +15,7 @@ public class ForgotPasswordCallable extends ULCallable<Void> {
     private final static TypeReference<Map<String, String>> MAP_STRING_STRING = new TypeReference<Map<String, String>>() {
     };
     private final static String ENDPOINT = "/user/forgotPassword";
-    private final static String FORGOT_PASSWORD_LINK = BASE_CLIENT_URL + "/welcome/forgotpassword?captchaKey=";
+    private final static String FORGOT_PASSWORD_LINK = BASE_CLIENT_URL + "/welcome/forgotpassword?client_id=JD0NM5sIIqRTEZQf&redirect_uri=https%3A%2F%2Fqello-test.stingray.com%2Fen%2F&response_type=code&language=en";
     private final static String TAG = ForgotPasswordCallable.class.getSimpleName();
 
     private ObjectMapper objectMapper = new ObjectMapper()
@@ -26,18 +26,18 @@ public class ForgotPasswordCallable extends ULCallable<Void> {
 
     public ForgotPasswordCallable(ForgotPasswordRequestBody requestBody) {
         requestBody.setClientId(CLIENT_ID);
-        requestBody.setResetPasswordUri(FORGOT_PASSWORD_LINK);
+        requestBody.setResetPasswordUrl(FORGOT_PASSWORD_LINK);
         this.requestBody = requestBody;
     }
 
     @Override
-    public Void call() throws IOException, EmailDoesntExistException, BadParameterException {
+    public Void call() throws IOException, EmailDoesntExistException, UnexpectedException {
 
         Map<String, String> params = objectMapper.convertValue(requestBody, MAP_STRING_STRING);
         Response response = post(ENDPOINT, params);
 
-        if (response.getCode() != 400) {
-            throw new BadParameterException(ENDPOINT, requestBody.toString());
+        if (!String.valueOf(response.getCode()).startsWith("2")) {
+            throw new UnexpectedException(response.getCode(), response.getUrl(), params.toString(), response.getBody());
         }
 
         ForgotPasswordResponse forgotPasswordResponse = objectMapper.readValue(response.getBody(), ForgotPasswordResponse.class);

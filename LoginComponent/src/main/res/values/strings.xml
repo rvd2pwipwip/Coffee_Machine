@@ -47,4 +47,8 @@ permissions and limitations under the License.
 
     <string name="forgot_password_page_title">Password Reset</string>
     <string name="forgot_password_description">Enter your email address and we\'ll send directions on how to reset your password.</string>
+
+    <string name="forgot_password_success">Email has been sent to your email.</string>
+    <string name="forgot_password_error_email_doesnt_exist">Failed to reset your password because your email doesn\'t exist.</string>
+    <string name="forgot_password_error_generic">Failed to reset your password due to an unexpected error. Please try again later</string>
 </resources>

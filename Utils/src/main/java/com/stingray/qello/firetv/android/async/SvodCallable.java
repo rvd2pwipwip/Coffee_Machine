@@ -40,7 +40,7 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
     protected Response get(String path, String accessToken) {
         return performWithTokenRefresh(() -> {
             HttpURLConnection urlConnection = createUrlConnection(path, "GET", accessToken);
-            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), urlConnection.getURL().toString());
         });
     }
 
@@ -62,14 +62,14 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
                 os.write(input, 0, input.length);
             }
 
-            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), urlConnection.getURL().toString());
         });
     }
 
     protected Response delete(String path) {
         return performWithTokenRefresh(() -> {
             HttpURLConnection urlConnection =  createUrlConnection(path, "DELETE", Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
-            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), urlConnection.getURL().toString());
         });
     }
 

@@ -86,8 +86,8 @@ public class LoginActivity extends Activity {
 
         // Confirm that we have the correct API Key.
         try {
-            amazonAuthManager = new AmazonAuthorizationManager(this, Bundle.EMPTY);
             ulAuthManager = new ULAuthManager();
+            amazonAuthManager = new AmazonAuthorizationManager(this, Bundle.EMPTY);
         }
         catch (IllegalArgumentException e) {
             showAuthToast(getString(R.string.incorrect_api_key));
