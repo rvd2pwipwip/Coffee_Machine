@@ -59,6 +59,12 @@ public class ForgotPasswordFragment extends DialogFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().getFragmentManager().popBackStack();
+    }
+
+    @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         final Dialog dialog = new Dialog(getActivity(), getTheme());
         final Window window = dialog.getWindow();
