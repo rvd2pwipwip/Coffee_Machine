@@ -16,7 +16,7 @@ import java.util.Map;
 public class AmazonLoginCallable extends ULCallable<LoginResponse> {
     private final static TypeReference<Map<String, String>> MAP_STRING_STRING = new TypeReference<Map<String, String>>() {};
     private final static String ENDPOINT = "/user/amazonLogin";
-    private final static String CREATE_PASSWORD_LINK = "https://login-test.stingray.com/createPasswordAndLink";
+    private final static String CREATE_PASSWORD_LINK = BASE_CLIENT_URL + "/createPasswordAndLink??captchaKey=";
     private final static String TAG = AmazonLoginCallable.class.getSimpleName();
 
     private ObjectMapper objectMapper =  new ObjectMapper()

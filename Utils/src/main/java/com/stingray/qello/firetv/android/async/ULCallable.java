@@ -10,17 +10,18 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 public abstract class ULCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = ULCallable.class.getName();
-    private static final String BASE_URL = "https://ulogin-proxy-test.stingray.com/loginapi";
+    private static final String BASE_URL = "https://ulogin-proxy-test.stingray.com";
+    protected static final String BASE_API_URL = BASE_URL + "/loginapi";
+    protected static final String BASE_CLIENT_URL = BASE_URL;
 
     private String createUrl(String url) {
-        return BASE_URL + url;
+        return BASE_API_URL + url;
     }
 
     protected String get(String path) throws IOException {
@@ -60,5 +61,12 @@ public abstract class ULCallable<T> extends BaseCommunicator implements Callable
         }
 
         return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+    }
+
+
+    public static class BadParameterException extends Exception {
+        public BadParameterException(String endpoint, String requestBody) {
+            super(String.format("Call to endpoint [%s] failed due to bad parameters", endpoint, requestBody));
+        }
     }
 }
