@@ -74,7 +74,6 @@ public class ForgotPasswordFragment extends DialogFragment {
         submitButton.setOnClickListener(v -> {
             String languageTag = Locale.getDefault().toLanguageTag();
             String email = emailEditText.getText().toString();
-            email = "llanuzo@stingray.com";
             ForgotPasswordRequestBody forgotPasswordRequestBody = new ForgotPasswordRequestBody(email, languageTag);
             progressBar.setVisibility(View.VISIBLE);
 
