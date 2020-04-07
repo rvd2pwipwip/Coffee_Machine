@@ -44,12 +44,12 @@ permissions and limitations under the License.
             android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:alpha="0.9"/>
+            android:alpha="0.8"/>
 
     <RelativeLayout
-            android:id="@+id/main_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:id="@+id/main_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/main_logo"
@@ -77,9 +77,9 @@ permissions and limitations under the License.
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="MTV Unplugged"
+                android:text="Artist Name"
                 android:textColor="@color/accent"
-                android:textSize="@dimen/lb_details_description_body_text_size" />
+                android:textSize="@dimen/details_description_title_text" />
 
             <TextView
                 android:id="@+id/content_detail_title"
@@ -110,8 +110,7 @@ permissions and limitations under the License.
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/content_details"
-            tools:layout="@layout/action_widget_container"
-            />
+            tools:layout="@layout/action_widget_container" />
     </RelativeLayout>
 
 

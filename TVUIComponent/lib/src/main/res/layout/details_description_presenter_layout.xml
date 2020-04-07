@@ -42,16 +42,16 @@ permissions and limitations under the License.
         style="?attr/detailsDescriptionSubtitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
         android:textColor="@color/accent"
-        android:textSize="14sp" />
+        android:textSize="20sp" />
 
     <android.support.v17.leanback.widget.ResizingTextView
         android:id="@+id/details_description_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FAFAFA"
+        android:text="Title"
         android:fontFamily="sans-serif-black"
+        android:textColor="@color/secondary_text"
         style="?attr/detailsDescriptionTitleStyle"
         />
 
