@@ -15,9 +15,14 @@
 package com.stingray.qello.android.firetv.login.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -39,9 +44,11 @@ import com.stingray.qello.android.firetv.login.communication.UserpassLoginCallab
 import com.stingray.qello.android.firetv.login.communication.requestmodel.AmazonLoginRequestBody;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.LoginResponse;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
+import com.stingray.qello.android.firetv.login.fragments.ForgotPasswordFragment;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
+import com.stingray.qello.firetv.android.ui.fragments.ReadDialogFragment;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
 
@@ -64,6 +71,7 @@ public class LoginActivity extends Activity {
     private TextView usernameInput;
     private TextView passwordInput;
     private Button continueButton;
+    private Button forgotPasswordButton;
     private ImageButton lwaButton;
     private AmazonAuthorizationManager amazonAuthManager;
     private ULAuthManager ulAuthManager;
@@ -130,6 +138,26 @@ public class LoginActivity extends Activity {
         lwaButton.setOnClickListener(v -> {
             setLoggingInState(true);
             amazonAuthManager.authorize(APP_SCOPES, Bundle.EMPTY, new AuthListener());
+        });
+
+        forgotPasswordButton = findViewById(R.id.forget_password_btn);
+        forgotPasswordButton.setOnClickListener(v -> {
+            Fragment forgotPasswordFragment = getFragmentManager().findFragmentByTag(TAG);
+
+            if (forgotPasswordFragment == null) {
+                forgotPasswordFragment = new ForgotPasswordFragment();
+            }
+
+            Bundle bundle = new Bundle();
+            if (usernameInput != null && usernameInput.getText() != null) {
+                bundle.putString(ForgotPasswordFragment.ARG_EMAIL, usernameInput.getText().toString());
+            }
+            forgotPasswordFragment.setArguments(bundle);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(forgotPasswordFragment, ForgotPasswordFragment.TAG);
+            ft.addToBackStack(ForgotPasswordFragment.TAG);
+            ft.commit();
         });
 
         mLogInProgress = findViewById(R.id.log_in_progress);

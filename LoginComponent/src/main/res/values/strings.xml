@@ -40,4 +40,11 @@ permissions and limitations under the License.
     <string name="log_in">Log In</string>
     <string name="forgot_password">Forgot your password?</string>
     <string name="or">or</string>
+
+
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="forgot_password_page_title">Password Reset</string>
+    <string name="forgot_password_description">Enter your email address and we\'ll send directions on how to reset your password.</string>
 </resources>
