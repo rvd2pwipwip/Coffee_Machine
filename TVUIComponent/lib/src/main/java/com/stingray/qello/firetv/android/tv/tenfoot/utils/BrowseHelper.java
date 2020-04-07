@@ -69,6 +69,10 @@ public class BrowseHelper {
 
             for (Content content : contentContainer.getContents()) {
                 listRowAdapter.add(content);
+                //TODO remove after testing
+                listRowAdapter.add(content);
+                //TODO remove after testing
+                listRowAdapter.add(content);
             }
 
             //TODO REMOVE after testing
