@@ -54,6 +54,7 @@ jacoco {
 
 ext {
     segment_version = "4.3.+"
+    appsflyer_version = "5.1.1"
 }
 
 dependencies {
@@ -66,9 +67,9 @@ dependencies {
     // Segment
     implementation "com.segment.analytics.android:analytics:$segment_version"
 
-    // Mixpanel
-    implementation 'com.segment.analytics.android.integrations:mixpanel:+'
-    implementation 'com.mixpanel.android:mixpanel-android:5.+'
+    //AppsFlyer
+    implementation "com.appsflyer:segment-android-integration:$appsflyer_version"
+    implementation "com.android.installreferrer:installreferrer:1.1.2"
 
     api project(path: ':TrackingInterface')
     implementation project(path: ':Utils')

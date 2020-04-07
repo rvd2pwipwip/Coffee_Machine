@@ -4,10 +4,7 @@ import android.content.Context;
 
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
-import com.segment.analytics.Traits;
-import com.segment.analytics.android.integrations.mixpanel.MixpanelIntegration;
-import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
-import com.stingray.qello.firetv.android.utils.Preferences;
+import com.segment.analytics.android.integrations.appsflyer.AppsflyerIntegration;
 import com.stingray.qello.firetv.segment.constants.SegmentTrackingConstants;
 import com.stingray.qello.firetv.user_tracking.ITracking;
 
@@ -17,7 +14,11 @@ public class SegmentTracking implements ITracking {
     public void init(Context context) {
         Analytics analytics = new Analytics.Builder(context, "thKdc3YGs1K6r3DQ2qKaXQNGdrFN3cUt")
                 .trackApplicationLifecycleEvents()
-                .trackAttributionInformation().collectDeviceId(true).recordScreenViews().use(MixpanelIntegration.FACTORY).build();
+                .trackAttributionInformation()
+                .collectDeviceId(true)
+                .recordScreenViews()
+                .use(AppsflyerIntegration.FACTORY)
+                .build();
 
         Analytics.setSingletonInstance(analytics);
     }
