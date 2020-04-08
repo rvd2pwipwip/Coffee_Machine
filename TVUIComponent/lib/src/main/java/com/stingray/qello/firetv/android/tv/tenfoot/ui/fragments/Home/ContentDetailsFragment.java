@@ -116,6 +116,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private boolean mShowRelatedContent;
     private ObservableFactory observableFactory = new ObservableFactory();
 
+    private ContentPageWrapper contentPageWrapper = null;
+
     SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
 
     // Decides whether the action button should be enabled or not.
@@ -155,8 +157,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         Log.v(TAG, "onStart called.");
         super.onStart();
         if (mSelectedContent != null || checkGlobalSearchIntent()) {
-            // TODO Refactor this to be more optimal
-
             setupAdapter();
             setupDetailsOverviewRowPresenter();
             setupContentListRowPresenter();
@@ -172,7 +172,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                     containerListView.setVisibility(View.VISIBLE);
                     containerListView.animate()
                             .alpha(1f)
-                            .setDuration(1000)
+                            .setDuration(800)
                             .setListener(null);
                 });
             }
@@ -184,40 +184,49 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     private void loadData(Runnable callback) {
-        Observable.zip(
-                observableFactory.createDetached(new ContentInfoCallable(mSelectedContent.getId()))
-                        .doOnError(t ->  Log.e(TAG, "Failed to get concert info.", t))
-                        .onErrorReturn(t -> null),
-                observableFactory.createDetached(new ContentTrackListCallable(mSelectedContent.getId()))
-                        .doOnError(t ->  Log.e(TAG, "Failed to get track list.", t))
-                        .onErrorReturn(t -> null),
-                observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId()))
-                        .doOnError(t ->  Log.e(TAG, "Failed to get related content.", t))
-                        .onErrorReturn(t -> null),
-                ContentPageWrapper::new
-        ).subscribe(contentPageWrapper ->  {
-            getActivity().runOnUiThread(() -> {
-                if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
-                    SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
-                    mSelectedContent.setDescription(concert.getFullDescription());
-                    setupDetailsOverviewRow(concert.isLiked());
-                } else {
-                    setupDetailsOverviewRow(false);
-                }
-
-                if (contentPageWrapper.getTrackList() != null && !contentPageWrapper.getTrackList().isEmpty()) {
-                    ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
-                    setupTrackListPresenter(contentWithTracks.getTracks().size());
-                    mAdapter.add(new ContentTrackListRow(contentWithTracks));
-                }
-
-                if (contentPageWrapper.getRelatedContentContainer() != null) {
-                    setupRelatedContentRow(contentPageWrapper.getRelatedContentContainer());
-                }
-
-                callback.run();
+        if (contentPageWrapper != null) {
+            databind(contentPageWrapper);
+            callback.run();
+        } else {
+            Observable.zip(
+                    observableFactory.createDetached(new ContentInfoCallable(mSelectedContent.getId()))
+                            .doOnError(t -> Log.e(TAG, "Failed to get concert info.", t))
+                            .onErrorReturn(t -> null),
+                    observableFactory.createDetached(new ContentTrackListCallable(mSelectedContent.getId()))
+                            .doOnError(t -> Log.e(TAG, "Failed to get track list.", t))
+                            .onErrorReturn(t -> null),
+                    observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId()))
+                            .doOnError(t -> Log.e(TAG, "Failed to get related content.", t))
+                            .onErrorReturn(t -> null),
+                    ContentPageWrapper::new
+            ).subscribe(contentPageWrapper -> {
+                getActivity().runOnUiThread(() -> {
+                    this.contentPageWrapper = contentPageWrapper;
+                    databind(contentPageWrapper);
+                    callback.run();
+                });
             });
-        });
+        }
+    }
+
+    private void databind(ContentPageWrapper contentPageWrapper) {
+        if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
+            SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
+            mSelectedContent.setDescription(concert.getFullDescription());
+            setupDetailsOverviewRow(concert.isLiked());
+        } else {
+            setupDetailsOverviewRow(false);
+        }
+
+        if (contentPageWrapper.getTrackList() != null && !contentPageWrapper.getTrackList().isEmpty()) {
+            ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
+            setupTrackListPresenter(contentWithTracks.getTracks().size());
+            mAdapter.add(new ContentTrackListRow(contentWithTracks));
+        }
+
+        if (contentPageWrapper.getRelatedContentContainer() != null) {
+            setupRelatedContentRow(contentPageWrapper.getRelatedContentContainer());
+        }
     }
 
     /**
