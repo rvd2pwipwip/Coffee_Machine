@@ -54,6 +54,7 @@ import android.support.v17.leanback.widget.RowHeaderPresenter;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.support.v17.leanback.widget.TenFootActionPresenterSelector;
+import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -149,26 +150,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View root = super.onCreateView(inflater, container, savedInstanceState);
-
-
-//        BrowseFrameLayout browseFrameLayout = (BrowseFrameLayout) root.findViewById(R.id.details_fragment_root);
-//        LinearLayout.LayoutParams browseFrameLayoutParams = (LinearLayout.LayoutParams) browseFrameLayout.getLayoutParams();
-//        browseFrameLayoutParams.setMargins(0,0,0,0);
-//        browseFrameLayout.setLayoutParams(browseFrameLayoutParams);
-//
-//        FrameLayout detailsRowsDock = (FrameLayout) root.findViewById(R.id.details_rows_dock);
-//        FrameLayout.LayoutParams detailsRowsDockLayoutParams = (FrameLayout.LayoutParams) detailsRowsDock.getLayoutParams();
-//        detailsRowsDockLayoutParams.setMargins(0,0,0,0);
-//        detailsRowsDock.setLayoutParams(detailsRowsDockLayoutParams);
-
-        return root;
-    }
-
-    @Override
     public void onStart() {
 
         Log.v(TAG, "onStart called.");
@@ -182,43 +163,61 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             updateBackground(mSelectedContent.getBackgroundImageUrl());
             setOnItemViewClickedListener(new ItemViewClickedListener());
 
-            Observable.zip(
-                    observableFactory.createDetached(new ContentInfoCallable(mSelectedContent.getId()))
-                            .doOnError(t ->  Log.e(TAG, "Failed to get concert info.", t))
-                            .onErrorReturn(t -> null),
-                    observableFactory.createDetached(new ContentTrackListCallable(mSelectedContent.getId()))
-                            .doOnError(t ->  Log.e(TAG, "Failed to get track list.", t))
-                            .onErrorReturn(t -> null),
-                    observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId()))
-                            .doOnError(t ->  Log.e(TAG, "Failed to get related content.", t))
-                            .onErrorReturn(t -> null),
-                    ContentPageWrapper::new
-            ).subscribe(contentPageWrapper ->  {
-                getActivity().runOnUiThread(() -> {
-                    if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
-                        SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
-                        mSelectedContent.setDescription(concert.getFullDescription());
-                        setupDetailsOverviewRow(concert.isLiked());
-                    } else {
-                        setupDetailsOverviewRow(false);
-                    }
+            if (getView() != null) {
+                VerticalGridView containerListView = getView().findViewById(R.id.container_list);
 
-                    if (contentPageWrapper.getTrackList() != null && !contentPageWrapper.getTrackList().isEmpty()) {
-                        ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
-                        setupTrackListPresenter(contentWithTracks.getTracks().size());
-                        mAdapter.add(new ContentTrackListRow(contentWithTracks));
-                    }
-
-                    if (contentPageWrapper.getRelatedContentContainer() != null) {
-                        setupRelatedContentRow(contentPageWrapper.getRelatedContentContainer());
-                    }
+                containerListView.setVisibility(View.GONE);
+                loadData(containerListView, () -> {
+                    containerListView.setAlpha(0f);
+                    containerListView.setVisibility(View.VISIBLE);
+                    containerListView.animate()
+                            .alpha(1f)
+                            .setDuration(1000)
+                            .setListener(null);
                 });
-            });
+            }
         } else {
             Log.v(TAG, "Start CONTENT_HOME_SCREEN.");
             ContentBrowser.getInstance(getActivity())
                           .switchToScreen(ContentBrowser.CONTENT_HOME_SCREEN);
         }
+    }
+
+    private void loadData(VerticalGridView containerListView, Runnable callback) {
+        Observable.zip(
+                observableFactory.createDetached(new ContentInfoCallable(mSelectedContent.getId()))
+                        .doOnError(t ->  Log.e(TAG, "Failed to get concert info.", t))
+                        .onErrorReturn(t -> null),
+                observableFactory.createDetached(new ContentTrackListCallable(mSelectedContent.getId()))
+                        .doOnError(t ->  Log.e(TAG, "Failed to get track list.", t))
+                        .onErrorReturn(t -> null),
+                observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId()))
+                        .doOnError(t ->  Log.e(TAG, "Failed to get related content.", t))
+                        .onErrorReturn(t -> null),
+                ContentPageWrapper::new
+        ).subscribe(contentPageWrapper ->  {
+            getActivity().runOnUiThread(() -> {
+                if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
+                    SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
+                    mSelectedContent.setDescription(concert.getFullDescription());
+                    setupDetailsOverviewRow(concert.isLiked());
+                } else {
+                    setupDetailsOverviewRow(false);
+                }
+
+                if (contentPageWrapper.getTrackList() != null && !contentPageWrapper.getTrackList().isEmpty()) {
+                    ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
+                    setupTrackListPresenter(contentWithTracks.getTracks().size());
+                    mAdapter.add(new ContentTrackListRow(contentWithTracks));
+                }
+
+                if (contentPageWrapper.getRelatedContentContainer() != null) {
+                    setupRelatedContentRow(contentPageWrapper.getRelatedContentContainer());
+                }
+
+                callback.run();
+            });
+        });
     }
 
     /**
