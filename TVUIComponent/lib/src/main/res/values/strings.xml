@@ -82,5 +82,12 @@ permissions and limitations under the License.
     <string name="privacy_text" translatable="false">If you have any questions about the privacy aspects of Stingray’s products or services or would like to make a privacy complaint, please contact us by email:</string>
     <string name="privacy_email" translatable="false">privacy@stingray.com</string>
 
+    <string name="subscribe_offer_description">To enjoy full-length concerts, music documentaries, and live events, start your free trial now.</string>
+    <string name="subscribe_offer_list_title">Subscribe Now</string>
+    <string name="subscribe_offer_list_item_1">\u2022 Watch unlimited concerts and music documentaries</string>
+    <string name="subscribe_offer_list_item_2">\u2022 Access live events</string>
+    <string name="subscribe_offer_list_item_3">\u2022 Discover personalized recommendations</string>
+    <string name="subscribe_offer_list_item_4">\u2022 Like concerts</string>
+
 
 </resources>
