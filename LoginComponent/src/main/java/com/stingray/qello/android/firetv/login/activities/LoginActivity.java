@@ -86,16 +86,18 @@ public class LoginActivity extends Activity {
 
         // Confirm that we have the correct API Key.
         try {
-            ulAuthManager = new ULAuthManager();
             amazonAuthManager = new AmazonAuthorizationManager(this, Bundle.EMPTY);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             showAuthToast(getString(R.string.incorrect_api_key));
             Log.e(TAG, getString(R.string.incorrect_api_key), e);
         }
+
         setContentView(R.layout.login_dialog_layout);
 
         APP_SCOPES = new String[]{getString(R.string.profile_Login)};
+
+        //For universal login
+        ulAuthManager = new ULAuthManager();
 
         initializeUI();
     }
