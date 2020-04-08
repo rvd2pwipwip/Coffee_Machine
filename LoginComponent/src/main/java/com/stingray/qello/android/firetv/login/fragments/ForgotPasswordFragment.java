@@ -76,7 +76,7 @@ public class ForgotPasswordFragment extends DialogFragment {
             observableFactory.create(new ForgotPasswordCallable(forgotPasswordRequestBody))
                     .subscribe(voidObject -> {
                         showToast(R.string.forgot_password_success);
-                        getActivity().finish();
+                        backToLogin();
                         progressBar.setVisibility(View.GONE);
                     }, throwable -> {
                         Log.e(TAG, "Forgot password call failed", throwable);
@@ -91,15 +91,16 @@ public class ForgotPasswordFragment extends DialogFragment {
         });
 
         Button cancelButton = view.findViewById(R.id.forget_password_cancel_btn);
-        cancelButton.setOnClickListener(v -> {
-            getActivity().getFragmentManager().popBackStack();
-        });
+        cancelButton.setOnClickListener(v -> backToLogin());
+    }
+
+    public void backToLogin() {
+        getActivity().getFragmentManager().popBackStack();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
-        getActivity().getFragmentManager().popBackStack();
+        super.onPause(); backToLogin()
     }
 
     @Override
