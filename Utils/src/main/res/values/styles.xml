@@ -101,5 +101,9 @@ permissions and limitations under the License.
         <item name="android:paddingEnd">10dp</item>
     </style>
 
+    <style name="fullscreen_dialog_animation" >
+        <item name="android:windowEnterAnimation">@anim/fade_in_dialog</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_dialog</item>
+    </style>
 
 </resources>

@@ -70,6 +70,7 @@ import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecentDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.helpers.RecommendationDatabaseHelper;
 import com.stingray.qello.firetv.android.contentbrowser.database.records.RecentRecord;
+import com.stingray.qello.firetv.android.event.SubscribeNowPopupEvent;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.module.ModuleManager;
 import com.stingray.qello.firetv.android.recipe.Recipe;
@@ -89,7 +90,10 @@ import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.user_tracking.ITracking;
 import com.stingray.qello.firetv.utils.DateAndTimeHelper;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -157,7 +161,12 @@ public class PlaybackActivity extends Activity implements
     private CaptioningHelper mCaptioningHelper;
     private CaptioningManager.CaptioningChangeListener mCaptioningChangeListener;
 
+    private EventBus eventBus = EventBus.getDefault();
     private ObservableFactory observableFactory = new ObservableFactory();
+
+    private VideoLink cVideoLink;
+    private boolean completedFullPlayback = false;
+    private List<VideoLink.Type> previewTypes = Arrays.asList(VideoLink.Type.TRAILER, VideoLink.Type.PREVIEW);
 
     /**
      * State of CC in Subtitle view.
@@ -263,12 +272,14 @@ public class PlaybackActivity extends Activity implements
         mSelectedContent = (Content) getIntent().getSerializableExtra(Content.class.getSimpleName());
 
         // TODO LEO LANUZO - Need to establish a proper way to communicate from Network thread to the UI thread
-        Map<VideoLink.Type, String> videoLinksByType =
+        Map<VideoLink.Type, VideoLink> videoLinksByType =
                 observableFactory.createDetached(new GetVideoLinksCallable(mSelectedContent.getChannelId()))
                 .toBlocking().single();
 
-        mSelectedContent.setUrl(new VideoLinkSelector().select(videoLinksByType));
-
+        cVideoLink = new VideoLinkSelector().select(videoLinksByType);
+        mSelectedContent.setUrl(cVideoLink.getMediaUri());
+        // TODO Remove - This is a preview that works that is 30 seconds
+        ///mSelectedContent.setUrl("https://d2ns1j5tbz0a1h.cloudfront.net/assets/2193127/97704551/1080p.m3u8?Expires=1586365289&Signature=ddH4Goek3LsDpwJ1B0XznaspseuH5bgx3NAzl3Xw1GJarkfPRIkkSYpC~zfIvx835WVqtQEAwQk-OiQVhGQR5iVyat6iu5JbJ0EAFS5wOygxUnosVK0KtzZy-d2XlFzImhyLrUcUIhCdGri0YcJD1xhgJKNDO6B5Omgo4PuWf8ZR1LbRSNyG5LwvI6G2RSFWakaS5o1LmdCSngdL6yBFPrygDwvIlaHU86VKoctztcDll6o5dGGVIZ1XrRtuBcn8WVowzjgL5T1N4eIEXXIRv3BX1RFUu2DpQUz0IpE4WMNkoq~6~tlkFSEK32LNixQgB7cvrPqJwx6LDGbNoAAJRw__&Key-Pair-Id=APKAILAUMFTX572YB7EA");
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
             finish();
         }
@@ -723,6 +734,10 @@ public class PlaybackActivity extends Activity implements
             mMediaSessionController.setMediaSessionActive(false);
             mMediaSessionController.releaseMediaSession();
             mMediaSessionController = null;
+        }
+
+        if (completedFullPlayback && previewTypes.contains(cVideoLink.getType())) {
+            eventBus.post(new SubscribeNowPopupEvent());
         }
     }
 
@@ -1780,6 +1795,7 @@ public class PlaybackActivity extends Activity implements
                 break;
             case ENDED:
                 hideProgress();
+                completedFullPlayback = true;
                 // Let ads implementation track player state and check for any post-roll ads.
                 if (mAdsImplementation != null && mAdsImplementation.isPostRollAvailable()) {
                     mAdsImplementation.setPlayerState(IAds.PlayerState.COMPLETED);

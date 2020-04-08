@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetVideoLinksCallable extends SvodCallable<Map<VideoLink.Type, String>> {
+public class GetVideoLinksCallable extends SvodCallable<Map<VideoLink.Type, VideoLink>> {
     private final static String ENDPOINT = "/v1/content/%s/video-links?hevc-compatible=true";
     private static final String TAG = GetVideoLinksCallable.class.getSimpleName();
 
@@ -25,20 +25,20 @@ public class GetVideoLinksCallable extends SvodCallable<Map<VideoLink.Type, Stri
     }
 
     @Override
-    public Map<VideoLink.Type, String> call() {
+    public Map<VideoLink.Type, VideoLink> call() {
         try {
             String url = String.format(ENDPOINT, assetId);
             String jsonResponse = get(url);
 
             List<VideoLink> videoLinks = objectMapper.readValue(jsonResponse, VideoLinks.class).getVideoLinks();
 
-            Map<VideoLink.Type, String> mediaUriByType = new HashMap<>();
+            Map<VideoLink.Type, VideoLink> mediaUriByType = new HashMap<>();
 
             for (VideoLink videoLink : videoLinks) {
                 try {
-                    VideoLink.Type type = VideoLink.Type.valueOf(videoLink.getVideoType());
+                    videoLink.setType(VideoLink.Type.valueOf(videoLink.getVideoType()));
                     if (videoLink.getMediaUri() != null) {
-                        mediaUriByType.put(type, videoLink.getMediaUri());
+                        mediaUriByType.put(videoLink.getType(), videoLink);
                     }
                 } catch (IllegalArgumentException e) {
                     Log.w(TAG, String.format("Unrecognized video type [%s]", videoLink.getVideoType()), e);
