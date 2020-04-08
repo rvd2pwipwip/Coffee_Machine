@@ -227,7 +227,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             setupDetailsOverviewRow(false);
         }
 
-        if (contentPageWrapper.getTrackList() != null && !contentPageWrapper.getTrackList().isEmpty()) {
+        if (contentPageWrapper.getTrackList() != null) {
             ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
             setupTrackListPresenter(contentWithTracks.getTracks().size());
             mAdapter.add(new ContentTrackListRow(contentWithTracks));
@@ -500,15 +500,31 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                     @Override
                     protected RowPresenter.ViewHolder createRowViewHolder(ViewGroup parent) {
                         RowPresenter.ViewHolder vh = super.createRowViewHolder(parent);
-                        View view = vh.view.findViewById(R.id.details_frame);
-                        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                        View detailsOverviewCustom = vh.view.findViewById(R.id.lb_details_overview_custom);
+
+                        int padding = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_side_padding);
+                        detailsOverviewCustom.setPadding(padding, 0 ,padding ,0);
+
+                        View detailsFrame = vh.view.findViewById(R.id.details_frame);
+                        ViewGroup.LayoutParams layoutParams = detailsFrame.getLayoutParams();
                         if(nbOfTracks > 0) {
+                            detailsOverviewCustom.setFocusable(false);
                             layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height);
                         } else {
                             layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height_empty);
                         }
 
-                        view.setLayoutParams(layoutParams);
+                        detailsFrame.setLayoutParams(layoutParams);
+
+                        View overviewImage = detailsFrame.findViewById(R.id.details_overview_image);
+                        View rightPanel = detailsFrame.findViewById(R.id.details_overview_right_panel);
+                        View actions = detailsFrame.findViewById(R.id.details_overview_actions);
+
+                        overviewImage.setVisibility(View.GONE);
+                        //rightPanel.setVisibility(View.GONE);
+                        actions.setVisibility(View.GONE);
+
+
                         return vh;
                     }
                 };
