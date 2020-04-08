@@ -31,7 +31,7 @@ permissions and limitations under the License.
     <string name="terms_of_use_file">terms_of_use.html</string>
     <string name="contact_us_file">contact_us.html</string>
     <!-- A default light device font used for body text -->
-    <string name="default_light_font">Roboto Light</string>
+    <string name="default_light_font">Roboto Regular</string>
     <!-- A default bold device font used for titles -->
     <string name="default_bold_font">Roboto Bold</string>
     <!-- A default regular device font used for buttons and subtitles -->

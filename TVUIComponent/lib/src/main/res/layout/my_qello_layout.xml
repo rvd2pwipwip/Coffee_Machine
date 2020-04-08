@@ -58,7 +58,7 @@
             <Button
                 android:id="@+id/history_button"
                 style="@style/button_border_highlight"
-                android:layout_width="88dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="start|center_vertical"
@@ -70,7 +70,7 @@
             <Button
                 android:id="@+id/favorites_button"
                 style="@style/button_border_highlight"
-                android:layout_width="88dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="start|center_vertical"
@@ -82,7 +82,7 @@
             <Button
                 android:id="@+id/playlists_button"
                 style="@style/button_border_highlight"
-                android:layout_width="88dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="start|center_vertical"
