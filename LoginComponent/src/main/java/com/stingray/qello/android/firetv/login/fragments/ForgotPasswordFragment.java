@@ -100,7 +100,8 @@ public class ForgotPasswordFragment extends DialogFragment {
 
     @Override
     public void onPause() {
-        super.onPause(); backToLogin()
+        super.onPause();
+        backToLogin();
     }
 
     @Override
