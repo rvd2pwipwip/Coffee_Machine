@@ -167,7 +167,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 VerticalGridView containerListView = getView().findViewById(R.id.container_list);
 
                 containerListView.setVisibility(View.GONE);
-                loadData(containerListView, () -> {
+                loadData(() -> {
                     containerListView.setAlpha(0f);
                     containerListView.setVisibility(View.VISIBLE);
                     containerListView.animate()
@@ -183,7 +183,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         }
     }
 
-    private void loadData(VerticalGridView containerListView, Runnable callback) {
+    private void loadData(Runnable callback) {
         Observable.zip(
                 observableFactory.createDetached(new ContentInfoCallable(mSelectedContent.getId()))
                         .doOnError(t ->  Log.e(TAG, "Failed to get concert info.", t))
