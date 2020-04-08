@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_subscribe_offer"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="70dp">
+
+        <TextView
+            android:id="@+id/subscribe_offer_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/subscribe_offer_list_title"
+            android:textColor="@color/ui_almost_white"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/subscribe_offer_list_item_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:text="@string/subscribe_offer_list_item_1"
+            android:textColor="@color/ui_almost_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/subscribe_offer_list_item_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="@string/subscribe_offer_list_item_2"
+            android:textColor="@color/ui_almost_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/subscribe_offer_list_item_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="@string/subscribe_offer_list_item_3"
+            android:textColor="@color/ui_almost_white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/subscribe_offer_list_item_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="@string/subscribe_offer_list_item_4"
+            android:textColor="@color/ui_almost_white"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_column="2"
+            android:src="@drawable/stingray_qello_white" />
+
+        <TextView
+            android:id="@+id/subscribe_offer_description"
+            android:layout_width="376dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center_horizontal"
+            android:text="@string/subscribe_offer_description"
+            android:textAlignment="center"
+            android:textColor="@color/ui_almost_white"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/login_button"
+            style="@style/secondary_button"
+            android:layout_width="275dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:text="Log In"
+            android:textSize="@dimen/button_text_size" />
+
+        <Button
+            android:id="@+id/start_free_trial_button"
+            style="@style/call_to_action_button_style"
+            android:layout_width="275dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:text="Start Free Trial"
+            android:textSize="@dimen/button_text_size" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            style="@style/secondary_button"
+            android:layout_width="275dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:text="Cancel"
+            android:textSize="@dimen/button_text_size" />
+
+    </LinearLayout>
+
+</LinearLayout>

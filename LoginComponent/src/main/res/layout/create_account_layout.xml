@@ -125,12 +125,13 @@ permissions and limitations under the License.
 
             <Button
                 android:id="@+id/create_button"
-                style="@style/call_to_action_button_style_outline_inactive"
+                style="@style/call_to_action_button_style"
                 android:layout_width="384dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:text="Create Account"
+                android:textSize="14sp"
                 android:textAllCaps="false" />
 
 <!--            <TextView-->

@@ -79,17 +79,18 @@
                 android:textColorHighlight="#FAFAFA"
                 android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/playlists_button"
-                style="@style/button_border_highlight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:gravity="start|center_vertical"
-                android:text="Playlists"
-                android:textAllCaps="false"
-                android:textColorHighlight="#FAFAFA"
-                android:textSize="16sp" />
+
+<!--            <Button-->
+<!--                android:id="@+id/playlists_button"-->
+<!--                style="@style/button_border_highlight"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="sans-serif-light"-->
+<!--                android:gravity="start|center_vertical"-->
+<!--                android:text="Playlists"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColorHighlight="#FAFAFA"-->
+<!--                android:textSize="16sp" />-->
         </LinearLayout>
 
 

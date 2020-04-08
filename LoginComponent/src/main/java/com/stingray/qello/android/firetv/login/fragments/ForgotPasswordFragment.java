@@ -2,19 +2,15 @@ package com.stingray.qello.android.firetv.login.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -80,7 +76,7 @@ public class ForgotPasswordFragment extends DialogFragment {
             observableFactory.create(new ForgotPasswordCallable(forgotPasswordRequestBody))
                     .subscribe(voidObject -> {
                         showToast(R.string.forgot_password_success);
-                        getActivity().finish();
+                        backToLogin();
                         progressBar.setVisibility(View.GONE);
                     }, throwable -> {
                         Log.e(TAG, "Forgot password call failed", throwable);
@@ -95,35 +91,60 @@ public class ForgotPasswordFragment extends DialogFragment {
         });
 
         Button cancelButton = view.findViewById(R.id.forget_password_cancel_btn);
-        cancelButton.setOnClickListener(v -> {
-            getActivity().getFragmentManager().popBackStack();
-        });
+        cancelButton.setOnClickListener(v -> backToLogin());
+    }
+
+    public void backToLogin() {
+        getActivity().getFragmentManager().popBackStack();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().getFragmentManager().popBackStack();
+        backToLogin();
     }
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        final Dialog dialog = new Dialog(getActivity(), getTheme());
-        final Window window = dialog.getWindow();
+        final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
 
-        if (window != null) {
-            final WindowManager.LayoutParams wlp = window.getAttributes();
-            wlp.gravity = Gravity.CENTER;
+        // This doesn't seem to work for the full screen -> android.R.style.Theme_NoTitleBar_Fullscreen was the solution leaving it for reference
+//        final Window window = dialog.getWindow();
+//
+//        if (window != null) {
+//            final WindowManager.LayoutParams wlp = window.getAttributes();
+//            wlp.gravity = Gravity.CENTER;
+//
+//            Display display = window.getWindowManager().getDefaultDisplay();
+//            Point size = new Point();
+//            display.getSize(size);
+//            wlp.width = size.x;
+//            wlp.height = size.y;
+//
+//            window.setAttributes(wlp);
+//
+//        }
 
-            Display display = window.getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            wlp.width = size.x;
-            wlp.height = size.y;
+//        final Window window = dialog.getWindow();
+//
+//        if (window != null) {
+//            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+//            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+//
+//            dialog.getWindow().setLayout(width, height);
+//        }
 
-            window.setAttributes(wlp);
-
-        }
+//        final RelativeLayout root = new RelativeLayout(getActivity());
+//        root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//
+//        final Dialog dialog = new Dialog(getActivity(), getTheme());
+//        final Window window = dialog.getWindow();
+//
+//        if (window != null) {
+//            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            dialog.setContentView(root);
+//            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        }
 
         return dialog;
     }
