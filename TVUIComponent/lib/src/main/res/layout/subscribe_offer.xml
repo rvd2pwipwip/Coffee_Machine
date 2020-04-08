@@ -7,8 +7,6 @@
     android:background="@drawable/background_gradient_subscribe_offer"
     android:orientation="horizontal">
 
-    <!--    android:foreground="@drawable/background_gradient_subscribe_offer"-->
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
