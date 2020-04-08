@@ -279,7 +279,10 @@ public class PlaybackActivity extends Activity implements
         cVideoLink = new VideoLinkSelector().select(videoLinksByType);
         mSelectedContent.setUrl(cVideoLink.getMediaUri());
         // TODO Remove - This is a preview that works that is 30 seconds
-        ///mSelectedContent.setUrl("https://d2ns1j5tbz0a1h.cloudfront.net/assets/2193127/97704551/1080p.m3u8?Expires=1586365289&Signature=ddH4Goek3LsDpwJ1B0XznaspseuH5bgx3NAzl3Xw1GJarkfPRIkkSYpC~zfIvx835WVqtQEAwQk-OiQVhGQR5iVyat6iu5JbJ0EAFS5wOygxUnosVK0KtzZy-d2XlFzImhyLrUcUIhCdGri0YcJD1xhgJKNDO6B5Omgo4PuWf8ZR1LbRSNyG5LwvI6G2RSFWakaS5o1LmdCSngdL6yBFPrygDwvIlaHU86VKoctztcDll6o5dGGVIZ1XrRtuBcn8WVowzjgL5T1N4eIEXXIRv3BX1RFUu2DpQUz0IpE4WMNkoq~6~tlkFSEK32LNixQgB7cvrPqJwx6LDGbNoAAJRw__&Key-Pair-Id=APKAILAUMFTX572YB7EA");
+        if (cVideoLink.getType() != VideoLink.Type.FULL) {
+            mSelectedContent.setUrl("https://d2ns1j5tbz0a1h.cloudfront.net/assets/2193127/97704551/1080p.m3u8?Expires=1586365289&Signature=ddH4Goek3LsDpwJ1B0XznaspseuH5bgx3NAzl3Xw1GJarkfPRIkkSYpC~zfIvx835WVqtQEAwQk-OiQVhGQR5iVyat6iu5JbJ0EAFS5wOygxUnosVK0KtzZy-d2XlFzImhyLrUcUIhCdGri0YcJD1xhgJKNDO6B5Omgo4PuWf8ZR1LbRSNyG5LwvI6G2RSFWakaS5o1LmdCSngdL6yBFPrygDwvIlaHU86VKoctztcDll6o5dGGVIZ1XrRtuBcn8WVowzjgL5T1N4eIEXXIRv3BX1RFUu2DpQUz0IpE4WMNkoq~6~tlkFSEK32LNixQgB7cvrPqJwx6LDGbNoAAJRw__&Key-Pair-Id=APKAILAUMFTX572YB7EA");
+        }
+
         if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
             finish();
         }

@@ -20,21 +20,19 @@ import com.stingray.qello.android.firetv.login.R;
 import com.stingray.qello.android.firetv.login.communication.ForgotPasswordCallable;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.ForgotPasswordRequestBody;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
+import com.stingray.qello.firetv.android.ui.fragments.FullScreenDialogFragment;
 import com.stingray.qello.firetv.android.utils.Helpers;
 
 import java.util.Locale;
 
-public class ForgotPasswordFragment extends DialogFragment {
+public class ForgotPasswordFragment extends FullScreenDialogFragment {
     public static final String TAG = ForgotPasswordFragment.class.getName();
     public static final String ARG_EMAIL = "EMAIL";
-
-    private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
 
     private ObservableFactory observableFactory = new ObservableFactory();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Helpers.handleActivityEnterFadeTransition(getActivity(), ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
     }
 
     @Override
@@ -102,51 +100,6 @@ public class ForgotPasswordFragment extends DialogFragment {
     public void onPause() {
         super.onPause();
         backToLogin();
-    }
-
-    @Override
-    public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
-
-        // This doesn't seem to work for the full screen -> android.R.style.Theme_NoTitleBar_Fullscreen was the solution leaving it for reference
-//        final Window window = dialog.getWindow();
-//
-//        if (window != null) {
-//            final WindowManager.LayoutParams wlp = window.getAttributes();
-//            wlp.gravity = Gravity.CENTER;
-//
-//            Display display = window.getWindowManager().getDefaultDisplay();
-//            Point size = new Point();
-//            display.getSize(size);
-//            wlp.width = size.x;
-//            wlp.height = size.y;
-//
-//            window.setAttributes(wlp);
-//
-//        }
-
-//        final Window window = dialog.getWindow();
-//
-//        if (window != null) {
-//            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-//            int height = ViewGroup.LayoutParams.MATCH_PARENT;
-//
-//            dialog.getWindow().setLayout(width, height);
-//        }
-
-//        final RelativeLayout root = new RelativeLayout(getActivity());
-//        root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-//
-//        final Dialog dialog = new Dialog(getActivity(), getTheme());
-//        final Window window = dialog.getWindow();
-//
-//        if (window != null) {
-//            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//            dialog.setContentView(root);
-//            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        }
-
-        return dialog;
     }
 
     private void showToast(int id) {
