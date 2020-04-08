@@ -117,6 +117,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private ObservableFactory observableFactory = new ObservableFactory();
 
     private ContentPageWrapper contentPageWrapper = null;
+    private boolean initialized = false;
 
     SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
 
@@ -153,39 +154,46 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
     @Override
     public void onStart() {
-
         Log.v(TAG, "onStart called.");
         super.onStart();
         if (mSelectedContent != null || checkGlobalSearchIntent()) {
-            setupAdapter();
-            setupDetailsOverviewRowPresenter();
-            setupContentListRowPresenter();
-            updateBackground(mSelectedContent.getBackgroundImageUrl());
-            setOnItemViewClickedListener(new ItemViewClickedListener());
+            if (contentPageWrapper == null) {
+                initialized = false;
+            }
+
+            if (!initialized) {
+                setupAdapter();
+                setupDetailsOverviewRowPresenter();
+                setupContentListRowPresenter();
+                updateBackground(mSelectedContent.getBackgroundImageUrl());
+                setOnItemViewClickedListener(new ItemViewClickedListener());
+            }
 
             if (getView() != null) {
                 VerticalGridView containerListView = getView().findViewById(R.id.container_list);
-
-                containerListView.setVisibility(View.GONE);
-                loadData(() -> {
-                    containerListView.setAlpha(0f);
-                    containerListView.setVisibility(View.VISIBLE);
-                    containerListView.animate()
-                            .alpha(1f)
-                            .setDuration(800)
-                            .setListener(null);
-                });
+                if (containerListView != null) {
+                    containerListView.setVisibility(View.GONE);
+                    loadData(() -> {
+                        containerListView.setAlpha(0f);
+                        containerListView.setVisibility(View.VISIBLE);
+                        containerListView.animate()
+                                .alpha(1f)
+                                .setDuration(800)
+                                .setListener(null);
+                    });
+                } else {
+                    Log.e(TAG, "Something went wrong with the showscreen. Returning to home screen");
+                    ContentBrowser.getInstance(getActivity()).switchToScreen(ContentBrowser.CONTENT_HOME_SCREEN);
+                }
             }
         } else {
             Log.v(TAG, "Start CONTENT_HOME_SCREEN.");
-            ContentBrowser.getInstance(getActivity())
-                          .switchToScreen(ContentBrowser.CONTENT_HOME_SCREEN);
+            ContentBrowser.getInstance(getActivity()).switchToScreen(ContentBrowser.CONTENT_HOME_SCREEN);
         }
     }
 
     private void loadData(Runnable callback) {
         if (contentPageWrapper != null) {
-            databind(contentPageWrapper);
             callback.run();
         } else {
             Observable.zip(
@@ -202,6 +210,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             ).subscribe(contentPageWrapper -> {
                 getActivity().runOnUiThread(() -> {
                     this.contentPageWrapper = contentPageWrapper;
+                    initialized = true;
                     databind(contentPageWrapper);
                     callback.run();
                 });

@@ -62,9 +62,9 @@ public class ContentTrackListPresenter extends Presenter {
         public ViewHolder(final View view) {
 
             super(view);
-            mTitle = (TextView) view.findViewById(R.id.details_description_title);
-            mBody = (TextView) view.findViewById(R.id.details_description_body);
-            mContentTrackListTable = (TableLayout) view.findViewById(R.id.content_track_list_table);
+            mTitle = view.findViewById(R.id.details_description_title);
+            mBody = view.findViewById(R.id.details_description_body);
+            mContentTrackListTable = view.findViewById(R.id.content_track_list_table);
         }
 
         public TextView getTitle() {
@@ -91,9 +91,7 @@ public class ContentTrackListPresenter extends Presenter {
 
         mContext = parent.getContext();
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.details_content_track_list_layout, parent,
-                        false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.details_content_track_list_layout, parent, false);
 
         return new ViewHolder(view);
     }
@@ -106,16 +104,10 @@ public class ContentTrackListPresenter extends Presenter {
 
         Log.v(TAG, "onBindViewHolder called.");
         ViewHolder customViewHolder = (ViewHolder) viewHolder;
-        onBindDescription(customViewHolder, item);
-    }
-
-    private void onBindDescription(ViewHolder viewHolder, Object item) {
-
-        Log.v(TAG, "onBindDescription called.");
         ContentWithTracks contentWithTracks = (ContentWithTracks) item;
 
         if (contentWithTracks != null) {
-            populateViewHolder(viewHolder, contentWithTracks);
+            populateViewHolder(customViewHolder, contentWithTracks);
         } else {
             Log.e(TAG, "Content is null in onBindDescription");
         }
