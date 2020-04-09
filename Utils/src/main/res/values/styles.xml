@@ -106,4 +106,8 @@ permissions and limitations under the License.
         <item name="android:windowExitAnimation">@anim/fade_out_dialog</item>
     </style>
 
+    <style name="fullscreen_dialog_animation_fade_out_only">
+        <item name="android:windowExitAnimation">@anim/fade_out_dialog</item>
+    </style>
+
 </resources>
