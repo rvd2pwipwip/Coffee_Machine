@@ -62,7 +62,7 @@ public class ContentBrowseFragment extends RowsFragment {
 
         CustomListRowPresenter customListRowPresenter = new CustomListRowPresenter();
         customListRowPresenter.setHeaderPresenter(new RowHeaderPresenter());
-        customListRowPresenter.setShadowEnabled(true);
+        customListRowPresenter.setShadowEnabled(false);
 
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(customListRowPresenter);
 

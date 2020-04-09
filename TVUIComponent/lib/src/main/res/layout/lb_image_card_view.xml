@@ -36,9 +36,8 @@ permissions and limitations under the License.
     <ImageView
         android:id="@+id/main_image"
         style="@style/Widget.Leanback.ImageCardView.ImageStyle"
-        android:layout_width="120dp"
-        android:layout_height="160dp"
-        android:background="@android:color/transparent" />
+        android:padding="3dp"
+        android:background="@drawable/bg_card_border" />
 
     <android.support.v17.leanback.widget.NonOverlappingRelativeLayout
         android:id="@+id/info_field"

@@ -14,6 +14,7 @@
  */
 package com.stingray.qello.firetv.android.tv.tenfoot.presenter;
 
+import android.support.v17.leanback.widget.FocusHighlight;
 import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.RowPresenter;
@@ -28,8 +29,7 @@ public class CustomListRowPresenter extends ListRowPresenter {
      * Constructor.
      */
     public CustomListRowPresenter() {
-
-        super();
+        super(FocusHighlight.ZOOM_FACTOR_NONE, false);
     }
 
     @Override
@@ -41,5 +41,12 @@ public class CustomListRowPresenter extends ListRowPresenter {
         gridView.setItemMargin(20);
         return viewHolder;
     }
+
+    @Override
+    public boolean isUsingDefaultListSelectEffect() {
+        return false;
+    }
+
+
 
 }

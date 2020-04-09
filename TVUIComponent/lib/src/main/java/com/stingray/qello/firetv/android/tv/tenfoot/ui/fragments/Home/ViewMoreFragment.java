@@ -35,6 +35,7 @@ public class ViewMoreFragment extends VerticalGridFragment  {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         ViewMoreVerticalGridPresenter gridPresenter = new ViewMoreVerticalGridPresenter();
         gridPresenter.setNumberOfColumns(5);
+        gridPresenter.setShadowEnabled(false);
         setGridPresenter(gridPresenter);
 
         setOnItemViewClickedListener(new ContentClickedListener());
