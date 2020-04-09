@@ -38,6 +38,13 @@ limitations under the License.
                 android:orientation="vertical"
                 android:paddingEnd="10dp">
 
+                <TextView android:id="@+id/search_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Search"
+                    android:textSize="15sp" />
+
                 <android.support.v17.leanback.widget.SearchBar
                     android:id="@+id/lb_search_bar"
                     android:layout_width="match_parent"
