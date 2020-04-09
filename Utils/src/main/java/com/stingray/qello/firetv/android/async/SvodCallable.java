@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_AVC_URL;
+
 public abstract class SvodCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = SvodCallable.class.getName();
-    private static final String BASE_URL = "https://svod-stage.api.stingray.com";
+    private static final String BASE_URL = BASE_AVC_URL;
 
     private String createUrl(String url) {
         return BASE_URL + url;

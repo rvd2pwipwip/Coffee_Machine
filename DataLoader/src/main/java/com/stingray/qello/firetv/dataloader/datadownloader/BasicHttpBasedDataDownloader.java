@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+import static com.stingray.qello.firetv.android.async.UrlConstants.HOMEPAGE_LOAD_URL;
+
 /**
  * This class represents a basic HTTP-based data downloader. It receives a URL from the URL
  * generator, fetches the content from that URL, and returns the content.
@@ -114,13 +116,16 @@ BasicHttpBasedDataDownloader extends ADataDownloader {
     protected Data fetchData(Recipe dataLoadRecipe) throws AUrlGenerator.UrlGeneratorException,
             IOException {
 
+        // No longer use json file
+
         // Starting with an empty map and replacing it with a map from recipe if one exists.
-        Map urlGeneratorRecipeMap = Collections.emptyMap();
-        if (dataLoadRecipe.getMap().containsKey(URL_GENERATOR_RECIPE)) {
-            urlGeneratorRecipeMap = (Map) dataLoadRecipe.getMap().get(URL_GENERATOR_RECIPE);
-        }
-        // Get the url.
-        String url = mUrlGenerator.getUrl(urlGeneratorRecipeMap);
+//        Map urlGeneratorRecipeMap = Collections.emptyMap();
+//        if (dataLoadRecipe.getMap().containsKey(URL_GENERATOR_RECIPE)) {
+//            urlGeneratorRecipeMap = (Map) dataLoadRecipe.getMap().get(URL_GENERATOR_RECIPE);
+//        }
+//        // Get the url.
+//        String url = mUrlGenerator.getUrl(urlGeneratorRecipeMap);
+        String url = HOMEPAGE_LOAD_URL;
         Log.d(TAG, "url: " + url);
         return Data.createDataForPayload(NetworkUtils.getDataLocatedAtUrl(url));
     }

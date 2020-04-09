@@ -14,11 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_UL_API_URL;
+import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_UL_FE_URL;
+
 public abstract class ULCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = ULCallable.class.getName();
-    private static final String BASE_URL = "https://ulogin-proxy-test.stingray.com";
-    protected static final String BASE_API_URL = BASE_URL + "/loginapi";
-    protected static final String BASE_CLIENT_URL = "https://login-test.stingray.com";
+    protected static final String BASE_API_URL = BASE_UL_API_URL + "/loginapi";
+    protected static final String BASE_CLIENT_URL = BASE_UL_FE_URL;
 
     private String createUrl(String url) {
         return BASE_API_URL + url;
