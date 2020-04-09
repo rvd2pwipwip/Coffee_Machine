@@ -14,11 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_UL_API_URL;
+import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_UL_FE_URL;
+
 public abstract class ULCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = ULCallable.class.getName();
-    private static final String BASE_URL = "https://ulogin-proxy-test.stingray.com";
-    protected static final String BASE_API_URL = BASE_URL + "/loginapi";
-    protected static final String BASE_CLIENT_URL = BASE_URL;
+    protected static final String BASE_API_URL = BASE_UL_API_URL + "/loginapi";
+    protected static final String BASE_CLIENT_URL = BASE_UL_FE_URL;
 
     private String createUrl(String url) {
         return BASE_API_URL + url;
@@ -60,13 +62,13 @@ public abstract class ULCallable<T> extends BaseCommunicator implements Callable
             os.write(input, 0, input.length);
         }
 
-        return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+        return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), url.toString());
     }
 
 
-    public static class BadParameterException extends Exception {
-        public BadParameterException(String endpoint, String requestBody) {
-            super(String.format("Call to endpoint [%s] failed due to bad parameters", endpoint, requestBody));
+    public static class UnexpectedException extends Exception {
+        public UnexpectedException(int code, String endpoint, String requestBody, String responseBody) {
+            super(String.format("Unexpected error occurred when calling to endpoint [%s]. Code: [%s] RequestBody [%s] Response: [%s]", endpoint, code, requestBody, responseBody));
         }
     }
 }

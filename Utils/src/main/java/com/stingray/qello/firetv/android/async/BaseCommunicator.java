@@ -16,15 +16,18 @@ public class BaseCommunicator {
     protected static class Response {
         private final int code;
         private final String body;
+        private String url;
 
         public Response() {
             this.code = -1;
             this.body = "";
+            this.url = "";
         }
 
-        public Response(int code, String body) {
+        public Response(int code, String body, String url) {
             this.code = code;
             this.body = body;
+            this.url = url;
         }
 
         public int getCode() {
@@ -33,6 +36,10 @@ public class BaseCommunicator {
 
         public String getBody() {
             return body;
+        }
+
+        public String getUrl() {
+            return url;
         }
     }
 

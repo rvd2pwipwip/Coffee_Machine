@@ -45,6 +45,7 @@ import com.stingray.qello.firetv.utils.DateAndTimeHelper;
 import com.stingray.qello.firetv.utils.StringManipulation;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -294,7 +295,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param activity The activity that is active when ContentBrowser is created.
      */
     private ContentBrowser(Activity activity) {
-
         mAppContext = activity.getApplicationContext();
         mNavigator = new Navigator(activity);
         mSubscribed = Preferences.getBoolean(com.stingray.qello.firetv.android.ui.constants.PreferencesConstants.HAS_SUBSCRIPTION);
@@ -431,13 +431,13 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      *
      * @param authenticationStatusUpdateEvent Event for update in authentication status.
      */
+    @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent authenticationStatusUpdateEvent) {
-
-        if (mLoginAction != null) {
-            mLoginAction.setState(authenticationStatusUpdateEvent.isUserAuthenticated() ?
-                                          LogoutSettingsFragment.TYPE_LOGOUT :
-                                          LogoutSettingsFragment.TYPE_LOGIN);
-        }
+//        if (mLoginAction != null) {
+//            mLoginAction.setState(authenticationStatusUpdateEvent.isUserAuthenticated() ?
+//                                          LogoutSettingsFragment.TYPE_LOGOUT :
+//                                          LogoutSettingsFragment.TYPE_LOGIN);
+//        }
         mSubscribed = Preferences.getBoolean(com.stingray.qello.firetv.android.ui.constants.PreferencesConstants.HAS_SUBSCRIPTION);
     }
 

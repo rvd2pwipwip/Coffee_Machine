@@ -4,7 +4,7 @@ public class ForgotPasswordRequestBody {
     private String email;
     private String clientId;
     private String languageTag;
-    private String resetPasswordUri;
+    private String resetPasswordUrl;
 
     public ForgotPasswordRequestBody(String email, String languageTag) {
         this.email = email;
@@ -15,8 +15,8 @@ public class ForgotPasswordRequestBody {
         this.clientId = clientId;
     }
 
-    public void setResetPasswordUri(String resetPasswordUri) {
-        this.resetPasswordUri = resetPasswordUri;
+    public void setResetPasswordUrl(String resetPasswordUrl) {
+        this.resetPasswordUrl = resetPasswordUrl;
     }
 
     public String getEmail() {
@@ -31,17 +31,7 @@ public class ForgotPasswordRequestBody {
         return languageTag;
     }
 
-    public String getResetPasswordUri() {
-        return resetPasswordUri;
-    }
-
-    @Override
-    public String toString() {
-        return "ForgotPasswordRequestBody{" +
-                "email='" + email + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", languageTag='" + languageTag + '\'' +
-                ", resetPasswordUri='" + resetPasswordUri + '\'' +
-                '}';
+    public String getResetPasswordUrl() {
+        return resetPasswordUrl;
     }
 }

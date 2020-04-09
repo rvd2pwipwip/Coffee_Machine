@@ -16,11 +16,16 @@ package com.stingray.qello.firetv.android.tv.tenfoot.base;
 
 import com.stingray.qello.firetv.android.adapters.ActionWidgetAdapter;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
+import com.stingray.qello.firetv.android.event.SubscribeNowPopupEvent;
 import com.stingray.qello.firetv.android.model.Action;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.Home.HomeFragment;
 import com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.Explore.ContentSearchFragment;
 import com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello.MyQelloFragment;
+import com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.SubscribeNowFragment;
+import com.stingray.qello.firetv.android.ui.fragments.LogoutSettingsFragment;
+import com.stingray.qello.firetv.android.utils.Preferences;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -28,10 +33,13 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v17.leanback.widget.OnChildViewHolderSelectedListener;
 import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -185,6 +193,23 @@ public abstract class BaseActivity extends Activity {
                 //loginLogoutActionTriggered(activity, action);
             }
             break;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onSubscribeNowPopupEvent(SubscribeNowPopupEvent subscribeNowPopupEvent) {
+        if (!Preferences.getBoolean(com.stingray.qello.firetv.android.ui.constants.PreferencesConstants.HAS_SUBSCRIPTION)) {
+            Fragment subscribeNowFragment = getFragmentManager().findFragmentByTag(SubscribeNowFragment.TAG);
+
+            if (subscribeNowFragment == null) {
+                // TODO Leo - Subscribe now fragment is always being created? I don't know why but need to persist it somewhere
+                subscribeNowFragment = new SubscribeNowFragment();
+            }
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(subscribeNowFragment, SubscribeNowFragment.TAG);
+            ft.commit();
         }
     }
 }

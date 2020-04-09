@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_AVC_URL;
+
 public abstract class SvodCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = SvodCallable.class.getName();
-    private static final String BASE_URL = "https://svod-stage.api.stingray.com";
+    private static final String BASE_URL = BASE_AVC_URL;
 
     private String createUrl(String url) {
         return BASE_URL + url;
@@ -40,7 +42,7 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
     protected Response get(String path, String accessToken) {
         return performWithTokenRefresh(() -> {
             HttpURLConnection urlConnection = createUrlConnection(path, "GET", accessToken);
-            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), urlConnection.getURL().toString());
         });
     }
 
@@ -62,14 +64,14 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
                 os.write(input, 0, input.length);
             }
 
-            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), urlConnection.getURL().toString());
         });
     }
 
     protected Response delete(String path) {
         return performWithTokenRefresh(() -> {
             HttpURLConnection urlConnection =  createUrlConnection(path, "DELETE", Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
-            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection));
+            return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), urlConnection.getURL().toString());
         });
     }
 
