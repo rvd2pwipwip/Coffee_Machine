@@ -45,7 +45,7 @@ limitations under the License.
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="Search"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
 
                 <android.support.v17.leanback.widget.SearchBar
                     android:id="@+id/lb_search_bar"
@@ -60,7 +60,7 @@ limitations under the License.
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="Discover"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
