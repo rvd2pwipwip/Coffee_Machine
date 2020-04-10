@@ -26,9 +26,10 @@ limitations under the License.
         android:orientation="horizontal"
         android:paddingStart="56dp"
         android:paddingTop="20dp">
+
         <LinearLayout
             android:id="@+id/explore_side_menu"
-            android:layout_width="240dp"
+            android:layout_width="225dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -38,7 +39,8 @@ limitations under the License.
                 android:orientation="vertical"
                 android:paddingEnd="10dp">
 
-                <TextView android:id="@+id/search_title"
+                <TextView
+                    android:id="@+id/search_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -52,7 +54,8 @@ limitations under the License.
                     android:clipChildren="false" />
 
 
-                <TextView android:id="@+id/genres_title"
+                <TextView
+                    android:id="@+id/genres_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -75,8 +78,7 @@ limitations under the License.
                     android:id="@+id/explore_page_genres"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    />
+                    android:orientation="vertical" />
 
             </ScrollView>
         </LinearLayout>

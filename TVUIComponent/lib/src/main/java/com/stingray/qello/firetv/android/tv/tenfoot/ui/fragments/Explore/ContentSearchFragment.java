@@ -38,6 +38,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v17.leanback.app.RowsFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
+import android.support.v17.leanback.widget.BaseCardView;
 import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.ListRow;
@@ -129,7 +130,10 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         super.onCreate(savedInstanceState);
 
         CustomListRowPresenter presenter = new CustomListRowPresenter();
+        presenter.setShadowEnabled(false);
         presenter.setHeaderPresenter(new RowHeaderPresenter());
+        presenter.getHeaderPresenter().setNullItemVisibilityGone(true);
+
         mRowsAdapter = new ArrayObjectAdapter(presenter);
 
         setSearchResultProvider(this);
@@ -286,8 +290,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                     // keyboard takes user into first search result's
                     // content_details_activity_layout page.
                     searchEditText.setOnKeyboardDismissListener(() -> {
-                        // If search returns results, focus on the first item in the result list.
                         // If search doesn't have results, this will focus on searchEditText again.
+                        // If search returns results, focus on the first item in the result list.
                         mSpeechOrbView.setFocusable(false);
                         mSpeechOrbView.clearFocus();
                         // We don't need to clearFocus on SearchEditText here, the first
@@ -368,7 +372,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
     private void loadRows() {
         if (mQuery != null) {
-            mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+            mListRowAdapter = new ArrayObjectAdapter(new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 120, 160));
             ContentBrowser.getInstance(getActivity()).search(mQuery, this::updateResults);
         }
     }
@@ -413,7 +417,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 int index = 0;
 
                 for (int i = 0; i < rows; i++) {
-                    ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter());
+                    ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 120, 160));
 
                     for (int j = index; j < (index + elementsInRow) && (j < mListRowAdapter.size()); j++) {
                         row.add(mListRowAdapter.get(j));
@@ -429,7 +433,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                     index += elementsInRow;
                 }
             } else {
-                ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter());
+                ArrayObjectAdapter row = new ArrayObjectAdapter(new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 120, 160));
                 mRowsAdapter.add(new ListRow(header, row));
                 noResultsView.setAlpha(0f);
                 noResultsView.setVisibility(View.VISIBLE);
@@ -532,7 +536,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
     public void loadGenreAssets(ContentContainerExt genreAssets) {
         SvodMetadata metadata = genreAssets.getMetadata();
-        mListRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+        mListRowAdapter = new ArrayObjectAdapter(new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 120, 160));
 
         for (Content entry : genreAssets.getContentContainer()) {
             updateResults(entry, metadata, false);

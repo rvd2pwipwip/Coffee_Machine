@@ -63,7 +63,7 @@ permissions and limitations under the License.
          and rows are showing full screen -->
     <color name="browse_row_header">@color/tertiary_text</color>
     <!-- Action widget and search orb background color -->
-     <color name="search_orb">@color/secondary_text</color>
+     <color name="search_orb">@color/accent</color>
     <!-- Header text size -->
     <dimen name="browse_header_text">20sp</dimen>
     <!-- Company logo -->
