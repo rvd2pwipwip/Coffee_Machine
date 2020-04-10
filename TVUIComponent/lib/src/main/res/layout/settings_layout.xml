@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:gravity="start|center_vertical"
-            android:text="Account and Settings"
+            android:text="Manage Account"
             android:textAllCaps="false"
             android:textSize="16sp" />
 
@@ -77,7 +77,7 @@
             style="@style/button_border_highlight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="40dp"
             android:fontFamily="sans-serif-light"
             android:gravity="start|center_vertical"
             android:text="Log Out"
