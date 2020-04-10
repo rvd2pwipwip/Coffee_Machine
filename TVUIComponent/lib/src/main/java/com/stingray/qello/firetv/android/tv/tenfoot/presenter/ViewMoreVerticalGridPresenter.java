@@ -18,7 +18,7 @@ public class ViewMoreVerticalGridPresenter extends VerticalGridPresenter {
     protected ViewHolder createGridViewHolder(ViewGroup parent) {
         ViewHolder gridViewHolder = super.createGridViewHolder(parent);
         VerticalGridView gridView = gridViewHolder.getGridView();
-        gridView.setVerticalMargin(100);
+        gridView.setVerticalMargin(80);
         gridView.setHorizontalMargin(45);
         gridView.setGravity(Gravity.CENTER_HORIZONTAL);
 
