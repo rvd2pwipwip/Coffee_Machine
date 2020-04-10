@@ -50,6 +50,7 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
         EventBus.getDefault().register(this);
         BrowsePageVerticalGridPresenter gridPresenter = new BrowsePageVerticalGridPresenter();
         gridPresenter.setNumberOfColumns(4);
+        gridPresenter.setShadowEnabled(false);
         setGridPresenter(gridPresenter);
         setOnItemViewClickedListener(new ContentClickedListener());
 

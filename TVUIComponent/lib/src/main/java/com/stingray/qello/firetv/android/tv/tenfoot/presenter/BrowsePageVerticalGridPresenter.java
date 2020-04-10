@@ -1,5 +1,6 @@
 package com.stingray.qello.firetv.android.tv.tenfoot.presenter;
 
+import android.support.v17.leanback.widget.FocusHighlight;
 import android.support.v17.leanback.widget.VerticalGridPresenter;
 import android.support.v17.leanback.widget.VerticalGridView;
 import android.view.Gravity;
@@ -9,8 +10,7 @@ import android.view.WindowManager;
 public class BrowsePageVerticalGridPresenter extends VerticalGridPresenter {
 
     public BrowsePageVerticalGridPresenter() {
-
-        super();
+        super(FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
     }
 
     @Override

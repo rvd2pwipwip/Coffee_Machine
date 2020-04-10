@@ -29,7 +29,7 @@ public class CustomListRowPresenter extends ListRowPresenter {
      * Constructor.
      */
     public CustomListRowPresenter() {
-        super(FocusHighlight.ZOOM_FACTOR_NONE, false);
+        super();
     }
 
     @Override

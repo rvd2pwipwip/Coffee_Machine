@@ -10,8 +10,7 @@ import android.view.WindowManager;
 public class ViewMoreVerticalGridPresenter extends VerticalGridPresenter {
 
     public ViewMoreVerticalGridPresenter() {
-
-        super(FocusHighlight.ZOOM_FACTOR_NONE, false);
+        super(FocusHighlight.ZOOM_FACTOR_MEDIUM, false);
     }
 
     @Override
