@@ -117,7 +117,7 @@ public class EllipsizedTextView extends TextView {
     /**
      * Creates the read dialog fragment and adds it to the fragment.
      */
-    private void showReadDialog() {
+    public void showReadDialog() {
         // Show the dialog
         final ReadDialogFragment dialog = new ReadDialogFragment();
         if (mExpandedContentViewProvider == null) {
@@ -265,11 +265,10 @@ public class EllipsizedTextView extends TextView {
                              int lastLine, int maxLines) {
 
         mIsEllipsized = true;
-        setFocusable(true);
-        setClickable(true);
+        setFocusable(false);
+        setClickable(false);
         final SpannableString ss = new SpannableString(mCharSequence);
         String visibleText = mCharSequence.toString();
-
 
         mEllipsisImage = new StateImageSpan(
                 getContext(),
@@ -308,15 +307,16 @@ public class EllipsizedTextView extends TextView {
             spannedText.replace(0, spannedText.length(), charOutput);
             spannedText.append(ELLIPSIS);
 
-            spannedText.setSpan(mEllipsisImage, ellipsisIndex, ellipsisIndex + 1,
+            /*spannedText.setSpan(mEllipsisImage, ellipsisIndex, ellipsisIndex + 1,
                                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-
+*/
 
             // Reset text and re-measure.
             super.setText(spannedText, BufferType.SPANNABLE);
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         } while (getLineCount() > getMaxLines() && getLineCount() > 1);
+
         requestFocus();
     }
 
@@ -330,6 +330,9 @@ public class EllipsizedTextView extends TextView {
         return iterator.preceding(ellipsisIndex);
     }
 
+    public boolean isEllipsized() {
+        return mIsEllipsized;
+    }
 
     /**
      * Sets the text please note that text must be a normal CharSequence.

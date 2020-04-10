@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
@@ -49,7 +50,8 @@ public class DetailsDescriptionPresenter extends Presenter {
 
         private final TextView mTitle;
         private final TextView mSubtitle;
-        private final TextView mBody;
+        private final EllipsizedTextView mBody;
+        private final Button readMoreBtn;
 
         public ViewHolder(final View view) {
 
@@ -57,6 +59,11 @@ public class DetailsDescriptionPresenter extends Presenter {
             mTitle = (TextView) view.findViewById(R.id.details_description_title);
             mSubtitle = (TextView) view.findViewById(R.id.details_description_subtitle);
             mBody = (EllipsizedTextView) view.findViewById(R.id.ellipsized_description_text);
+            readMoreBtn = (Button) view.findViewById(R.id.read_more_btn);
+            readMoreBtn.setOnClickListener(v -> {
+                    mBody.showReadDialog();
+                }
+            );
         }
 
         public TextView getTitle() {
@@ -69,9 +76,13 @@ public class DetailsDescriptionPresenter extends Presenter {
             return mSubtitle;
         }
 
-        public TextView getBody() {
+        public EllipsizedTextView getBody() {
 
             return mBody;
+        }
+
+        public Button getReadMoreBtn() {
+            return readMoreBtn;
         }
     }
 
@@ -138,6 +149,10 @@ public class DetailsDescriptionPresenter extends Presenter {
         CalligraphyUtils.applyFontToTextView(TenFootApp.getInstance(), viewHolder.getBody(),
                                              config.getTypefacePath(ConfigurationConstants
                                                                             .LIGHT_FONT));
+
+        if(viewHolder.getBody().isEllipsized()) {
+            viewHolder.getReadMoreBtn().setVisibility(View.VISIBLE);
+        }
 
     }
 
