@@ -114,19 +114,7 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
             }
         });
 
-        // Set the color changing actions for the items.
-        ((ViewHolder) baseHolder).actionButton.setOnFocusChangeListener((v, hasFocus) -> {
 
-            if (hasFocus) {
-                int color = v.getContext().getResources().getColor(R.color.search_orb);
-                v.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-                v.invalidate();
-            }
-            else {
-                v.getBackground().clearColorFilter();
-                v.invalidate();
-            }
-        });
     }
 
     /**
@@ -159,7 +147,7 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
 
         public ViewHolder(View v) {
             super(v);
-            actionButton = (ImageButton) itemView.findViewById(R.id.action_button);
+            actionButton = itemView.findViewById(R.id.action_button);
         }
     }
 }
