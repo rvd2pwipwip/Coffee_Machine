@@ -34,9 +34,7 @@ public class CustomListRowPresenter extends ListRowPresenter {
 
     @Override
     protected RowPresenter.ViewHolder createRowViewHolder(ViewGroup parent) {
-
-        ListRowPresenter.ViewHolder viewHolder = (ListRowPresenter.ViewHolder) super
-                .createRowViewHolder(parent);
+        ListRowPresenter.ViewHolder viewHolder = (ListRowPresenter.ViewHolder) super.createRowViewHolder(parent);
         HorizontalGridView gridView = viewHolder.getGridView();
         gridView.setItemMargin(20);
         return viewHolder;

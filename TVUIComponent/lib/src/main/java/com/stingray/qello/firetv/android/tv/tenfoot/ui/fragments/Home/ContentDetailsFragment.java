@@ -46,7 +46,6 @@ import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.HorizontalGridView;
 import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.ListRow;
-import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
@@ -84,6 +83,7 @@ import com.stingray.qello.firetv.android.model.content.Track;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.ContentTrackListPresenter;
+import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CustomListRowPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.DetailsDescriptionPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetailsActivity;
 import com.stingray.qello.firetv.android.utils.GlideHelper;
@@ -104,7 +104,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
     private static final int MILLISECONDS_IN_SECOND = 1000;
     private static final int SECONDS_IN_MINUTE = 60;
-    private static final int SECONDS_IN_HOUR = 60 * 60;
+    private static final int SECONDS_IN_HOUR = 3600;
 
     private Content mSelectedContent;
 
@@ -113,7 +113,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
     private BackgroundManager mBackgroundManager;
     private DisplayMetrics mMetrics;
-    private boolean mShowRelatedContent;
     private ObservableFactory observableFactory = new ObservableFactory();
 
     private ContentPageWrapper contentPageWrapper = null;
@@ -149,7 +148,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         prepareBackgroundManager();
 
         mSelectedContent = ContentBrowser.getInstance(getActivity()).getLastSelectedContent();
-        mShowRelatedContent = ContentBrowser.getInstance(getActivity()).isShowRelatedContent();
     }
 
     @Override
@@ -164,7 +162,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             if (!initialized) {
                 setupAdapter();
                 setupDetailsOverviewRowPresenter();
-                setupContentListRowPresenter();
+                setupRelatedContentListRowPresenter();
                 updateBackground(mSelectedContent.getBackgroundImageUrl());
                 setOnItemViewClickedListener(new ItemViewClickedListener());
             }
@@ -227,7 +225,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             setupDetailsOverviewRow(false);
         }
 
-        if (contentPageWrapper.getTrackList() != null) {
+        if (contentPageWrapper.getTrackList() != null && contentPageWrapper.getTrackList().size() > 0) {
             ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
             setupTrackListPresenter(contentWithTracks.getTracks().size());
             mAdapter.add(new ContentTrackListRow(contentWithTracks));
@@ -576,9 +574,9 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         }
     }
 
-    private void setupContentListRowPresenter() {
-
-        ListRowPresenter presenter = new ListRowPresenter();
+    private void setupRelatedContentListRowPresenter() {
+        CustomListRowPresenter presenter = new CustomListRowPresenter();
+        presenter.setShadowEnabled(false);
         presenter.setHeaderPresenter(new RowHeaderPresenter());
         mPresenterSelector.addClassPresenter(ListRow.class, presenter);
     }
