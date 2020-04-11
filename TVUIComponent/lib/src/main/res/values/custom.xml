@@ -113,7 +113,7 @@ permissions and limitations under the License.
     <!-- Details description extended body text color -->
     <color name="details_description_extended">@color/secondary_text</color>
     <!-- Action button text size -->
-    <dimen name="action_text">16sp</dimen>
+    <dimen name="action_text">20px</dimen>
     <!-- Details description title text size -->
     <dimen name="details_description_title_text">20sp</dimen>
     <!-- Details description subtitle text size -->

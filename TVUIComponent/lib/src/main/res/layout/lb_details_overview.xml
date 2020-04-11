@@ -33,62 +33,59 @@
     <FrameLayout
         android:id="@+id/details_frame"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/lb_details_overview_height_large"
+        android:layout_height="367dp"
         android:foreground="#ffffff"
         android:elevation="@dimen/lb_details_overview_z"
         >
 
     <!-- Background is applied to this inner layout -->
-    <LinearLayout
-        android:id="@+id/details_overview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-         >
-
-        <ImageView
-            android:id="@+id/details_overview_image"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="fitStart"
-            />
-
         <LinearLayout
-            android:id="@+id/details_overview_right_panel"
+            android:id="@+id/details_overview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/lb_details_overview_description_margin_bottom"
-            android:orientation="vertical" >
+            android:orientation="horizontal">
 
-        <android.support.v17.leanback.widget.NonOverlappingFrameLayout
-            android:id="@+id/details_overview_description"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="top"
-            android:layout_marginStart="@dimen/lb_details_overview_description_margin_start"
-            android:layout_marginEnd="@dimen/lb_details_overview_description_margin_end"
-            android:paddingTop="@dimen/lb_details_overview_description_margin_top"
-            android:clipToPadding="false"
-            android:clipChildren="false"
-            />
+            <ImageView
+                android:id="@+id/details_overview_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart" />
 
-        <android.support.v17.leanback.widget.HorizontalGridView
-            android:id="@+id/details_overview_actions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:paddingStart="@dimen/lb_details_overview_description_margin_start"
-            android:paddingEnd="@dimen/lb_details_overview_description_margin_end"
-            lb:horizontalMargin="@dimen/lb_details_overview_action_items_margin"
-            lb:rowHeight="@dimen/lb_details_overview_actions_height" />
+            <LinearLayout
+                android:id="@+id/details_overview_right_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="25dp">
 
+                <android.support.v17.leanback.widget.NonOverlappingFrameLayout
+                    android:id="@+id/details_overview_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/lb_details_overview_description_margin_start"
+                    android:layout_marginEnd="@dimen/lb_details_overview_description_margin_end"
+                    android:layout_weight="1"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:gravity="top"
+                    android:paddingTop="@dimen/lb_details_overview_description_margin_top" />
+
+                <android.support.v17.leanback.widget.HorizontalGridView
+                    android:id="@+id/details_overview_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/lb_details_overview_description_margin_start"
+                    android:paddingEnd="@dimen/lb_details_overview_description_margin_end"
+                    lb:horizontalMargin="@dimen/lb_details_overview_action_items_margin"
+                    lb:rowHeight="@dimen/lb_details_overview_actions_height" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
     </FrameLayout>
 </FrameLayout>

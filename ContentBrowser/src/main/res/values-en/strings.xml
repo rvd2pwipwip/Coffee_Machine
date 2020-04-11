@@ -14,12 +14,12 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-  <string name="watch_now_1">Watch</string>
-  <string name="watch_now_2">Now</string>
-  <string name="watch_from_beginning_1">Watch</string>
-  <string name="watch_from_beginning_2">from Beginning</string>
+  <string name="watch_now_1">Play complete show</string>
+  <string name="watch_now_2"></string>
+  <string name="watch_from_beginning_1">Play</string>
+  <string name="watch_from_beginning_2">from beginning</string>
   <string name="resume_1">Resume</string>
-  <string name="resume_2">Playback</string>
+  <string name="resume_2"></string>
   <string name="premium_1">Go</string>
   <string name="premium_2">Premium</string>
   <string name="daily_pass_1">Daily</string>
