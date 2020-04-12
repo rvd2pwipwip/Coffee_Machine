@@ -109,13 +109,4 @@ public class PurchaseFragment extends Fragment {
 
         return view;
     }
-
-    private void showAuthToast(String authToastMessage) {
-
-        Toast authToast = Toast.makeText(getActivity().getBaseContext(), authToastMessage, Toast
-                .LENGTH_LONG);
-        authToast.setGravity(Gravity.CENTER, 0, 0);
-        authToast.show();
-    }
-
 }

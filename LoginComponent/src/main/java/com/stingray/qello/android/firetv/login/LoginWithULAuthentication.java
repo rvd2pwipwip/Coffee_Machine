@@ -93,11 +93,6 @@ public class LoginWithULAuthentication implements IAuthentication {
 
         if (!accessToken.isEmpty()) {
             observableFactory.createDetached(new SvodUserInfoCallable(accessToken))
-                    .doOnError(throwable -> {
-                        logout(context, logoutResponseHandler);
-                        // A fail means the user is not authenticated
-                        responseHandler.onFailure(errorBundle);
-                    })
                     .subscribe(userInfo -> {
                         // If the user is logged in with no subscription subscription is PLAN = NONE
                         // Thus, this is how we check
@@ -116,6 +111,10 @@ public class LoginWithULAuthentication implements IAuthentication {
                             EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
                             responseHandler.onSuccess(new Bundle());
                         }
+                    }, throwable -> {
+                        logout(context, logoutResponseHandler);
+                        // A fail means the user is not authenticated
+                        responseHandler.onFailure(errorBundle);
                     });
         } else {
             responseHandler.onFailure(errorBundle);
