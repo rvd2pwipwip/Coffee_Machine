@@ -2,7 +2,11 @@ package com.stingray.qello.firetv.android.async;
 
 import android.text.TextUtils;
 
+import com.stingray.qello.firetv.android.utils.Helpers;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -40,12 +44,6 @@ public abstract class ULCallable<T> extends BaseCommunicator implements Callable
     }
 
     protected Response post(String path, Map<String, String> formParams, Map<String, String> additionalHeaders) throws IOException {
-
-        List<String> urlEncodedParams = new ArrayList<>();
-        for (Map.Entry<String, String> entry: formParams.entrySet()) {
-            urlEncodedParams.add(entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.toString()));
-        }
-
         URL url = new URL(createUrl(path));
 
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -55,6 +53,11 @@ public abstract class ULCallable<T> extends BaseCommunicator implements Callable
 
         for (Map.Entry<String, String> entry: additionalHeaders.entrySet()) {
             urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
+        }
+
+        List<String> urlEncodedParams = new ArrayList<>();
+        for (Map.Entry<String, String> entry: formParams.entrySet()) {
+            urlEncodedParams.add(entry.getKey() + "=" + entry.getValue());
         }
 
         try(OutputStream os = urlConnection.getOutputStream()) {

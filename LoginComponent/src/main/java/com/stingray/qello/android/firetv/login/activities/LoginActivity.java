@@ -16,13 +16,10 @@ package com.stingray.qello.android.firetv.login.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -48,9 +45,9 @@ import com.stingray.qello.android.firetv.login.fragments.ForgotPasswordFragment;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
-import com.stingray.qello.firetv.android.ui.fragments.ReadDialogFragment;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
+import com.stingray.qello.firetv.utils.UserPreferencesRetriever;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -58,11 +55,6 @@ import org.greenrobot.eventbus.EventBus;
  * This activity allows users to login with amazon.
  */
 public class LoginActivity extends Activity {
-
-    // TODO Get lang and deviceId from system
-    private final static String HARDCODED_LANGUAGE = "en";
-    private final static String HARDCODED_DEVICE_ID = "aDeviceId";
-
     private static final String TAG = LoginActivity.class.getName();
 
     private String[] APP_SCOPES;
@@ -121,17 +113,18 @@ public class LoginActivity extends Activity {
             String username = usernameInput.getText().toString();
             String password = passwordInput.getText().toString();
 
-            UserpassLoginRequestBody requestBody = new UserpassLoginRequestBody(username, password, HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID);
+            UserpassLoginRequestBody requestBody = new UserpassLoginRequestBody(username, password,
+                    UserPreferencesRetriever.getLanguageCode(),
+                    UserPreferencesRetriever.getDeviceId(this)
+            );
 
             observableFactory.createDetached(new UserpassLoginCallable(requestBody))
-                    .subscribe(response -> {
-                        if (response != null) {
-                            ulAuthManager.authorize(response.getSessionId(), HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID, new AuthListener());
-                        } else {
-                            setResultAndReturn(new Throwable("Invalid Credentials"), AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
-                            finish();
-                        }
-                    });
+                    .subscribe(
+                            LoginActivity.this::callULAuthorize,
+                            throwable -> {
+                                Log.e(TAG, "Failed to call user pass login", throwable);
+                                setResultAndReturn(throwable);
+                            });
         });
 
         // Setup the listener on the login button.
@@ -163,71 +156,6 @@ public class LoginActivity extends Activity {
         });
 
         mLogInProgress = findViewById(R.id.log_in_progress);
-    }
-
-    /**
-     * {@link AuthorizationListener} which is passed in to authorize calls made on the {@link
-     * AmazonAuthorizationManager} member.
-     * Starts getToken workflow if the authorization was successful, or displays a toast if the
-     * user cancels authorization.
-     */
-    private class AuthListener implements AuthorizationListener {
-
-        /**
-         * Authorization was completed successfully.
-         * Display the profile of the user who just completed authorization.
-         *
-         * @param response The bundle containing authorization response. Not used.
-         */
-        @Override
-        public void onSuccess(Bundle response) {
-            String authCode = response.getString(AuthzConstants.BUNDLE_KEY.AUTHORIZATION_CODE.val);
-
-            if (authCode == null) {
-                amazonAuthManager.getToken(APP_SCOPES, new TokenListener());
-            } else {
-                ulAuthManager.getToken(authCode, new TokenListener());
-            }
-        }
-
-        /**
-         * There was an error during the attempt to authorize the application.
-         * Log the error, and reset the profile text view.
-         *
-         * @param ae The error that occurred during authorization.
-         */
-        @Override
-        public void onError(final AuthError ae) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showAuthToast(getString(R.string.error_during_auth));
-                    setLoggingInState(false);
-                    setLoggedOutState();
-                    LoginActivity.this.setResultAndReturn(ae.getCause(),
-                                    AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
-                }
-            });
-        }
-
-        /**
-         * Authorization was cancelled before it could be completed.
-         * A toast is shown to the user, to confirm that the operation was cancelled, and the
-         * profile text view is reset.
-         *
-         * @param cause The bundle containing the cause of the cancellation. Not used.
-         */
-        @Override
-        public void onCancel(Bundle cause) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setLoggedOutState();
-                    showAuthToast(getString(R.string.auth_cancelled));
-                }
-            });
-        }
-
     }
 
     /**
@@ -277,11 +205,6 @@ public class LoginActivity extends Activity {
         }
     }
 
-    /**
-     * This method handles toasts messages.
-     *
-     * @param authToastMessage The message to be posted.
-     */
     private void showAuthToast(String authToastMessage) {
 
         Toast authToast = Toast.makeText(getApplicationContext(), authToastMessage, Toast
@@ -290,10 +213,90 @@ public class LoginActivity extends Activity {
         authToast.show();
     }
 
+    private void setResultAndReturn(Throwable throwable) {
+
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString(AuthenticationConstants.ERROR_CATEGORY, AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
+        bundle.putSerializable(AuthenticationConstants.ERROR_CAUSE, throwable);
+        setResult(RESULT_CANCELED, intent.putExtra(AuthenticationConstants.ERROR_BUNDLE, bundle));
+        finish();
+    }
+
+    private void callULAuthorize(LoginResponse response) {
+        if (response != null) {
+            ulAuthManager.authorize(
+                    response.getSessionId(),
+                    UserPreferencesRetriever.getLanguageCode(),
+                    UserPreferencesRetriever.getDeviceId(this),
+                    new AuthListener()
+            );
+        } else {
+            setResultAndReturn(new Throwable("Failed to login"));
+        }
+    }
+
     /**
-     * {@link AuthListener} which is passed in to the {@link AmazonAuthorizationManager}
-     * getProfile api call.
+     * {@link AuthorizationListener} which is passed in to authorize calls made on the {@link
+     * AmazonAuthorizationManager} member.
+     * Starts getToken workflow if the authorization was successful, or displays a toast if the
+     * user cancels authorization.
      */
+    private class AuthListener implements AuthorizationListener {
+
+        /**
+         * Authorization was completed successfully.
+         * Display the profile of the user who just completed authorization.
+         *
+         * @param response The bundle containing authorization response. Not used.
+         */
+        @Override
+        public void onSuccess(Bundle response) {
+            String authCode = response.getString(AuthzConstants.BUNDLE_KEY.AUTHORIZATION_CODE.val);
+
+            if (authCode == null) {
+                amazonAuthManager.getToken(APP_SCOPES, new TokenListener());
+            } else {
+                ulAuthManager.getToken(authCode, new TokenListener());
+            }
+        }
+
+        /**
+         * There was an error during the attempt to authorize the application.
+         * Log the error, and reset the profile text view.
+         *
+         * @param ae The error that occurred during authorization.
+         */
+        @Override
+        public void onError(final AuthError ae) {
+            runOnUiThread(() -> {
+                showAuthToast(getString(R.string.error_during_auth));
+                setLoggingInState(false);
+                setLoggedOutState();
+                LoginActivity.this.setResultAndReturn(ae.getCause());
+            });
+        }
+
+        /**
+         * Authorization was cancelled before it could be completed.
+         * A toast is shown to the user, to confirm that the operation was cancelled, and the
+         * profile text view is reset.
+         *
+         * @param cause The bundle containing the cause of the cancellation. Not used.
+         */
+        @Override
+        public void onCancel(Bundle cause) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setLoggedOutState();
+                    showAuthToast(getString(R.string.auth_cancelled));
+                }
+            });
+        }
+
+    }
+
     private class TokenListener implements APIListener {
 
         /**
@@ -307,9 +310,19 @@ public class LoginActivity extends Activity {
             if (amazonFutureType != null) {
                 if ( AuthzConstants.FUTURE_TYPE.SUCCESS.equals(amazonFutureType)) {
                     String accessToken = response.getString(AuthzConstants.BUNDLE_KEY.TOKEN.val);
-                    AmazonLoginRequestBody requestBody = new AmazonLoginRequestBody(accessToken, HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID);
+
+                    AmazonLoginRequestBody requestBody = new AmazonLoginRequestBody(accessToken,
+                            UserPreferencesRetriever.getLanguageCode(),
+                            UserPreferencesRetriever.getDeviceId(LoginActivity.this)
+                    );
                     observableFactory.createDetached(new AmazonLoginCallable(requestBody))
-                            .subscribe(LoginActivity.this::callULAuthorize);
+                            .subscribe(
+                                    LoginActivity.this::callULAuthorize,
+                                    throwable -> {
+                                        Log.e(TAG, "Failed to call amazon login", throwable);
+                                        setResultAndReturn(throwable);
+                                    }
+                            );
                 } else {
                     onError(new AuthError("Failed to login authenticate with Amazon", AuthError.ERROR_TYPE.ERROR_INVALID_GRANT));
                 }
@@ -331,31 +344,7 @@ public class LoginActivity extends Activity {
                 setLoggedOutState();
                 setLoggingInState(false);
             });
-            setResultAndReturn(ae, ae.getCategory().name());
-        }
-    }
-
-    /**
-     * Set the corresponding extras and finish this activity.
-     *
-     * @param throwable Contains detailed info about the cause of error.
-     * @param category  The error cause.
-     */
-    private void setResultAndReturn(Throwable throwable, String category) {
-
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString(AuthenticationConstants.ERROR_CATEGORY, AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
-        bundle.putSerializable(AuthenticationConstants.ERROR_CAUSE, throwable);
-        setResult(RESULT_CANCELED, intent.putExtra(AuthenticationConstants.ERROR_BUNDLE, bundle));
-        finish();
-    }
-
-    private void callULAuthorize(LoginResponse response) {
-        if (response != null) {
-            ulAuthManager.authorize(response.getSessionId(), HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID, new AuthListener());
-        } else {
-            setResultAndReturn(new Throwable("Failed to login"), AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
+            setResultAndReturn(ae);
         }
     }
 }
