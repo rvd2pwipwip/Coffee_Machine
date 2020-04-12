@@ -167,6 +167,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 setOnItemViewClickedListener(new ItemViewClickedListener());
             }
 
+            setAdapter(mAdapter);
+
             if (getView() != null) {
                 VerticalGridView containerListView = getView().findViewById(R.id.container_list);
                 if (containerListView != null) {
@@ -314,11 +316,9 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     private void setupAdapter() {
-
         Log.v(TAG, "setupAdapter called.");
         mPresenterSelector = new ClassPresenterSelector();
         mAdapter = new ArrayObjectAdapter(mPresenterSelector);
-        setAdapter(mAdapter);
     }
 
     public void updateActions() {
