@@ -21,6 +21,7 @@ import com.stingray.qello.firetv.android.contentbrowser.helper.FontManager;
 import com.stingray.qello.firetv.android.contentbrowser.helper.LauncherIntegrationManager;
 import com.stingray.qello.firetv.android.contentbrowser.recommendations.RecommendationManager;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
+import com.stingray.qello.firetv.android.event.SubscribeNowPopupEvent;
 import com.stingray.qello.firetv.android.interfaces.ICancellableLoad;
 import com.stingray.qello.firetv.android.interfaces.IContentBrowser;
 import com.stingray.qello.firetv.android.model.Action;
@@ -97,6 +98,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
     private static final int CONTENT_ACTION_REMOVE_WATCHLIST = 12;
     public static final int CONTENT_ACTION_ADD_TO_FAVORITES = 13;
     public static final int CONTENT_ACTION_REMOVE_FROM_FAVORITES = 14;
+    public static final int CONTENT_ACTION_START_FREE_TRIAL = 15;
 
     private static final String DEFAULT_SEARCH_ALGO_NAME = "basic";
     public static final String RESTORE_ACTIVITY = "restore_last_activity";
@@ -899,6 +901,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                     } else {
                         contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.add_to_favorites_1, R.string.add_to_favorites_2));
                     }
+                } else {
+                    contentActionList.add(createActionButton(CONTENT_ACTION_START_FREE_TRIAL, R.string.start_free_trial_1, R.string.start_free_trial_2));
                 }
 
                 if (isWatchlistRowEnabled()) {
@@ -1486,6 +1490,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             case CONTENT_ACTION_REMOVE_FROM_FAVORITES:
                 favoriteButtonClicked(content.getId(), false, actionAdapter);
                 break;
+            case CONTENT_ACTION_START_FREE_TRIAL:
+                mEventBus.post(new SubscribeNowPopupEvent());
         }
         if (actionCompletedListener != null) {
             actionCompletedListener.onContentActionCompleted(activity, content, actionId);
