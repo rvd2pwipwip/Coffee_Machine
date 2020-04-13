@@ -42,12 +42,12 @@
         <ImageView
                 android:id="@+id/lb_search_bar_badge"
                 android:layout_width="@dimen/lb_search_bar_icon_width"
-                android:layout_height="@dimen/lb_search_bar_icon_height"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|start"
                 android:layout_centerVertical="true"
+                android:padding="@dimen/search_bar_icon_padding"
                 android:layout_marginStart="@dimen/lb_search_bar_icon_margin_start"
-                android:src="@null"
-                android:visibility="gone"
+                android:src="@drawable/search_icon"
                 style="?attr/browseTitleIconStyle"/>
 
         <android.support.v17.leanback.widget.SearchEditText

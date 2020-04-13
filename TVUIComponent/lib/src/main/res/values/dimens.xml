@@ -94,7 +94,12 @@ permissions and limitations under the License.
     <dimen name="search_bar_margin_left">0dp</dimen>
     <dimen name="lb_search_bar_items_margin_start">0dp</dimen>
     <dimen name="lb_search_bar_speech_orb_margin_start">0dp</dimen>
-    <dimen name="lb_search_bar_items_height">35dp</dimen>
+    <dimen name="lb_search_bar_edit_text_margin_start">4dp</dimen>
+    <dimen name="search_bar_icon_padding">8dp</dimen>
+    <dimen name="lb_search_bar_icon_margin_start">4dp</dimen>
+    <dimen name="lb_search_bar_icon_height">35dp</dimen>
+    <dimen name="lb_search_bar_icon_width">35dp</dimen>
+    <dimen name="lb_search_bar_items_height">45dp</dimen>
     <dimen name="lb_search_browse_rows_align_top">80dp</dimen>
     <dimen name="lb_search_bar_padding_top">29dp</dimen>
     <item name="lb_search_orb_focused_zoom" type="fraction">125%</item>
