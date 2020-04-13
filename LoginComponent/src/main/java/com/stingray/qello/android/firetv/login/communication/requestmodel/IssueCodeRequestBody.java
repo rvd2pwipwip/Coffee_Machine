@@ -6,10 +6,9 @@ public class IssueCodeRequestBody {
     private String deviceId;
     private String redirectUri;
 
-    public IssueCodeRequestBody(String sessionId, String deviceId, String redirectUri) {
+    public IssueCodeRequestBody(String sessionId, String deviceId) {
         this.sessionId = sessionId;
         this.deviceId = deviceId;
-        this.redirectUri = redirectUri;
     }
 
     public void setClientId(String clientId) {
