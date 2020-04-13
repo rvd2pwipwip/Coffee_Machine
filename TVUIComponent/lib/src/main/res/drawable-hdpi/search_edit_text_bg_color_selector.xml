@@ -14,13 +14,8 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-            android:state_focused="true"
-            android:drawable="@drawable/search_edit_text_bg"
-            />
+    <item android:state_focused="true" android:drawable="@drawable/search_edit_text_bg" />
     <!-- focused -->
-    <item
-            android:drawable="@drawable/search_edit_text_bg_unfocused"
-            />
+    <item android:drawable="@drawable/search_edit_text_bg_unfocused" />
     <!-- default -->
 </selector>

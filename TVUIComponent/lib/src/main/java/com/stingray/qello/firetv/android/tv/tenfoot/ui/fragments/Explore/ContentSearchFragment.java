@@ -1,13 +1,13 @@
 /**
  * This file was modified by Amazon:
  * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * A copy of the License is located at
- *
- *     http://aws.amazon.com/apache2.0/
- *
+ * <p>
+ * http://aws.amazon.com/apache2.0/
+ * <p>
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
@@ -103,7 +103,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private final Runnable mDelayedLoad = this::loadRows;
     private ArrayObjectAdapter mRowsAdapter;
     private String mQuery;
-    private SpeechOrbView mSpeechOrbView = null;
     private SearchEditText mSearchEditText = null;
     private ObservableFactory observableFactory = new ObservableFactory();
     private View focusedGenreButton = null;
@@ -149,8 +148,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 try {
                     // Disabling speech recognizer so the fragment works on Fire TV.
                     //startActivityForResult(getRecognizerIntent(), REQUEST_SPEECH);
-                }
-                catch (ActivityNotFoundException e) {
+                } catch (ActivityNotFoundException e) {
                     Log.e(TAG, "Cannot find activity for speech recognizer", e);
                 }
             });
@@ -176,108 +174,96 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.background_explore));
 
             final SearchBar searchBar = view.findViewById(R.id.lb_search_bar);
-            if (searchBar != null) {
-                // Move the search bar items next to the search icon.
-                RelativeLayout searchBarItems = searchBar.findViewById(R.id.lb_search_bar_items);
 
-                if (searchBarItems != null) {
-                    // Set the search bar items background selector.
-                    searchBarItems.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.search_edit_text_bg_color_selector));
+            searchBar.getViewTreeObserver().addOnGlobalFocusChangeListener(((oldFocus, newFocus) -> {
+                if (oldFocus == null) {
+                    return;
                 }
 
-                // Set speech orb icon.
-                mSpeechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
-
-                if (mSpeechOrbView != null) {
-                    mSpeechOrbView.setOrbIcon(ContextCompat.getDrawable(getActivity(), R.drawable.search_icon));
+                if (oldFocus.getId() == R.id.lb_search_text_editor && newFocus instanceof ImageCardView) {
+                    returnToSearch = true;
                 }
+            }));
 
-                searchBar.getViewTreeObserver().addOnGlobalFocusChangeListener(((oldFocus, newFocus) -> {
+            RelativeLayout searchBarItems = searchBar.findViewById(R.id.lb_search_bar_items);
+            SpeechOrbView speechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
 
-                    if (oldFocus == null) {
-                        return;
-                    }
+            final SearchEditText searchEditText = searchBar.findViewById(R.id.lb_search_text_editor);
 
-                    if (oldFocus.getId() == R.id.lb_search_text_editor && newFocus instanceof ImageCardView) {
-                        returnToSearch = true;
-                    }
-                }));
+            if (searchBarItems != null && speechOrbView != null && searchEditText != null) {
+                searchBarItems.setBackground(getResources().getDrawable(R.drawable.search_edit_text_bg_unfocused));
 
-                final SearchEditText searchEditText = searchBar.findViewById(R.id.lb_search_text_editor);
+                // There's too much logic binded to this, don't use it
+                speechOrbView.setOnOrbClickedListener(null);
+                speechOrbView.setOnFocusChangeListener(null);
+                speechOrbView.setVisibility(View.GONE);
+                speechOrbView.setOrbIcon(ContextCompat.getDrawable(getActivity(), R.drawable.search_icon));
 
-                if (searchEditText != null) {
-                    mSearchEditText = searchEditText;
-                    mSearchEditText.setOnFocusChangeListener((view1, motionEvent) -> {
-                        String cQuery = mSearchEditText.getText().toString();
-                        boolean queryHasChanged = !cQuery.equalsIgnoreCase(mQuery);
+                mSearchEditText = searchEditText;
+                mSearchEditText.setOnFocusChangeListener((view1, motionEvent) -> {
+                    String cQuery = mSearchEditText.getText().toString();
+                    boolean queryHasChanged = !cQuery.equalsIgnoreCase(mQuery);
 
-                        if (view1.isFocused() && queryHasChanged) {
+                    if (view1.isFocused()) {
+                        searchBarItems.setBackground(getResources().getDrawable(R.drawable.search_edit_text_bg));
+                        if (queryHasChanged) {
                             loadQuery(cQuery);
                         }
-                    });
+                    } else {
+                        searchBarItems.setBackground(getResources().getDrawable(R.drawable.search_edit_text_bg_unfocused));
+                    }
+                });
 
-                    // Handle keyboard being dismissed to prevent focus going to SearchOrb
-                    // If user presses back from keyboard, you don't get KeyboardDismissListener
-                    // so handle that here.
+                // Handle keyboard being dismissed to prevent focus going to SearchOrb
+                // If user presses back from keyboard, you don't get KeyboardDismissListener
+                // so handle that here.
 
-                    mSearchEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-                        // Track search if keyboard is closed with IME_ACTION_PREVIOUS or
-                        // if IME_ACTION_SEARCH occurs.
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_PREVIOUS) {
-
-                            if (mQuery != null) {
-                                //TODO seg track search?
-                            }
+                mSearchEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+                    // Track search if keyboard is closed with IME_ACTION_PREVIOUS or
+                    // if IME_ACTION_SEARCH occurs.
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_PREVIOUS) {
+                        if (mQuery != null) {
+                            //TODO seg track search?
                         }
+                    }
 
-                        // Prevent highlighting SearchOrb
-                        mSpeechOrbView.setFocusable(false);
-                        mSpeechOrbView.clearFocus();
-                        // If there are results allow first result to be selected
-//                        if (hasResults) {
-//                            searchResultsLayout.requestFocus();
-//                        } else {
-//                            focusTextView();
-//                        }
+                    // If there are results allow first result to be selected
+                    if (hasResults && mQuery != null) {
+                        searchResultsLayout.requestFocus();
+                    }
 
-                        // Hide keyboard since we are handling the action
-                        if (isAdded()) {
-                            // Ensure we are added before calling getActivity
-                            InputMethodManager inputManager =
-                                    (InputMethodManager) getActivity().getSystemService(
-                                            Context.INPUT_METHOD_SERVICE);
-                            if (inputManager != null) {
-                                inputManager.hideSoftInputFromWindow(
-                                        getActivity().getCurrentFocus().getWindowToken(),
-                                        InputMethodManager.HIDE_NOT_ALWAYS);
-                            }
-                        } else {
-                            Log.e(TAG, "Cannot find activity, can't dismiss keyboard");
-                            // Couldn't handle action.
-                            // Will expose other focus issues potentially.
-                            return false;
+                    // Hide keyboard since we are handling the action
+                    if (isAdded()) {
+                        // Ensure we are added before calling getActivity
+                        InputMethodManager inputManager =
+                                (InputMethodManager) getActivity().getSystemService(
+                                        Context.INPUT_METHOD_SERVICE);
+                        if (inputManager != null) {
+                            inputManager.hideSoftInputFromWindow(
+                                    getActivity().getCurrentFocus().getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
                         }
-                        // No more processing of this action.
-                        return true;
-                    });
+                    } else {
+                        Log.e(TAG, "Cannot find activity, can't dismiss keyboard");
+                        // Couldn't handle action.
+                        // Will expose other focus issues potentially.
+                        return false;
+                    }
+                    // No more processing of this action.
+                    return true;
+                });
 
-                    // Override the dismiss listener to get around keyboard issue where dismissing
-                    // keyboard takes user into first search result's
-                    // content_details_activity_layout page.
-                    searchEditText.setOnKeyboardDismissListener(() -> {
-                        // If search doesn't have results, this will focus on searchEditText again.
-                        // If search returns results, focus on the first item in the result list.
-                        mSpeechOrbView.setFocusable(false);
-                        mSpeechOrbView.clearFocus();
-                        // We don't need to clearFocus on SearchEditText here, the first
-                        // result will be selected already.
-//                        if (hasResults) {
-//                            searchResultsLayout.requestFocus();
-//                        } else {
-//                            focusTextView();
-//                        }
-                    });
-                }
+                // Override the dismiss listener to get around keyboard issue where dismissing
+                // keyboard takes user into first search result's
+                // content_details_activity_layout page.
+                searchEditText.setOnKeyboardDismissListener(() -> {
+                    // We don't need to clearFocus on SearchEditText here, the first
+                    // result will be selected already.
+                    if (hasResults && mQuery != null) {
+                        searchResultsLayout.requestFocus();
+                    }
+                });
+
             }
         }
         return view;
@@ -291,12 +277,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     public void onResume() {
 
         super.onResume();
-        // There must be a delay to allow SearchOrb to initialize, otherwise no search
-        // results will come back from leanback.
-        mAutoTextViewFocusHandler.postDelayed(() -> {
-            mSpeechOrbView.setFocusable(false);
-        }, 1000);
-
         if (!hasResults && mRowsAdapter.size() > 0) {
             noResultsView.setVisibility(View.VISIBLE);
         }
@@ -400,8 +380,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
                     if (i > 0) {
                         mRowsAdapter.add(new ListRow(row));
-                    }
-                    else {
+                    } else {
                         mRowsAdapter.add(new ListRow(header, row));
                     }
 
@@ -418,7 +397,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         .setListener(null);
             }
             RowsFragment rowsFragment = (RowsFragment) getChildFragmentManager()
-                    .findFragmentById(R.id.lb_results_frame);;
+                    .findFragmentById(R.id.lb_results_frame);
+            ;
 
             if (rowsFragment != null) {
                 rowsFragment.setSelectedPosition(0);
@@ -483,7 +463,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
         ViewGroup.LayoutParams buttonLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        for (Genre genre: genres) {
+        for (Genre genre : genres) {
             View cView = inflater.inflate(R.layout.explore_page_category_button, explorePageGenres, false);
             Button genreButton = cView.findViewById(R.id.explore_page_genre_btn);
             genreButton.setText(genre.getTitle());
@@ -536,13 +516,12 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         ContentDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
 
                 ContentBrowser.getInstance(getActivity())
-                              .setLastSelectedContent(content)
-                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content,
-                                              bundle);
-            }
-            else {
+                        .setLastSelectedContent(content)
+                        .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content,
+                                bundle);
+            } else {
                 Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT)
-                     .show();
+                        .show();
             }
         }
     }
