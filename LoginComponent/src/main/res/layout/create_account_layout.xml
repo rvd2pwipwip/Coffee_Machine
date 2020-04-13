@@ -20,10 +20,15 @@ permissions and limitations under the License.
     android:background="@drawable/background_login_create_account"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="384dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"
             android:orientation="vertical">
 
             <ImageView
@@ -180,4 +185,14 @@ permissions and limitations under the License.
                 android:text="Log In"
                 android:textAllCaps="false" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/nav_back_button"
+            style="@style/button_border_highlight"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:drawableLeft="@drawable/back_chevron" />
+    </RelativeLayout>
 </LinearLayout>
