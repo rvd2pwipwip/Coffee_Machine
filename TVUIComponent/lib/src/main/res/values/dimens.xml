@@ -92,8 +92,8 @@ permissions and limitations under the License.
     <!-- Search fragment dimensions -->
     <dimen name="lb_search_bar_speech_orb_size">35dp</dimen>
     <dimen name="search_bar_margin_left">0dp</dimen>
-    <dimen name="search_bar_items_margin_left">0dp</dimen>
-    <dimen name="search_bar_speech_orb_margin_left">0dp</dimen>
+    <dimen name="lb_search_bar_items_margin_start">0dp</dimen>
+    <dimen name="lb_search_bar_speech_orb_margin_start">0dp</dimen>
     <dimen name="lb_search_bar_items_height">35dp</dimen>
     <dimen name="lb_search_browse_rows_align_top">80dp</dimen>
     <dimen name="lb_search_bar_padding_top">29dp</dimen>

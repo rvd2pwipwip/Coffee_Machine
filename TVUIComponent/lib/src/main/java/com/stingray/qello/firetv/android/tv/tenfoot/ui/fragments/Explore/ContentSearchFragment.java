@@ -177,28 +177,10 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
             final SearchBar searchBar = view.findViewById(R.id.lb_search_bar);
             if (searchBar != null) {
-
-                // Set the left margin of the search bar.
-                ViewGroup.MarginLayoutParams layoutParams =
-                        (ViewGroup.MarginLayoutParams) searchBar.getLayoutParams();
-
-                layoutParams.setMarginStart((int) getResources().getDimension(
-                        R.dimen.search_bar_margin_left));
-                searchBar.setLayoutParams(layoutParams);
-
                 // Move the search bar items next to the search icon.
                 RelativeLayout searchBarItems = searchBar.findViewById(R.id.lb_search_bar_items);
 
                 if (searchBarItems != null) {
-
-                    RelativeLayout.LayoutParams searchBarItemsLayoutParams = (RelativeLayout
-                            .LayoutParams) searchBarItems.getLayoutParams();
-
-                    searchBarItemsLayoutParams.setMarginStart((int) getResources()
-                            .getDimension(R.dimen.search_bar_items_margin_left));
-
-                    searchBarItems.setLayoutParams(searchBarItemsLayoutParams);
-
                     // Set the search bar items background selector.
                     searchBarItems.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.search_edit_text_bg_color_selector));
                 }
@@ -207,14 +189,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 mSpeechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
 
                 if (mSpeechOrbView != null) {
-                    mSpeechOrbView.setOrbIcon(ContextCompat.getDrawable(getActivity(),
-                                                                        R.drawable.search_icon));
-                    RelativeLayout.LayoutParams mSpeechOrbViewLayoutParams = (RelativeLayout
-                            .LayoutParams) mSpeechOrbView.getLayoutParams();
-
-                    mSpeechOrbViewLayoutParams.setMarginStart((int) getResources()
-                            .getDimension(R.dimen.search_bar_speech_orb_margin_left));
-                    mSpeechOrbView.setLayoutParams(mSpeechOrbViewLayoutParams);
+                    mSpeechOrbView.setOrbIcon(ContextCompat.getDrawable(getActivity(), R.drawable.search_icon));
                 }
 
                 searchBar.getViewTreeObserver().addOnGlobalFocusChangeListener(((oldFocus, newFocus) -> {
@@ -460,8 +435,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private void focusTextView(int delay) {
         mAutoTextViewFocusHandler.postDelayed(() -> {
             if (mSearchEditText != null) {
-                // Select search edit text, bring up keyboard.
-                // Always make SpeechOrb not focusable, leanback always tries to bring it back.
                 mSearchEditText.setFocusable(true);
                 mSearchEditText.requestFocus();
             }

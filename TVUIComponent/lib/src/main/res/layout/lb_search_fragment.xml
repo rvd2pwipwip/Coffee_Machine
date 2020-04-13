@@ -51,6 +51,7 @@ limitations under the License.
                     android:id="@+id/lb_search_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/search_bar_margin_left"
                     android:clipChildren="false" />
 
 
