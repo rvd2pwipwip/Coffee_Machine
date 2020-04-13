@@ -329,7 +329,12 @@ public class PurchaseHelper {
     private void saveSubscription(boolean validity, String sku, Callback callback) {
         Bundle resultBundle = new Bundle();
 
-        PostSubscriptionRequest request = new PostSubscriptionRequest(mPurchaseManager.getReceipt(sku).getReceiptId(), UserPreferencesRetriever.getDeviceId(mContext));
+        PostSubscriptionRequest.PurchaseData purchaseData = new PostSubscriptionRequest.PurchaseData(
+                mPurchaseManager.getUserData().getUserId(),
+                mPurchaseManager.getReceipt(sku).getReceiptId()
+        );
+
+        PostSubscriptionRequest request = new PostSubscriptionRequest(purchaseData, UserPreferencesRetriever.getDeviceId(mContext));
         observableFactory.create(new PostSubscriptionCallable(request))
                 .subscribe(aVoid -> {
                     setSubscription(validity, sku);

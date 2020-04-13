@@ -1,6 +1,7 @@
 package com.stingray.qello.android.firetv.login;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.amazon.identity.auth.device.AuthError;
 import com.amazon.identity.auth.device.authorization.api.AuthorizationListener;
@@ -30,7 +31,14 @@ public class ULAuthManager {
 
     public void authorize(String sessionId, String languageCode, String deviceId, AuthorizationListener authorizationListener) {
         IssueCodeRequestBody issueCodeRequestBody = new IssueCodeRequestBody(sessionId, languageCode, deviceId);
-        IssueCodeResponse issueCodeResponse = new IssueCodeCallable(issueCodeRequestBody).call();
+        IssueCodeResponse issueCodeResponse = null;
+
+        try {
+            issueCodeResponse = new IssueCodeCallable(issueCodeRequestBody).call();
+        } catch (Exception e) {
+            Log.e(TAG, "Unexpected exception occured when attempting to retrieve the authorization code", e);
+        }
+
         if (issueCodeResponse == null) {
             authorizationListener.onError(new AuthError("Failed to get authorization token", AuthError.ERROR_TYPE.ERROR_ACCESS_DENIED));
         } else {

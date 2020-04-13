@@ -82,6 +82,10 @@ public class PurchaseManager {
      */
     protected UserData mUserData;
 
+    public UserData getUserData() {
+        return mUserData;
+    }
+
     /**
      * Receipts of purchases made by the user. Stored with the key as the SKU.
      */

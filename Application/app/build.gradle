@@ -44,7 +44,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 20583
-        versionName "3.0.2-alpha"
+        versionName "3.0.3-alpha-SNAPSHOT"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
