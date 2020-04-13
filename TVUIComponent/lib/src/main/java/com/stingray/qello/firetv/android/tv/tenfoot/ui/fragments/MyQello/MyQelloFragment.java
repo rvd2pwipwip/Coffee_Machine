@@ -81,8 +81,9 @@ public class MyQelloFragment extends Fragment{
 
         view.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
             Integer oldFocusId = (oldFocus != null) ? oldFocus.getId() : null;
-            boolean isOldIsParent = oldFocusId != null && parentView.findViewById(oldFocusId) != null;
-            if (isOldIsParent || oldFocus instanceof ImageCardView) {
+            boolean isNewInParent = parentView.findViewById(newFocus.getId()) != null;
+            boolean isOldInParent = oldFocusId != null && parentView.findViewById(oldFocusId) != null;
+            if (isOldInParent || oldFocus instanceof ImageCardView) {
                 boolean isNewInDetails = detailsView.findViewById(newFocus.getId()) != null || newFocus instanceof ImageCardView;
                 boolean isOldInDetails = detailsView.findViewById(oldFocus.getId()) != null || oldFocus instanceof ImageCardView;
 
@@ -107,7 +108,7 @@ public class MyQelloFragment extends Fragment{
                         memoryView = null;
                     }
                 }
-            } else {
+            } else if (isNewInParent) {
                 settingsButton.requestFocus();
             }
         });
