@@ -31,95 +31,111 @@ permissions and limitations under the License.
         android:layout_centerHorizontal="true"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/login_with_up"
-        android:layout_width="384dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="125dp"
-            android:layout_height="43dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:adjustViewBounds="true"
-            android:src="@drawable/stingray_qello_white_account" />
-
-         <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:paddingBottom="0dp"
-            android:text="@string/login"
-            android:textAlignment="center"
-            android:textColor="@color/accent"
-            android:textSize="24dp" />
-
-        <EditText
-            android:id="@+id/username_input"
-            style="@style/text_input_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/password_input"
-            style="@style/text_input_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/continue_btn"
-            style="@style/call_to_action_button_style"
+        <LinearLayout
+            android:id="@+id/login_with_up"
             android:layout_width="384dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:text="@string/log_in"
-            android:textSize="14sp"
-            android:textAllCaps="false" />
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="125dp"
+                android:layout_height="43dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/stingray_qello_white_account" />
+
+             <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:paddingBottom="0dp"
+                android:text="@string/login"
+                android:textAlignment="center"
+                android:textColor="@color/accent"
+                android:textSize="24dp" />
+
+            <EditText
+                android:id="@+id/username_input"
+                style="@style/text_input_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/password_input"
+                style="@style/text_input_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/continue_btn"
+                style="@style/call_to_action_button_style"
+                android:layout_width="384dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:text="@string/log_in"
+                android:textSize="14sp"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/forget_password_btn"
+                style="@style/call_to_action_button_style_outline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/forgot_password"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/or"
+                android:textAlignment="center" />
+
+            <ImageButton
+                android:id="@+id/login_with_amazon"
+                style="@style/image_button_border_highlight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/login_button_content_description"
+                android:src="@color/login_button_image_state" />
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/forget_password_btn"
-            style="@style/call_to_action_button_style_outline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/forgot_password"
-            android:textAllCaps="false" />
+            android:id="@+id/nav_back_button"
+            style="@style/button_border_highlight"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:drawableLeft="@drawable/back_chevron" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/or"
-            android:textAlignment="center" />
+    </RelativeLayout>
 
-        <ImageButton
-            android:id="@+id/login_with_amazon"
-            style="@style/image_button_border_highlight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/login_button_content_description"
-            android:src="@color/login_button_image_state" />
-
-    </LinearLayout>
 </RelativeLayout>
