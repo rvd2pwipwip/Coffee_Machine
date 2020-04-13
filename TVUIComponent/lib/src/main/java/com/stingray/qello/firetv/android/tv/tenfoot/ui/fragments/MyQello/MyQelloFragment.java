@@ -1,9 +1,9 @@
 package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v17.leanback.widget.ImageCardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +20,9 @@ import com.stingray.qello.firetv.android.utils.Preferences;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyQelloFragment extends Fragment{
 
     private final String TAG = MyQelloFragment.class.getSimpleName();
@@ -33,6 +36,13 @@ public class MyQelloFragment extends Fragment{
     private Button loginButton;
     private Button startFreeTrialButton;
     private Button settingsButton;
+    private Button historyButton;
+    private Button favoritesButton;
+    private View detailsView;
+    private View parentView;
+
+    private View memoryView = null;
+    private List<View> memorableViews = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,18 +53,64 @@ public class MyQelloFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.my_qello_layout, container, false);
+        parentView =  inflater.inflate(R.layout.my_qello_layout, container, false);
 
-        userBtnContainer = view.findViewById(R.id.user_btn_container);
-        loggedOutContainer = view.findViewById(R.id.logged_out_container);
+        userBtnContainer = parentView.findViewById(R.id.user_btn_container);
+        loggedOutContainer = parentView.findViewById(R.id.logged_out_container);
 
-        loginButton = view.findViewById((R.id.login_button));
-        startFreeTrialButton = view.findViewById((R.id.free_trial_button));
+        loginButton = parentView.findViewById((R.id.my_qello_login_button));
+        startFreeTrialButton = parentView.findViewById((R.id.my_qello_free_trial_button));
+        settingsButton = parentView.findViewById(R.id.my_qello_settings_button);
+        historyButton = parentView.findViewById(R.id.my_qello_history_button);
+        favoritesButton = parentView.findViewById(R.id.my_qello_favorites_button);
+        detailsView = parentView.findViewById(R.id.my_qello_detail);
 
         toggleAuthenticationViews(Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN));
 
-        addListenerOnButton(view);
-        return view;
+        memorableViews.add(settingsButton);
+        memorableViews.add(historyButton);
+        memorableViews.add(favoritesButton);
+
+        return parentView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        addListeners(view);
+
+        view.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
+            Integer oldFocusId = (oldFocus != null) ? oldFocus.getId() : null;
+            boolean isOldIsParent = oldFocusId != null && parentView.findViewById(oldFocusId) != null;
+            if (isOldIsParent || oldFocus instanceof ImageCardView) {
+                boolean isNewInDetails = detailsView.findViewById(newFocus.getId()) != null || newFocus instanceof ImageCardView;
+                boolean isOldInDetails = detailsView.findViewById(oldFocus.getId()) != null || oldFocus instanceof ImageCardView;
+
+                boolean isOldMemorable = memorableViews.contains(oldFocus);
+
+                boolean leavingDetails = !isNewInDetails && isOldInDetails;
+                boolean enteringDetails = !isOldInDetails && isNewInDetails;
+
+                if (enteringDetails) {
+                    if (isOldMemorable) {
+                        memoryView = oldFocus;
+                    } else {
+                        settingsButton.requestFocus();
+                    }
+                }
+
+                if (memoryView != null) {
+                    memoryView.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke));
+
+                    if (leavingDetails) {
+                        memoryView.requestFocus();
+                        memoryView = null;
+                    }
+                }
+            } else {
+                settingsButton.requestFocus();
+            }
+        });
     }
 
     @Override
@@ -63,55 +119,40 @@ public class MyQelloFragment extends Fragment{
         EventBus.getDefault().unregister(this);
     }
 
-    public void addListenerOnButton(View view)  {
-        settingsButton = view.findViewById(R.id.settings_button);
+    private void addListeners(View view)  {
         settingsButton.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus) {
-                FragmentManager fragmentManager = this.getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
                 // TODO Fix me - Leo - Replace doesn't work if settings fragment was the last thing loaded on page switch
                 Fragment settingsFragment = new SettingsFragment();
-//                Fragment settingsFragment = fragmentManager.findFragmentByTag(SettingsFragment.class.getSimpleName());
+//                Fragment settingsFragment = getFragmentManager().findFragmentByTag(SettingsFragment.class.getSimpleName());
 //
 //                if (settingsFragment == null) {
 //                    settingsFragment = new SettingsFragment();
 //                }
 
-                fragmentTransaction.replace(R.id.my_qello_detail, settingsFragment, SettingsFragment.class.getSimpleName());
-                fragmentTransaction.commit();
+                loadToDetails(settingsFragment, HistoryFragment.class.getSimpleName());
             }
         });
 
-        Button historyButton = (Button) view.findViewById(R.id.history_button);
         historyButton.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus) {
-                FragmentManager fragmentManager = this.getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                Fragment historyFragment = fragmentManager.findFragmentByTag(HistoryFragment.class.getSimpleName());
+                Fragment historyFragment = getFragmentManager().findFragmentByTag(HistoryFragment.class.getSimpleName());
                 if(historyFragment == null) {
                     historyFragment = new HistoryFragment();
                 }
 
-                fragmentTransaction.replace(R.id.my_qello_detail, historyFragment, HistoryFragment.class.getSimpleName());
-                fragmentTransaction.commit();
+                loadToDetails(historyFragment, HistoryFragment.class.getSimpleName());
             }
         });
 
-        Button favoritesButton = (Button) view.findViewById(R.id.favorites_button);
         favoritesButton.setOnFocusChangeListener((v, hasFocus) -> {
             if(hasFocus) {
-                FragmentManager fragmentManager = this.getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                Fragment favoritesFragment = fragmentManager.findFragmentByTag(FavoritesFragment.class.getSimpleName());
+                Fragment favoritesFragment = getFragmentManager().findFragmentByTag(FavoritesFragment.class.getSimpleName());
                 if(favoritesFragment == null) {
                     favoritesFragment = new FavoritesFragment();
                 }
 
-                fragmentTransaction.replace(R.id.my_qello_detail, favoritesFragment, FavoritesFragment.class.getSimpleName());
-                fragmentTransaction.commit();
+                loadToDetails(favoritesFragment, FavoritesFragment.class.getSimpleName());
             }
         });
 
@@ -119,6 +160,12 @@ public class MyQelloFragment extends Fragment{
                 .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null, null));
 
         loginButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity()).loginActionTriggered(getActivity()));
+    }
+
+    private void loadToDetails(Fragment fragment, String TAG) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.my_qello_detail, fragment, TAG);
+        fragmentTransaction.commit();
     }
 
     /**
