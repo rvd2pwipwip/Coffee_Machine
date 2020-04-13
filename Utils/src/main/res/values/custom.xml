@@ -15,7 +15,7 @@ permissions and limitations under the License.
 -->
 <resources>
     <!-- The color of button highlights and widgets. -->
-    <color name="accent">#03A4D9</color>
+    <color name="accent">#FF03A4D9</color>
     <!-- Used for the text of a selected item's title and description.
          Also used for button text, Splash screen text, and read more dialog text. -->
     <color name="primary_text">#E6FFFFFF</color>
