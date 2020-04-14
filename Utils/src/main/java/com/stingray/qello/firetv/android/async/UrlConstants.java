@@ -23,6 +23,9 @@ public class UrlConstants {
         envMap.put(Environment.TEST, new EnvironmentSettings("https://svod-test.api.stingray.com",
                 "https://ulogin-proxy-test.stingray.com", "https://login-test.stingray.com"));
 
+        envMap.put(Environment.DEV, new EnvironmentSettings("https://svod-dev.api.stingray.com",
+                "https://ulogin-proxy-dev.stingray.com", "https://login-dev.stingray.com"));
+
         return envMap;
     }
 
@@ -38,5 +41,5 @@ public class UrlConstants {
         }
     }
 
-    private enum Environment {STAGE, TEST};
+    private enum Environment {STAGE, TEST, DEV}
 }
