@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,9 +24,7 @@ import com.stingray.qello.android.firetv.login.ULAuthManager;
 import com.stingray.qello.android.firetv.login.UserInfoBundle;
 import com.stingray.qello.android.firetv.login.activities.LoginActivity;
 import com.stingray.qello.android.firetv.login.communication.UserpassCreateCallable;
-import com.stingray.qello.android.firetv.login.communication.UserpassLoginCallable;
 import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassCreateRequestBody;
-import com.stingray.qello.android.firetv.login.communication.requestmodel.UserpassLoginRequestBody;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
@@ -75,9 +71,11 @@ public class AccountCreationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.create_account_layout, container, false);
 
+        View backButton = view.findViewById(R.id.nav_back_button);
+        backButton.setOnClickListener(v -> getActivity().finishAfterTransition());
+
         usernameInput = view.findViewById(R.id.userName);
         passwordInput = view.findViewById(R.id.password);
-
 
         Activity activity = getActivity();
 
@@ -202,7 +200,7 @@ public class AccountCreationFragment extends Fragment {
                 getActivity().runOnUiThread(() -> setLoggedInState(new UserInfoBundle(response)));
                 EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
                 getActivity().setResult(RESULT_OK);
-                getActivity().finish();
+                getActivity().finishAfterTransition();
         }
         @Override
         public void onError(AuthError ae) {
@@ -224,6 +222,6 @@ public class AccountCreationFragment extends Fragment {
         bundle.putString(AuthenticationConstants.ERROR_CATEGORY, AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
         bundle.putSerializable(AuthenticationConstants.ERROR_CAUSE, throwable);
         getActivity().setResult(RESULT_CANCELED, intent.putExtra(AuthenticationConstants.ERROR_BUNDLE, bundle));
-        getActivity().finish();
+        getActivity().finishAfterTransition();
     }
 }

@@ -22,8 +22,8 @@ permissions and limitations under the License.
     <dimen name="read_dialog_width">520dp</dimen>
     <dimen name="read_dialog_height">320dp</dimen>
     <dimen name="read_dialog_text_margin_vertical">40dp</dimen>
-    <dimen name="read_dialog_text_margin_left">40dp</dimen>
-    <dimen name="read_dialog_text_margin_right">40dp</dimen>
+    <dimen name="read_dialog_text_margin_left">60dp</dimen>
+    <dimen name="read_dialog_text_margin_right">60dp</dimen>
 
     <!-- Logout fragment dimensions -->
     <dimen name="logout_fragment_height">180dp</dimen>

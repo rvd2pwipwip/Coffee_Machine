@@ -2,6 +2,8 @@ package com.stingray.qello.firetv.android.ui.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.stingray.qello.firetv.utils.R;

@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -98,6 +99,9 @@ public class LoginActivity extends Activity {
      * Initializes all of the UI elements in the activity.
      */
     private void initializeUI() {
+
+        View backButton = findViewById(R.id.nav_back_button);
+        backButton.setOnClickListener(v -> finishAfterTransition());
 
         loginWithUP = findViewById(R.id.login_with_up);
         usernameInput = findViewById(R.id.username_input);
@@ -220,7 +224,7 @@ public class LoginActivity extends Activity {
         bundle.putString(AuthenticationConstants.ERROR_CATEGORY, AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY);
         bundle.putSerializable(AuthenticationConstants.ERROR_CAUSE, throwable);
         setResult(RESULT_CANCELED, intent.putExtra(AuthenticationConstants.ERROR_BUNDLE, bundle));
-        finish();
+        finishAfterTransition();
     }
 
     private void callULAuthorize(LoginResponse response) {
@@ -329,7 +333,7 @@ public class LoginActivity extends Activity {
             } else {
                 runOnUiThread(() -> setLoggedInState(new UserInfoBundle(response)));
                 setResult(RESULT_OK);
-                finish();
+                finishAfterTransition();
             }
         }
 

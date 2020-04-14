@@ -1,21 +1,18 @@
 /**
  * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * A copy of the License is located at
- *
- *     http://aws.amazon.com/apache2.0/
- *
+ * <p>
+ * http://aws.amazon.com/apache2.0/
+ * <p>
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
 package com.stingray.qello.firetv.android.ui.fragments;
-
-import com.stingray.qello.firetv.android.ui.interfaces.SingleViewProvider;
-import com.stingray.qello.firetv.utils.R;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,6 +26,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.stingray.qello.firetv.android.ui.interfaces.SingleViewProvider;
+import com.stingray.qello.firetv.utils.R;
 
 /**
  * Dialog allows user to read text,
@@ -56,6 +56,9 @@ public class ReadDialogFragment extends DialogFragment {
         // Using the default layout read_dialog if custom layout is not set.
         int read_dialog = mDialogLayout == 0 ? R.layout.read_dialog : mDialogLayout;
         mView = inflater.inflate(read_dialog, container);
+
+        View backButton = mView.findViewById(R.id.nav_back_button);
+        backButton.setOnClickListener(v -> dismiss());
 
         return mView;
     }
@@ -141,15 +144,14 @@ public class ReadDialogFragment extends DialogFragment {
             wlp.width = extras.getInt(INTENT_EXTRA_DIALOG_WIDTH, window.getContext().getResources
                     ().getDimensionPixelSize(R.dimen.read_dialog_width));
             wlp.height = extras.getInt(INTENT_EXTRA_DIALOG_HEIGHT,
-                                       window.getContext()
-                                             .getResources()
-                                             .getDimensionPixelSize(R.dimen.read_dialog_height));
-        }
-        else {
+                    window.getContext()
+                            .getResources()
+                            .getDimensionPixelSize(R.dimen.read_dialog_height));
+        } else {
             wlp.width = window.getContext().getResources()
-                              .getDimensionPixelSize(R.dimen.read_dialog_width);
+                    .getDimensionPixelSize(R.dimen.read_dialog_width);
             wlp.height = window.getContext().getResources()
-                               .getDimensionPixelSize(R.dimen.read_dialog_height);
+                    .getDimensionPixelSize(R.dimen.read_dialog_height);
         }
         window.setAttributes(wlp);
 
@@ -171,8 +173,8 @@ public class ReadDialogFragment extends DialogFragment {
                 // See: http://stackoverflow.com/questions/5299693/webview-memory-leak
                 final Context context = getActivity().getApplicationContext();
                 final View contentView = mContentViewProvider.getView(context,
-                                                                      LayoutInflater.from(context),
-                                                                      mContentViewContainer);
+                        LayoutInflater.from(context),
+                        mContentViewContainer);
                 if (contentView != null && contentView.getParent() == null) {
                     mContentViewContainer.addView(contentView);
                 }

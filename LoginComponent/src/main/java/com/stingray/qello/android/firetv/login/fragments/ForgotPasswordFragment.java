@@ -1,7 +1,5 @@
 package com.stingray.qello.android.firetv.login.fragments;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -21,7 +19,6 @@ import com.stingray.qello.android.firetv.login.communication.ForgotPasswordCalla
 import com.stingray.qello.android.firetv.login.communication.requestmodel.ForgotPasswordRequestBody;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.ui.fragments.FullScreenDialogFragment;
-import com.stingray.qello.firetv.android.utils.Helpers;
 
 import java.util.Locale;
 
@@ -74,7 +71,7 @@ public class ForgotPasswordFragment extends FullScreenDialogFragment {
             observableFactory.create(new ForgotPasswordCallable(forgotPasswordRequestBody))
                     .subscribe(voidObject -> {
                         showToast(R.string.forgot_password_success);
-                        backToLogin();
+                        dismiss();
                         progressBar.setVisibility(View.GONE);
                     }, throwable -> {
                         Log.e(TAG, "Forgot password call failed", throwable);
@@ -89,17 +86,13 @@ public class ForgotPasswordFragment extends FullScreenDialogFragment {
         });
 
         Button cancelButton = view.findViewById(R.id.forget_password_cancel_btn);
-        cancelButton.setOnClickListener(v -> backToLogin());
-    }
-
-    public void backToLogin() {
-        getActivity().getFragmentManager().popBackStack();
+        cancelButton.setOnClickListener(v -> dismiss());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        backToLogin();
+        dismiss();
     }
 
     private void showToast(int id) {

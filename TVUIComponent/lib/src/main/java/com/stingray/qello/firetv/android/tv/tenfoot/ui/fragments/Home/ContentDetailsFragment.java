@@ -157,6 +157,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         backButton = view.findViewById(R.id.nav_back_button);
+        backButton.setOnClickListener(v -> getActivity().finishAfterTransition());
     }
 
     @Override

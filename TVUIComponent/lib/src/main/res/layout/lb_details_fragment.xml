@@ -26,25 +26,12 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/details_rows_dock"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <FrameLayout
-                android:id="@+id/details_rows_dock"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <Button
-                android:id="@+id/nav_back_button"
-                style="@style/button_border_highlight"
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="5dp"
-                android:drawableStart="@drawable/back_chevron" />
-
-        </RelativeLayout>
+        <include layout="@layout/navigation_back"/>
 
     </android.support.v17.leanback.widget.BrowseFrameLayout>
 

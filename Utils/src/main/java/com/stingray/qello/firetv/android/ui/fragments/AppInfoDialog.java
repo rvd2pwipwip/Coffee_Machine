@@ -8,16 +8,18 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Display;
+import android.view.View;
 
 import com.stingray.qello.firetv.android.ui.interfaces.SingleViewProvider;
 
 public abstract class AppInfoDialog {
 
+    private ReadDialogFragment dialog;
     protected Activity mActivity;
 
     public void createFragment(final Activity activity, FragmentManager manager, String tag) {
         mActivity = activity;
-        final ReadDialogFragment dialog = new ReadDialogFragment();
+        dialog = new ReadDialogFragment();
         dialog.setContentViewProvider(getSingleViewProvider(activity));
         dialog.setArguments(getArguments(activity));
         commitFragment(manager, dialog, tag);
@@ -38,6 +40,10 @@ public abstract class AppInfoDialog {
         final FragmentTransaction ft = (manager.beginTransaction());
         ft.add(dialog, fragmentTag);
         ft.commit();
+    }
+
+    protected void dismiss() {
+        dialog.dismiss();
     }
 
     protected abstract SingleViewProvider getSingleViewProvider(Context context);

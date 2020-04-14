@@ -12,187 +12,173 @@ on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_login_create_account"
-    android:orientation="vertical">
+    android:background="@drawable/background_login_create_account">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="384dp"
+        <ImageView
+            android:id="@+id/imageView_qello_logo_header"
+            android:layout_width="125dp"
+            android:layout_height="43dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/stingray_qello_white_account" />
+
+        <TextView
+            android:id="@+id/textView_screen_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="0dp"
+            android:text="Create an account"
+            android:textAlignment="center"
+            android:textColor="@color/accent"
+            android:textSize="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:layout_marginTop="0dp"
+            android:text="Start your 7-day FREE trial"
+            android:textAlignment="center" />
 
-            <ImageView
-                android:id="@+id/imageView_qello_logo_header"
-                android:layout_width="125dp"
-                android:layout_height="43dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/stingray_qello_white_account" />
+        <EditText
+            android:id="@+id/userName"
+            style="@style/text_input_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress" />
 
-            <TextView
-                android:id="@+id/textView_screen_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="0dp"
-                android:text="Create an account"
-                android:textAlignment="center"
-                android:textColor="@color/accent"
-                android:textSize="24dp" />
+        <EditText
+            android:id="@+id/password"
+            style="@style/text_input_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="0dp"
-                android:text="Start your 7-day FREE trial"
-                android:textAlignment="center" />
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:textStyle="bold"
+            tools:visibility="gone" />
 
-            <EditText
-                android:id="@+id/userName"
-                style="@style/text_input_style"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:hint="Email Address"
-                android:inputType="textEmailAddress" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0dp"
+            android:text="By creating an account, you accept Stingray’s Terms and Conditions and Privacy Policy."
+            android:textAlignment="center"
+            android:textSize="10dp" />
 
-            <EditText
-                android:id="@+id/password"
-                style="@style/text_input_style"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword" />
-
-            <TextView
-                android:id="@+id/error_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_red_dark"
-                android:textStyle="bold"
-                tools:visibility="gone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="0dp"
-                android:text="By creating an account, you accept Stingray’s Terms and Conditions and Privacy Policy."
-                android:textAlignment="center"
-                android:textSize="10dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/create_account_terms"
-                    style="@style/call_to_action_button_style_outline_small"
-                    android:layout_width="187dp"
-                    android:layout_height="27dp"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:text="Terms and Conditions"
-                    android:textAllCaps="false"
-                    android:textSize="12dp" />
-
-                <Button
-                    android:id="@+id/create_account_pp"
-                    style="@style/call_to_action_button_style_outline_small"
-                    android:layout_width="187dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Privacy Policy"
-                    android:textAllCaps="false"
-                    android:textSize="12dp" />
-
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/create_button"
-                style="@style/call_to_action_button_style"
-                android:layout_width="384dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Create Account"
-                android:textSize="14sp"
-                android:textAllCaps="false" />
-
-<!--            <TextView-->
-<!--                android:id="@+id/textView3"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:text="or"-->
-<!--                android:textAlignment="center" />-->
-
-<!--            <ImageButton-->
-<!--                android:id="@+id/login_with_amazon2"-->
-<!--                style="@style/image_button_border_highlight"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:adjustViewBounds="true"-->
-<!--                android:contentDescription="@string/login_button_content_description"-->
-<!--                android:src="@color/login_button_image_state" />-->
-
-            <ProgressBar
-                android:id="@+id/progressBar2"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/or_log_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Already have an account?"
-                android:textAlignment="center" />
+                android:id="@+id/create_account_terms"
+                style="@style/call_to_action_button_style_outline_small"
+                android:layout_width="187dp"
+                android:layout_height="27dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginRight="10dp"
+                android:text="Terms and Conditions"
+                android:textAllCaps="false"
+                android:textSize="12dp" />
 
             <Button
-                android:id="@+id/log_in_btn"
-                style="@style/call_to_action_button_style_outline"
-                android:layout_width="384dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/create_account_pp"
+                style="@style/call_to_action_button_style_outline_small"
+                android:layout_width="187dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
-                android:text="Log In"
-                android:textAllCaps="false" />
+                android:text="Privacy Policy"
+                android:textAllCaps="false"
+                android:textSize="12dp" />
+
         </LinearLayout>
 
         <Button
-            android:id="@+id/nav_back_button"
-            style="@style/button_border_highlight"
-            android:layout_width="40dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
-            android:drawableLeft="@drawable/back_chevron" />
-    </RelativeLayout>
-</LinearLayout>
+            android:id="@+id/create_button"
+            style="@style/call_to_action_button_style"
+            android:layout_width="384dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Create Account"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView3"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="5dp"-->
+        <!--                android:text="or"-->
+        <!--                android:textAlignment="center" />-->
+
+        <!--            <ImageButton-->
+        <!--                android:id="@+id/login_with_amazon2"-->
+        <!--                style="@style/image_button_border_highlight"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="center_horizontal"-->
+        <!--                android:layout_marginTop="5dp"-->
+        <!--                android:adjustViewBounds="true"-->
+        <!--                android:contentDescription="@string/login_button_content_description"-->
+        <!--                android:src="@color/login_button_image_state" />-->
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/or_log_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Already have an account?"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/log_in_btn"
+            style="@style/call_to_action_button_style_outline"
+            android:layout_width="384dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="Log In"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <include layout="@layout/navigation_back" />
+</RelativeLayout>
