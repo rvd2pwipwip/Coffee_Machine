@@ -23,7 +23,6 @@ permissions and limitations under the License.
         style="@style/button_border_highlight"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
         android:strokeColor="#1F1F1F"
         android:focusable="true" />
 </LinearLayout>

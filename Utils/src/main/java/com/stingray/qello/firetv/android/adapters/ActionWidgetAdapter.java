@@ -2,7 +2,6 @@ package com.stingray.qello.firetv.android.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
 import android.support.annotation.MainThread;
 import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v7.widget.RecyclerView;
@@ -45,6 +44,9 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
         // Set the vertical grid view alignment.
         verticalGridView.setWindowAlignment(VerticalGridView.WINDOW_ALIGN_BOTH_EDGE);
         verticalGridView.setWindowAlignmentOffsetPercent(WINDOW_ALIGNMENT_OFFSET_PERCENT);
+
+        int margin = verticalGridView.getContext().getResources().getDimensionPixelSize(R.dimen.action_widget_item_margin);
+        verticalGridView.setItemMargin(margin);
 
         // Set the adapter of the vertical grid view.
         verticalGridView.setAdapter(this);
@@ -103,18 +105,21 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
 
         Action action = mActionsList.get(position);
 
+        ViewHolder viewHolder = ((ViewHolder) baseHolder);
+
         // Set item views based on the data model.
-        ((ViewHolder) baseHolder).actionButton.setImageResource(action.getIconResourceId());
-        ((ViewHolder) baseHolder).actionButton.setTag(action.getName());
+        viewHolder.actionButton.setImageResource(action.getIconResourceId());
+        viewHolder.actionButton.setTag(action.getName());
 
-        ((ViewHolder) baseHolder).actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verticalGridView.performClick();
+        viewHolder.actionButton.setOnClickListener(v -> {
+            for (int i = 0; i < verticalGridView.getChildCount(); i++) {
+                View view = verticalGridView.getChildAt(i);
+                view.setBackground(null);
             }
+            int highlightColor = verticalGridView.getContext().getResources().getColor(R.color.accent);
+            viewHolder.parentView.setBackgroundColor(highlightColor);
+            verticalGridView.performClick();
         });
-
-
     }
 
     /**
@@ -144,9 +149,11 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ImageButton actionButton;
+        public final View parentView;
 
         public ViewHolder(View v) {
             super(v);
+            this.parentView = v;
             actionButton = itemView.findViewById(R.id.action_button);
         }
     }
