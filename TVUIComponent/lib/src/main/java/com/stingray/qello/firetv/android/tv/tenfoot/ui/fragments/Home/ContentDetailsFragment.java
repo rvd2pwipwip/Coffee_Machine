@@ -39,6 +39,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v17.leanback.app.BackgroundManager;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
+import android.support.v17.leanback.widget.BaseCardView;
 import android.support.v17.leanback.widget.ClassPresenterSelector;
 import android.support.v17.leanback.widget.DetailsOverviewRow;
 import android.support.v17.leanback.widget.DetailsOverviewRowPresenter;
@@ -562,7 +563,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
      * Builds the related content row. Uses contents from the selected content's category.
      */
     private void setupRelatedContentRow(ContentContainerExt contentContainerExt) {
-        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
+        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 120, 160));
 
         for (Content c : contentContainerExt.getContentContainer()) {
             listRowAdapter.add(c);

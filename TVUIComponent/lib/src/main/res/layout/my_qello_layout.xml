@@ -24,7 +24,7 @@
             tools:visibility="visible">
 
             <Button
-                android:id="@+id/free_trial_button"
+                android:id="@+id/my_qello_free_trial_button"
                 style="@style/button_border_highlight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:textSize="16sp" />
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/my_qello_login_button"
                 style="@style/button_border_highlight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             tools:visibility="gone">
 
             <Button
-                android:id="@+id/history_button"
+                android:id="@+id/my_qello_history_button"
                 style="@style/button_border_highlight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                 android:textSize="16sp" />
 
             <Button
-                android:id="@+id/favorites_button"
+                android:id="@+id/my_qello_favorites_button"
                 style="@style/button_border_highlight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
             android:background="#C2C2C2" />
 
         <Button
-            android:id="@+id/settings_button"
+            android:id="@+id/my_qello_settings_button"
             style="@style/button_border_highlight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -22,6 +22,7 @@ permissions and limitations under the License.
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical|start"
         android:background="#1F1F1F"
+        android:paddingTop="@dimen/action_widget_item_margin"
         android:clipToPadding="false"
         android:focusable="true"
         android:focusableInTouchMode="true"

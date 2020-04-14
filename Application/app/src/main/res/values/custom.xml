@@ -41,7 +41,7 @@ permissions and limitations under the License.
     <color name="browse_headers_bar">#0DFFFFFF</color>
     <!-- Used for the text of a selected item's title and description.
          Also used for button text, Splash screen text, and read more dialog text. -->
-    <color name="primary_text">#E6FFFFFF</color>
+    <color name="primary_text">#FF03A4D9</color>
     <!-- Used for the text on the card views and playback progress bar text. -->
     <color name="secondary_text">#FFFFFFFF</color>
     <!-- Used for the category titles and content subtitles -->

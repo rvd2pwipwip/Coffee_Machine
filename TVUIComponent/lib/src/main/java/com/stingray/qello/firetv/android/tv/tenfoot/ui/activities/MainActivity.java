@@ -30,11 +30,14 @@
 package com.stingray.qello.firetv.android.tv.tenfoot.ui.activities;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.base.BaseActivity;
 import com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.Home.HomeFragment;
+import com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello.MyQelloFragment;
 import com.stingray.qello.firetv.android.tv.tenfoot.utils.BrowseHelper;
 import com.stingray.qello.firetv.android.utils.Helpers;
 
@@ -53,11 +56,18 @@ public class MainActivity extends BaseActivity {
 
         setContentView(R.layout.main_layout);
         Helpers.handleActivityEnterFadeTransition(this, 1500);
+        FragmentManager fragmentManager = getFragmentManager();
 
-        Fragment homeFrag = new HomeFragment();
-        homeFrag.setArguments(savedInstanceState);
+        Fragment homeFragment =fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
+        if(homeFragment == null) {
+            homeFragment = new HomeFragment();
+            homeFragment.setArguments(savedInstanceState);
+        }
 
-        getFragmentManager().beginTransaction().add(R.id.main_detail, homeFrag, HomeFragment.class.getSimpleName()).commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.main_detail, homeFragment, HomeFragment.class.getSimpleName());
+        fragmentTransaction.commit();
     }
 
     @Override

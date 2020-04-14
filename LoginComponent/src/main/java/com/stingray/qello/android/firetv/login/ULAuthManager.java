@@ -30,7 +30,7 @@ public class ULAuthManager {
     final static String BUNDLE_USER_TRACKING_ID = "userTrackingId";
 
     public void authorize(String sessionId, String languageCode, String deviceId, AuthorizationListener authorizationListener) {
-        IssueCodeRequestBody issueCodeRequestBody = new IssueCodeRequestBody(sessionId, languageCode, deviceId);
+        IssueCodeRequestBody issueCodeRequestBody = new IssueCodeRequestBody(sessionId, deviceId);
         IssueCodeResponse issueCodeResponse = null;
 
         try {

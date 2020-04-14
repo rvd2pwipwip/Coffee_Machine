@@ -43,8 +43,8 @@ android {
         applicationId "com.qello.amazon"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 20584
-        versionName "3.0.3-alpha"
+        versionCode 20586
+        versionName "3.0.5-alpha"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
