@@ -25,6 +25,7 @@ import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.stingray.qello.firetv.android.adapters.ActionWidgetAdapter;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
@@ -238,7 +239,10 @@ public abstract class BaseActivity extends Activity {
     private String getCurrentFragmentName(){
         FragmentManager fragmentManager = getFragmentManager();
         int index = fragmentManager.getBackStackEntryCount() - 1;
-        if (index > -1) {
+
+        if (index == -1) {
+            return HomeFragment.class.getName();
+        } else if (index > -1) {
             return fragmentManager.getBackStackEntryAt(index).getName();
         } else {
             return null;
@@ -250,15 +254,24 @@ public abstract class BaseActivity extends Activity {
         super.onBackPressed();
         String fragmentAfterBackPress = getCurrentFragmentName();
         if (fragmentAfterBackPress != null) {
-            int actionIndex = fragmentAndActionIndexMap.get(fragmentAfterBackPress);
+            setupNavHighlight(fragmentAfterBackPress);
+        }
+    }
 
-            for (int i = 0; i < actionWidgetContainer.getChildCount(); i++) {
-                View cView = actionWidgetContainer.getChildAt(i);
+    protected void setupNavHighlight(String fragmentName) {
+        int actionIndex = fragmentAndActionIndexMap.get(fragmentName);
+
+        for (int i = 0; i < actionWidgetContainer.getChildCount(); i++) {
+            View cView = actionWidgetContainer.getChildAt(i);
+            if (cView != null) {
                 if (i != actionIndex) {
                     cView.setBackground(null);
                 } else {
                     cView.setBackgroundColor(getResources().getColor(com.stingray.qello.firetv.utils.R.color.accent));
-                    cView.findViewById(R.id.action_button).requestFocus();
+                    View buttonView = cView.findViewById(R.id.action_button);
+                    if (buttonView != null) {
+                        buttonView.requestFocus();
+                    }
                 }
             }
         }

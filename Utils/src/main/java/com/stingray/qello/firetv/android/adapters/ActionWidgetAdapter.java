@@ -111,12 +111,16 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
         viewHolder.actionButton.setImageResource(action.getIconResourceId());
         viewHolder.actionButton.setTag(action.getName());
 
+        int highlightColor = verticalGridView.getContext().getResources().getColor(R.color.accent);
+        if (position == 0) {
+            viewHolder.parentView.setBackgroundColor(highlightColor);
+        }
+
         viewHolder.actionButton.setOnClickListener(v -> {
             for (int i = 0; i < verticalGridView.getChildCount(); i++) {
                 View view = verticalGridView.getChildAt(i);
                 view.setBackground(null);
             }
-            int highlightColor = verticalGridView.getContext().getResources().getColor(R.color.accent);
             viewHolder.parentView.setBackgroundColor(highlightColor);
             verticalGridView.performClick();
         });
