@@ -33,7 +33,7 @@ permissions and limitations under the License.
     <!-- Action widget background color -->
     <color name="search_orb">@color/accent</color>
     <color name="ui_almost_white">#FAFAFA</color>
-    <color name="ui_grey">#121212</color>
+    <color name="ui_grey">#C2C2C2</color>
     <color name="grey_1F1F1F">#E61F1F1F</color>
     <!-- Button states -->
     <color name="disabled_state">#777777</color>
