@@ -42,7 +42,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="5dp"
-                android:drawableLeft="@drawable/back_chevron" />
+                android:drawableStart="@drawable/back_chevron" />
 
         </RelativeLayout>
 

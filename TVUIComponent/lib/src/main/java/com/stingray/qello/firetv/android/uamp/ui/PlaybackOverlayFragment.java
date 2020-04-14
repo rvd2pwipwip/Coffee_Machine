@@ -285,6 +285,12 @@ public class PlaybackOverlayFragment extends TenFootPlaybackOverlayFragment
         }
         final ViewGroup layout = (ViewGroup) rootView.findViewById(R.id.details_fragment_root);
         if (layout != null) {
+            View backButton = layout.findViewById(R.id.nav_back_button);
+
+            if (backButton != null) {
+                backButton.setVisibility(View.GONE);
+            }
+
             ViewTreeObserver viewTreeObserver = layout.getViewTreeObserver();
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver
                     .OnGlobalLayoutListener() {

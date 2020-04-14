@@ -121,6 +121,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
     SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
 
+    private View backButton = null;
+
     // Decides whether the action button should be enabled or not.
     private boolean mActionInProgress = false;
 
@@ -149,6 +151,12 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         prepareBackgroundManager();
 
         mSelectedContent = ContentBrowser.getInstance(getActivity()).getLastSelectedContent();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        backButton = view.findViewById(R.id.nav_back_button);
     }
 
     @Override
@@ -608,9 +616,12 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
     @Override
     public void onResume() {
-
         Log.v(TAG, "onResume called.");
         super.onResume();
+
+        if (backButton != null && backButton.getVisibility() != View.VISIBLE) {
+            backButton.setVisibility(View.VISIBLE);
+        }
         updateActionsProperties();
         mActionInProgress = false;
     }
