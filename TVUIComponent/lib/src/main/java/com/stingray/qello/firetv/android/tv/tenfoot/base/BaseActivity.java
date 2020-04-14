@@ -259,7 +259,11 @@ public abstract class BaseActivity extends Activity {
     }
 
     protected void setupNavHighlight(String fragmentName) {
-        int actionIndex = fragmentAndActionIndexMap.get(fragmentName);
+        Integer actionIndex = fragmentAndActionIndexMap.get(fragmentName);
+
+        if (actionIndex == null) {
+            return;
+        }
 
         for (int i = 0; i < actionWidgetContainer.getChildCount(); i++) {
             View cView = actionWidgetContainer.getChildAt(i);
