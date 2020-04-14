@@ -237,7 +237,12 @@ public abstract class BaseActivity extends Activity {
 
     private String getCurrentFragmentName(){
         FragmentManager fragmentManager = getFragmentManager();
-        return fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+        int index = fragmentManager.getBackStackEntryCount() - 1;
+        if (index > -1) {
+            return fragmentManager.getBackStackEntryAt(index).getName();
+        } else {
+            return null;
+        }
     }
 
     @Override

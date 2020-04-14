@@ -103,6 +103,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private final Runnable mDelayedLoad = this::loadRows;
     private ArrayObjectAdapter mRowsAdapter;
     private String mQuery;
+    private SearchBar searchBar;
+    private RelativeLayout searchBarItems;
     private SearchEditText mSearchEditText = null;
     private ObservableFactory observableFactory = new ObservableFactory();
     private View focusedGenreButton = null;
@@ -173,7 +175,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             view.setBackgroundColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
             view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.background_explore));
 
-            final SearchBar searchBar = view.findViewById(R.id.lb_search_bar);
+            searchBar = view.findViewById(R.id.lb_search_bar);
 
             searchBar.getViewTreeObserver().addOnGlobalFocusChangeListener(((oldFocus, newFocus) -> {
                 if (oldFocus == null) {
@@ -185,7 +187,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 }
             }));
 
-            RelativeLayout searchBarItems = searchBar.findViewById(R.id.lb_search_bar_items);
+            searchBarItems = searchBar.findViewById(R.id.lb_search_bar_items);
             SpeechOrbView speechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
 
             final SearchEditText searchEditText = searchBar.findViewById(R.id.lb_search_text_editor);
@@ -200,11 +202,11 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 speechOrbView.setOrbIcon(ContextCompat.getDrawable(getActivity(), R.drawable.search_icon));
 
                 mSearchEditText = searchEditText;
-                mSearchEditText.setOnFocusChangeListener((view1, motionEvent) -> {
+                mSearchEditText.setOnFocusChangeListener((view1, hasFocus) -> {
                     String cQuery = mSearchEditText.getText().toString();
                     boolean queryHasChanged = !cQuery.equalsIgnoreCase(mQuery);
 
-                    if (view1.isFocused()) {
+                    if (hasFocus) {
                         searchBarItems.setBackground(getResources().getDrawable(R.drawable.search_edit_text_bg));
                         if (queryHasChanged) {
                             loadQuery(cQuery);
@@ -277,9 +279,23 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     public void onResume() {
 
         super.onResume();
+        if (mSearchEditText != null) {
+            mSearchEditText.setFocusable(false);
+            mSearchEditText.clearFocus();
+
+            mAutoTextViewFocusHandler.postDelayed(() -> {
+                mSearchEditText.setFocusable(true);
+                mSearchEditText.setHint(getResources().getString(R.string.lb_search_bar_hint));
+            }, 500);
+        }
         if (!hasResults && mRowsAdapter.size() > 0) {
             noResultsView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
