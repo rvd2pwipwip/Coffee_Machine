@@ -30,7 +30,6 @@ permissions and limitations under the License.
             android:layout_width="125dp"
             android:layout_height="43dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
             android:adjustViewBounds="true"
             android:src="@drawable/stingray_qello_white_account" />
 
@@ -38,8 +37,7 @@ permissions and limitations under the License.
             android:id="@+id/textView_screen_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="0dp"
+            android:paddingTop="20dp"
             android:text="Create an account"
             android:textAlignment="center"
             android:textColor="@color/accent"
@@ -59,7 +57,7 @@ permissions and limitations under the License.
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="Email Address"
             android:inputType="textEmailAddress" />
@@ -90,6 +88,7 @@ permissions and limitations under the License.
             android:layout_marginTop="0dp"
             android:text="By creating an account, you accept Stingray’s Terms and Conditions and Privacy Policy."
             android:textAlignment="center"
+            android:textColor="@color/lb_grey"
             android:textSize="10dp" />
 
         <LinearLayout
@@ -128,7 +127,7 @@ permissions and limitations under the License.
             android:layout_width="384dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="25dp"
             android:text="Create Account"
             android:textAllCaps="false"
             android:textSize="14sp" />
@@ -165,8 +164,9 @@ permissions and limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="Already have an account?"
+            android:textSize="12sp"
             android:textAlignment="center" />
 
         <Button
