@@ -128,10 +128,14 @@ public class ReadDialogFragment extends DialogFragment {
      */
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        // The dialod them they has a gray background
+        //final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
 
-        final Dialog dialog = builder.show();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setWindowAnimations(R.style.fullscreen_dialog_animation);
+        }
 
         // Move the window to the top of the screen.
         final Window window = dialog.getWindow();
