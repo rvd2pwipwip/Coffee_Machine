@@ -5,8 +5,10 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.ui.fragments.AppInfoDialog;
@@ -67,7 +69,15 @@ public class MyAccountSettingsDialog extends AppInfoDialog {
                 };
             }
         } else {
-            singleViewProvider = (context1, inflater, parent) -> mActivity.getLayoutInflater().inflate(R.layout.my_account_layout_guest, parent);
+            singleViewProvider = (context1, inflater, parent) -> {
+                final View view = mActivity.getLayoutInflater().inflate(R.layout.my_account_layout_guest, parent);
+
+                Button freeTrialButton = view.findViewById(R.id.free_trial_button);
+                freeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(mActivity)
+                        .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null, null));
+
+                return view;
+            };
         }
 
         return singleViewProvider;

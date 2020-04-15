@@ -53,6 +53,7 @@
                 <Button
                     android:id="@+id/my_qello_free_trial_button"
                     style="@style/button_border_highlight"
+                    android:background="@drawable/text_input_frame_state_blue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
