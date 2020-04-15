@@ -78,8 +78,8 @@ permissions and limitations under the License.
     <Button
         android:id="@+id/read_more_btn"
         style="@style/Widget.Leanback.DetailsActionButtonStyle.Custom"
-        android:layout_width="280px"
-        android:layout_height="60px"
+        android:layout_width="175dp"
+        android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="100dp"
         android:drawableRight="@drawable/right_arrow"
@@ -87,8 +87,7 @@ permissions and limitations under the License.
         android:padding="3dp"
         android:strokeColor="#1F1F1F"
         android:text="Read more"
-        android:textSize="20px"
-        android:visibility="gone" />
+        android:textSize="12sp"/>
 
 
 </LinearLayout>

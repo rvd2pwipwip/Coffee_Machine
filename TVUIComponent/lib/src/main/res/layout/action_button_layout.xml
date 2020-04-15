@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lb_action_button"
     style="@style/Widget.Leanback.DetailsActionButtonStyle.Custom"
-    android:layout_width="280px"
-    android:layout_height="85px"
+    android:layout_width="175dp"
+    android:layout_height="50dp"
+    android:textSize="12sp"
     tools:text="@string/start_free_trial_1" />

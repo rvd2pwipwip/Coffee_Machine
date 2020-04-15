@@ -894,9 +894,9 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 // If the content has not been played yet, add the "Watch Now" button.
                 else {
                     contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW,
-                                                             R.string.watch_now_1,
-                                                             R.string.watch_now_2,
-                    R.drawable.play_show));
+                            R.string.watch_now_1,
+                            R.string.watch_now_2,
+                            R.drawable.play_show));
                 }
 
                 if (mSubscribed) {
