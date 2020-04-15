@@ -33,6 +33,7 @@ permissions and limitations under the License.
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +45,8 @@ permissions and limitations under the License.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/accent"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        tools:text="Artist Name" />
 
     <android.support.v17.leanback.widget.ResizingTextView
         android:id="@+id/details_description_title"
@@ -56,12 +58,22 @@ permissions and limitations under the License.
         style="?attr/detailsDescriptionTitleStyle"
         />
 
+    <TextView
+        android:id="@+id/year_runtime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        android:textColor="#E6FFFFFF"
+        tools:text="Year: 1995 / Runtime: 01:02:53" />
+
     <com.stingray.qello.firetv.android.ui.widget.EllipsizedTextView
         android:id="@+id/ellipsized_description_text"
         style="@style/DetailsDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque convallis, tortor vitae rutrum bibendum, purus tellus pretium ex, id sollicitudin eros diam et magna. Sed ac ligula ut dolor aliquam venenatis dignissim at lacus. Maecenas vitae pulvinar eros. Duis blandit neque non porttitor posuere." />
 
     <Button
         android:id="@+id/read_more_btn"

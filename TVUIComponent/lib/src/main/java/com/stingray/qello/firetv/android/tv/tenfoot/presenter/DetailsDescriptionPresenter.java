@@ -22,6 +22,7 @@ import com.stingray.qello.firetv.android.ui.widget.EllipsizedTextView;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v17.leanback.widget.Presenter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +31,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
@@ -41,6 +48,12 @@ public class DetailsDescriptionPresenter extends Presenter {
 
     private final static String TAG = DetailsDescriptionPresenter.class.getSimpleName();
 
+    private static final int MILLISECONDS_IN_SECOND = 1000;
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int SECONDS_IN_HOUR = 3600;
+    private static final String YEAR = "Year: ";
+    private static final String RUNTIME = " / Runtime: ";
+
     private Context mContext;
 
     /**
@@ -50,6 +63,7 @@ public class DetailsDescriptionPresenter extends Presenter {
 
         private final TextView mTitle;
         private final TextView mSubtitle;
+        private final TextView mYearRuntime;
         private final EllipsizedTextView mBody;
         private final Button readMoreBtn;
 
@@ -58,6 +72,7 @@ public class DetailsDescriptionPresenter extends Presenter {
             super(view);
             mTitle = (TextView) view.findViewById(R.id.details_description_title);
             mSubtitle = (TextView) view.findViewById(R.id.details_description_subtitle);
+            mYearRuntime = view.findViewById(R.id.year_runtime);
             mBody = (EllipsizedTextView) view.findViewById(R.id.ellipsized_description_text);
             readMoreBtn = (Button) view.findViewById(R.id.read_more_btn);
             readMoreBtn.setOnClickListener(v -> {
@@ -74,6 +89,10 @@ public class DetailsDescriptionPresenter extends Presenter {
         public TextView getSubtitle() {
 
             return mSubtitle;
+        }
+
+        public TextView getmYearRuntime() {
+            return mYearRuntime;
         }
 
         public EllipsizedTextView getBody() {
@@ -144,6 +163,14 @@ public class DetailsDescriptionPresenter extends Presenter {
                                                                             .BOLD_FONT));
 
         viewHolder.getSubtitle().setText(content.getSubtitle());
+
+
+        DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String duration = formatter.format(new Date(content.getDuration()));
+        String yearRuntimeText = YEAR + content.getConcertYear() + RUNTIME + duration;
+
+        viewHolder.getmYearRuntime().setText(yearRuntimeText);
 
         viewHolder.getBody().setText(content.getDescription().trim());
         CalligraphyUtils.applyFontToTextView(TenFootApp.getInstance(), viewHolder.getBody(),

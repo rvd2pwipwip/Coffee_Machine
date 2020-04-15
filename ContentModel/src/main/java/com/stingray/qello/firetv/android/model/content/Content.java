@@ -143,6 +143,8 @@ public class Content implements Serializable {
      */
     private Map<String, Object> mExtras;
 
+    private String concertYear;
+
     /**
      * Constant for matching the title field name.
      */
@@ -965,6 +967,14 @@ public class Content implements Serializable {
             }
         }
         return result;
+    }
+
+    public String getConcertYear() {
+        return concertYear;
+    }
+
+    public void setConcertYear(String concertYear) {
+        this.concertYear = concertYear;
     }
 
     @Override
