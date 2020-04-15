@@ -193,18 +193,20 @@ public class MyQelloFragment extends Fragment {
 
         loadingHandler.removeCallbacksAndMessages(null);
         loadingHandler.postDelayed(() -> {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.my_qello_detail, fragment, tag);
-            fragmentTransaction.commit();
+            if (getFragmentManager() != null) {
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.my_qello_detail, fragment, tag);
+                fragmentTransaction.commit();
 
-            View detailsView = parentView.findViewById(R.id.my_qello_detail);
-            if (detailsView.getVisibility() == View.GONE) {
-                detailsView.setAlpha(0f);
-                detailsView.setVisibility(View.VISIBLE);
-                detailsView.animate()
-                        .alpha(1f)
-                        .setDuration(300)
-                        .setListener(null);
+                View detailsView = parentView.findViewById(R.id.my_qello_detail);
+                if (detailsView.getVisibility() == View.GONE) {
+                    detailsView.setAlpha(0f);
+                    detailsView.setVisibility(View.VISIBLE);
+                    detailsView.animate()
+                            .alpha(1f)
+                            .setDuration(300)
+                            .setListener(null);
+                }
             }
         }, 400);
     }
