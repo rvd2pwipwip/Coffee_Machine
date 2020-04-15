@@ -5,8 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.contentbrowser.callable.AddToFavoriteCallable;
@@ -1021,7 +1022,9 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         }
 
         observable.subscribe(
-                voidObject -> toggleFavoriteButton(like, actionAdapter),
+                voidObject -> {
+                    toggleFavoriteButton(like, actionAdapter);
+                },
                 throwable -> Log.e(TAG, String.format("Failed to update like status for asset [%s] to like [%s]", contentId, like), throwable)
         );
     }
@@ -1035,11 +1038,13 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
 
                 // Update the button text.
                 if (isLiked) {
+                    showToast("Successfully added to favorites");
                     action.setLabel1(mAppContext.getResources().getString(R.string.remove_from_favorites_1));
                     action.setLabel2(mAppContext.getResources().getString(R.string.remove_from_favorites_2));
                     action.setId(CONTENT_ACTION_REMOVE_FROM_FAVORITES);
                     action.setIcon(mAppContext.getResources().getDrawable(R.drawable.remove_favorite));
                 } else {
+                    showToast("Successfully removed from favorites");
                     action.setLabel1(mAppContext.getResources().getString(R.string.add_to_favorites_1));
                     action.setLabel2(mAppContext.getResources().getString(R.string.add_to_favorites_2));
                     action.setId(CONTENT_ACTION_ADD_TO_FAVORITES);
@@ -1491,6 +1496,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 break;
             case CONTENT_ACTION_ADD_TO_FAVORITES:
                 favoriteButtonClicked(content.getId(), true, actionAdapter);
+                break;
             case CONTENT_ACTION_REMOVE_FROM_FAVORITES:
                 favoriteButtonClicked(content.getId(), false, actionAdapter);
                 break;
@@ -1828,5 +1834,12 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         mContentLoader.setContentLoaded(false);
 
         runGlobalRecipes(activity, ContentBrowser.this);
+    }
+
+
+    private void showToast(String authToastMessage) {
+        Toast toast = Toast.makeText(mNavigator.getActiveActivity(), authToastMessage, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 100);
+        toast.show();
     }
 }
