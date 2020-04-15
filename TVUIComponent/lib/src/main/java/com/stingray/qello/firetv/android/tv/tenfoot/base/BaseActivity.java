@@ -276,7 +276,7 @@ public abstract class BaseActivity extends Activity {
             for (Integer i = 0; i < actionWidgetContainer.getChildCount(); i++) {
                 if (i.equals(actionIndex)) {
                     View view = actionWidgetContainer.getChildAt(i);
-                    view.setBackground(getResources().getDrawable(R.drawable.navigation_right_border));
+                    view.setBackground(getResources().getDrawable(R.drawable.navigation_left_border));
                     View buttonView = view.findViewById(R.id.action_button);
                     if (buttonView != null && requestFocus) {
                         buttonView.requestFocus();

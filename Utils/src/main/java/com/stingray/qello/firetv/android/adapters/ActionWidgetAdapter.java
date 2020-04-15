@@ -112,7 +112,7 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
         viewHolder.actionButton.setImageResource(action.getIconResourceId());
         viewHolder.actionButton.setTag(action.getName());
 
-        Drawable bg = verticalGridView.getContext().getResources().getDrawable(R.drawable.navigation_right_border);
+        Drawable bg = verticalGridView.getContext().getResources().getDrawable(R.drawable.navigation_left_border);
         if (position == 0) {
             viewHolder.parentView.setBackground(bg);
         }
