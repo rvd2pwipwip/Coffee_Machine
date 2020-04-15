@@ -89,7 +89,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/sub_restore_purchase_btn"
                 style="@style/call_to_action_button_style_outline"
                 android:layout_width="190dp"
                 android:layout_height="28dp"

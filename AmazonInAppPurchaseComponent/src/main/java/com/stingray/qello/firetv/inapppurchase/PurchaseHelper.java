@@ -58,12 +58,6 @@ public class PurchaseHelper {
     private final ObservableFactory observableFactory = new ObservableFactory();
 
     /**
-     * Event bus reference.
-     */
-    private final EventBus mEventBus = EventBus.getDefault();
-
-
-    /**
      * Result key.
      */
     public static final String RESULT = "RESULT";
@@ -77,6 +71,10 @@ public class PurchaseHelper {
      * Result validity key.
      */
     public static final String RESULT_VALIDITY = "RESULT_VALIDITY";
+
+    public static final String PURCHASE_FLOW_COMPLETED = "PURCHASE_FLOW_COMPLETED";
+
+    public static final String ERROR_DURING_PURCHASE_FLOW = "ERROR_DURING_PURCHASE_FLOW";
 
     /**
      * Constructor. Initializes member variables and configures the purchase system.
@@ -121,51 +119,24 @@ public class PurchaseHelper {
         // listener.
         this.mPurchaseManager = PurchaseManager.getInstance(mContext.getApplicationContext());
         try {
-            mPurchaseManager.init(purchaseSystem, new PurchaseManagerListener() {
+            PurchaseManagerListener purchaseManagerListener = new PurchaseManagerListener() {
                 @Override
                 public void onRegisterSkusResponse(Response response) {
                     if (response == null || !Response.Status.SUCCESSFUL.equals(response.getStatus())) {
                         setSubscription(false, null);
                         Log.e(TAG, "Register products failed " + response);
                     } else {
-                        // If there is a valid receipt available in the system, set content browser
-                        // variable as true.
-                        String sku = mPurchaseManager.getPurchasedSku();
-                        if (sku == null) {
-                            setSubscription(false, null);
-                        } else {
-                            String userTrackingId = Preferences.getString(PreferencesConstants.USER_TRACKING_ID);
-                            boolean hasSubscription = Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION);
-
-                            if (!hasSubscription && userTrackingId.trim().length() != 0) {
-                                saveSubscription(true, sku, new Callback() {
-                                    @Override
-                                    public void onSuccess(Bundle bundle) {
-                                        Log.e(TAG, String.format("Succeeded in binding to bind purchase of SKU [%s] to user [%s]", sku, userTrackingId));
-                                        showAuthToast("Your account already has a subscription associated to it");
-                                        ((Activity) mContext).finish();
-                                    }
-
-                                    @Override
-                                    public void onError(Bundle bundle) {
-                                        Log.e(TAG, String.format("Failed to binding purchase of SKU [%s] to user [%s]", sku, userTrackingId));
-                                        showAuthToast("Unable to process your subscription receipt.");
-                                        ((Activity) mContext).finish();
-                                    }
-                                });
-                            }
-                        }
-                        Log.d(TAG, "Register products complete.");
+                        Log.d(TAG, String.format("Register products complete. [%s]", skuSet));
                     }
                 }
 
                 @Override
-                public void onValidPurchaseResponse(Response response, boolean validity,
-                                                    String sku) {
-
+                public void onValidPurchaseResponse(Response response, boolean validity, String sku) {
                     Log.e(TAG, "You should not hit here!!!");
                 }
-            }, skuSet);
+            };
+
+            mPurchaseManager.init(purchaseSystem, purchaseManagerListener, skuSet);
         } catch (Exception e) {
             Log.e(TAG, "Could not configure the purchase system. ", e);
         }
@@ -241,7 +212,6 @@ public class PurchaseHelper {
                 public void onSuccess(Bundle bundle) {
                     String userTrackingId = Preferences.getString(PreferencesConstants.USER_TRACKING_ID);
                     Log.e(TAG, String.format("Succeeded in binding to bind purchase of SKU [%s] to user [%s]", sku, userTrackingId));
-                    showAuthToast("Purchase Completed");
                     handleSuccessCase(subscriber, bundle);
                 }
 
@@ -249,7 +219,6 @@ public class PurchaseHelper {
                 public void onError(Bundle bundle) {
                     String userTrackingId = Preferences.getString(PreferencesConstants.USER_TRACKING_ID);
                     Log.e(TAG, String.format("Failed to binding purchase of SKU [%s] to user [%s]", sku, userTrackingId));
-                    showAuthToast("Unable to process your subscription receipt");
                     handleFailureCase(subscriber, bundle);
                 }
             });
@@ -295,38 +264,11 @@ public class PurchaseHelper {
         );
     }
 
-    /**
-     * Handle purchase chain.
-     *
-     * @param activity Activity.
-     * @param sku      Sku name.
-     */
-    public void handlePurchaseChain(Activity activity, String sku) {
-        triggerProgress(activity);
-        purchaseSkuObservable(sku)
-                .subscribeOn(Schedulers.newThread()) //this needs to be first make sure
-                .observeOn(AndroidSchedulers.mainThread()) //this needs to be last to
-                // make sure rest is running on separate thread.
-                .subscribe(resultBundle -> {
-                    Log.i(TAG, "isPurchaseValid subscribe called");
-                    EventBus.getDefault().post(new ProgressOverlayDismissEvent(true));
-                }, throwable -> {
-                    EventBus.getDefault().post(new ProgressOverlayDismissEvent(true));
-                    Log.e(TAG, "isPurchaseValid onError called", throwable);
-                });
+    public String getPurchasedSku() {
+        return mPurchaseManager.getPurchasedSku();
     }
 
-    /**
-     * Triggers the progress fragment.
-     *
-     * @param activity Activity instance.
-     */
-    private void triggerProgress(Activity activity) {
-
-        ProgressDialogFragment.createAndShow(activity, mContext.getString(R.string.loading));
-    }
-
-    private void saveSubscription(boolean validity, String sku, Callback callback) {
+    public void saveSubscription(boolean validity, String sku, Callback callback) {
         Bundle resultBundle = new Bundle();
 
         PostSubscriptionRequest.PurchaseData purchaseData = new PostSubscriptionRequest.PurchaseData(
@@ -340,12 +282,15 @@ public class PurchaseHelper {
                     setSubscription(validity, sku);
                     resultBundle.putString(RESULT_SKU, sku);
                     resultBundle.putBoolean(RESULT_VALIDITY, validity);
+                    resultBundle.putBoolean(PURCHASE_FLOW_COMPLETED, true);
                     callback.onSuccess(resultBundle);
                 }, throwable -> {
                     String userTrackingId = Preferences.getString(PreferencesConstants.USER_TRACKING_ID);
                     Log.e(TAG, String.format("Failed to bind purchase of SKU [%s] to user [%s]", sku, userTrackingId), throwable);
                     setSubscription(false, null);
                     resultBundle.putBoolean(RESULT_VALIDITY, false);
+                    resultBundle.putBoolean(PURCHASE_FLOW_COMPLETED, false);
+                    resultBundle.putBoolean(ERROR_DURING_PURCHASE_FLOW, true);
                     callback.onError(resultBundle);
                 });
     }
@@ -354,11 +299,5 @@ public class PurchaseHelper {
         void onSuccess(Bundle bundle);
 
         void onError(Bundle bundle);
-    }
-
-    private void showAuthToast(String authToastMessage) {
-        Toast toast = Toast.makeText(mContext, authToastMessage, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
     }
 }
