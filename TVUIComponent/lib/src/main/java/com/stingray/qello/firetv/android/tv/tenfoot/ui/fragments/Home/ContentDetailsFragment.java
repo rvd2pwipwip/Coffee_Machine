@@ -123,6 +123,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     SparseArrayObjectAdapter mActionAdapter;
 
     private View backButton = null;
+    private View firstActionButton = null;
 
     // Decides whether the action button should be enabled or not.
     private boolean mActionInProgress = false;
@@ -508,9 +509,9 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
                         detailsFrame.setLayoutParams(layoutParams);
 
-                        View overviewImage = detailsFrame.findViewById(R.id.details_overview_image);
-                        View rightPanel = detailsFrame.findViewById(R.id.details_overview_right_panel);
-                        View actions = detailsFrame.findViewById(R.id.details_overview_actions);
+                        View overviewImage = detailsOverviewCustom.findViewById(R.id.details_overview_image);
+                        View rightPanel = detailsOverviewCustom.findViewById(R.id.details_overview_right_panel);
+                        View actions = detailsOverviewCustom.findViewById(R.id.details_overview_actions);
 
                         overviewImage.setVisibility(View.GONE);
                         //rightPanel.setVisibility(View.GONE);
@@ -638,13 +639,21 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                             // Button objects are recreated every time MovieDetailsFragment is
                             // created or restored, so we have to bind OnKeyListener to them on
                             // resuming the Fragment.
+                            if (i == 0) {
+                                firstActionButton = button;
+                            }
+
                             button.setOnKeyListener((v, keyCode, keyEvent) -> {
                                 if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE &&
                                         keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                                     button.performClick();
+                                } else if (v.equals(firstActionButton) && keyCode == KeyEvent.KEYCODE_DPAD_LEFT && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                                    backButton.requestFocus();
                                 }
+
                                 return false;
                             });
+
                         }
                     }
                 }
