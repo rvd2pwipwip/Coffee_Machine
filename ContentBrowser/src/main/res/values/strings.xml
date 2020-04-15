@@ -13,15 +13,15 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <resources>
-    <string name="start_free_trial_1">Start Free Trial</string>
+    <string name="start_free_trial_1">Start Free Trial!</string>
     <string name="start_free_trial_2"></string>
 
     <string name="clear_favorites">Clear Favorites</string>
 
     <string name="add_to_favorites_1">Add to Favorites</string>
     <string name="add_to_favorites_2"></string>
-    <string name="remove_from_favorites_1">Remove from</string>
-    <string name="remove_from_favorites_2">Favorites</string>
+    <string name="remove_from_favorites_1">Remove from Favorites</string>
+    <string name="remove_from_favorites_2"></string>
     <!-- IMPORTANT: Following 2 strings are concatenated to generate the multi-line title of Watch
     now button, watch_now_1 being the first line of the title and watch_now_2 being the second line
     of the title -->

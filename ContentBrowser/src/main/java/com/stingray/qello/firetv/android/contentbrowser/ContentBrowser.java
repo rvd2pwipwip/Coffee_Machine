@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.stingray.qello.firetv.android.async.ObservableFactory;
@@ -882,27 +883,30 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 if (record != null && !record.isPlaybackComplete()) {
                     contentActionList.add(createActionButton(CONTENT_ACTION_RESUME,
                                                              R.string.resume_1,
-                                                             R.string.resume_2));
+                                                             R.string.resume_2,
+                            R.drawable.play_show));
                     // Add "Watch From Beginning" button to start content over.
                     contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_FROM_BEGINNING,
                                                              R.string.watch_from_beginning_1,
-                                                             R.string.watch_from_beginning_2));
+                                                             R.string.watch_from_beginning_2,
+                            R.drawable.beginning_show));
                 }
                 // If the content has not been played yet, add the "Watch Now" button.
                 else {
                     contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW,
                                                              R.string.watch_now_1,
-                                                             R.string.watch_now_2));
+                                                             R.string.watch_now_2,
+                    R.drawable.play_show));
                 }
 
                 if (mSubscribed) {
                     if (isFavorite) {
-                        contentActionList.add(createActionButton(CONTENT_ACTION_REMOVE_FROM_FAVORITES, R.string.remove_from_favorites_1, R.string.remove_from_favorites_2));
+                        contentActionList.add(createActionButton(CONTENT_ACTION_REMOVE_FROM_FAVORITES, R.string.remove_from_favorites_1, R.string.remove_from_favorites_2, R.drawable.remove_favorite));
                     } else {
-                        contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.add_to_favorites_1, R.string.add_to_favorites_2));
+                        contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.add_to_favorites_1, R.string.add_to_favorites_2, R.drawable.add_favorite));
                     }
                 } else {
-                    contentActionList.add(createActionButton(CONTENT_ACTION_START_FREE_TRIAL, R.string.start_free_trial_1, R.string.start_free_trial_2));
+                    contentActionList.add(createActionButton(CONTENT_ACTION_START_FREE_TRIAL, R.string.start_free_trial_1, R.string.start_free_trial_2, null));
                 }
 
                 if (isWatchlistRowEnabled()) {
@@ -910,18 +914,8 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 }
             }
             else {
-                contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW, R.string.watch_now_1, R.string.watch_now_2));
+                contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW, R.string.watch_now_1, R.string.watch_now_2, R.drawable.play_show));
             }
-        }
-
-        if (!mIAPDisabled && !mSubscribed) {
-            contentActionList.add(createActionButton(CONTENT_ACTION_SUBSCRIPTION,
-                    R.string.premium_1,
-                    R.string.premium_2));
-
-            contentActionList.add(createActionButton(CONTENT_ACTION_DAILY_PASS,
-                    R.string.daily_pass_1,
-                    R.string.daily_pass_2));
         }
 
         contentActionList.addAll(mGlobalContentActionList);
@@ -937,11 +931,17 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
      * @param stringId2       The id of the string to be displayed on the second line of text.
      * @return The action.
      */
-    private Action createActionButton(int contentActionId, int stringId1, int stringId2) {
+    private Action createActionButton(int contentActionId, int stringId1, int stringId2, Integer iconResourceId) {
 
-        return new Action().setId(contentActionId)
+        Action action = new Action().setId(contentActionId)
                            .setLabel1(mAppContext.getResources().getString(stringId1))
                            .setLabel2(mAppContext.getResources().getString(stringId2));
+
+        if(iconResourceId != null) {
+            action.setIcon(mAppContext.getResources().getDrawable(iconResourceId));
+        }
+
+        return action;
     }
 
     /**
@@ -957,13 +957,15 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         if (isContentInWatchlist(id)) {
             contentActionList.add(createActionButton(CONTENT_ACTION_REMOVE_WATCHLIST,
                                                      R.string.watchlist_2,
-                                                     R.string.watchlist_3));
+                                                     R.string.watchlist_3,
+                    R.drawable.remove_favorite));
         }
         // Add the add to watchlist button.
         else {
             contentActionList.add(createActionButton(CONTENT_ACTION_ADD_WATCHLIST,
                                                      R.string.watchlist_1,
-                                                     R.string.watchlist_3));
+                                                     R.string.watchlist_3,
+                    R.drawable.add_favorite));
         }
     }
 
@@ -1036,10 +1038,12 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                     action.setLabel1(mAppContext.getResources().getString(R.string.remove_from_favorites_1));
                     action.setLabel2(mAppContext.getResources().getString(R.string.remove_from_favorites_2));
                     action.setId(CONTENT_ACTION_REMOVE_FROM_FAVORITES);
+                    action.setIcon(mAppContext.getResources().getDrawable(R.drawable.remove_favorite));
                 } else {
                     action.setLabel1(mAppContext.getResources().getString(R.string.add_to_favorites_1));
                     action.setLabel2(mAppContext.getResources().getString(R.string.add_to_favorites_2));
                     action.setId(CONTENT_ACTION_ADD_TO_FAVORITES);
+                    action.setIcon(mAppContext.getResources().getDrawable(R.drawable.add_favorite));
                 }
                 // Reset the action in the adapter and notify change.
                 actionAdapter.set(i, LeanbackHelpers.translateActionToLeanBackAction(action));

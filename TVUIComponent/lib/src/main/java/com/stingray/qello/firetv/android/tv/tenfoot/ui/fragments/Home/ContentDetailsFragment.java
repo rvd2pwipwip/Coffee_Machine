@@ -38,6 +38,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v17.leanback.app.BackgroundManager;
+import android.support.v17.leanback.widget.ActionButtonPresenter;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.BaseCardView;
 import android.support.v17.leanback.widget.ClassPresenterSelector;
@@ -53,7 +54,6 @@ import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowHeaderPresenter;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
-import android.support.v17.leanback.widget.TenFootActionPresenterSelector;
 import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
@@ -108,10 +108,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private static final int DETAIL_THUMB_WIDTH = 280;
     private static final int DETAIL_THUMB_HEIGHT = 367;
 
-    private static final int MILLISECONDS_IN_SECOND = 1000;
-    private static final int SECONDS_IN_MINUTE = 60;
-    private static final int SECONDS_IN_HOUR = 3600;
-
     private Content mSelectedContent;
 
     private ArrayObjectAdapter mAdapter;
@@ -124,7 +120,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private ContentPageWrapper contentPageWrapper = null;
     private boolean initialized = false;
 
-    SparseArrayObjectAdapter mActionAdapter = new SparseArrayObjectAdapter();
+    SparseArrayObjectAdapter mActionAdapter;
 
     private View backButton = null;
 
@@ -336,6 +332,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         Log.v(TAG, "setupAdapter called.");
         mPresenterSelector = new ClassPresenterSelector();
         mAdapter = new ArrayObjectAdapter(mPresenterSelector);
+        mActionAdapter = new SparseArrayObjectAdapter(new ActionButtonPresenter());
     }
 
     public void updateActions() {
@@ -369,7 +366,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             Log.d(TAG, "Selected content is: " + mSelectedContent.toString());
         }
         final DetailsOverviewRow row = new DetailsOverviewRow(mSelectedContent);
-        row.setActionsAdapter(new ArrayObjectAdapter(new TenFootActionPresenterSelector()));
+        //row.setActionsAdapter(new ArrayObjectAdapter(new ActionButtonPresenter()));
         row.setImageDrawable(ContextCompat.getDrawable(getActivity(),
                                                        android.R.color.transparent));
         int width = Helpers.convertDpToPixel(getActivity().getApplicationContext(),
@@ -410,8 +407,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
                     bitmap = Helpers.addTimeRemaining(getActivity(), bitmap, timeRemainingText);
                 }
-
-
 
                 row.setImageBitmap(getActivity(), bitmap);
 

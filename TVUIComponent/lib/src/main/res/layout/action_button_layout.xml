@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lb_action_button"
+    style="@style/Widget.Leanback.DetailsActionButtonStyle.Custom"
+    android:layout_width="280px"
+    android:layout_height="85px"
+    android:gravity="center_horizontal|center_vertical"
+    android:padding="3dp"
+    tools:text="Action Button" />

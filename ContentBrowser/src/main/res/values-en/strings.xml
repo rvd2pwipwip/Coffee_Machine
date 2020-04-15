@@ -16,8 +16,8 @@ permissions and limitations under the License.
 <resources>
   <string name="watch_now_1">Play complete show</string>
   <string name="watch_now_2"></string>
-  <string name="watch_from_beginning_1">Play</string>
-  <string name="watch_from_beginning_2">from beginning</string>
+  <string name="watch_from_beginning_1">Play from beginning</string>
+  <string name="watch_from_beginning_2"></string>
   <string name="resume_1">Resume</string>
   <string name="resume_2"></string>
   <string name="premium_1">Go</string>

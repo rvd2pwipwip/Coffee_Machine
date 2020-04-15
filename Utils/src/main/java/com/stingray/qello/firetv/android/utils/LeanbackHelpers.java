@@ -51,7 +51,8 @@ public class LeanbackHelpers {
         android.support.v17.leanback.widget.Action leanbackAction =
                 new android.support.v17.leanback.widget.Action(action.getId(),
                                                                action.getLabel1(),
-                                                               action.getLabel2());
+                                                               action.getLabel2(),
+                        action.getIcon());
 
         return leanbackAction;
     }
