@@ -1,13 +1,19 @@
 package android.support.v17.leanback.widget;
 
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.stingray.qello.firetv.android.configuration.ConfigurationManager;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.ui.constants.ConfigurationConstants;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
 public class ActionButtonPresenter extends Presenter {
 
@@ -36,8 +42,10 @@ public class ActionButtonPresenter extends Presenter {
         }
 
         if(action.getId() == ContentBrowser.CONTENT_ACTION_START_FREE_TRIAL) {
-            vh.mButton.setBackground(ContextCompat.getDrawable(vh.view.getContext(), R.drawable.blue_frame));
+            vh.mButton.setBackground(ContextCompat.getDrawable(vh.view.getContext(), R.drawable.text_input_frame_state_blue));
             vh.mButton.setTextColor(ContextCompat.getColor(vh.view.getContext(), R.color.accent));
+            CalligraphyUtils.applyFontToTextView(vh.view.getContext(), vh.mButton, ConfigurationManager
+                    .getInstance(vh.view.getContext()).getTypefacePath(ConfigurationConstants.BOLD_FONT));
         }
 
         vh.view.requestFocus();

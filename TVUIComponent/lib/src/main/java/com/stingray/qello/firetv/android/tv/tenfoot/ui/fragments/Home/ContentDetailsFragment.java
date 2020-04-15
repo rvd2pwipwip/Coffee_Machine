@@ -418,7 +418,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         GlideHelper.loadImageIntoSimpleTargetBitmap(getActivity(),
                                                     mSelectedContent.getCardImageUrl(),
                                                     new GlideHelper.LoggingListener<>(),
-                                                    android.R.color.transparent,
+                                                    R.drawable.default_poster,
                                                     bitmapTarget);
 
         updateActions(isLiked);
