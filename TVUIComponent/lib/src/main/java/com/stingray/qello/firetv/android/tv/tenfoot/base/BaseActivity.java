@@ -25,7 +25,6 @@ import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.stingray.qello.firetv.android.adapters.ActionWidgetAdapter;
 import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
@@ -62,6 +61,7 @@ public abstract class BaseActivity extends Activity {
 
     // This is the currently selected action.
     private Action mSelectedAction;
+    private Integer selectedActionPosition = 0;
 
     private Map<String, Integer> fragmentAndActionIndexMap = new HashMap<>();
 
@@ -118,8 +118,7 @@ public abstract class BaseActivity extends Activity {
         // Get the Action widget container.
         actionWidgetContainer = findViewById(R.id.widget_grid_view);
 
-        if (actionWidgetContainer != null) {
-
+        if (actionWidgetContainer != null && mActionWidgetAdapter == null) {
             // Create a new Action Widget Adapter
             mActionWidgetAdapter = new ActionWidgetAdapter(actionWidgetContainer);
 
@@ -156,11 +155,11 @@ public abstract class BaseActivity extends Activity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
+        highlightSelectedNav(selectedActionPosition, false);
         setRestoreActivityValues();
     }
-
+    
     /**
      * Use this method to set the
      * {@link com.stingray.qello.firetv.android.ui.constants.PreferencesConstants#LAST_ACTIVITY}
@@ -174,41 +173,46 @@ public abstract class BaseActivity extends Activity {
         FragmentManager fragmentManager = this.getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
+        String fragmentTag = null;
+
         switch ((int) action.getId()) {
             case ContentBrowser.CONTENT_ACTION_SEARCH:
+                fragmentTag = ContentSearchFragment.class.getSimpleName();
                 Log.d(TAG, "actionTriggered -> CONTENT_ACTION_SEARCH");
 
-                Fragment searchFragment = fragmentManager.findFragmentByTag(ContentSearchFragment.class.getSimpleName());
+                Fragment searchFragment = fragmentManager.findFragmentByTag(fragmentTag);
                 if(searchFragment == null) {
                     searchFragment = new ContentSearchFragment();
                 }
 
-                fragmentTransaction.replace(R.id.main_detail, searchFragment, ContentSearchFragment.class.getSimpleName());
-                fragmentTransaction.addToBackStack(ContentSearchFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.main_detail, searchFragment, fragmentTag);
+                fragmentTransaction.addToBackStack(fragmentTag);
                 fragmentTransaction.commit();
                 break;
             case CONTENT_ACTION_HOME:
                 Log.d(TAG, "actionTriggered -> CONTENT_ACTION_HOME");
+                fragmentTag = HomeFragment.class.getSimpleName();
 
-                Fragment homeFragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
+                Fragment homeFragment = fragmentManager.findFragmentByTag(fragmentTag);
                 if(homeFragment == null) {
                     homeFragment = new HomeFragment();
                 }
 
-                fragmentTransaction.replace(R.id.main_detail, homeFragment, HomeFragment.class.getSimpleName());
-                fragmentTransaction.addToBackStack(HomeFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.main_detail, homeFragment, fragmentTag);
+                fragmentTransaction.addToBackStack(fragmentTag);
                 fragmentTransaction.commit();
                 break;
             case ContentBrowser.CONTENT_ACTION_MY_QELLO:
                 Log.d(TAG, "actionTriggered -> CONTENT_ACTION_MY_QELLO");
+                fragmentTag = MyQelloFragment.class.getSimpleName();
 
-                Fragment myQelloFragment = fragmentManager.findFragmentByTag(MyQelloFragment.class.getSimpleName());
+                Fragment myQelloFragment = fragmentManager.findFragmentByTag(fragmentTag);
                 if(myQelloFragment == null) {
                     myQelloFragment = new MyQelloFragment();
                 }
 
-                fragmentTransaction.replace(R.id.main_detail, myQelloFragment, MyQelloFragment.class.getSimpleName());
-                fragmentTransaction.addToBackStack(MyQelloFragment.class.getSimpleName());
+                fragmentTransaction.replace(R.id.main_detail, myQelloFragment, fragmentTag);
+                fragmentTransaction.addToBackStack(fragmentTag);
                 fragmentTransaction.commit();
                 break;
             case ContentBrowser.CONTENT_ACTION_LOGIN_LOGOUT: {
@@ -216,6 +220,9 @@ public abstract class BaseActivity extends Activity {
                 //loginLogoutActionTriggered(activity, action);
             }
             break;
+        }
+        if (fragmentTag != null) {
+            selectedActionPosition = fragmentAndActionIndexMap.get(fragmentTag);
         }
     }
 
@@ -241,7 +248,7 @@ public abstract class BaseActivity extends Activity {
         int index = fragmentManager.getBackStackEntryCount() - 1;
 
         if (index == -1) {
-            return HomeFragment.class.getName();
+            return HomeFragment.class.getSimpleName();
         } else if (index > -1) {
             return fragmentManager.getBackStackEntryAt(index).getName();
         } else {
@@ -252,31 +259,38 @@ public abstract class BaseActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        String fragmentAfterBackPress = getCurrentFragmentName();
-        if (fragmentAfterBackPress != null) {
-            setupNavHighlight(fragmentAfterBackPress);
+        String fragmentNameAfterBackPress = getCurrentFragmentName();
+        if (fragmentNameAfterBackPress != null) {
+            Integer actionIndex = fragmentAndActionIndexMap.get(fragmentNameAfterBackPress);
+            highlightSelectedNav(actionIndex, true);
         }
     }
 
-    protected void setupNavHighlight(String fragmentName) {
-        Integer actionIndex = fragmentAndActionIndexMap.get(fragmentName);
+    private void highlightSelectedNav(Integer actionIndex, boolean requestFocus) {
+        clearNavHighlight();
+        setNavHighlight(actionIndex, requestFocus);
+    }
 
-        if (actionIndex == null) {
-            return;
-        }
-
-        for (int i = 0; i < actionWidgetContainer.getChildCount(); i++) {
-            View cView = actionWidgetContainer.getChildAt(i);
-            if (cView != null) {
-                if (i != actionIndex) {
-                    cView.setBackground(null);
-                } else {
-                    cView.setBackgroundColor(getResources().getColor(com.stingray.qello.firetv.utils.R.color.accent));
-                    View buttonView = cView.findViewById(R.id.action_button);
-                    if (buttonView != null) {
+    private void setNavHighlight(Integer actionIndex, boolean requestFocus) {
+        if (actionWidgetContainer != null) {
+            for (Integer i = 0; i < actionWidgetContainer.getChildCount(); i++) {
+                if (i.equals(actionIndex)) {
+                    View view = actionWidgetContainer.getChildAt(i);
+                    view.setBackgroundColor(getResources().getColor(com.stingray.qello.firetv.utils.R.color.accent));
+                    View buttonView = view.findViewById(R.id.action_button);
+                    if (buttonView != null && requestFocus) {
                         buttonView.requestFocus();
                     }
+                    selectedActionPosition = actionIndex;
                 }
+            }
+        }
+    }
+
+    private void clearNavHighlight() {
+        if (actionWidgetContainer != null) {
+            for (int i = 0; i < actionWidgetContainer.getChildCount(); i++) {
+                actionWidgetContainer.getChildAt(i).setBackground(null);
             }
         }
     }
