@@ -286,7 +286,6 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
             mAutoTextViewFocusHandler.postDelayed(() -> {
                 mSearchEditText.setFocusable(true);
                 mSearchEditText.setHint(getResources().getString(R.string.lb_search_bar_hint));
-                mSearchEditText.requestFocus();
             }, 500);
         }
         if (!hasResults && mRowsAdapter.size() > 0) {
