@@ -20,25 +20,24 @@
     android:id="@+id/lb_details_overview_custom"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/lb_details_overview_margin_start"
-    android:paddingEnd="@dimen/lb_details_overview_margin_end"
-    android:paddingBottom="@dimen/lb_details_overview_margin_bottom"
+    android:layout_marginBottom="40dp"
     android:clipToPadding="false"
+    android:descendantFocusability="afterDescendants"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:descendantFocusability="afterDescendants"
-    >
+    android:paddingStart="@dimen/lb_details_overview_margin_start"
+    android:paddingEnd="@dimen/lb_details_overview_margin_end"
+    android:paddingBottom="@dimen/lb_details_overview_margin_bottom">
 
     <!--  Used for dimming -->
     <FrameLayout
         android:id="@+id/details_frame"
         android:layout_width="match_parent"
         android:layout_height="367dp"
-        android:foreground="#ffffff"
         android:elevation="@dimen/lb_details_overview_z"
-        >
+        android:foreground="#ffffff">
 
-    <!-- Background is applied to this inner layout -->
+        <!-- Background is applied to this inner layout -->
         <LinearLayout
             android:id="@+id/details_overview"
             android:layout_width="match_parent"
@@ -56,8 +55,7 @@
                 android:id="@+id/details_overview_right_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="25dp">
+                android:orientation="vertical">
 
                 <android.support.v17.leanback.widget.NonOverlappingFrameLayout
                     android:id="@+id/details_overview_description"
@@ -69,7 +67,9 @@
                     android:clipChildren="false"
                     android:clipToPadding="false"
                     android:gravity="top"
-                    android:paddingTop="@dimen/lb_details_overview_description_margin_top" />
+                    android:paddingTop="0dp">
+
+                </android.support.v17.leanback.widget.NonOverlappingFrameLayout>
 
                 <android.support.v17.leanback.widget.HorizontalGridView
                     android:id="@+id/details_overview_actions"
@@ -79,13 +79,14 @@
                     android:clipToPadding="false"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:gravity="center"
+                    android:gravity="bottom"
                     android:paddingStart="@dimen/lb_details_overview_description_margin_start"
                     android:paddingEnd="@dimen/lb_details_overview_description_margin_end"
                     lb:horizontalMargin="@dimen/lb_details_overview_action_items_margin"
                     lb:rowHeight="@dimen/lb_details_overview_actions_height" />
 
             </LinearLayout>
+
         </LinearLayout>
     </FrameLayout>
 </FrameLayout>

@@ -400,16 +400,17 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
                 if (playbackPercentage > 0) {
                     bitmap = Helpers.addProgress(getActivity(), bitmap, playbackPercentage);
+
+                    DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    String duration = formatter.format(new Date(timeRemaining));
+
+                    Resources res = getResources();
+                    String timeRemainingText = res.getString(R.string.time_remaining, duration);
+
+                    bitmap = Helpers.addTimeRemaining(getActivity(), bitmap, timeRemainingText);
                 }
 
-                DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.US);
-                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-                String duration = formatter.format(new Date(timeRemaining));
-
-                Resources res = getResources();
-                String timeRemainingText = res.getString(R.string.time_remaining, duration);
-
-                bitmap = Helpers.addTimeRemaining(getActivity(), bitmap, timeRemainingText);
 
 
                 row.setImageBitmap(getActivity(), bitmap);
