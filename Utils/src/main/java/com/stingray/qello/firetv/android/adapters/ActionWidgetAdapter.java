@@ -2,6 +2,7 @@ package com.stingray.qello.firetv.android.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.MainThread;
 import android.support.v17.leanback.widget.VerticalGridView;
 import android.support.v7.widget.RecyclerView;
@@ -111,9 +112,9 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
         viewHolder.actionButton.setImageResource(action.getIconResourceId());
         viewHolder.actionButton.setTag(action.getName());
 
-        int highlightColor = verticalGridView.getContext().getResources().getColor(R.color.accent);
+        Drawable bg = verticalGridView.getContext().getResources().getDrawable(R.drawable.navigation_left_border);
         if (position == 0) {
-            viewHolder.parentView.setBackgroundColor(highlightColor);
+            viewHolder.parentView.setBackground(bg);
         }
 
         viewHolder.actionButton.setOnClickListener(v -> {
@@ -121,7 +122,7 @@ public class ActionWidgetAdapter extends RecyclerView.Adapter {
                 View view = verticalGridView.getChildAt(i);
                 view.setBackground(null);
             }
-            viewHolder.parentView.setBackgroundColor(highlightColor);
+            viewHolder.parentView.setBackground(bg);
             verticalGridView.performClick();
         });
     }

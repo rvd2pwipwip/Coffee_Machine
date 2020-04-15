@@ -79,16 +79,19 @@ public class AccountCreationFragment extends Fragment {
 
         Activity activity = getActivity();
 
-        // TODO Centralize Terms and PP links
+        String termsTag = getResources().getString(R.string.terms_settings_fragment_tag);
+        String termsUrl = getResources().getString(R.string.terms_settings_url);
+
+        String privacyTag = getResources().getString(R.string.privacy_settings_fragment_tag);
+        String privacyUrl = getResources().getString(R.string.privacy_settings_url);
 
         Button termsButton = view.findViewById(R.id.create_account_terms);
         termsButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
-                .createFragment(activity, activity.getFragmentManager(), activity.getString(com.stingray.qello.firetv.utils.R.string.terms_settings_fragment_tag), "https://legal.stingray.com/en/qello-terms-and-conditions/markdown"));
+                .createFragment(activity, activity.getFragmentManager(), termsTag, termsUrl));
 
         Button privacyButton = view.findViewById(R.id.create_account_pp);
         privacyButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
-                .createFragment(activity, activity.getFragmentManager(), activity.getString(com.stingray.qello.firetv.utils.R.string.privacy_settings_fragment_tag), "https://legal.stingray.com/en/privacy-policy/markdown"));
-
+                .createFragment(activity, activity.getFragmentManager(), privacyTag, privacyUrl));
 
 //      For Testing
 //        usernameInput.setText("clf2@sd-i.ca");

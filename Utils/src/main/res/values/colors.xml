@@ -39,4 +39,5 @@ permissions and limitations under the License.
     <color name="disabled_state">#777777</color>
     <color name="faded_accent">#8003A4D9</color>
 
+    <color name="navigation_bg_color">#1F1F1F</color>
 </resources>

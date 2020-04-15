@@ -24,13 +24,19 @@ public class AboutSettingsDialog extends AppInfoDialog {
         return (context1, inflater, parent) -> {
             final View view = mActivity.getLayoutInflater().inflate(R.layout.about_layout, parent);
 
-            Button termsButton = (Button) view.findViewById(R.id.terms_button);
-            termsButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
-                    .createFragment(mActivity, mActivity.getFragmentManager(), mActivity.getString(com.stingray.qello.firetv.utils.R.string.terms_settings_fragment_tag), "https://legal.stingray.com/en/qello-terms-and-conditions/markdown"));
+            String termsTag = mActivity.getResources().getString(R.string.terms_settings_fragment_tag);
+            String termsUrl = mActivity.getResources().getString(R.string.terms_settings_url);
 
-            Button privacyButton = (Button) view.findViewById(R.id.privacy_button);
+            String privacyTag = mActivity.getResources().getString(R.string.privacy_settings_fragment_tag);
+            String privacyUrl = mActivity.getResources().getString(R.string.privacy_settings_url);
+
+            Button termsButton = view.findViewById(R.id.terms_button);
+            termsButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                    .createFragment(mActivity, mActivity.getFragmentManager(), termsTag, termsUrl));
+
+            Button privacyButton = view.findViewById(R.id.privacy_button);
             privacyButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
-                    .createFragment(mActivity, mActivity.getFragmentManager(), mActivity.getString(com.stingray.qello.firetv.utils.R.string.privacy_settings_fragment_tag), "https://legal.stingray.com/en/privacy-policy/markdown"));
+                    .createFragment(mActivity, mActivity.getFragmentManager(), privacyTag, privacyUrl));
 
             return view;
         };
