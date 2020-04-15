@@ -10,17 +10,6 @@
     android:gravity="center_vertical"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/track_index"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="1"
-        android:layout_weight="0.01"
-        android:alpha="0.5"
-        android:padding="7dip"
-        android:gravity="center"
-        android:textSize="@dimen/button_text_size" />
-
     <RelativeLayout
         android:id="@+id/content_track_info_col"
         style="@style/button_border_highlight"
@@ -31,10 +20,22 @@
         android:paddingTop="6dp">
 
         <TextView
-            android:id="@+id/track_title"
+            android:id="@+id/track_index"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.5"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textSize="@dimen/button_text_size"
+            tools:text="1"/>
+
+        <TextView
+            android:id="@+id/track_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/track_index"
             android:layout_alignParentTop="true"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/secondary_text"
@@ -45,6 +46,7 @@
             android:id="@+id/track_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/track_index"
             android:layout_below="@+id/track_title"
             android:alpha=".6"
             android:textSize="12sp"
