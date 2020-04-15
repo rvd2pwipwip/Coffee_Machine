@@ -1,122 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_my_qello_loggedin"
-    android:id="@+id/qello_layout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="80dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/logged_out_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:visibility="visible">
-
-            <Button
-                android:id="@+id/my_qello_free_trial_button"
-                style="@style/button_border_highlight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:textColor="@color/accent"
-                android:textStyle="bold"
-                android:gravity="left|center_vertical"
-                android:text="Start Free Trial"
-                android:textAllCaps="false"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/my_qello_login_button"
-                style="@style/button_border_highlight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:gravity="start|center_vertical"
-                android:text="Login"
-                android:textAllCaps="false"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/user_btn_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:visibility="gone">
-
-            <Button
-                android:id="@+id/my_qello_history_button"
-                style="@style/button_border_highlight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:gravity="start|center_vertical"
-                android:text="History"
-                android:textAllCaps="false"
-                android:textColorHighlight="#FAFAFA"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/my_qello_favorites_button"
-                style="@style/button_border_highlight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:gravity="start|center_vertical"
-                android:text="Favorites"
-                android:textAllCaps="false"
-                android:textColorHighlight="#FAFAFA"
-                android:textSize="16sp" />
+    <RelativeLayout
+        android:id="@+id/my_qello_logged_out_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_gradient_subscribe_offer"
+        tools:visibility="visible">
 
 
-<!--            <Button-->
-<!--                android:id="@+id/playlists_button"-->
-<!--                style="@style/button_border_highlight"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="sans-serif-light"-->
-<!--                android:gravity="start|center_vertical"-->
-<!--                android:text="Playlists"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColorHighlight="#FAFAFA"-->
-<!--                android:textSize="16sp" />-->
-        </LinearLayout>
-
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="210dp"
-            android:layout_height="1px"
-            android:background="#C2C2C2" />
-
-        <Button
-            android:id="@+id/my_qello_settings_button"
-            style="@style/button_border_highlight"
-            android:layout_width="match_parent"
+        <include layout="@layout/subscribe_my_qello_bg"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/settings_gear"
-            android:fontFamily="sans-serif-light"
-            android:gravity="start|center_vertical"
-            android:text="    Settings"
-            android:textAllCaps="false"
-            android:textColorHighlight="#FAFAFA"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="150dp"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
 
     <FrameLayout
-        android:id="@+id/my_qello_detail"
+        android:id="@+id/my_qello_logged_in_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@drawable/background_my_qello_loggedin"
+        tools:visibility="gone"/>
 
-</LinearLayout>
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/qello_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="80dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/logged_out_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:visibility="visible">
+
+                <Button
+                    android:id="@+id/my_qello_free_trial_button"
+                    style="@style/button_border_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/accent"
+                    android:textStyle="bold"
+                    android:gravity="left|center_vertical"
+                    android:text="Start Free Trial"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/my_qello_login_button"
+                    style="@style/button_border_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="start|center_vertical"
+                    android:text="Login"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_btn_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:visibility="gone">
+
+                <Button
+                    android:id="@+id/my_qello_history_button"
+                    style="@style/button_border_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="start|center_vertical"
+                    android:text="History"
+                    android:textAllCaps="false"
+                    android:textColorHighlight="#FAFAFA"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/my_qello_favorites_button"
+                    style="@style/button_border_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="start|center_vertical"
+                    android:text="Favorites"
+                    android:textAllCaps="false"
+                    android:textColorHighlight="#FAFAFA"
+                    android:textSize="16sp" />
+
+
+                <!--            <Button-->
+                <!--                android:id="@+id/playlists_button"-->
+                <!--                style="@style/button_border_highlight"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:fontFamily="sans-serif-light"-->
+                <!--                android:gravity="start|center_vertical"-->
+                <!--                android:text="Playlists"-->
+                <!--                android:textAllCaps="false"-->
+                <!--                android:textColorHighlight="#FAFAFA"-->
+                <!--                android:textSize="16sp" />-->
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="210dp"
+                android:layout_height="1px"
+                android:background="#C2C2C2" />
+
+            <Button
+                android:id="@+id/my_qello_settings_button"
+                style="@style/button_border_highlight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/settings_gear"
+                android:fontFamily="sans-serif-light"
+                android:gravity="start|center_vertical"
+                android:text="    Settings"
+                android:textAllCaps="false"
+                android:textColorHighlight="#FAFAFA"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/my_qello_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+</FrameLayout>
