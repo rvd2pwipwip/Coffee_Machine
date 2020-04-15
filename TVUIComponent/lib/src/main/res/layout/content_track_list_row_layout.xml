@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/track_index"
             android:layout_below="@+id/track_title"
-            android:alpha=".6"
+            android:alpha=".8"
             android:textSize="12sp"
             tools:text="Artist Name" />
 
