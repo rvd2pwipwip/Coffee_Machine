@@ -45,13 +45,13 @@ permissions and limitations under the License.
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:minWidth">260dp</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:padding">10dp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="call_to_action_button_style_outline" parent="BaseButton">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColorHint">@color/ui_grey</item>
         <item name="android:padding">10dp</item>
