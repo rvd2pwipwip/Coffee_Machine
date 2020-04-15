@@ -91,7 +91,12 @@ import com.stingray.qello.firetv.android.utils.GlideHelper;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.LeanbackHelpers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import rx.Observable;
 
@@ -231,7 +236,9 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private void databind(ContentPageWrapper contentPageWrapper) {
         if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
             SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
+            mSelectedContent.setConcertYear(concert.getConcertYear());
             mSelectedContent.setDescription(concert.getFullDescription());
+            mSelectedContent.setDuration(concert.getDuration());
             setupDetailsOverviewRow(concert.isLiked());
         } else {
             setupDetailsOverviewRow(false);
@@ -387,8 +394,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 Log.d(TAG,
                       "content_details_activity_layout overview card image url ready: " + resource);
 
-                int cornerRadius =
-                        getResources().getInteger(R.integer.details_overview_image_corner_radius);
+                int cornerRadius = getResources().getInteger(R.integer.details_overview_image_corner_radius);
 
                 Bitmap bitmap = Helpers.roundCornerImage(getActivity(), resource, cornerRadius);
 
@@ -396,33 +402,15 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                     bitmap = Helpers.addProgress(getActivity(), bitmap, playbackPercentage);
                 }
 
-                long secondsRemaining = timeRemaining / MILLISECONDS_IN_SECOND;
+                DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String duration = formatter.format(new Date(timeRemaining));
 
-                if (secondsRemaining > 0) {
+                Resources res = getResources();
+                String timeRemainingText = res.getString(R.string.time_remaining, duration);
 
-                    long hours = 0;
-                    long minutes = 0;
+                bitmap = Helpers.addTimeRemaining(getActivity(), bitmap, timeRemainingText);
 
-                    if (secondsRemaining >= SECONDS_IN_HOUR) {
-                        hours = secondsRemaining / SECONDS_IN_HOUR;
-                        secondsRemaining -= hours * SECONDS_IN_HOUR;
-                    }
-
-                    if (secondsRemaining >= SECONDS_IN_MINUTE) {
-                        minutes = secondsRemaining / SECONDS_IN_MINUTE;
-                        secondsRemaining -= minutes * SECONDS_IN_MINUTE;
-                    }
-
-                    long seconds = secondsRemaining;
-
-                    Resources res = getResources();
-
-                    String durationText = res.getString(R.string.duration, hours, minutes, seconds);
-                    String timeRemainingText = res.getString(R.string.time_remaining, durationText);
-
-                    bitmap = Helpers.addTimeRemaining(getActivity(), bitmap, timeRemainingText);
-
-                }
 
                 row.setImageBitmap(getActivity(), bitmap);
 
