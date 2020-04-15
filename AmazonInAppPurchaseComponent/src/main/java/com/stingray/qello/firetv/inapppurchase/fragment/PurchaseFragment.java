@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.model.event.ProgressOverlayDismissEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.ui.fragments.ProgressDialogFragment;
+import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.inapppurchase.PurchaseHelper;
@@ -86,6 +88,21 @@ public class PurchaseFragment extends Fragment {
         }
 
         restorePurchaseButton.setOnClickListener(new RestorePurchaseOnClickListener());
+
+        String termsTag = getResources().getString(R.string.terms_settings_fragment_tag);
+        String termsUrl = getResources().getString(R.string.terms_settings_url);
+
+        String privacyTag = getResources().getString(R.string.privacy_settings_fragment_tag);
+        String privacyUrl = getResources().getString(R.string.privacy_settings_url);
+
+        Button termsButton = view.findViewById(R.id.terms_button);
+        termsButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                .createFragment(getActivity(), getActivity().getFragmentManager(), termsTag, termsUrl));
+
+        Button privacyButton = view.findViewById(R.id.privacy_button);
+        privacyButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
+                .createFragment(getActivity(), getActivity().getFragmentManager(), privacyTag, privacyUrl));
+
     }
 
     private class RestorePurchaseOnClickListener implements  View.OnClickListener {

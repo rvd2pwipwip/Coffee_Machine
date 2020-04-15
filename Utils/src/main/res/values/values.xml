@@ -21,6 +21,9 @@ permissions and limitations under the License.
     <string name="privacy_settings_fragment_tag">faq_settings_fragment</string>
     <string name="terms_settings_fragment_tag">terms_settings_fragment</string>
 
+    <string name="privacy_settings_url">https://legal.stingray.com/en/privacy-policy/markdown</string>
+    <string name="terms_settings_url">https://legal.stingray.com/en/qello-terms-and-conditions/markdown</string>
+
 </resources>
 
 
