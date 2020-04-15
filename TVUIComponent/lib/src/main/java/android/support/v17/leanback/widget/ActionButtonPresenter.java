@@ -1,10 +1,12 @@
 package android.support.v17.leanback.widget;
 
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.stingray.qello.firetv.android.contentbrowser.ContentBrowser;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 
 public class ActionButtonPresenter extends Presenter {
@@ -28,9 +30,17 @@ public class ActionButtonPresenter extends Presenter {
         vh.mButton.setText(action.getLabel1());
         if(action.getIcon() != null) {
             vh.mButton.setCompoundDrawablesWithIntrinsicBounds(action.getIcon(), null, null, null);
+            vh.view.setPaddingRelative(15, 0, 15, 0);
+        } else {
+            vh.mButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
+
+        if(action.getId() == ContentBrowser.CONTENT_ACTION_START_FREE_TRIAL) {
+            vh.mButton.setBackground(ContextCompat.getDrawable(vh.view.getContext(), R.drawable.blue_frame));
+            vh.mButton.setTextColor(ContextCompat.getColor(vh.view.getContext(), R.color.accent));
+        }
+
         vh.view.requestFocus();
-        vh.view.setPaddingRelative(15, 0, 15, 0);
         vh.mButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
