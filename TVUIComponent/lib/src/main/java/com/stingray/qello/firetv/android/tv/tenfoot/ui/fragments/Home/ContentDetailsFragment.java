@@ -676,7 +676,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     @SuppressWarnings("unused")
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent authenticationStatusUpdateEvent) {
-        getActivity().runOnUiThread(this::updateActions);
+        updateActions();
     }
 
     private class ContentPageWrapper {
