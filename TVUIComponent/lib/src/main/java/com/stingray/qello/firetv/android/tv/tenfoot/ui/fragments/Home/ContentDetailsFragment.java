@@ -367,6 +367,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         for (Action action : contentActionList) {
             mActionAdapter.set(i++, LeanbackHelpers.translateActionToLeanBackAction(action));
         }
+        updateActionsProperties();
 
         mActionInProgress = false;
     }
