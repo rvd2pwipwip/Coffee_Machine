@@ -3,6 +3,7 @@ package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v17.leanback.app.VerticalGridFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.BaseCardView;
@@ -47,6 +48,7 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
     private View emptyView;
     protected Button actionButton1;
     private ArrayObjectAdapter mAdapter;
+    private Handler loadingHandler = new Handler();
 
     private boolean isEmpty = true;
 
@@ -72,11 +74,13 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
         setAdapter(mAdapter);
 
         actionButton1.setVisibility(View.INVISIBLE);
-        fadeIn(progressView, 300);
+
+        loadingHandler.postDelayed(() -> fadeIn(progressView, 200), 500);
 
         observableFactory.create(new BrowsePageCallable("MY_SERVICE", getBrowsePage()))
                 .subscribe(this::loadContent,
                         throwable -> {
+                            loadingHandler.removeCallbacksAndMessages(null);
                             crossFade(progressView, emptyView);
                             Log.e(getTag(), "Failed to load content.", throwable);
                         });
@@ -138,6 +142,7 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
     }
 
     private void loadContent(ContentContainerExt favoritesContent) {
+        loadingHandler.removeCallbacksAndMessages(null);
         ContentContainer contentContainer = favoritesContent.getContentContainer();
         isEmpty = contentContainer.getContentCount() < 1;
         toggleEmpty();
