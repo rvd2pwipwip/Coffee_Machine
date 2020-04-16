@@ -227,7 +227,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                     observableFactory.createDetached(new ContentTrackListCallable(mSelectedContent.getId()))
                             .doOnError(t -> Log.e(TAG, "Failed to get track list.", t))
                             .onErrorReturn(t -> null),
-                    observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId()))
+                    observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId(),10))
                             .doOnError(t -> Log.e(TAG, "Failed to get related content.", t))
                             .onErrorReturn(t -> null),
                     ContentPageWrapper::new

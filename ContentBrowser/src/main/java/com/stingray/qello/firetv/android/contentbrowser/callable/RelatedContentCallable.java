@@ -13,7 +13,7 @@ import com.stingray.qello.firetv.android.recipe.Recipe;
 import com.stingray.qello.firetv.dynamicparser.DynamicParser;
 
 public class RelatedContentCallable extends SvodCallable<ContentContainerExt> {
-    private final static String ENDPOINT = "/v1/content-pages/%s/sections/related_content?limit=6&offset=0";
+    private final static String ENDPOINT = "/v1/content-pages/%s/sections/related_content?limit=%s&offset=0";
     private final static String NAME_FORMAT = "Related Content %s";
     private final static String TAG = RelatedContentCallable.class.getSimpleName();
     private final static ContentContainerExtFactory contentContainerExtFactory = new ContentContainerExtFactory();
@@ -25,8 +25,9 @@ public class RelatedContentCallable extends SvodCallable<ContentContainerExt> {
 
     private boolean initializationFailed = false;
     private String contentId;
+    private int limit;
 
-    public RelatedContentCallable(String contentId) {
+    public RelatedContentCallable(String contentId, int limit) {
         try {
             if (RECIPE == null || PARSER == null) {
                 RECIPE = new ConcertItemRecipe().getRecipe();
@@ -36,6 +37,7 @@ public class RelatedContentCallable extends SvodCallable<ContentContainerExt> {
             }
 
             this.contentId = contentId;
+            this.limit = limit;
         } catch (Exception e) {
             Log.e(TAG, String.format("Failed to initialize [%s]", TAG), e);
             initializationFailed = true;
@@ -50,7 +52,7 @@ public class RelatedContentCallable extends SvodCallable<ContentContainerExt> {
 
         String containerName = String.format(NAME_FORMAT, contentId);
         try {
-            String url = String.format(ENDPOINT, contentId);
+            String url = String.format(ENDPOINT, contentId, limit);
             String jsonResponse = get(url);
 
             return contentContainerExtFactory.create(containerName, jsonResponse, PARSER, RECIPE, contentTranslator);

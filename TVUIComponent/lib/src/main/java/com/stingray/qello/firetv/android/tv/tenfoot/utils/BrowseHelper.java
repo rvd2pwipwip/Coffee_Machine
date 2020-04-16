@@ -17,6 +17,7 @@ import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,14 +70,9 @@ public class BrowseHelper {
 
             for (Content content : contentContainer.getContents()) {
                 listRowAdapter.add(content);
-                //TODO remove after testing
-                listRowAdapter.add(content);
-                //TODO remove after testing
-                listRowAdapter.add(content);
             }
 
-            //TODO REMOVE after testing
-            if(contentContainer.hasViewMore() || contentContainer.getName().equals("Top Picks For Dad")) {
+            if(contentContainer.hasViewMore()) {
                 listRowAdapter.add(new ViewMore(contentContainer.getId(), contentContainer.getName()));
             }
 
