@@ -2,24 +2,24 @@ package com.stingray.qello.firetv.android.uamp.mediaSession;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stingray.qello.firetv.android.async.SvodCallable;
 import com.stingray.qello.firetv.android.uamp.model.VideoLink;
 import com.stingray.qello.firetv.android.uamp.model.VideoLinks;
 import com.stingray.qello.firetv.android.utils.SvodObjectMapperProvider;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetVideoLinksCallable extends SvodCallable<Map<VideoLink.Type, VideoLink>> {
-    private final static String ENDPOINT = "/v1/content/%s/video-links?hevc-compatible=true";
-    private static final String TAG = GetVideoLinksCallable.class.getSimpleName();
+public class GetTrackLinksCallable extends SvodCallable<Map<VideoLink.Type, VideoLink>> {
+    private final static String ENDPOINT = "/v1/tracks/%s/video-links?hevc-compatible=true";
+    private static final String TAG = GetTrackLinksCallable.class.getSimpleName();
 
     private String assetId;
     private ObjectMapper objectMapper;
 
-    public GetVideoLinksCallable(String assetId) {
+    public GetTrackLinksCallable(String assetId) {
         this.assetId = assetId;
         this.objectMapper = new SvodObjectMapperProvider().get();
     }
@@ -48,7 +48,7 @@ public class GetVideoLinksCallable extends SvodCallable<Map<VideoLink.Type, Vide
             return mediaUriByType;
 
         } catch (Exception e) {
-            Log.e(TAG, String.format("Failed to get concert video link from [%s]", ENDPOINT), e);
+            Log.e(TAG, String.format("Failed to get track video links from [%s]", ENDPOINT), e);
             return new HashMap<>();
         }
     }

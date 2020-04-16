@@ -50,6 +50,12 @@ public class ContentTrackListPresenter extends Presenter {
 
     private Context mContext;
 
+    private final View.OnClickListener trackInfoColOnClickListener;
+
+    public ContentTrackListPresenter(View.OnClickListener trackInfoColOnClickListener) {
+        this.trackInfoColOnClickListener = trackInfoColOnClickListener;
+    }
+
     /**
      * View holder for the details description. It contains title, subtitle, and body text views.
      */
@@ -137,6 +143,13 @@ public class ContentTrackListPresenter extends Presenter {
             Track track = contentWithTracks.getTracks().get(i);
             TableLayout tableLayout = viewHolder.getContentTrackListTable();
             View row = LayoutInflater.from(mContext).inflate(R.layout.content_track_list_row_layout, tableLayout, false);
+
+            View trackInfoCol = row.findViewById(R.id.content_track_info_col);
+            trackInfoCol.setOnClickListener(trackInfoColOnClickListener);
+
+            TextView trackIdView = row.findViewById(R.id.track_id);
+            trackIdView.setText(track.getId());
+
             TextView titleView = row.findViewById(R.id.track_title);
             titleView.setText(track.getTitle());
 
@@ -159,6 +172,8 @@ public class ContentTrackListPresenter extends Presenter {
             tableLayout.addView(row);
         }
     }
+
+
 
     /**
      * {@inheritDoc}

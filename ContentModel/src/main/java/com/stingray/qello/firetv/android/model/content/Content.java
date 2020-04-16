@@ -45,6 +45,17 @@ public class Content implements Serializable {
      */
     private static final String TAG = Content.class.getSimpleName();
 
+
+    private String mTrackId;
+
+    public String getTrackId() {
+        return mTrackId;
+    }
+
+    public void setTrackId(String TrackId) {
+        this.mTrackId = TrackId;
+    }
+
     /**
      * Id of of the content.
      */
@@ -980,7 +991,8 @@ public class Content implements Serializable {
     @Override
     public String toString() {
         return "Content{" +
-                "mId='" + mId + '\'' +
+                "mTrackId='" + mTrackId + '\'' +
+                ", mId='" + mId + '\'' +
                 ", mTitle='" + mTitle + '\'' +
                 ", mSubtitle='" + mSubtitle + '\'' +
                 ", mUrl='" + mUrl + '\'' +
@@ -1000,6 +1012,7 @@ public class Content implements Serializable {
                 ", mRecommendations='" + mRecommendations + '\'' +
                 ", mLocale=" + mLocale +
                 ", mExtras=" + mExtras +
+                ", concertYear='" + concertYear + '\'' +
                 '}';
     }
 

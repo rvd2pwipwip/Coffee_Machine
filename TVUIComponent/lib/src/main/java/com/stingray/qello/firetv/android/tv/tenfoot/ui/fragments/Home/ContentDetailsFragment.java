@@ -65,6 +65,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -85,6 +87,7 @@ import com.stingray.qello.firetv.android.model.content.ContentContainerExt;
 import com.stingray.qello.firetv.android.model.content.ContentWithTracks;
 import com.stingray.qello.firetv.android.model.content.Track;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.tv.tenfoot.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.ContentTrackListPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CustomListRowPresenter;
@@ -93,6 +96,7 @@ import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetails
 import com.stingray.qello.firetv.android.utils.GlideHelper;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.LeanbackHelpers;
+import com.stingray.qello.firetv.android.utils.Preferences;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -124,6 +128,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private ObservableFactory observableFactory = new ObservableFactory();
 
     private ContentPageWrapper contentPageWrapper = null;
+
     private boolean initialized = false;
 
     SparseArrayObjectAdapter mActionAdapter;
@@ -497,7 +502,30 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     private void setupTrackListPresenter(int nbOfTracks) {
-        ContentTrackListPresenter presenter = new ContentTrackListPresenter();
+        ContentTrackListPresenter presenter = new ContentTrackListPresenter(v -> {
+            TextView trackIdView = v.findViewById(R.id.track_id);
+            String trackId = trackIdView.getText().toString();
+
+            Track track = null;
+            for (Track cTrack: contentPageWrapper.getTrackList()) {
+                if (cTrack.getId().equalsIgnoreCase(trackId)) {
+                    track = cTrack;
+                    break;
+                }
+            }
+
+            if (track != null) {
+                mSelectedContent.setTitle(track.getTitle());
+                mSelectedContent.setSubtitle(track.getSubtitle());
+                mSelectedContent.setTrackId(trackIdView.getText().toString());
+
+                ContentBrowser.getInstance(getActivity()).actionTriggered(getActivity(),
+                        mSelectedContent,
+                        ContentBrowser.CONTENT_ACTION_WATCH_NOW,
+                        mActionAdapter,
+                        mActionCompletedListener);
+            }
+        });
 
         DetailsOverviewRowPresenter rowPresenter =
                 new DetailsOverviewRowPresenter(presenter) {
@@ -510,6 +538,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                                     .setTransitionName(ContentDetailsActivity.SHARED_ELEMENT_NAME);
                         }
                     }
+
                     @Override
                     protected RowPresenter.ViewHolder createRowViewHolder(ViewGroup parent) {
                         RowPresenter.ViewHolder vh = super.createRowViewHolder(parent);
@@ -536,7 +565,6 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         overviewImage.setVisibility(View.GONE);
                         //rightPanel.setVisibility(View.GONE);
                         actions.setVisibility(View.GONE);
-
 
                         return vh;
                     }
@@ -624,13 +652,26 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     public void onResume() {
         Log.v(TAG, "onResume called.");
         super.onResume();
-
         if (backButton != null && backButton.getVisibility() != View.VISIBLE) {
             backButton.setVisibility(View.VISIBLE);
         }
         updateActions();
         mActionInProgress = false;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (contentPageWrapper != null && contentPageWrapper.getContentInfoItem() != null
+                && contentPageWrapper.getContentInfoItem().getData() != null) {
+            SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
+            mSelectedContent.setTitle(concert.getTitle());
+            mSelectedContent.setSubtitle(concert.getArtists());
+            mSelectedContent.setTrackId(null);
+        }
+    }
+
 
     /**
      * Since we do not have direct access to the details overview actions row, we are adding a

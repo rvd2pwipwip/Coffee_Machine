@@ -44,6 +44,7 @@ import android.support.annotation.NonNull;
 import android.support.v17.leanback.app.TenFootPlaybackOverlayFragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -54,6 +55,7 @@ import android.view.accessibility.CaptioningManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.amazon.mediaplayer.AMZNMediaPlayer;
 import com.amazon.mediaplayer.AMZNMediaPlayer.PlayerState;
@@ -79,6 +81,7 @@ import com.stingray.qello.firetv.android.uamp.DrmProvider;
 import com.stingray.qello.firetv.android.uamp.UAMP;
 import com.stingray.qello.firetv.android.uamp.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.uamp.helper.CaptioningHelper;
+import com.stingray.qello.firetv.android.uamp.mediaSession.GetTrackLinksCallable;
 import com.stingray.qello.firetv.android.uamp.mediaSession.GetVideoLinksCallable;
 import com.stingray.qello.firetv.android.uamp.mediaSession.MediaSessionController;
 import com.stingray.qello.firetv.android.uamp.mediaSession.VideoLinkSelector;
@@ -272,19 +275,33 @@ public class PlaybackActivity extends Activity implements
         mSelectedContent = (Content) getIntent().getSerializableExtra(Content.class.getSimpleName());
 
         // TODO LEO LANUZO - Need to establish a proper way to communicate from Network thread to the UI thread
-        Map<VideoLink.Type, VideoLink> videoLinksByType =
-                observableFactory.createDetached(new GetVideoLinksCallable(mSelectedContent.getChannelId()))
-                .toBlocking().single();
 
-        cVideoLink = new VideoLinkSelector().select(videoLinksByType);
-        mSelectedContent.setUrl(cVideoLink.getMediaUri());
-        // TODO Remove - This is a preview that works that is 30 seconds
-        if (cVideoLink.getType() != VideoLink.Type.FULL) {
-            mSelectedContent.setUrl("https://d2ns1j5tbz0a1h.cloudfront.net/assets/2193127/97704551/1080p.m3u8?Expires=1586365289&Signature=ddH4Goek3LsDpwJ1B0XznaspseuH5bgx3NAzl3Xw1GJarkfPRIkkSYpC~zfIvx835WVqtQEAwQk-OiQVhGQR5iVyat6iu5JbJ0EAFS5wOygxUnosVK0KtzZy-d2XlFzImhyLrUcUIhCdGri0YcJD1xhgJKNDO6B5Omgo4PuWf8ZR1LbRSNyG5LwvI6G2RSFWakaS5o1LmdCSngdL6yBFPrygDwvIlaHU86VKoctztcDll6o5dGGVIZ1XrRtuBcn8WVowzjgL5T1N4eIEXXIRv3BX1RFUu2DpQUz0IpE4WMNkoq~6~tlkFSEK32LNixQgB7cvrPqJwx6LDGbNoAAJRw__&Key-Pair-Id=APKAILAUMFTX572YB7EA");
+        Map<VideoLink.Type, VideoLink> videoLinksByType;
+
+        if (mSelectedContent.getTrackId() != null) {
+            videoLinksByType = observableFactory.createDetached(
+                    new GetTrackLinksCallable(mSelectedContent.getTrackId())
+            ).toBlocking().single();
+        } else {
+            videoLinksByType = observableFactory.createDetached(
+                    new GetVideoLinksCallable(mSelectedContent.getId())
+            ).toBlocking().single();
         }
 
-        if (mSelectedContent == null || TextUtils.isEmpty(mSelectedContent.getUrl())) {
+        cVideoLink = new VideoLinkSelector().select(videoLinksByType);
+
+        // TODO Remove - This is a preview that works that is 30 seconds
+//        if (cVideoLink.getType() != VideoLink.Type.FULL) {
+//            mSelectedContent.setUrl("https://d2ns1j5tbz0a1h.cloudfront.net/assets/2193127/97704551/1080p.m3u8?Expires=1586365289&Signature=ddH4Goek3LsDpwJ1B0XznaspseuH5bgx3NAzl3Xw1GJarkfPRIkkSYpC~zfIvx835WVqtQEAwQk-OiQVhGQR5iVyat6iu5JbJ0EAFS5wOygxUnosVK0KtzZy-d2XlFzImhyLrUcUIhCdGri0YcJD1xhgJKNDO6B5Omgo4PuWf8ZR1LbRSNyG5LwvI6G2RSFWakaS5o1LmdCSngdL6yBFPrygDwvIlaHU86VKoctztcDll6o5dGGVIZ1XrRtuBcn8WVowzjgL5T1N4eIEXXIRv3BX1RFUu2DpQUz0IpE4WMNkoq~6~tlkFSEK32LNixQgB7cvrPqJwx6LDGbNoAAJRw__&Key-Pair-Id=APKAILAUMFTX572YB7EA");
+//        }
+
+        if (mSelectedContent == null) {
             finish();
+        } else if ( cVideoLink == null) {
+            showToast(String.format("Unable to play video for %s - %s", mSelectedContent.getTitle(), mSelectedContent.getSubtitle()));
+            finish();
+        } else {
+            mSelectedContent.setUrl(cVideoLink.getMediaUri());
         }
 
         loadViews();
@@ -2007,4 +2024,9 @@ public class PlaybackActivity extends Activity implements
         }
     }
 
+    private void showToast(String authToastMessage) {
+        Toast toast = Toast.makeText(this, authToastMessage, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 100);
+        toast.show();
+    }
 }

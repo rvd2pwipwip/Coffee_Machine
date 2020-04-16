@@ -1482,7 +1482,12 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             case CONTENT_ACTION_WATCH_NOW:
             case CONTENT_ACTION_WATCH_FROM_BEGINNING:
             case CONTENT_ACTION_RESUME:
-                handleRendererScreenSwitch(activity, content, actionId, true);
+                if (content.getTrackId() != null && !mSubscribed) {
+                    showToast("A valid subscription is required to play tracks");
+                    Log.e(TAG, "Track videos are unavailable to unsubscribed users");
+                } else {
+                    handleRendererScreenSwitch(activity, content, actionId, true);
+                }
                 break;
 //            case CONTENT_ACTION_SUBSCRIPTION:
 //            case CONTENT_ACTION_DAILY_PASS:

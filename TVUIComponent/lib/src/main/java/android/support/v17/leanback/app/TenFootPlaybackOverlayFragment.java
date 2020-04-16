@@ -1270,13 +1270,13 @@ public class TenFootPlaybackOverlayFragment extends DetailsFragment {
 
         TextView videoTitle = (TextView) videoDetailsView.findViewById(R.id.videoTitle);
         videoTitle.setText(getVideoTitle());
-        CalligraphyUtils.applyFontToTextView(getActivity(), videoTitle, ConfigurationManager
-                .getInstance(getActivity()).getTypefacePath(ConfigurationConstants.BOLD_FONT));
-
+//        CalligraphyUtils.applyFontToTextView(getActivity(), videoTitle, ConfigurationManager
+//                .getInstance(getActivity()).getTypefacePath(ConfigurationConstants.BOLD_FONT));
+//
         TextView videoSubtitle = (TextView) videoDetailsView.findViewById(R.id.videoSubtitle);
         videoSubtitle.setText(getVideoSubtitle());
-        CalligraphyUtils.applyFontToTextView(getActivity(), videoSubtitle, ConfigurationManager
-                .getInstance(getActivity()).getTypefacePath(ConfigurationConstants.LIGHT_FONT));
+//        CalligraphyUtils.applyFontToTextView(getActivity(), videoSubtitle, ConfigurationManager
+//                .getInstance(getActivity()).getTypefacePath(ConfigurationConstants.LIGHT_FONT));
 
         viewGroup.addView(videoDetailsView, 0);
     }
