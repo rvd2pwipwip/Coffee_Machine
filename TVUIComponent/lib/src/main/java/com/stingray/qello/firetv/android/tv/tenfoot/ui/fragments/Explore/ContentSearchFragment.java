@@ -61,7 +61,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -112,7 +111,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private List<View> genreButtons = new ArrayList<>();
     private boolean returnToSearch = false;
     private boolean returningToSearch = false;
-    private FrameLayout searchResultsLayout;
+    private View searchResultsLayout;
     private View noResultsView;
     private boolean hasResults = false;
 
@@ -160,8 +159,21 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
-
         final View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        // Required because we need to hijack the private mRowsFragment data member
+        // from the parent class SearchFragment to override a behaviour
+        getChildFragmentManager().executePendingTransactions();
+
+        RowsFragment rowsFragment = (RowsFragment) getChildFragmentManager().findFragmentById(R.id.lb_results_frame);
+        if (rowsFragment != null) {
+            rowsFragment.setOnItemViewSelectedListener((itemViewHolder, item, rowViewHolder, row) -> {
+                if (DEBUG) {
+                    int position = rowsFragment.getSelectedPosition();
+                    Log.v(TAG, String.format("onItemSelected %d", position));
+                }
+            });
+        }
 
         if (view != null) {
             noResultsView = view.findViewById(R.id.no_results_container);
