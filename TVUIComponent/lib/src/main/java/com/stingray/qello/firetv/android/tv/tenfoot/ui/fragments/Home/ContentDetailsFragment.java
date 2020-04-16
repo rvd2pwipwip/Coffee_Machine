@@ -75,6 +75,7 @@ import com.stingray.qello.firetv.android.contentbrowser.callable.RelatedContentC
 import com.stingray.qello.firetv.android.contentbrowser.callable.model.Item;
 import com.stingray.qello.firetv.android.contentbrowser.callable.model.SvodConcert;
 import com.stingray.qello.firetv.android.contentbrowser.showscreen.ContentTrackListRow;
+import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.model.Action;
 import com.stingray.qello.firetv.android.model.content.Content;
 import com.stingray.qello.firetv.android.model.content.ContentContainer;
@@ -90,6 +91,9 @@ import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetails
 import com.stingray.qello.firetv.android.utils.GlideHelper;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.LeanbackHelpers;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -149,7 +153,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
         Log.d(TAG, "onCreate DetailsFragment");
         super.onCreate(savedInstanceState);
-
+        EventBus.getDefault().register(this);
         prepareBackgroundManager();
 
         mSelectedContent = ContentBrowser.getInstance(getActivity()).getLastSelectedContent();
@@ -202,6 +206,12 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             Log.v(TAG, "Start CONTENT_HOME_SCREEN.");
             ContentBrowser.getInstance(getActivity()).switchToScreen(ContentBrowser.CONTENT_HOME_SCREEN);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void loadData(Runnable callback) {
@@ -660,6 +670,12 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 }
             }
         }, 400);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent authenticationStatusUpdateEvent) {
+        getActivity().runOnUiThread(this::updateActions);
     }
 
     private class ContentPageWrapper {

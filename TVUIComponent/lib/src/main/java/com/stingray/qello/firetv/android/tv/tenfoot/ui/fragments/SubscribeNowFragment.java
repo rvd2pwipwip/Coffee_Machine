@@ -39,7 +39,7 @@ public class SubscribeNowFragment extends FullScreenDialogFragment {
         startFreeTrialButton = view.findViewById(R.id.start_free_trial_button);
         cancelButton = view.findViewById(R.id.cancel_button);
 
-        handleViewVisibility();
+        handleAuthChange();
 
         return view;
     }
@@ -48,8 +48,7 @@ public class SubscribeNowFragment extends FullScreenDialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         loginButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
                 .loginActionTriggered(getActivity()));
-        startFreeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
-                .switchToScreen(ContentBrowser.PURCHASE_SCREEN, null, null));
+
         cancelButton.setOnClickListener(v -> dismiss());
     }
 
@@ -59,9 +58,24 @@ public class SubscribeNowFragment extends FullScreenDialogFragment {
         EventBus.getDefault().unregister(this);
     }
 
-    private void handleViewVisibility() {
-        if (Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN)) {
-            loginButton.setVisibility(View.GONE);
+    private void handleAuthChange() {
+        boolean isLoggedIn = Preferences.getBoolean(PreferencesConstants.IS_LOGGED_IN);
+        boolean hasSubscription = Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION);
+
+        if (hasSubscription) {
+            dismiss();
+        } else {
+            if (isLoggedIn) {
+                loginButton.setVisibility(View.GONE);
+
+                startFreeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
+                        .switchToScreen(ContentBrowser.PURCHASE_SCREEN, null, null));
+            } else {
+                startFreeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(getActivity())
+                        .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null, null));
+
+                loginButton.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -69,6 +83,6 @@ public class SubscribeNowFragment extends FullScreenDialogFragment {
     @Subscribe
     public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
                                                           authenticationStatusUpdateEvent) {
-        getActivity().runOnUiThread(this::handleViewVisibility);
+        getActivity().runOnUiThread(this::handleAuthChange);
     }
 }
