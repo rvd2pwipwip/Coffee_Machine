@@ -48,9 +48,6 @@ public class DetailsDescriptionPresenter extends Presenter {
 
     private final static String TAG = DetailsDescriptionPresenter.class.getSimpleName();
 
-    private static final int MILLISECONDS_IN_SECOND = 1000;
-    private static final int SECONDS_IN_MINUTE = 60;
-    private static final int SECONDS_IN_HOUR = 3600;
     private static final String YEAR = "Year: ";
     private static final String RUNTIME = " / Runtime: ";
 

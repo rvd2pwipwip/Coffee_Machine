@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import android.text.Spanned;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,13 +58,8 @@ public class EllipsizedTextView extends TextView {
     private static final char ELLIPSIS = '\u2026';
     private String mSetText;
     private boolean mIsEllipsized = false;
-    private StateImageSpan mEllipsisImage;
     private CharSequence mCharSequence;
-    private int mGuillemetDrawableId;
-    private int mReadDialogWidth;
-    private int mReadDialogHeight;
 
-    private SingleViewProvider mExpandedContentViewProvider;
 
     /**
      * {@inheritDoc}
@@ -70,7 +67,6 @@ public class EllipsizedTextView extends TextView {
     public EllipsizedTextView(final Context context) {
 
         super(context);
-        mGuillemetDrawableId = R.drawable.guillemet;
     }
 
     /**
@@ -101,16 +97,6 @@ public class EllipsizedTextView extends TextView {
         final TypedArray styledAttributes = getContext().obtainStyledAttributes(attrs, R
                 .styleable.EllipsizedTextView);
 
-        mGuillemetDrawableId =
-                styledAttributes.getResourceId(R.styleable.EllipsizedTextView_guillemetDrawable,
-                                               R.drawable.guillemet);
-
-        mReadDialogWidth = (int) styledAttributes.getDimension(
-                R.styleable.EllipsizedTextView_readDialogWidth, 0);
-
-        mReadDialogHeight = (int) styledAttributes.getDimension(
-                R.styleable.EllipsizedTextView_readDialogHeight, 0);
-
         styledAttributes.recycle();
     }
 
@@ -120,20 +106,15 @@ public class EllipsizedTextView extends TextView {
     public void showReadDialog() {
         // Show the dialog
         final ReadDialogFragment dialog = new ReadDialogFragment();
-        if (mExpandedContentViewProvider == null) {
-            dialog.setContentViewProvider(getDefaultExpandedContentProvider(this));
-        }
-        else {
-            dialog.setContentViewProvider(mExpandedContentViewProvider);
-        }
+        dialog.setContentViewProvider(getDefaultExpandedContentProvider(this));
 
-        if (mReadDialogHeight != 0 && mReadDialogWidth != 0) {
-            final Bundle args = new Bundle();
-            args.putInt(ReadDialogFragment.INTENT_EXTRA_DIALOG_WIDTH, mReadDialogWidth);
-            args.putInt(ReadDialogFragment.INTENT_EXTRA_DIALOG_HEIGHT, mReadDialogHeight);
-
-            dialog.setArguments(args);
-        }
+        final Bundle args = new Bundle();
+        Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        args.putInt(ReadDialogFragment.INTENT_EXTRA_DIALOG_HEIGHT, size.y);
+        args.putInt(ReadDialogFragment.INTENT_EXTRA_DIALOG_WIDTH, size.x);
+        dialog.setArguments(args);
 
         // Commit allowing state loss, in case our activity is being destroyed we won't be in an
         // illegal state.
@@ -249,7 +230,6 @@ public class EllipsizedTextView extends TextView {
         mIsEllipsized = false;
         setFocusable(false);
         setClickable(false);
-        mEllipsisImage = null;
     }
 
     /**
@@ -269,11 +249,6 @@ public class EllipsizedTextView extends TextView {
         setClickable(false);
         final SpannableString ss = new SpannableString(mCharSequence);
         String visibleText = mCharSequence.toString();
-
-        mEllipsisImage = new StateImageSpan(
-                getContext(),
-                mGuillemetDrawableId,
-                ImageSpan.ALIGN_BASELINE);
 
 
         final SpannableStringBuilder spannedText = new SpannableStringBuilder();
@@ -306,10 +281,6 @@ public class EllipsizedTextView extends TextView {
             // Re-add ellipsis and convert to image
             spannedText.replace(0, spannedText.length(), charOutput);
             spannedText.append(ELLIPSIS);
-
-            /*spannedText.setSpan(mEllipsisImage, ellipsisIndex, ellipsisIndex + 1,
-                                Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-*/
 
             // Reset text and re-measure.
             super.setText(spannedText, BufferType.SPANNABLE);
@@ -354,56 +325,4 @@ public class EllipsizedTextView extends TextView {
         super.setText(mCharSequence, type);
     }
 
-    @Override
-    protected void drawableStateChanged() {
-
-        super.drawableStateChanged();
-
-        // Notify the ellipsis of the state change so it can redraw.
-        if (mEllipsisImage != null) {
-            final int[] state = getDrawableState();
-            mEllipsisImage.setState(state);
-            invalidate();
-        }
-    }
-
-    /**
-     * This class is used to draw the guillemet at the end of the text instead of the ellipsis.
-     * <p>
-     * This code is a near duplicate of ImageSpan with the addition of a function setState that
-     * sets the guillemet into the focus/unfocused state and lots of unneeded code to handle other
-     * constructors removed.
-     * <p>
-     * Currently there enough edge cases that I am not inclined to make this a public class (i.e.
-     * how the system will respond if the states of the images are different sizes).
-     */
-    private static class StateImageSpan extends DynamicDrawableSpan {
-
-        private final StateListDrawable mStateDrawable;
-
-        public StateImageSpan(final Context context, final int resourceId, final int
-                verticalAlignment) {
-
-            super(verticalAlignment);
-            mStateDrawable = (StateListDrawable) ContextCompat.getDrawable(context, resourceId);
-            if (mStateDrawable != null) {
-                mStateDrawable.setBounds(0, 0, mStateDrawable.getIntrinsicWidth(), mStateDrawable
-                        .getIntrinsicHeight());
-                mStateDrawable.setState(FOCUSED_STATE_SET);
-            }
-        }
-
-        public void setState(final int[] state) {
-
-            if (mStateDrawable != null) {
-                mStateDrawable.setState(state);
-            }
-        }
-
-        @Override
-        public Drawable getDrawable() {
-
-            return mStateDrawable;
-        }
-    }
 }
