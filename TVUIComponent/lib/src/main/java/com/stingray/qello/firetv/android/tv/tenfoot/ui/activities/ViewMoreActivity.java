@@ -2,6 +2,7 @@ package com.stingray.qello.firetv.android.tv.tenfoot.ui.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.tv.tenfoot.base.BaseActivity;
@@ -20,6 +21,9 @@ public class ViewMoreActivity extends BaseActivity {
 
         viewMoreFragment = (ViewMoreFragment) getFragmentManager().findFragmentById
                 (R.id.view_more_fragment);
+
+        Button backButton = findViewById(R.id.nav_back_button);
+        backButton.setOnClickListener(v -> finishAfterTransition());
     }
 
     @Override

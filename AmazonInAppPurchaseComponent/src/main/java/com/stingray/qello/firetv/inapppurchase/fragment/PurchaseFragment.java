@@ -103,6 +103,8 @@ public class PurchaseFragment extends Fragment {
         privacyButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
                 .createFragment(getActivity(), getActivity().getFragmentManager(), privacyTag, privacyUrl));
 
+        Button backButton = view.findViewById(R.id.nav_back_button);
+        backButton.setOnClickListener(v -> getActivity().finishAfterTransition());
     }
 
     private class RestorePurchaseOnClickListener implements  View.OnClickListener {
