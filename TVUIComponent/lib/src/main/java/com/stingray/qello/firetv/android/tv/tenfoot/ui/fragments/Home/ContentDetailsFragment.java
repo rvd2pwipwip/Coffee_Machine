@@ -59,11 +59,13 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -241,26 +243,32 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     }
 
     private void databind(ContentPageWrapper contentPageWrapper) {
-        if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
-            SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
-            mSelectedContent.setConcertYear(concert.getConcertYear());
-            mSelectedContent.setDescription(concert.getFullDescription());
-            mSelectedContent.setDuration(concert.getDuration());
-            setupDetailsOverviewRow(concert.isLiked());
+        if (contentPageWrapper.getContentInfoItem() == null) {
+            showToast(String.format("Unable to load content for %s - %s", mSelectedContent.getTitle(), mSelectedContent.getSubtitle()));
+            getActivity().finishAfterTransition();
         } else {
-            setupDetailsOverviewRow(false);
-        }
 
-        if (contentPageWrapper.getTrackList() != null && contentPageWrapper.getTrackList().size() > 0) {
-            ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
-            setupTrackListPresenter(contentWithTracks.getTracks().size());
-            mAdapter.add(new ContentTrackListRow(contentWithTracks));
-        }
+            if (contentPageWrapper.getContentInfoItem() != null && contentPageWrapper.getContentInfoItem().getData() != null) {
+                SvodConcert concert = contentPageWrapper.getContentInfoItem().getData().getData();
+                mSelectedContent.setConcertYear(concert.getConcertYear());
+                mSelectedContent.setDescription(concert.getFullDescription());
+                mSelectedContent.setDuration(concert.getDuration());
+                setupDetailsOverviewRow(concert.isLiked());
+            } else {
+                setupDetailsOverviewRow(false);
+            }
 
-        if (contentPageWrapper.getRelatedContentContainer() != null) {
-            setupRelatedContentRow(contentPageWrapper.getRelatedContentContainer());
+            if (contentPageWrapper.getTrackList() != null && contentPageWrapper.getTrackList().size() > 0) {
+                ContentWithTracks contentWithTracks = new ContentWithTracks(mSelectedContent, contentPageWrapper.getTrackList());
+                setupTrackListPresenter(contentWithTracks.getTracks().size());
+                mAdapter.add(new ContentTrackListRow(contentWithTracks));
+            }
+
+            if (contentPageWrapper.getRelatedContentContainer() != null) {
+                setupRelatedContentRow(contentPageWrapper.getRelatedContentContainer());
+            }
+            updateActionsProperties();
         }
-        updateActionsProperties();
     }
 
     /**
@@ -354,7 +362,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         SvodConcert concert = contentInfoItem.getData().getData();
                         updateActions(concert.isLiked());
                     }
-                });
+                }, t -> Log.e(TAG, "Unable to update actions.", t));
     }
 
     public void updateActions(boolean isFavorited) {
@@ -620,7 +628,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         if (backButton != null && backButton.getVisibility() != View.VISIBLE) {
             backButton.setVisibility(View.VISIBLE);
         }
-        updateActionsProperties();
+        updateActions();
         mActionInProgress = false;
     }
 
@@ -702,4 +710,11 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             return relatedContentContainer;
         }
     }
+
+    private void showToast(String authToastMessage) {
+        Toast toast = Toast.makeText(getActivity(), authToastMessage, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 100);
+        toast.show();
+    }
+
 }
