@@ -473,6 +473,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
 
     private void createGenreButtons(View view, LayoutInflater inflater, List<Genre> genres) {
+        // TODO Refactor this, the logic is really convoluted (but it works so maybe later)
         LinearLayout explorePageGenres = view.findViewById(R.id.explore_page_genres);
         explorePageGenres.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
             boolean oldFocusInGenresMenu = genreButtons.contains(oldFocus);
@@ -484,9 +485,9 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 boolean enteringGrid = newFocus instanceof ImageCardView;
                 boolean leavingGrid = oldFocus instanceof ImageCardView;
 
-                boolean enteringSearchTextEdit = newFocus instanceof SearchEditText;
+                boolean oldIsNavMenu = oldFocus != null && !leavingGrid && !(oldFocus instanceof SearchEditText) && !oldFocusInGenresMenu;
 
-                if (returnToSearch && leavingGrid) {
+                if ((enteringGenresMenu && oldIsNavMenu) || (returnToSearch && leavingGrid)) {
                     focusTextView(0);
                     returnToSearch = false;
                     returningToSearch = true;
