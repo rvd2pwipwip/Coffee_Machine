@@ -1,6 +1,7 @@
 package com.stingray.qello.firetv.inapppurchase.fragment;
 
 import android.app.Fragment;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -234,6 +235,7 @@ public class PurchaseFragment extends Fragment {
         priceTextView.setText(skuUIData.getPrice());
         TextView originalPrice = purchaseItemLayout.findViewById(R.id.strikethrough_price);
         originalPrice.setText(skuUIData.getOriginalPrice());
+        originalPrice.setPaintFlags(originalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         TextView commentView = purchaseItemLayout.findViewById(R.id.comment);
         commentView.setText(skuUIData.getCommentView());
         TextView savingsTitle = purchaseItemLayout.findViewById(R.id.percentage_savings_title);
