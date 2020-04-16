@@ -250,6 +250,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         if (contentPageWrapper.getRelatedContentContainer() != null) {
             setupRelatedContentRow(contentPageWrapper.getRelatedContentContainer());
         }
+        updateActionsProperties();
     }
 
     /**

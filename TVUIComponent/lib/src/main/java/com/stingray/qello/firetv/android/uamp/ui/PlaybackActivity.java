@@ -595,10 +595,11 @@ public class PlaybackActivity extends Activity implements
                                                                  mSelectedContent);
             }
 
-
-            playbackTrackingExecutorService.shutdownNow();
-            if(!isFinishedPlaying()) {
-                playbackTracking.trackPlaybackInterrupted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition(), "Exit Player");
+            if (playbackTrackingExecutorService != null) {
+                playbackTrackingExecutorService.shutdownNow();
+                if (!isFinishedPlaying()) {
+                    playbackTracking.trackPlaybackInterrupted(this, trackingSessionId, mSelectedContent.getId(), getDuration(), getCurrentPosition(), "Exit Player");
+                }
             }
         }
         mIsActivityResumed = false;
