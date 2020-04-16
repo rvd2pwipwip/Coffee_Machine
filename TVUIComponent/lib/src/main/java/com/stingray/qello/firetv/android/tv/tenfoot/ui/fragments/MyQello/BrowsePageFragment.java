@@ -1,5 +1,7 @@
 package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.v17.leanback.app.VerticalGridFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
@@ -33,6 +35,8 @@ import com.stingray.qello.firetv.android.utils.Preferences;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import static android.view.View.VISIBLE;
+
 public abstract class BrowsePageFragment extends VerticalGridFragment {
 
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
@@ -43,6 +47,8 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
     private View emptyView;
     protected Button actionButton1;
     private ArrayObjectAdapter mAdapter;
+
+    private boolean isEmpty = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,16 +71,13 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
         mAdapter = new ArrayObjectAdapter(cardPresenter);
         setAdapter(mAdapter);
 
-        progressView.setVisibility(View.VISIBLE);
+        actionButton1.setVisibility(View.INVISIBLE);
+        fadeIn(progressView, 300);
 
         observableFactory.create(new BrowsePageCallable("MY_SERVICE", getBrowsePage()))
-                .subscribe(response -> {
-                            loadContent(response);
-                            progressView.setVisibility(View.GONE);
-                        },
+                .subscribe(this::loadContent,
                         throwable -> {
-                            emptyView.setVisibility(View.VISIBLE);
-                            progressView.setVisibility(View.GONE);
+                            crossFade(progressView, emptyView);
                             Log.e(getTag(), "Failed to load content.", throwable);
                         });
     }
@@ -115,21 +118,29 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
 
     protected void clearContents() {
         mAdapter.clear();
-        emptyView.setVisibility(View.VISIBLE);
+        isEmpty = true;
+        toggleEmpty();
     }
 
     private void updateActionButtonVisibility() {
-        actionButton1.setVisibility(mapToVisibility(Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION)));
+        boolean hasSubscription = Preferences.getBoolean(PreferencesConstants.HAS_SUBSCRIPTION);
+        int visibility = (hasSubscription && !isEmpty) ? VISIBLE : View.INVISIBLE;
+        actionButton1.setVisibility(visibility);
     }
 
-    private void toggleEmpty(boolean isEmpty) {
-        emptyView.setVisibility(mapToVisibility(isEmpty));
+    private void toggleEmpty() {
+        if (isEmpty) {
+            crossFade(progressView, emptyView);
+        } else {
+            fadeOut(progressView,300);
+        }
         updateActionButtonVisibility();
     }
 
     private void loadContent(ContentContainerExt favoritesContent) {
         ContentContainer contentContainer = favoritesContent.getContentContainer();
-        toggleEmpty(contentContainer.getContentCount() < 1);
+        isEmpty = contentContainer.getContentCount() < 1;
+        toggleEmpty();
 
         for (Content entry : contentContainer) {
             mAdapter.add(entry);
@@ -138,8 +149,7 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
 
     @SuppressWarnings("unused")
     @Subscribe
-    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent
-                                                          authenticationStatusUpdateEvent) {
+    public void onAuthenticationStatusUpdateEvent(AuthenticationStatusUpdateEvent authenticationStatusUpdateEvent) {
         getActivity().runOnUiThread(this::updateActionButtonVisibility);
     }
 
@@ -161,11 +171,30 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
         }
     }
 
-    private int mapToVisibility(boolean isVisible) {
-        if (isVisible) {
-            return View.VISIBLE;
-        } else {
-            return View.GONE;
-        }
+    private void crossFade(View view1, View view2) {
+        fadeIn(view2, 600);
+        fadeOut(view1, 200);
+    }
+
+    private void fadeIn(View view, int duration) {
+        view.setAlpha(0f);
+        view.setVisibility(View.VISIBLE);
+        view.animate()
+                .alpha(1f)
+                .setDuration(duration)
+                .setListener(null);
+    }
+
+    private void fadeOut(View view, int duration) {
+        view.animate()
+                .alpha(0f)
+                .setDuration(duration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        view.setVisibility(View.INVISIBLE);
+                        view.setAlpha(1f);
+                    }
+                });
     }
 }
