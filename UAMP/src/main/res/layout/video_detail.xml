@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,34 +13,38 @@ express or implied. See the License for the specific language governing
 permissions and limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
-            android:id="@+id/videoDetails"
-            android:layout_width="fill_parent"
+        android:id="@+id/videoDetails"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/playback_video_details_margin">
+
+        <TextView
+            android:id="@+id/videoTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/playback_video_details_margin"
-            android:gravity="center_horizontal">
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/playback_video_title_margin"
+            android:maxWidth="500dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/playback_video_details_text_color"
+            android:textSize="@dimen/playback_video_title_text_size"
+            tools:text="Boito - Mefistofele" />
 
         <TextView
-                android:id="@+id/videoTitle"
-                android:layout_width="wrap_content"
-                android:minWidth="@dimen/playback_video_details_min_width"
-                android:layout_height="wrap_content"
-                android:textColor="@color/playback_video_details_text_color"
-                android:textSize="@dimen/playback_video_title_text_size"
-                android:layout_marginBottom="@dimen/playback_video_title_margin"
-                android:gravity="center_horizontal"/>
-
-        <TextView
-                android:id="@+id/videoSubtitle"
-                android:layout_width="wrap_content"
-                android:minWidth="@dimen/playback_video_details_min_width"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/videoTitle"
-                android:textColor="@color/playback_video_details_text_color"
-                android:textSize="@dimen/playback_video_subtitle_text_size"
-                android:gravity="center_horizontal"/>
+            android:id="@+id/videoSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/videoTitle"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:maxWidth="700dp"
+            android:textColor="@color/playback_video_details_text_color"
+            android:textSize="@dimen/playback_video_subtitle_text_size"
+            tools:text="Rudolf Schasching, Angel Joy Blue, Erwin Schrott, Stefan Soltesz, Munchner Philharmoniker, Bror Magnus Todenes" />
     </RelativeLayout>
 </RelativeLayout>
