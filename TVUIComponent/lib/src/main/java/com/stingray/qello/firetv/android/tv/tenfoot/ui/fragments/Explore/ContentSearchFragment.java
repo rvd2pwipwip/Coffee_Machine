@@ -114,6 +114,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     private View searchResultsLayout;
     private View noResultsView;
     private boolean hasResults = false;
+    private List<Object> resultsHolder;
+    private boolean itemWasClicked = false;
 
     // A local list row Adapter
     private ArrayObjectAdapter mListRowAdapter;
@@ -135,6 +137,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         presenter.getHeaderPresenter().setNullItemVisibilityGone(true);
 
         mRowsAdapter = new ArrayObjectAdapter(presenter);
+        resultsHolder = new ArrayList<>();
 
         setSearchResultProvider(this);
         setOnItemViewClickedListener(new ItemViewClickedListener());
@@ -294,15 +297,28 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
         if (mSearchEditText != null) {
             mSearchEditText.setFocusable(false);
             mSearchEditText.clearFocus();
+            if (isValidQuery(mSearchEditText.getText().toString()) && !itemWasClicked) {
+                resultsHolder = new ArrayList<>();
+            }
+        }
 
-            mAutoTextViewFocusHandler.postDelayed(() -> {
-                mSearchEditText.setFocusable(true);
-                mSearchEditText.setHint(getResources().getString(R.string.lb_search_bar_hint));
-            }, 500);
-        }
-        if (!hasResults && mRowsAdapter.size() > 0) {
-            noResultsView.setVisibility(View.VISIBLE);
-        }
+        mAutoTextViewFocusHandler.postDelayed(() -> {
+            mSearchEditText.setFocusable(true);
+            mSearchEditText.setHint(getResources().getString(R.string.lb_search_bar_hint));
+
+            if (!itemWasClicked) {
+                mSearchEditText.requestFocus();
+
+                for (Object row : resultsHolder) {
+                    mRowsAdapter.add(row);
+                }
+
+                if (!hasResults && mRowsAdapter.size() > 0) {
+                    noResultsView.setVisibility(View.VISIBLE);
+                }
+            }
+            itemWasClicked = false;
+        }, 500);
     }
 
     @Override
@@ -314,9 +330,15 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     public void onPause() {
         mAutoTextViewFocusHandler.removeCallbacksAndMessages(null);
         mHandler.removeCallbacksAndMessages(null);
-        if (mSearchEditText != null) {
-            mSearchEditText.setText("");
+
+        if (!itemWasClicked) {
+            resultsHolder = new ArrayList<>();
+            for (int i = 0; i < mRowsAdapter.size(); i++) {
+                resultsHolder.add(mRowsAdapter.get(i));
+            }
+            mRowsAdapter.clear();
         }
+
         super.onPause();
     }
 
@@ -533,6 +555,8 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
 
             if (item instanceof Content) {
+                itemWasClicked = true;
+
                 Content content = (Content) item;
                 if (Helpers.DEBUG) {
                     Log.d(TAG, "Content: " + content.toString());
