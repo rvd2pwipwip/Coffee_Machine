@@ -64,7 +64,8 @@ permissions and limitations under the License.
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="TextView"
-        android:textColor="#E6FFFFFF"
+        android:alpha=".6"
+        android:textColor="@color/secondary_text"
         tools:text="Year: 1995 / Runtime: 01:02:53" />
 
     <com.stingray.qello.firetv.android.ui.widget.EllipsizedTextView
@@ -80,7 +81,7 @@ permissions and limitations under the License.
         style="@style/Widget.Leanback.DetailsActionButtonStyle.Custom"
         android:layout_width="175dp"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="100dp"
         android:drawableRight="@drawable/right_arrow"
         android:strokeColor="#1F1F1F"
