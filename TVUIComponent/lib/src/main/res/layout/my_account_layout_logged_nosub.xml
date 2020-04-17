@@ -88,4 +88,18 @@
 
     </TableLayout>
 
+    <Button
+        android:id="@+id/free_trial_button"
+        style="@style/button_border_highlight"
+        android:background="@drawable/text_input_frame_state_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/accent"
+        android:gravity="start|center_vertical"
+        android:layout_marginTop="20dp"
+        android:text="Start Free Trial"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
+
 </LinearLayout>

@@ -65,6 +65,10 @@ public class MyAccountSettingsDialog extends AppInfoDialog {
                     TextView emailView = view.findViewById(R.id.my_account_email);
                     emailView.setText(email);
 
+                    Button freeTrialButton = view.findViewById(R.id.free_trial_button);
+                    freeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(mActivity)
+                            .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null, null));
+
                     return view;
                 };
             }
