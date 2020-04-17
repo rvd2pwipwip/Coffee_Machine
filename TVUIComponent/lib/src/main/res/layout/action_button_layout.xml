@@ -7,4 +7,5 @@
     android:layout_width="175dp"
     android:layout_height="50dp"
     android:textSize="12sp"
+
     tools:text="@string/start_free_trial_1" />

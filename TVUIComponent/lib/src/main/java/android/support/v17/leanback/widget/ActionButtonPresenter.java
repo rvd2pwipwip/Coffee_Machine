@@ -36,7 +36,7 @@ public class ActionButtonPresenter extends Presenter {
         vh.mButton.setText(action.getLabel1());
         if(action.getIcon() != null) {
             vh.mButton.setCompoundDrawablesWithIntrinsicBounds(action.getIcon(), null, null, null);
-            vh.view.setPaddingRelative(15, 0, 15, 0);
+            vh.view.setPaddingRelative(25, 0, 15, 0);
         } else {
             vh.mButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
