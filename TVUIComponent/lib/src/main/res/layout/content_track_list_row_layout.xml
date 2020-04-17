@@ -41,12 +41,15 @@
             android:id="@+id/track_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/track_index"
             android:layout_alignParentTop="true"
+            android:layout_marginEnd="100dp"
+            android:layout_toEndOf="@id/track_index"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-light"
+            android:singleLine="true"
             android:textColor="@color/secondary_text"
             android:textStyle="bold"
-            tools:text="This Is a Track Title" />
+            tools:text="This Is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long Track Title" />
 
         <TextView
             android:id="@+id/track_subtitle"
