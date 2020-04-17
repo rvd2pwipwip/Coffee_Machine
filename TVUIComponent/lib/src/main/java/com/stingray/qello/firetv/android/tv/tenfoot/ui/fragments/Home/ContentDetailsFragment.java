@@ -247,7 +247,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         initialized = true;
                         databind(contentPageWrapper);
                         callback.run();
-                    };
+                    });
                 }, 300);
             });
         }
