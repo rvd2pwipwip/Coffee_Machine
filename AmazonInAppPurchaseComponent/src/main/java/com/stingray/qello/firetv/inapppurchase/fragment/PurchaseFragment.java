@@ -49,7 +49,6 @@ public class PurchaseFragment extends Fragment {
     private static final String TAG = PurchaseFragment.class.getName();
 
     private final ObservableFactory observableFactory = new ObservableFactory();
-    private final SkuUIDataProvider skuUIDataProvider = new SkuUIDataProvider();
 
     private PurchaseHelper purchaseHelper;
 
@@ -156,30 +155,26 @@ public class PurchaseFragment extends Fragment {
 
             purchaseHelper = new PurchaseHelper(this.getActivity(), skuSet);
 
+            List<SkuUIData> skuUIDatas = new SkuUIDataProvider(response.getSubscriptionOffers()).get();
             LinearLayout firstPurchaseItemLayout = null;
 
-            for (SvodSubscription sub : response.getSubscriptionOffers()) {
-                try {
-                    SkuUIData skuUIData = skuUIDataProvider.getSkuUIData(sub.getProductId());
-                    boolean isMonthly = skuUIData.getRecurrence().equalsIgnoreCase("MONTHLY");
+            for (SkuUIData skuUIData : skuUIDatas) {
+                boolean isMonthly = skuUIData.getRecurrence().equals(SvodSubscription.Recurrence.MONTHLY);
 
-                    LinearLayout purchaseItemLayout;
-                    if (isMonthly) {
-                        View monthlyView = inflater.inflate(R.layout.purchase_item, purchaseItemsLayout, false);
-                        purchaseItemLayout = bindMonthlyItem(sub, skuUIData, (LinearLayout) monthlyView);
-                    } else {
-                        View yearlyView = inflater.inflate(R.layout.purchase_item_rebate, purchaseItemsLayout, false);
-                        purchaseItemLayout = bindYearlyItem(sub, skuUIData, (LinearLayout) yearlyView);
-                    }
+                LinearLayout purchaseItemLayout;
+                if (isMonthly) {
+                    View monthlyView = inflater.inflate(R.layout.purchase_item, purchaseItemsLayout, false);
+                    purchaseItemLayout = bindMonthlyItem(skuUIData, (LinearLayout) monthlyView);
+                } else {
+                    View yearlyView = inflater.inflate(R.layout.purchase_item_rebate, purchaseItemsLayout, false);
+                    purchaseItemLayout = bindYearlyItem(skuUIData, (LinearLayout) yearlyView);
+                }
 
-                    purchaseItemLayout.setOnClickListener(new PurchaseItemOnClickListener(sub.getProductId()));
-                    purchaseItemsLayout.addView(purchaseItemLayout);
+                purchaseItemLayout.setOnClickListener(new PurchaseItemOnClickListener(skuUIData.getProductId()));
+                purchaseItemsLayout.addView(purchaseItemLayout);
 
-                    if (firstPurchaseItemLayout == null) {
-                        firstPurchaseItemLayout = purchaseItemLayout;
-                    }
-                } catch (SkuUIDataProvider.SkuDataNotFoundException e) {
-                    Log.e(TAG, String.format("Failed to display sku [%s]", sub.getProductId()));
+                if (firstPurchaseItemLayout == null) {
+                    firstPurchaseItemLayout = purchaseItemLayout;
                 }
             }
 
@@ -227,31 +222,35 @@ public class PurchaseFragment extends Fragment {
         }
     }
 
-    private LinearLayout bindMonthlyItem(SvodSubscription sub, SkuUIData skuUIData, LinearLayout purchaseItemLayout) {
+    private LinearLayout bindMonthlyItem(SkuUIData skuUIData, LinearLayout purchaseItemLayout) {
         TextView recurrenceView = purchaseItemLayout.findViewById(R.id.recurrence);
-        recurrenceView.setText(sub.getRecurrenceTitle());
+        recurrenceView.setText(skuUIData.getRecurrenceTitle());
         TextView priceTextView = purchaseItemLayout.findViewById(R.id.price_text);
-        priceTextView.setText(skuUIData.getPrice());
+        String priceText = skuUIData.getPrice() + skuUIData.getCurrencySymbol();
+        priceTextView.setText(priceText);
         TextView commentView = purchaseItemLayout.findViewById(R.id.comment);
-        commentView.setText(skuUIData.getCommentView());
+        commentView.setText("per month after free trial");
 
         return purchaseItemLayout;
     }
 
-    private LinearLayout bindYearlyItem(SvodSubscription sub, SkuUIData skuUIData, LinearLayout purchaseItemLayout) {
+    private LinearLayout bindYearlyItem(SkuUIData skuUIData, LinearLayout purchaseItemLayout) {
         TextView recurrenceView = purchaseItemLayout.findViewById(R.id.recurrence);
-        recurrenceView.setText(sub.getRecurrenceTitle());
+        recurrenceView.setText(skuUIData.getRecurrenceTitle());
         TextView priceTextView = purchaseItemLayout.findViewById(R.id.price_text);
-        priceTextView.setText(skuUIData.getPrice());
+        String priceText = skuUIData.getPrice() + skuUIData.getCurrencySymbol();
+        priceTextView.setText(priceText);
+        String originalPriceText = skuUIData.getOriginalPrice() + skuUIData.getCurrencySymbol();
         TextView originalPrice = purchaseItemLayout.findViewById(R.id.strikethrough_price);
-        originalPrice.setText(skuUIData.getOriginalPrice());
+        originalPrice.setText(originalPriceText);
         originalPrice.setPaintFlags(originalPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         TextView commentView = purchaseItemLayout.findViewById(R.id.comment);
-        commentView.setText(skuUIData.getCommentView());
+        commentView.setText("No free trial");
         TextView savingsTitle = purchaseItemLayout.findViewById(R.id.percentage_savings_title);
-        savingsTitle.setText(skuUIData.getSavingsTitle());
+        savingsTitle.setText("Save");
         TextView savings = purchaseItemLayout.findViewById(R.id.percentage_savings);
-        savings.setText(skuUIData.getSavingsPercentage());
+        String percentageString = (int) Math.floor(skuUIData.getSavingsPercentage()) + "%";
+        savings.setText(percentageString);
 
         return purchaseItemLayout;
     }
