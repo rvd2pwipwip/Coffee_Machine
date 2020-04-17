@@ -880,23 +880,30 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
             if (!liveContent) {
                 RecentRecord record = getRecentRecord(content);
 
-                // Add "Resume" button if content playback is not complete.
-                if (record != null && !record.isPlaybackComplete()) {
-                    contentActionList.add(createActionButton(CONTENT_ACTION_RESUME,
-                                                             R.string.resume_1,
-                                                             R.string.resume_2,
-                            R.drawable.play_show));
-                    // Add "Watch From Beginning" button to start content over.
-                    contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_FROM_BEGINNING,
-                                                             R.string.watch_from_beginning_1,
-                                                             R.string.watch_from_beginning_2,
-                            R.drawable.beginning_show));
-                }
-                // If the content has not been played yet, add the "Watch Now" button.
-                else {
+                if (mSubscribed) {
+                    // Add "Resume" button if content playback is not complete.
+                    if (record != null && !record.isPlaybackComplete()) {
+                        contentActionList.add(createActionButton(CONTENT_ACTION_RESUME,
+                                R.string.resume_1,
+                                R.string.resume_2,
+                                R.drawable.play_show));
+                        // Add "Watch From Beginning" button to start content over.
+                        contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_FROM_BEGINNING,
+                                R.string.watch_from_beginning_1,
+                                R.string.watch_from_beginning_2,
+                                R.drawable.beginning_show));
+                    }
+                    // If the content has not been played yet, add the "Watch Now" button.
+                    else {
+                        contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW,
+                                R.string.watch_now_1,
+                                R.string.watch_now_2,
+                                R.drawable.play_show));
+                    }
+                } else {
                     contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW,
-                            R.string.watch_now_1,
-                            R.string.watch_now_2,
+                            R.string.watch_sample_now_1,
+                            R.string.watch_sample_now_2,
                             R.drawable.play_show));
                 }
 

@@ -25,6 +25,8 @@ permissions and limitations under the License.
     <!-- IMPORTANT: Following 2 strings are concatenated to generate the multi-line title of Watch
     now button, watch_now_1 being the first line of the title and watch_now_2 being the second line
     of the title -->
+    <string name="watch_sample_now_1">Play Sample</string>
+    <string name="watch_sample_now_2"></string>
     <string name="watch_now_1">Play complete show</string>
     <string name="watch_now_2"></string>
     <!-- IMPORTANT: Following 2 strings are concatenated to generate the multi-line title of Watch
