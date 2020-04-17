@@ -71,7 +71,6 @@ import com.stingray.qello.firetv.android.contentbrowser.callable.ExplorePageCall
 import com.stingray.qello.firetv.android.contentbrowser.callable.GenreFilterCallable;
 import com.stingray.qello.firetv.android.model.SvodMetadata;
 import com.stingray.qello.firetv.android.model.content.Content;
-import com.stingray.qello.firetv.android.model.content.ContentContainerExt;
 import com.stingray.qello.firetv.android.model.content.Genre;
 import com.stingray.qello.firetv.android.search.SearchManager;
 import com.stingray.qello.firetv.android.tv.tenfoot.BuildConfig;
@@ -96,18 +95,16 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
     private static final String TAG = ContentSearchFragment.class.getSimpleName();
     private static final boolean DEBUG = BuildConfig.DEBUG;
-    private static final long SEARCH_DELAY_MS = 700L;
+    private static final long RESULTS_LOAD_DELAY = 300L;
 
-    private final Handler mHandler = new Handler();
-    private final Runnable mDelayedLoad = this::loadRows;
+    private final Handler resultLoadHandler = new Handler();
     private ArrayObjectAdapter mRowsAdapter;
-    private String mQuery;
+    private String loadedQuery;
     private SearchBar searchBar;
     private RelativeLayout searchBarItems;
     private SearchEditText mSearchEditText = null;
     private ObservableFactory observableFactory = new ObservableFactory();
     private View focusedGenreButton = null;
-    private Runnable delayedGenreLoad = null;
     private List<View> genreButtons = new ArrayList<>();
     private boolean returnToSearch = false;
     private boolean returningToSearch = false;
@@ -218,14 +215,9 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
 
                 mSearchEditText = searchEditText;
                 mSearchEditText.setOnFocusChangeListener((view1, hasFocus) -> {
-                    String cQuery = mSearchEditText.getText().toString();
-                    boolean queryHasChanged = !cQuery.equalsIgnoreCase(mQuery);
-
                     if (hasFocus) {
                         searchBarItems.setBackground(getResources().getDrawable(R.drawable.search_edit_text_bg));
-                        if (queryHasChanged) {
-                            loadQuery(cQuery);
-                        }
+                        loadQuery(mSearchEditText.getText().toString());
                     } else {
                         searchBarItems.setBackground(getResources().getDrawable(R.drawable.search_edit_text_bg_unfocused));
                     }
@@ -236,16 +228,15 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 // so handle that here.
 
                 mSearchEditText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+                    loadQuery(mSearchEditText.getText().toString());
+
                     // Track search if keyboard is closed with IME_ACTION_PREVIOUS or
                     // if IME_ACTION_SEARCH occurs.
                     if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_PREVIOUS) {
-                        if (mQuery != null) {
-                            //TODO seg track search?
-                        }
+                        //TODO seg track search?
                     }
 
-                    // If there are results allow first result to be selected
-                    if (hasResults && mQuery != null) {
+                    if (hasResults && loadedQuery != null) {
                         searchResultsLayout.requestFocus();
                     }
 
@@ -274,9 +265,10 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                 // keyboard takes user into first search result's
                 // content_details_activity_layout page.
                 searchEditText.setOnKeyboardDismissListener(() -> {
+                    loadQuery(mSearchEditText.getText().toString());
                     // We don't need to clearFocus on SearchEditText here, the first
                     // result will be selected already.
-                    if (hasResults && mQuery != null) {
+                    if (hasResults && loadedQuery != null) {
                         searchResultsLayout.requestFocus();
                     }
                 });
@@ -329,9 +321,10 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     @Override
     public void onPause() {
         mAutoTextViewFocusHandler.removeCallbacksAndMessages(null);
-        mHandler.removeCallbacksAndMessages(null);
+        resultLoadHandler.removeCallbacksAndMessages(null);
 
         if (!itemWasClicked) {
+            loadedQuery = null;
             resultsHolder = new ArrayList<>();
             for (int i = 0; i < mRowsAdapter.size(); i++) {
                 resultsHolder.add(mRowsAdapter.get(i));
@@ -357,6 +350,7 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     @Override
     public boolean onQueryTextSubmit(String query) {
         Log.i(TAG, String.format("Search Query Text Submit %s", query));
+        loadQuery(query);
         return true;
     }
 
@@ -368,18 +362,34 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
     }
 
     private void loadQuery(String query) {
-        mHandler.removeCallbacksAndMessages(null);
-        if (isValidQuery(query)) {
-            mQuery = query;
-            mHandler.postDelayed(mDelayedLoad, SEARCH_DELAY_MS);
+        if (isValidQuery(query) && !query.equalsIgnoreCase(loadedQuery)) {
+            resultLoadHandler.removeCallbacksAndMessages(null);
+
+            Runnable loadQuery = () -> {
+                mListRowAdapter = new ArrayObjectAdapter(new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 120, 160));
+                ContentBrowser.getInstance(getActivity()).search(query, this::updateResults);
+                loadedQuery = query;
+            };
+
+            resultLoadHandler.postDelayed(loadQuery, RESULTS_LOAD_DELAY);
         }
     }
 
-    private void loadRows() {
-        if (mQuery != null) {
+    public void loadGenreAssets(String genreId) {
+        resultLoadHandler.removeCallbacksAndMessages(null);
+        Runnable loadGenreAssets = () -> observableFactory.create(new GenreFilterCallable(genreId)).subscribe(genreAssets -> {
+            SvodMetadata metadata = genreAssets.getMetadata();
             mListRowAdapter = new ArrayObjectAdapter(new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 120, 160));
-            ContentBrowser.getInstance(getActivity()).search(mQuery, this::updateResults);
-        }
+
+            for (Content entry : genreAssets.getContentContainer()) {
+                updateResults(entry, metadata, false);
+            }
+
+            updateResults(null, metadata, true);
+            loadedQuery = null;
+        });
+
+        resultLoadHandler.postDelayed(loadGenreAssets, RESULTS_LOAD_DELAY);
     }
 
     /**
@@ -525,28 +535,14 @@ public class ContentSearchFragment extends android.support.v17.leanback.app.Sear
                         focusedGenreButton.setBackground(getResources().getDrawable(R.drawable.button_bg_stroke_no_focus));
                         returningToSearch = false;
                     } else {
-                        mQuery = null;
                         focusedGenreButton = view1;
-                        mHandler.removeCallbacks(delayedGenreLoad);
-                        delayedGenreLoad = () -> observableFactory.create(new GenreFilterCallable(genre.getId())).subscribe(this::loadGenreAssets);
-                        mHandler.postDelayed(delayedGenreLoad, SEARCH_DELAY_MS);
+                        loadGenreAssets(genre.getId());
                     }
                 }
             });
             genreButtons.add(genreButton);
             explorePageGenres.addView(genreButton, buttonLayoutParams);
         }
-    }
-
-    public void loadGenreAssets(ContentContainerExt genreAssets) {
-        SvodMetadata metadata = genreAssets.getMetadata();
-        mListRowAdapter = new ArrayObjectAdapter(new CardPresenter(BaseCardView.CARD_TYPE_INFO_UNDER, 120, 160));
-
-        for (Content entry : genreAssets.getContentContainer()) {
-            updateResults(entry, metadata, false);
-        }
-
-        updateResults(null, metadata, true);
     }
 
     private final class ItemViewClickedListener implements OnItemViewClickedListener {
