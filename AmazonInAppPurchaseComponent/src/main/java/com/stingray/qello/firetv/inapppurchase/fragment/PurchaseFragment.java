@@ -156,6 +156,8 @@ public class PurchaseFragment extends Fragment {
 
             purchaseHelper = new PurchaseHelper(this.getActivity(), skuSet);
 
+            LinearLayout firstPurchaseItemLayout = null;
+
             for (SvodSubscription sub : response.getSubscriptionOffers()) {
                 try {
                     SkuUIData skuUIData = skuUIDataProvider.getSkuUIData(sub.getProductId());
@@ -172,9 +174,17 @@ public class PurchaseFragment extends Fragment {
 
                     purchaseItemLayout.setOnClickListener(new PurchaseItemOnClickListener(sub.getProductId()));
                     purchaseItemsLayout.addView(purchaseItemLayout);
+
+                    if (firstPurchaseItemLayout == null) {
+                        firstPurchaseItemLayout = purchaseItemLayout;
+                    }
                 } catch (SkuUIDataProvider.SkuDataNotFoundException e) {
                     Log.e(TAG, String.format("Failed to display sku [%s]", sub.getProductId()));
                 }
+            }
+
+            if (firstPurchaseItemLayout != null) {
+                firstPurchaseItemLayout.requestFocus();
             }
         };
     }
