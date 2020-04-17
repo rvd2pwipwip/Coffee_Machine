@@ -153,10 +153,7 @@ public class ContentTranslator extends AModelTranslator<Content> {
 
         try {
             return !model.getTitle().isEmpty() &&
-                    !model.getDescription().isEmpty() &&
-                    !model.getUrl().isEmpty() &&
-                    !model.getCardImageUrl().isEmpty() &&
-                    !model.getBackgroundImageUrl().isEmpty();
+                    !model.getDescription().isEmpty();
         }
         catch (NullPointerException e) {
             Log.e(TAG, "Null pointer found during model validation.", e);

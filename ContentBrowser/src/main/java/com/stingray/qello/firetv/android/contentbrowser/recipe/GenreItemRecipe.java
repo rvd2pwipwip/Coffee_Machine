@@ -23,7 +23,7 @@ public class GenreItemRecipe {
                 "id@mId",
                 "data/title@mTitle",
                 "data_type@mAssetType",
-                "data/images/0/url@mCardImageUrl"
+                "data/images/THUMBNAIL_PORTRAIT@mCardImageUrl"
                 )
         );
 

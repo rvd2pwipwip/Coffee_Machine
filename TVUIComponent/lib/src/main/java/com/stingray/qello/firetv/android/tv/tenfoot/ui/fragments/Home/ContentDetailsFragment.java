@@ -32,6 +32,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -346,11 +348,17 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
                 mBackgroundManager.setBitmap(bitmap);
             }
+
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                super.onLoadFailed(e, errorDrawable);
+                Bitmap errorDrawableBitmap = ((BitmapDrawable) errorDrawable).getBitmap();
+                mBackgroundManager.setBitmap(errorDrawableBitmap);
+            }
         };
 
         GlideHelper.loadImageIntoSimpleTargetBitmap(getActivity(), uri,
-                                                    new GlideHelper.LoggingListener(),
-                                                    android.R.color.transparent, bitmapTarget);
+                new GlideHelper.LoggingListener(), R.drawable.background_view_more, bitmapTarget);
     }
 
     private void setupAdapter() {
@@ -436,6 +444,15 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
                 row.setImageBitmap(getActivity(), bitmap);
 
+                mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size());
+            }
+
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                super.onLoadFailed(e, errorDrawable);
+
+                Bitmap errorDrawableBitmap = ((BitmapDrawable) errorDrawable).getBitmap();
+                row.setImageBitmap(getActivity(), errorDrawableBitmap);
                 mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size());
             }
         };

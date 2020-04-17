@@ -16,9 +16,14 @@ package com.stingray.qello.firetv.android.utils;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stingray.qello.firetv.android.model.SvodImage;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +52,10 @@ public class PathHelper {
      * The word to search for in the regex.
      */
     private static final String REGEX_WORD = "par";
+
+    private static final SvodObjectMapperProvider svodObjectMapperProvider = new SvodObjectMapperProvider();
+
+    private static final TypeReference<List<SvodImage>> TYPE_REF_IMAGE_LIST = new TypeReference<List<SvodImage>>() {};
     /**
      * The maximum number of values that the pars array of {@link PathHelper#injectParameters
      * (String, String[])} will support.
@@ -194,14 +203,21 @@ public class PathHelper {
         for (String key : keys) {
             Map<String, Object> next;
             try {
-                // Try to get the next map using the current key
+                // TODO Don't use this anymore Try to get the next map using the current key
                 Object object = map.get(key);
                 if (object instanceof ArrayList && key.equalsIgnoreCase("images")) {
-                    ArrayList array = (ArrayList) object;
+                    List<SvodImage> images = new ArrayList<>();
+                    ObjectMapper objectMapper = svodObjectMapperProvider.get();
+                    try {
+                        String string = objectMapper.writeValueAsString(object);
+                         images = objectMapper.readValue(string, TYPE_REF_IMAGE_LIST);
+                    } catch (Exception e) {
+                        // Do Nothing
+                    }
                     Map<String, Object> arrayMap = new LinkedHashMap<>();
 
-                    for (int i = 0; i < array.size(); i++) {
-                        arrayMap.put(String.valueOf(i), array.get(i));
+                    for (int i = 0; i < images.size(); i++) {
+                        arrayMap.put(images.get(i).getType(), images.get(i).getUrl());
                     }
                     next = arrayMap;
                 } else {

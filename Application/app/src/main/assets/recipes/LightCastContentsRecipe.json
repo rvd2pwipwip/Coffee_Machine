@@ -11,9 +11,9 @@
     "id@mId",
     "data_type@mAssetType",
     "data/short_description@mDescription",
-    "data/images/0/url@mUrl",
-    "data/images/0/url@mCardImageUrl",
-    "data/images/1/url@mBackgroundImageUrl",
+    "data/images/THUMBNAIL_PORTRAIT@mUrl",
+    "data/images/THUMBNAIL_PORTRAIT@mCardImageUrl",
+    "data/images/SHOWSCREEN@mBackgroundImageUrl",
     "id@mChannelId"
   ]
 }
