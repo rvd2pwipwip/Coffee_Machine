@@ -65,6 +65,7 @@ permissions and limitations under the License.
            parent="Widget.Leanback.DetailsActionButtonStyle">
         <item name="android:background">@drawable/action_button_bg_stroke</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
     <style name="TextAppearance.Leanback.DetailsActionButton">
         <item name="android:textSize">@dimen/lb_action_text_size</item>

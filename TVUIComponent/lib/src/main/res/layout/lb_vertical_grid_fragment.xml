@@ -20,14 +20,17 @@
 
     <Button
         android:id="@+id/actionButton1"
-        style="@style/button_border_highlight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.Leanback.DetailsActionButtonStyle.Custom"
+        android:layout_width="175dp"
+        android:layout_height="30dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="50dp"
-        android:paddingStart="50dp"
-        android:paddingEnd="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="25dp"
+        android:drawableLeft="@drawable/clear"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:textSize="12sp"
         android:visibility="gone"
         tools:text="Clear Favorites"
         tools:visibility="visible" />

@@ -83,11 +83,9 @@ permissions and limitations under the License.
         android:layout_marginTop="10dp"
         android:layout_marginBottom="100dp"
         android:drawableRight="@drawable/right_arrow"
-        android:fontFamily="sans-serif-light"
-        android:padding="3dp"
         android:strokeColor="#1F1F1F"
         android:text="Read more"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
 
 </LinearLayout>
