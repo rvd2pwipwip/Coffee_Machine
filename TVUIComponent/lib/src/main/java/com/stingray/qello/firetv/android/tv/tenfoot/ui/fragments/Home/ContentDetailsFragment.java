@@ -138,6 +138,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     private View backButton = null;
     private View firstActionButton = null;
 
+    private Handler loadHandler = new Handler();
+
     // Decides whether the action button should be enabled or not.
     private boolean mActionInProgress = false;
 
@@ -239,12 +241,14 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                             .onErrorReturn(t -> null),
                     ContentPageWrapper::new
             ).subscribe(contentPageWrapper -> {
-                getActivity().runOnUiThread(() -> {
-                    this.contentPageWrapper = contentPageWrapper;
-                    initialized = true;
-                    databind(contentPageWrapper);
-                    callback.run();
-                });
+                loadHandler.postDelayed(() -> {
+                    getActivity().runOnUiThread(() -> {
+                        this.contentPageWrapper = contentPageWrapper;
+                        initialized = true;
+                        databind(contentPageWrapper);
+                        callback.run();
+                    };
+                }, 300);
             });
         }
     }
@@ -679,6 +683,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     @Override
     public void onPause() {
         super.onPause();
+
+        loadHandler.removeCallbacksAndMessages(null);
 
         if (contentPageWrapper != null && contentPageWrapper.getContentInfoItem() != null
                 && contentPageWrapper.getContentInfoItem().getData() != null) {
