@@ -37,7 +37,7 @@ permissions and limitations under the License.
     <color name="lb_search_bar_hint">@color/search_edit_text_hint_color</color>
     <color name="lb_search_bar_text">@color/search_edit_text_color</color>
     <!-- text color in edit text when keyboard is up -->
-    <color name="lb_search_bar_text_speech_mode">#FF888888</color>
+    <color name="lb_search_bar_text_speech_mode">@color/secondary_text</color>
     <color name="lb_speech_orb_not_recording">@color/search_orb</color>
     <color name="lb_speech_orb_not_recording_icon">@color/search_orb_not_recording_color</color>
     <color name="lb_speech_orb_not_recording_pulsed">@color/search_orb</color>
