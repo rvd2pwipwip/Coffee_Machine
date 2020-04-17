@@ -97,9 +97,9 @@ public abstract class BrowsePageFragment extends VerticalGridFragment {
             emptyView = view.findViewById(R.id.empty_container);
 
             ImageView imageView1 = emptyView.findViewById(R.id.imageView1);
-            imageView1.setImageDrawable(getResources().getDrawable(getEmptyMsgDrawable()));
+            imageView1.setImageDrawable(getResources().getDrawable(getEmptyImageDrawable()));
             ImageView imageView2 = emptyView.findViewById(R.id.imageView2);
-            imageView2.setImageDrawable(getResources().getDrawable(getEmptyImageDrawable()));
+            imageView2.setImageDrawable(getResources().getDrawable(getEmptyMsgDrawable()));
 
             actionButton1 = view.findViewById(R.id.actionButton1);
             actionButton1.setText(getClearButtonText());
