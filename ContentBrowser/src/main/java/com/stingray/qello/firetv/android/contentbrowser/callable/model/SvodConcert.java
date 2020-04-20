@@ -1,12 +1,11 @@
 package com.stingray.qello.firetv.android.contentbrowser.callable.model;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.stingray.qello.firetv.android.model.SvodImage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SvodConcert {
-    ;
-
     private String id;
     private String title;
     private String artists;
@@ -21,9 +20,11 @@ public class SvodConcert {
     private Boolean hasPreview;
     private String likeStatus;
     private Long playPosition;
+    private List<SvodImage> images = new ArrayList<>();
 
     // For deserialization
-    public SvodConcert() { }
+    public SvodConcert() {
+    }
 
     public String getId() {
         return id;
@@ -83,5 +84,9 @@ public class SvodConcert {
 
     public Long getPlayPosition() {
         return playPosition;
+    }
+
+    public List<SvodImage> getImages() {
+        return images;
     }
 }
