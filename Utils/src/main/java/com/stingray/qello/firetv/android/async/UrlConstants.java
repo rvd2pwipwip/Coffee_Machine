@@ -6,7 +6,7 @@ import java.util.Map;
 public class UrlConstants {
     private final static EnvironmentSettings ENV_SETTINGS = getMap()
             // Change this to set urls
-            .get(Environment.STAGE);
+            .get(Environment.TEST);
 
     final static String BASE_AVC_URL = ENV_SETTINGS.baseAVCUrl;
     final static String BASE_UL_API_URL = ENV_SETTINGS.baseULAPIUrl;
