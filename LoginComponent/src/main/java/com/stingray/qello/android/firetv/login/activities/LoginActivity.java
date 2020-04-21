@@ -107,9 +107,9 @@ public class LoginActivity extends Activity {
         usernameInput = findViewById(R.id.username_input);
         passwordInput = findViewById(R.id.password_input);
 
-        // TODO Remove
-        usernameInput.setText("lf1@sd-i.ca");
-        passwordInput.setText("12345678");
+//        // TODO Remove
+//        usernameInput.setText("lf1@sd-i.ca");
+//        passwordInput.setText("12345678");
 
         continueButton = findViewById(R.id.continue_btn);
         continueButton.setOnClickListener(v -> {

@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 
 public class BaseCommunicator {
     private static final String TAG = BaseCommunicator.class.getName();
-    protected static final String CLIENT_ID = "nM3NxVg5GP3yDVp1";
+    public static final String CLIENT_ID = "nM3NxVg5GP3yDVp1";
 
     protected static class Response {
         private final int code;

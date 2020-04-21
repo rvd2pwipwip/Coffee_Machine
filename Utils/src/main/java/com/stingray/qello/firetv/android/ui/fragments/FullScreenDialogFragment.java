@@ -2,8 +2,6 @@ package com.stingray.qello.firetv.android.ui.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.stingray.qello.firetv.utils.R;
@@ -11,7 +9,7 @@ import com.stingray.qello.firetv.utils.R;
 public abstract class FullScreenDialogFragment extends DialogFragment {
 
     @Override
-    public final Dialog onCreateDialog(final Bundle savedInstanceState) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
         final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
 
         if (dialog.getWindow() != null) {

@@ -1,13 +1,13 @@
 /**
  * This file was modified by Amazon:
  * Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * A copy of the License is located at
- *
- *     http://aws.amazon.com/apache2.0/
- *
+ * <p>
+ * http://aws.amazon.com/apache2.0/
+ * <p>
  * or in the "license" file accompanying this file. This file is distributed
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
@@ -29,6 +29,8 @@
 package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.Home;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -67,7 +69,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,7 +90,6 @@ import com.stingray.qello.firetv.android.model.content.ContentContainerExt;
 import com.stingray.qello.firetv.android.model.content.ContentWithTracks;
 import com.stingray.qello.firetv.android.model.content.Track;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
-import com.stingray.qello.firetv.android.tv.tenfoot.constants.PreferencesConstants;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CardPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.ContentTrackListPresenter;
 import com.stingray.qello.firetv.android.tv.tenfoot.presenter.CustomListRowPresenter;
@@ -98,7 +98,7 @@ import com.stingray.qello.firetv.android.tv.tenfoot.ui.activities.ContentDetails
 import com.stingray.qello.firetv.android.utils.GlideHelper;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.LeanbackHelpers;
-import com.stingray.qello.firetv.android.utils.Preferences;
+import com.stingray.qello.firetv.android.utils.SvodObjectMapperProvider;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -190,10 +190,10 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 setupAdapter();
                 setupDetailsOverviewRowPresenter();
                 setupRelatedContentListRowPresenter();
-                updateBackground(mSelectedContent.getBackgroundImageUrl());
                 setOnItemViewClickedListener(new ItemViewClickedListener());
             }
 
+            updateBackground(mSelectedContent.getBackgroundImageUrl());
             setAdapter(mAdapter);
 
             if (getView() != null) {
@@ -236,7 +236,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                     observableFactory.createDetached(new ContentTrackListCallable(mSelectedContent.getId()))
                             .doOnError(t -> Log.e(TAG, "Failed to get track list.", t))
                             .onErrorReturn(t -> null),
-                    observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId(),10))
+                    observableFactory.createDetached(new RelatedContentCallable(mSelectedContent.getId(), 10))
                             .doOnError(t -> Log.e(TAG, "Failed to get related content.", t))
                             .onErrorReturn(t -> null),
                     ContentPageWrapper::new
@@ -308,7 +308,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             int selectedIndex = Integer.parseInt(intentData.getLastPathSegment());
 
             ContentContainer contentContainer = ContentBrowser.getInstance(getActivity())
-                                                              .getRootContentContainer();
+                    .getRootContentContainer();
 
             int contentTally = 0;
             if (contentContainer == null) {
@@ -342,7 +342,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         }
 
         SimpleTarget<Bitmap> bitmapTarget = new SimpleTarget<Bitmap>(mMetrics.widthPixels,
-                                                                     mMetrics.heightPixels) {
+                mMetrics.heightPixels) {
             @Override
             public void onResourceReady(Bitmap resource,
                                         GlideAnimation<? super Bitmap> glideAnimation) {
@@ -385,7 +385,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
     public void updateActions(boolean isFavorited) {
 
         List<Action> contentActionList = ContentBrowser.getInstance(getActivity())
-                                                       .getContentActionList(mSelectedContent, isFavorited);
+                .getContentActionList(mSelectedContent, isFavorited);
 
         int i = 0;
         mActionAdapter.clear();
@@ -406,17 +406,17 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         final DetailsOverviewRow row = new DetailsOverviewRow(mSelectedContent);
         //row.setActionsAdapter(new ArrayObjectAdapter(new ActionButtonPresenter()));
         row.setImageDrawable(ContextCompat.getDrawable(getActivity(),
-                                                       android.R.color.transparent));
+                android.R.color.transparent));
         int width = Helpers.convertDpToPixel(getActivity().getApplicationContext(),
-                                             DETAIL_THUMB_WIDTH);
+                DETAIL_THUMB_WIDTH);
         int height = Helpers.convertDpToPixel(getActivity().getApplicationContext(),
-                                              DETAIL_THUMB_HEIGHT);
+                DETAIL_THUMB_HEIGHT);
 
         long timeRemaining = ContentBrowser.getInstance(getActivity())
-                                           .getContentTimeRemaining(mSelectedContent);
+                .getContentTimeRemaining(mSelectedContent);
         double playbackPercentage = ContentBrowser.getInstance(getActivity())
-                                                  .getContentPlaybackPositionPercentage
-                                                          (mSelectedContent);
+                .getContentPlaybackPositionPercentage
+                        (mSelectedContent);
 
         Log.d(TAG, "Time Remaining: " + timeRemaining);
         Log.d(TAG, "Playback Percentage: " + playbackPercentage);
@@ -427,7 +427,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                                         GlideAnimation<? super Bitmap> glideAnimation) {
 
                 Log.d(TAG,
-                      "content_details_activity_layout overview card image url ready: " + resource);
+                        "content_details_activity_layout overview card image url ready: " + resource);
 
                 int cornerRadius = getResources().getInteger(R.integer.details_overview_image_corner_radius);
 
@@ -462,10 +462,10 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
         };
 
         GlideHelper.loadImageIntoSimpleTargetBitmap(getActivity(),
-                                                    mSelectedContent.getCardImageUrl(),
-                                                    new GlideHelper.LoggingListener<>(),
-                                                    R.drawable.default_poster,
-                                                    bitmapTarget);
+                mSelectedContent.getCardImageUrl(),
+                new GlideHelper.LoggingListener<>(),
+                R.drawable.default_poster,
+                bitmapTarget);
 
         updateActions(isLiked);
         row.setActionsAdapter(mActionAdapter);
@@ -475,7 +475,32 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
     private void setupDetailsOverviewRowPresenter() {
 
-        DetailsDescriptionPresenter detailsDescPresenter = new DetailsDescriptionPresenter();
+        DetailsDescriptionPresenter detailsDescPresenter = new DetailsDescriptionPresenter() {
+            @Override
+            public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
+                super.onBindViewHolder(viewHolder, item);
+                DetailsDescriptionPresenter.ViewHolder customViewHolder = (ViewHolder) viewHolder;
+                customViewHolder.getReadMoreBtn().setOnClickListener(v -> {
+                    try {
+                        Fragment readMoreFragment = getFragmentManager().findFragmentByTag(ContentReadMoreFragment.TAG);
+                        if (readMoreFragment == null) {
+                            readMoreFragment = new ContentReadMoreFragment();
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putString("svodConcert", new SvodObjectMapperProvider().get().writeValueAsString(contentPageWrapper.contentInfoItem.getData().getData()));
+                        readMoreFragment.setArguments(bundle);
+
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.add(readMoreFragment, ContentReadMoreFragment.TAG);
+                        ft.commit();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Failed to serialize concert item to string", e);
+                        showToast("Failed to open read more section.");
+                    }
+
+                });
+            }
+        };
 
         // Set detail background and style.
         DetailsOverviewRowPresenter detailsPresenter =
@@ -486,7 +511,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         super.initializeRowViewHolder(vh);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             vh.view.findViewById(R.id.details_overview_image)
-                                   .setTransitionName(ContentDetailsActivity.SHARED_ELEMENT_NAME);
+                                    .setTransitionName(ContentDetailsActivity.SHARED_ELEMENT_NAME);
                         }
                     }
                 };
@@ -495,8 +520,8 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
         // Hook up transition element.
         detailsPresenter.setSharedElementEnterTransition(getActivity(),
-                                                         ContentDetailsActivity
-                                                                 .SHARED_ELEMENT_NAME);
+                ContentDetailsActivity
+                        .SHARED_ELEMENT_NAME);
 
         detailsPresenter.setOnActionClickedListener(action -> {
             try {
@@ -509,12 +534,11 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                 Log.v(TAG, "detailsPresenter.setOnActionClicked:" + actionId);
 
                 ContentBrowser.getInstance(getActivity()).actionTriggered(getActivity(),
-                                                                          mSelectedContent,
-                                                                          actionId,
-                                                                          mActionAdapter,
-                                                                          mActionCompletedListener);
-            }
-            catch (Exception e) {
+                        mSelectedContent,
+                        actionId,
+                        mActionAdapter,
+                        mActionCompletedListener);
+            } catch (Exception e) {
                 Log.e(TAG, "caught exception while clicking action", e);
                 mActionInProgress = false;
             }
@@ -528,7 +552,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
             String trackId = trackIdView.getText().toString();
 
             Track track = null;
-            for (Track cTrack: contentPageWrapper.getTrackList()) {
+            for (Track cTrack : contentPageWrapper.getTrackList()) {
                 if (cTrack.getId().equalsIgnoreCase(trackId)) {
                     track = cTrack;
                     break;
@@ -566,11 +590,11 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         View detailsOverviewCustom = vh.view.findViewById(R.id.lb_details_overview_custom);
 
                         int padding = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_side_padding);
-                        detailsOverviewCustom.setPadding(padding, 0 ,padding ,0);
+                        detailsOverviewCustom.setPadding(padding, 0, padding, 0);
 
                         View detailsFrame = vh.view.findViewById(R.id.details_frame);
                         ViewGroup.LayoutParams layoutParams = detailsFrame.getLayoutParams();
-                        if(nbOfTracks > 0) {
+                        if (nbOfTracks > 0) {
                             detailsOverviewCustom.setFocusable(false);
                             layoutParams.height = getResources().getDimensionPixelSize(R.dimen.content_tracklist_row_height);
                         } else {
@@ -612,8 +636,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         actionId,
                         mActionAdapter,
                         mActionCompletedListener);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Log.e(TAG, "caught exception while clicking action", e);
                 mActionInProgress = false;
             }
@@ -662,9 +685,9 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
                         ContentDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
 
                 ContentBrowser.getInstance(getActivity())
-                              .setLastSelectedContent(content)
-                              .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content,
-                                              bundle);
+                        .setLastSelectedContent(content)
+                        .switchToScreen(ContentBrowser.CONTENT_DETAILS_SCREEN, content,
+                                bundle);
             }
         }
     }
@@ -777,7 +800,7 @@ public class ContentDetailsFragment extends android.support.v17.leanback.app.Det
 
     private void showToast(String authToastMessage) {
         Toast toast = Toast.makeText(getActivity(), authToastMessage, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 100);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 100);
         toast.show();
     }
 

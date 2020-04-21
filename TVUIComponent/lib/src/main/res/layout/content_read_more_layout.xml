@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/read_more_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/lb_details_overview_margin_start"
+        android:layout_marginEnd="@dimen/lb_details_overview_margin_end"
+        android:layout_marginTop="@dimen/lb_details_rows_align_top"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/content_read_more_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            tools:background="@drawable/default_poster"/>
+
+        <LinearLayout
+            android:id="@+id/content_read_more_right_panel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/lb_details_overview_description_margin_start"
+            android:layout_marginEnd="@dimen/lb_details_overview_description_margin_end"
+            android:layout_marginTop="@dimen/lb_details_overview_description_margin_top"
+            android:layout_marginBottom="@dimen/lb_details_overview_description_margin_bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/content_read_more_subtitle"
+                style="?attr/detailsDescriptionSubtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/accent"
+                android:textSize="20sp"
+                tools:text="Artist Name" />
+
+            <android.support.v17.leanback.widget.ResizingTextView
+                android:id="@+id/content_read_more_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/secondary_text"
+                style="?attr/detailsDescriptionTitleStyle"
+                />
+
+            <TextView
+                android:id="@+id/content_read_more_year_runtime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="TextView"
+                android:alpha=".6"
+                android:textColor="@color/secondary_text"
+                tools:text="Year: 1995 / Runtime: 01:02:53" />
+
+            <TextView
+                android:id="@+id/content_read_more_full_description"
+                style="@style/Widget.Leanback.DetailsDescriptionBodyStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque convallis, tortor vitae rutrum bibendum, purus tellus pretium ex, id sollicitudin eros diam et magna. Sed ac ligula ut dolor aliquam venenatis dignissim at lacus. Maecenas vitae pulvinar eros. Duis blandit neque non porttitor posuere." />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/navigation_back" />
+</RelativeLayout>

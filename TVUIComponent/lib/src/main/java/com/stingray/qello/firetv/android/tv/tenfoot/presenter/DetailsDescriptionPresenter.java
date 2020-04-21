@@ -14,15 +14,7 @@
  */
 package com.stingray.qello.firetv.android.tv.tenfoot.presenter;
 
-import com.stingray.qello.firetv.android.configuration.ConfigurationManager;
-import com.stingray.qello.firetv.android.model.content.Content;
-import com.stingray.qello.firetv.android.tv.tenfoot.base.TenFootApp;
-import com.stingray.qello.firetv.android.ui.constants.ConfigurationConstants;
-import com.stingray.qello.firetv.android.ui.widget.EllipsizedTextView;
-import com.stingray.qello.firetv.android.tv.tenfoot.R;
-
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v17.leanback.widget.Presenter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,6 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.stingray.qello.firetv.android.configuration.ConfigurationManager;
+import com.stingray.qello.firetv.android.model.content.Content;
+import com.stingray.qello.firetv.android.tv.tenfoot.R;
+import com.stingray.qello.firetv.android.tv.tenfoot.base.TenFootApp;
+import com.stingray.qello.firetv.android.ui.constants.ConfigurationConstants;
+import com.stingray.qello.firetv.android.ui.widget.EllipsizedTextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -72,6 +71,7 @@ public class DetailsDescriptionPresenter extends Presenter {
             mYearRuntime = view.findViewById(R.id.year_runtime);
             mBody = (EllipsizedTextView) view.findViewById(R.id.ellipsized_description_text);
             readMoreBtn = (Button) view.findViewById(R.id.read_more_btn);
+            // This gets overwritten in ContentDetailsFragment
             readMoreBtn.setOnClickListener(v -> {
                     mBody.showReadDialog();
                 }
@@ -122,7 +122,7 @@ public class DetailsDescriptionPresenter extends Presenter {
      * {@inheritDoc}
      */
     @Override
-    public final void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
+    public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
 
         Log.v(TAG, "onBindViewHolder called.");
         ViewHolder customViewHolder = (ViewHolder) viewHolder;
