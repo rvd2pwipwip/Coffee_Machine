@@ -31,6 +31,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.stingray.qello.firetv.android.async.BaseCommunicator.CLIENT_ID;
+
 /**
  * Utility to fetch data from network
  */
@@ -63,7 +65,7 @@ public class NetworkUtils {
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod(GET);
-            urlConnection.setRequestProperty("x-client-id", "mBasxFOpteXOYwc9");
+            urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
 
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(
