@@ -108,7 +108,7 @@ public class AccountCreationFragment extends Fragment {
             observableFactory.createDetached(new UserpassCreateCallable(requestBody))
                     .subscribe(
                             response -> ulAuthManager.authorize(response.getSessionId(), HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID, new AuthListener()),
-                            throwable -> onFailure(getString(R.string.error_during_create_account), throwable)
+                            throwable -> onFailure(getString(R.string.CreateAccount_GenericError), throwable)
                     );
         });
 
