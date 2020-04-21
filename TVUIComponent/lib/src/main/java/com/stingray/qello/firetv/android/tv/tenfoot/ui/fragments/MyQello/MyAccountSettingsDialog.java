@@ -67,7 +67,7 @@ public class MyAccountSettingsDialog extends AppInfoDialog {
 
                     Button freeTrialButton = view.findViewById(R.id.free_trial_button);
                     freeTrialButton.setOnClickListener(v -> ContentBrowser.getInstance(mActivity)
-                            .switchToScreen(ContentBrowser.ACCOUNT_CREATION_SCREEN, null, null));
+                            .switchToScreen(ContentBrowser.PURCHASE_SCREEN, null, null));
 
                     return view;
                 };
