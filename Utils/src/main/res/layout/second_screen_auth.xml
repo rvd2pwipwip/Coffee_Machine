@@ -26,17 +26,17 @@ permissions and limitations under the License.
             android:layout_width="116dp"
             android:layout_height="46dp"
             android:layout_marginBottom="30dp"
-            android:layout_marginLeft="56dp"
+            android:layout_marginStart="56dp"
             android:layout_marginTop="27dp"
             android:scaleType="centerInside"
-            android:src="@drawable/company_logo"/>
+            android:src="@drawable/stingray_qello_white"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="100dp"
-            android:text="@string/second_screen_login_instruction_line_1"
+            android:layout_marginStart="100dp"
+            android:text="Go to your computer or mobile device"
             android:textSize="28sp"
             android:textColor="@color/login_instructions_color"/>
 
@@ -44,7 +44,7 @@ permissions and limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="100dp"
+            android:layout_marginStart="100dp"
             android:text="@string/second_screen_login_instruction_line_2"
             android:textSize="28sp"
             android:textColor="@color/login_instructions_color"/>
@@ -53,8 +53,8 @@ permissions and limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="100dp"
-            android:text="@string/second_screen_login_instruction_line_3"
+            android:layout_marginStart="100dp"
+            android:text="Enter the following case sensitive code:"
             android:textSize="28sp"
             android:textColor="@color/login_instructions_color"/>
 
@@ -63,8 +63,8 @@ permissions and limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="100dp"
-            android:text="@string/second_screen_login_instruction_line_4"
+            android:layout_marginStart="100dp"
+            android:text="Loading..."
             android:textAllCaps="true"
             android:textSize="36sp"
             android:textStyle="bold"
@@ -74,7 +74,7 @@ permissions and limitations under the License.
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp"
-            android:layout_marginLeft="100dp"
+            android:layout_marginStart="100dp"
             android:gravity="bottom"
             android:orientation="horizontal">
 
@@ -82,23 +82,23 @@ permissions and limitations under the License.
                 android:id="@+id/btn_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/action_button_background"
                 android:textColor="@drawable/action_button_text_color_selector"
                 android:minWidth="200dp"
                 android:minHeight="48dp"
-                android:text="@string/btn_submit"/>
+                android:text="@string/Global.SubmitButtonTitle"/>
 
         <Button
                 android:id="@+id/btn_get_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:textColor="@drawable/action_button_text_color_selector"
                 android:background="@drawable/action_button_background"
                 android:minWidth="200dp"
                 android:minHeight="48dp"
-                android:text="@string/btn_get_new_code"/>
+                android:text="GET NEW CODE"/>
 
     </LinearLayout>
 </LinearLayout>
