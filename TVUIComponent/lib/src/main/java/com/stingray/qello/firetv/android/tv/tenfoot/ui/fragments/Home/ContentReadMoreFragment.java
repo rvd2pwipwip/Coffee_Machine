@@ -50,6 +50,7 @@ public class ContentReadMoreFragment extends FullScreenDialogFragment {
     private BackgroundManager mBackgroundManager;
     private DisplayMetrics mMetrics;
     private Map<String, String> imageMap = new HashMap<>();
+    private boolean initFailed = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,16 +89,24 @@ public class ContentReadMoreFragment extends FullScreenDialogFragment {
                 databind(view, svodConcert);
             } else {
                 Log.e(TAG, "Missing content info in arguments");
+                initFailed = true;
             }
         } catch (Exception e) {
             Log.e(TAG, "Failed to read current content info", e);
+            initFailed = true;
         }
+    }
 
-        Toast toast = Toast.makeText(getActivity(), "Unable to open read more view page", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 100);
-        toast.show();
-        dismiss();
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        if (initFailed) {
+            Toast toast = Toast.makeText(getActivity(), "Unable to open read more page", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, 100);
+            toast.show();
+            dismiss();
+        }
     }
 
     private void databind(View view, SvodConcert svodConcert) {
