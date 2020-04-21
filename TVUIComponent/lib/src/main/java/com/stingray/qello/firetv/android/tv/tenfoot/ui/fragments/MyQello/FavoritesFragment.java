@@ -24,7 +24,7 @@ public class FavoritesFragment extends BrowsePageFragment {
 
     @Override
     protected String getClearButtonText() {
-        return "Clear Favorites";
+        return getResources().getString(R.string.MyService_ClearFavorite);
     }
 
     @Override

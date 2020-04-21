@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:paddingBottom="2dp"
-        android:text="Account"
+        android:text="@string/Account.Title"
         android:textSize="24sp" />
 
     <View
@@ -30,7 +30,7 @@
         android:fontFamily="sans-serif-light"
         android:paddingTop="15dp"
         android:paddingBottom="0dp"
-        android:text="Guest"
+        android:text="@string/Account.Guest"
         android:textColor="@color/accent"
         android:textStyle="bold"
         android:textSize="20sp" />
@@ -42,7 +42,7 @@
         android:fontFamily="sans-serif-light"
         android:gravity="center_vertical"
         android:paddingTop="0dp"
-        android:text="Start Free Trial and get full access to Qello Concerts"
+        android:text="@string/Account.SubscribeText"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -57,7 +57,7 @@
         android:textColor="@color/accent"
         android:gravity="start|center_vertical"
         android:layout_marginTop="20dp"
-        android:text="Start Free Trial"
+        android:text="@string/Global.StartTrial"
         android:textAllCaps="false"
         android:textSize="16sp" />
 
