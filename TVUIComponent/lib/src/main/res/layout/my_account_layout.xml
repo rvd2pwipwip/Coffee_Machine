@@ -72,7 +72,7 @@
                     android:layout_alignParentTop="true"
                     android:fontFamily="sans-serif-light"
                     android:paddingTop="6dp"
-                    tools:text="Automatically renew on"
+                    android:text="Automatically renew on"
                     android:textColor="@android:color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
