@@ -3,9 +3,13 @@ package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.stingray.qello.firetv.android.tv.tenfoot.BuildConfig;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.ui.fragments.AppInfoDialog;
 import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment;
@@ -23,6 +27,11 @@ public class AboutSettingsDialog extends AppInfoDialog {
 
         return (context1, inflater, parent) -> {
             final View view = mActivity.getLayoutInflater().inflate(R.layout.about_layout, parent);
+
+            String version = BuildConfig.VERSION_NAME;
+            String versionText = String.format(mActivity.getResources().getString(R.string.About_Version), version);
+            TextView versionTextView = view.findViewById(R.id.versionText);
+            versionTextView.setText(versionText);
 
             String termsTag = mActivity.getResources().getString(R.string.terms_settings_fragment_tag);
             String termsUrl = mActivity.getResources().getString(R.string.terms_settings_url);
