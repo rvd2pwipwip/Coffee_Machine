@@ -1,12 +1,11 @@
-package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello;
+package com.stingray.qello.firetv.android.ui.fragments;
 
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 
-import com.stingray.qello.firetv.android.tv.tenfoot.R;
-import com.stingray.qello.firetv.android.ui.fragments.AppInfoDialog;
 import com.stingray.qello.firetv.android.ui.interfaces.SingleViewProvider;
+import com.stingray.qello.firetv.utils.R;
 
 public class ContactUsSettingsDialog extends AppInfoDialog {
 

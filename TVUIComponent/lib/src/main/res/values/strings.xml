@@ -59,8 +59,6 @@ permissions and limitations under the License.
     <string name="stingray_copyright" translatable="false">Stingray Qello © 2020\nStingray Digital Media Group</string>
     <string name="qello_com" translatable="false">qello.com</string>
 
-    <string name="contact_us_by_email" translatable="false">Contact us by email:</string>
-
     <string name="subscribe_offer_description">To enjoy full-length concerts, music documentaries, and live events, start your free trial now.</string>
 
     <string name="history">History</string>

@@ -15,6 +15,7 @@ import com.stingray.qello.android.firetv.login.communication.CommunicationPrefer
 import com.stingray.qello.android.firetv.login.communication.requestmodel.CommunicationPreferencesRequestBody;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
+import com.stingray.qello.firetv.android.ui.fragments.ContactUsSettingsDialog;
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.inapppurchase.activities.PurchaseActivity;
@@ -64,9 +65,8 @@ public class CommunicationPreferencesFragment extends Fragment {
             performCommunicationsCall(sessionId, false, deviceId, languageCode);
         });
 
-        communicationContactUs.setOnClickListener(v -> {
-            // TODO implement
-        });
+        communicationContactUs.setOnClickListener(v -> new ContactUsSettingsDialog()
+                .createFragment(getActivity(), getActivity().getFragmentManager()));
     }
 
     private void performCommunicationsCall(String sessionId, boolean isOptIn, String deviceId, String language) {

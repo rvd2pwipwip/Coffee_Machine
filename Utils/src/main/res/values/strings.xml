@@ -27,6 +27,7 @@ permissions and limitations under the License.
     <string name="go_to_network_settings_label">Go to Network Settings</string>
     <string name="dismiss_label">Dismiss</string>
 
+    <string name="contact_us_by_email" translatable="false">Contact us by email:</string>
 
     <string name="About.AboutMessage">© 2020 Stingray Media Group. All rights reserved. STINGRAY®, QELLOTM CONCERTS BY STINGRAY® and other related marks and logos are trademarks of Stingray Media Group in Canada, the United States of America and/or other territories.</string>
     <string name="About.Title">About</string>
