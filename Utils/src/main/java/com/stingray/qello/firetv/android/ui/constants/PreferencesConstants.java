@@ -39,6 +39,8 @@ public class PreferencesConstants {
      */
     public static final String TIME_LAST_SAVED = "last_time_saved";
 
+    public static final String SESSION_ID = "session_id";
+
     public static final String ACCESS_TOKEN = "access_token";
 
     public static final String REFRESH_TOKEN = "refresh_token";

@@ -178,6 +178,7 @@ public class LoginActivity extends Activity {
         loginWithUP.setVisibility(LinearLayout.GONE);
         lwaButton.setVisibility(Button.GONE);
         Preferences.setLoggedInState(
+                userInfoBundle.getSessionId(),
                 userInfoBundle.getAccessToken(),
                 userInfoBundle.getRefreshToken(),
                 userInfoBundle.getSubscriptionPlan(),
@@ -261,7 +262,7 @@ public class LoginActivity extends Activity {
             if (authCode == null) {
                 amazonAuthManager.getToken(APP_SCOPES, new TokenListener());
             } else {
-                ulAuthManager.getToken(authCode, new TokenListener());
+                ulAuthManager.getToken(response, new TokenListener());
             }
         }
 

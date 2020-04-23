@@ -146,8 +146,9 @@ public class Preferences {
         Preferences.setString(PreferencesConstants.USER_TRACKING_ID, null);
     }
 
-    public static void setLoggedInState(String accessToken, String refreshToken, String subscriptionPlan, String userTrackingId, String subscriptionEnd, String email) {
+    public static void setLoggedInState(String sessionId, String accessToken, String refreshToken, String subscriptionPlan, String userTrackingId, String subscriptionEnd, String email) {
         Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, true);
+        Preferences.setString(PreferencesConstants.SESSION_ID, sessionId);
         Preferences.setString(PreferencesConstants.REFRESH_TOKEN, refreshToken);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
         updateUserInfo(subscriptionPlan, subscriptionEnd, email, userTrackingId);
