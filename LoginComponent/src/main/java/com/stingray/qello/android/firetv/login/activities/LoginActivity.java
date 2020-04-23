@@ -46,6 +46,7 @@ import com.stingray.qello.android.firetv.login.fragments.ForgotPasswordFragment;
 import com.stingray.qello.firetv.android.async.ObservableFactory;
 import com.stingray.qello.firetv.android.event.AuthenticationStatusUpdateEvent;
 import com.stingray.qello.firetv.android.ui.constants.PreferencesConstants;
+import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
 import com.stingray.qello.firetv.utils.UserPreferencesRetriever;
@@ -74,9 +75,10 @@ public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+        Helpers.handleActivityEnterFadeTransition(this, 1500);
         // Confirm that we have the correct API Key.
         try {
             amazonAuthManager = new AmazonAuthorizationManager(this, Bundle.EMPTY);

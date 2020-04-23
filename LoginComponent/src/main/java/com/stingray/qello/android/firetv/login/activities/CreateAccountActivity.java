@@ -16,11 +16,12 @@ package com.stingray.qello.android.firetv.login.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import com.stingray.qello.firetv.android.utils.Helpers;
-import com.stingray.qello.android.firetv.login.fragments.AccountCreationFragment;
 import com.stingray.qello.android.firetv.login.R;
+import com.stingray.qello.android.firetv.login.fragments.AccountCreationFragment;
+import com.stingray.qello.firetv.android.utils.Helpers;
 
 /**
  * This activity allows users to login with amazon.
@@ -31,14 +32,15 @@ public class CreateAccountActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         setContentView(R.layout.acount_creation_main);
-        Helpers.handleActivityEnterFadeTransition(this, 1500);
 
         Fragment accountCreationFragment = new AccountCreationFragment();
         accountCreationFragment.setArguments(savedInstanceState);
 
-        getFragmentManager().beginTransaction().add(R.id.main_account_frame, accountCreationFragment, AccountCreationFragment.class.getSimpleName()).commit();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(R.id.main_account_frame, accountCreationFragment, AccountCreationFragment.class.getSimpleName()).commit();
     }
 
     @Override
