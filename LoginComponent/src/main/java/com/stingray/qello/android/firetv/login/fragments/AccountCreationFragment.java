@@ -200,6 +200,7 @@ public class AccountCreationFragment extends Fragment {
             }
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
             ft.replace(R.id.main_account_frame, communicationPreferencesFragment, CommunicationPreferencesFragment.TAG);
             ft.commit();
         }
