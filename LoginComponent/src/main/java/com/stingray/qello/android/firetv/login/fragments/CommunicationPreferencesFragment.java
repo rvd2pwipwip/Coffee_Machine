@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.stingray.qello.android.firetv.login.R;
 import com.stingray.qello.android.firetv.login.communication.CommunicationPreferencesCallable;
@@ -80,6 +82,13 @@ public class CommunicationPreferencesFragment extends Fragment {
                     startActivity(intent);
                 }, throwable -> {
                     Log.e(TAG, "Failed to update communication preferences", throwable);
+                    Toast authToast = Toast.makeText(getActivity().getBaseContext(),
+                            "Unable to update communication preferences", Toast.LENGTH_LONG);
+                    authToast.setGravity(Gravity.CENTER, 0, 0);
+                    authToast.show();
+
+                    Intent intent = new Intent(getActivity(), PurchaseActivity.class);
+                    startActivity(intent);
                 });
     }
 }
