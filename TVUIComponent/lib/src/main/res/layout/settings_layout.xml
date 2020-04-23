@@ -19,14 +19,14 @@
         <Button
             android:id="@+id/free_trial_button"
             style="@style/button_border_highlight"
-            android:background="@drawable/text_input_frame_state_blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/text_input_frame_state_blue"
             android:fontFamily="sans-serif-light"
-            android:textColor="@color/accent"
             android:gravity="start|center_vertical"
-            android:text="Start Free Trial"
+            android:text="@string/Settings.StartFreeTrial"
             android:textAllCaps="false"
+            android:textColor="@color/accent"
             android:textSize="16sp" />
 
         <Button
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:gravity="start|center_vertical"
-            android:text="Manage Account"
+            android:text="@string/Account.AccountAndSettings"
             android:textAllCaps="false"
             android:textSize="16sp" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:gravity="start|center_vertical"
-            android:text="FAQ"
+            android:text="@string/Settings.FAQ"
             android:textAllCaps="false"
             android:textSize="16sp" />
 
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:gravity="start|center_vertical"
-            android:text="Contact Us"
+            android:text="@string/Settings.ContactUs"
             android:textAllCaps="false"
             android:textSize="16sp" />
 
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:gravity="start|center_vertical"
-            android:text="About"
+            android:text="@string/Settings.About"
             android:textAllCaps="false"
             android:textSize="16sp" />
 
@@ -81,7 +81,7 @@
             android:layout_marginTop="40dp"
             android:fontFamily="sans-serif-light"
             android:gravity="start|center_vertical"
-            android:text="Log Out"
+            android:text="@string/Settings.Logout"
             android:textAllCaps="false"
             android:textSize="16sp" />
     </LinearLayout>

@@ -24,7 +24,7 @@ public class HistoryFragment extends BrowsePageFragment {
 
     @Override
     protected String getClearButtonText() {
-        return "Clear History";
+        return getResources().getString(R.string.MyService_ClearHistory);
     }
 
     @Override

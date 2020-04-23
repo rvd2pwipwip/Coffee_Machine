@@ -8,4 +8,4 @@
     android:layout_height="50dp"
     android:textSize="12sp"
 
-    tools:text="@string/start_free_trial_1" />
+    tools:text="@string/Global.StartTrial" />

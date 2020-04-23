@@ -77,14 +77,14 @@ public class ErrorUtils {
                 break;
             case AUTHENTICATION_ERROR:
                 errorMessage =
-                        context.getResources().getString(R.string.authentication_error_message);
+                        context.getResources().getString(R.string.Login_InvalidCredential);
                 break;
             case AUTHENTICATION_SYSTEM_ERROR:
                 errorMessage = context.getString(R.string.authentication_system_error_message);
                 break;
             case AUTHORIZATION_ERROR:
                 errorMessage =
-                        context.getResources().getString(R.string.authorization_error_message);
+                        context.getResources().getString(R.string.Account_SubscribeText);
                 break;
             case PLAYER_ERROR:
                 errorMessage = context.getResources().getString(R.string.playback_error_message);
@@ -124,7 +124,7 @@ public class ErrorUtils {
                 break;
             case AUTHORIZATION_ERROR:
                 buttonLabelsList.add(context.getResources().getString(R.string.dismiss_label));
-                buttonLabelsList.add(context.getResources().getString(R.string.logout_label));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_LogOut));
                 break;
             case PLAYER_ERROR:
                 buttonLabelsList.add(context.getResources().getString(R.string.dismiss_label));
@@ -154,7 +154,7 @@ public class ErrorUtils {
             return ERROR_BUTTON_TYPE.DISMISS;
         }
         else if (buttonText.equalsIgnoreCase(activity.getResources()
-                                                     .getString(R.string.logout_label))) {
+                                                     .getString(R.string.Global_LogOut))) {
             return ERROR_BUTTON_TYPE.LOGOUT;
         }
         else if (buttonText.equalsIgnoreCase(activity.getResources()

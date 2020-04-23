@@ -43,7 +43,7 @@ limitations under the License.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Search"
+                    android:text="@string/Explore.Search"
                     android:alpha=".8"
                     android:textSize="16sp" />
 
@@ -60,7 +60,7 @@ limitations under the License.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Discover"
+                    android:text="@string/Explore.DiscoverHeader"
                     android:alpha=".8"
                     android:textSize="16sp" />
 

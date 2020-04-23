@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:textColor="@color/secondary_text"
-        android:textSize="14dp"
+        android:textSize="14sp"
         />
 
 

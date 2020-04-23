@@ -3,9 +3,13 @@ package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.stingray.qello.firetv.android.tv.tenfoot.BuildConfig;
 import com.stingray.qello.firetv.android.tv.tenfoot.R;
 import com.stingray.qello.firetv.android.ui.fragments.AppInfoDialog;
 import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment;

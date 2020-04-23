@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:paddingBottom="2dp"
-        android:text="Account"
+        android:text="@string/Account.Title"
         android:textSize="24sp" />
 
     <View
@@ -29,7 +30,7 @@
         android:fontFamily="sans-serif-light"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:text="useremail@stingray.com"
+        tools:text="user@stingray.com"
         android:textColor="@color/accent"
         android:textStyle="bold"
         android:textSize="20sp" />
@@ -48,7 +49,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-light"
-                android:text="No Current Subscription"
+                android:text="@string/Account.NoSubscription"
                 android:paddingTop="15dp"
                 android:textSize="20sp" />
 
@@ -66,17 +67,10 @@
                 android:layout_weight="0.5"
                 android:gravity="center_vertical"
                 android:paddingTop="6dp"
-                android:text="Subscribe to get full access to Qello Concerts"
+                android:text="@string/Account.SubscribeText"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:paddingTop="6dp"
-                android:text="Log in to stingray.com/account to manage your account." />
 
         </TableRow>
 

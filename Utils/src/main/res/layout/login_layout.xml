@@ -27,7 +27,7 @@ permissions and limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/logout_title_color"
-            android:text="@string/login_label"
+            android:text="@string/Login.LoginText"
             android:textSize="@dimen/logout_fragment_title_size"/>
 
     <TextView
@@ -35,7 +35,7 @@ permissions and limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/logout_fragment_middle_margins"
-            android:text="@string/login_dialog_description"
+            android:text="You are not logged in."
             android:textSize="@dimen/logout_fragment_desc_size"
             android:textColor="@color/logout_desc_color"/>
 
