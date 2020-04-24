@@ -66,10 +66,10 @@ public class ErrorUtils {
         String errorMessage = null;
         switch (error_category) {
             case NETWORK_ERROR:
-                errorMessage = context.getResources().getString(R.string.network_error_message);
+                errorMessage = context.getResources().getString(R.string.Global_NetworkUnavailable);
                 break;
             case FEED_ERROR:
-                errorMessage = context.getResources().getString(R.string.feed_error_message);
+                errorMessage = context.getResources().getString(R.string.Global_ServiceUnavailable);
                 break;
             case REGISTRATION_CODE_ERROR:
                 errorMessage =
@@ -114,20 +114,20 @@ public class ErrorUtils {
                 buttonLabelsList.add(context.getResources().getString(R.string.exit_app_label));
                 break;
             case REGISTRATION_CODE_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.Global_Dismiss));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_ButtonDismiss));
                 break;
             case AUTHENTICATION_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.Global_Dismiss));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_ButtonDismiss));
                 break;
             case AUTHENTICATION_SYSTEM_ERROR:
                 buttonLabelsList.add(context.getResources().getString(R.string.exit_app_label));
                 break;
             case AUTHORIZATION_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.Global_Dismiss));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_ButtonDismiss));
                 buttonLabelsList.add(context.getResources().getString(R.string.Global_LogOut));
                 break;
             case PLAYER_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.Global_Dismiss));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_ButtonDismiss));
                 break;
             default:
                 break;
@@ -150,7 +150,7 @@ public class ErrorUtils {
             return ERROR_BUTTON_TYPE.NETWORK_SETTINGS;
         }
         else if (buttonText.equalsIgnoreCase(activity.getResources()
-                                                     .getString(R.string.Global_Dismiss))) {
+                                                     .getString(R.string.Global_ButtonDismiss))) {
             return ERROR_BUTTON_TYPE.DISMISS;
         }
         else if (buttonText.equalsIgnoreCase(activity.getResources()

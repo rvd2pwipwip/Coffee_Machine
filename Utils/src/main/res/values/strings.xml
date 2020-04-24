@@ -14,8 +14,6 @@ permissions and limitations under the License.
 -->
 <resources>
     <!-- Error messages -->
-    <string name="feed_error_message">Service is unavailable. Please try again later.</string>
-    <string name="network_error_message">Network is currently unavailable. Please try again later.</string>
     <string name="registration_code_error_message">Error obtaining the registration code. Please dismiss this message and retry.</string>
     <string name="authentication_system_error_message">You must update your Fire TV for the Qello app to work properly. To install the latest update, go to Settings &gt; Device &gt; About > Install System Update. If the problem persists, please contact Amazon Customer Service at Settings &gt; Help &gt; Contact Us.</string>
     <string name="logout_success_message">Logout Successful.You shall soon be redirected to the details page.</string>
@@ -26,7 +24,6 @@ permissions and limitations under the License.
     <string name="exit_app_label">Exit the Application</string>
     <string name="go_to_network_settings_label">Go to Network Settings</string>
 
-    <string name="contact_us_by_email" translatable="false">Contact us by email:</string>
 
     <!-- LOKALISE -->
     <string name="About.AboutMessage">All rights reserved. STINGRAY®, QELLOTM CONCERTS BY STINGRAY® and other related marks and logos are trademarks of Stingray Media Group in Canada, the United States of America and/or other territories.</string>
@@ -55,6 +52,7 @@ permissions and limitations under the License.
     <string name="CommunicationPreferences.Decline">No Thanks</string>
     <string name="CommunicationPreferences.Description">Would you like to be informed of special offers, promotions, contests and other news about Qello Concerts\' products and services?</string>
     <string name="CommunicationPreferences.Title">Communication Preferences</string>
+    <string name="ContactUs.ByEmail">Contact us by email:</string>
     <string name="ContactUs.ContactByMail">or contact by mail:</string>
     <string name="ContactUs.EmailErrorMessage">Your device could not send e-mail. Please check e-mail configuration and try again.</string>
     <string name="ContactUs.EmailErrorTitle">Could Not Send Email</string>
@@ -87,14 +85,16 @@ permissions and limitations under the License.
     <string name="Explore.SearchPlaceholder">Artist, title, song</string>
     <string name="Global.ApplicationName">Qello Concerts</string>
     <string name="Global.ButtonCancel">Cancel</string>
+    <string name="Global.ButtonDismiss">Dismiss</string>
     <string name="Global.ButtonOk">OK</string>
     <string name="Global.Clear">Clear</string>
-    <string name="Global.Dismiss">Dismiss</string>
     <string name="Global.Loading">Loading</string>
     <string name="Global.LogIn">Log In</string>
     <string name="Global.LogOut">Log Out</string>
     <string name="Global.More">More</string>
+    <string name="Global.NetworkUnavailable">Network is currently unavailable. Please try again later.</string>
     <string name="Global.PrivacyPolicy">Privacy Policy</string>
+    <string name="Global.ServiceUnavailable">Service is unavailable. Please try again later.</string>
     <string name="Global.SortArtistName">By Artist Name (AZ)</string>
     <string name="Global.SortConcertName">By Concert Name (AZ)</string>
     <string name="Global.SortRecent">Most Recently Added</string>
@@ -156,6 +156,7 @@ permissions and limitations under the License.
     <string name="ShowScreen.NumberOfTrackLabel">Tracks</string>
     <string name="ShowScreen.PlayAllButtonTitle">Play All</string>
     <string name="ShowScreen.PlayCompleteShow">Play Complete Show</string>
+    <string name="ShowScreen.PlayFromBeginning">Play from beginning</string>
     <string name="ShowScreen.ReadMore">Read More</string>
     <string name="ShowScreen.RelatedMessage">You May Also Like</string>
     <string name="ShowScreen.RemoveFromFavorites">Remove from Favorites</string>
@@ -166,7 +167,6 @@ permissions and limitations under the License.
     <string name="ShowScreen.TitleAndArtist">%1$s by %2$s</string>
     <string name="ShowScreen.ViewRelated">View Related</string>
     <string name="ShowScreen.YearLabel">Year:</string>
-    <string name="ShowScreen.PlayFromBeginning">Play from beginning</string>
     <string name="Splash.RefreshTokenError">Unable to load account</string>
     <string name="Splash.Retry">Retry</string>
     <string name="Splash.SessionExpired">Your session expired. Please log back in.</string>
@@ -196,8 +196,4 @@ permissions and limitations under the License.
     <string name="Subscription.TitleComment">Continue enjoying Qello Concerts after your FREE trial ends.</string>
     <!-- we couldnt get the new userInfo after the purchase was successful, ask the user to restart the app. -->
     <string name="Subscription.UserInfoRefreshError">Your purchase was successful, but something is not quite right. Please restart the application.</string>
-
-
-
-
 </resources>
