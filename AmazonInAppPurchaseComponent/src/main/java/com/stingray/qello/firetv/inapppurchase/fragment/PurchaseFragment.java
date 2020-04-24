@@ -44,8 +44,6 @@ import static com.stingray.qello.firetv.inapppurchase.PurchaseHelper.ERROR_DURIN
 import static com.stingray.qello.firetv.inapppurchase.PurchaseHelper.PURCHASE_FLOW_COMPLETED;
 
 public class PurchaseFragment extends Fragment {
-
-    private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
     private static final String TAG = PurchaseFragment.class.getName();
 
     private final ObservableFactory observableFactory = new ObservableFactory();
@@ -59,7 +57,6 @@ public class PurchaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Helpers.handleActivityEnterFadeTransition(getActivity(), ACTIVITY_ENTER_TRANSITION_FADE_DURATION);
     }
 
     @Override

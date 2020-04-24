@@ -21,6 +21,7 @@ import java.io.IOException;
 public class ULAuthManager {
     private static final String TAG = ULAuthManager.class.getName();
 
+    final static String BUNDLE_SESSION_ID = "sessionId";
     final static String BUNDLE_ACCESS_TOKEN = AuthzConstants.BUNDLE_KEY.TOKEN.val;
     final static String BUNDLE_REFRESH_TOKEN = "refreshToken";
     final static String BUNDLE_EXPIRES_IN = "expiresIn";
@@ -44,18 +45,24 @@ public class ULAuthManager {
         } else {
             Bundle bundle = new Bundle();
             bundle.putString(AuthzConstants.BUNDLE_KEY.AUTHORIZATION_CODE.val, issueCodeResponse.getCode());
+            bundle.putString(BUNDLE_SESSION_ID, sessionId);
 
             authorizationListener.onSuccess(bundle);
         }
     }
 
-    public void getToken(String authorizationCode, APIListener apiListener) {
-        TokenRequestBody tokenRequestBody = new TokenRequestBody(authorizationCode);
+    public void getToken(Bundle authorizeBundle, APIListener apiListener) {
+        String authCode = authorizeBundle.getString(AuthzConstants.BUNDLE_KEY.AUTHORIZATION_CODE.val);
+        String sessionId = authorizeBundle.getString(ULAuthManager.BUNDLE_SESSION_ID);
+
+        TokenRequestBody tokenRequestBody = new TokenRequestBody(authCode);
         TokenResponse tokenResponse = new TokenCallable(tokenRequestBody).call();
         if (tokenResponse == null) {
             apiListener.onError(new AuthError("Failed to get access token", AuthError.ERROR_TYPE.ERROR_INVALID_GRANT));
         } else {
             Bundle bundle = addTokenResponse(new Bundle(), tokenResponse);
+            bundle.putString(BUNDLE_SESSION_ID, sessionId);
+
             try {
                 SvodUserInfo userInfo = new SvodUserInfoCallable(tokenResponse.getAccessToken()).call();
                 if (userInfo != null) {

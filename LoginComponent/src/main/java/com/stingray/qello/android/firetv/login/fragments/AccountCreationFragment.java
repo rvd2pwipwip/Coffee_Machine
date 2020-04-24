@@ -2,6 +2,7 @@ package com.stingray.qello.android.firetv.login.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,9 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazon.identity.auth.device.AuthError;
-import com.amazon.identity.auth.device.authorization.api.AmazonAuthorizationManager;
 import com.amazon.identity.auth.device.authorization.api.AuthorizationListener;
-import com.amazon.identity.auth.device.authorization.api.AuthzConstants;
 import com.amazon.identity.auth.device.shared.APIListener;
 import com.stingray.qello.android.firetv.login.R;
 import com.stingray.qello.android.firetv.login.ULAuthManager;
@@ -32,29 +31,21 @@ import com.stingray.qello.firetv.android.ui.fragments.RemoteMarkdownFileFragment
 import com.stingray.qello.firetv.android.utils.Helpers;
 import com.stingray.qello.firetv.android.utils.Preferences;
 import com.stingray.qello.firetv.auth.AuthenticationConstants;
+import com.stingray.qello.firetv.utils.UserPreferencesRetriever;
 
 import org.greenrobot.eventbus.EventBus;
 
 import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 
 public class AccountCreationFragment extends Fragment {
-    // TODO Get lang and deviceId from system
-    private final static String HARDCODED_LANGUAGE = "en";
-    private final static String HARDCODED_DEVICE_ID = "aDeviceId";
-
     private static final int ACTIVITY_ENTER_TRANSITION_FADE_DURATION = 1500;
     private static final String TAG = AccountCreationFragment.class.getName();
-    private String[] APP_SCOPES = new String[]{"profile"};
 
     private TextView usernameInput;
     private TextView passwordInput;
     private Button createButton;
 //    private ImageButton lwaButton;
     private View switchToLoginButton;
-    private Button termsButton;
-    private Button privacyButton;
-    private AmazonAuthorizationManager amazonAuthManager;
     private ProgressBar mLogInProgress;
     private ULAuthManager ulAuthManager;
     private ObservableFactory observableFactory = new ObservableFactory();
@@ -93,9 +84,8 @@ public class AccountCreationFragment extends Fragment {
         privacyButton.setOnClickListener(v -> new RemoteMarkdownFileFragment()
                 .createFragment(activity, activity.getFragmentManager(), privacyTag, privacyUrl));
 
-//      For Testing
-//        usernameInput.setText("clf2@sd-i.ca");
-//        passwordInput.setText("12345678");
+        String languageCode = UserPreferencesRetriever.getLanguageCode();
+        String deviceId = UserPreferencesRetriever.getDeviceId(getActivity());
 
         createButton = view.findViewById(R.id.create_button);
         createButton.setOnClickListener(v -> {
@@ -103,12 +93,12 @@ public class AccountCreationFragment extends Fragment {
             String username = usernameInput.getText().toString();
             String password = passwordInput.getText().toString();
 
-            UserpassCreateRequestBody requestBody = new UserpassCreateRequestBody(username, password, HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID);
+            UserpassCreateRequestBody requestBody = new UserpassCreateRequestBody(username, password, languageCode, deviceId);
 
             observableFactory.createDetached(new UserpassCreateCallable(requestBody))
                     .subscribe(
-                            response -> ulAuthManager.authorize(response.getSessionId(), HARDCODED_LANGUAGE, HARDCODED_DEVICE_ID, new AuthListener()),
-                            throwable -> onFailure(getString(R.string.error_during_create_account), throwable)
+                            response -> ulAuthManager.authorize(response.getSessionId(), languageCode, deviceId, new AuthListener()),
+                            throwable -> onFailure(getString(R.string.CreateAccount_GenericError), throwable)
                     );
         });
 
@@ -155,6 +145,7 @@ public class AccountCreationFragment extends Fragment {
         createButton.setVisibility(LinearLayout.GONE);
 //        lwaButton.setVisibility(Button.GONE);
         Preferences.setLoggedInState(
+                userInfoBundle.getSessionId(),
                 userInfoBundle.getAccessToken(),
                 userInfoBundle.getRefreshToken(),
                 userInfoBundle.getSubscriptionPlan(),
@@ -183,8 +174,7 @@ public class AccountCreationFragment extends Fragment {
     private class AuthListener implements AuthorizationListener {
         @Override
         public void onSuccess(Bundle response) {
-            String authCode = response.getString(AuthzConstants.BUNDLE_KEY.AUTHORIZATION_CODE.val);
-            ulAuthManager.getToken(authCode, new TokenListener());
+            ulAuthManager.getToken(response, new TokenListener());
         }
 
         @Override
@@ -200,11 +190,21 @@ public class AccountCreationFragment extends Fragment {
     private class TokenListener implements APIListener {
         @Override
         public void onSuccess(Bundle response) {
-                getActivity().runOnUiThread(() -> setLoggedInState(new UserInfoBundle(response)));
-                EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
-                getActivity().setResult(RESULT_OK);
-                getActivity().finishAfterTransition();
+            getActivity().runOnUiThread(() -> setLoggedInState(new UserInfoBundle(response)));
+            EventBus.getDefault().post(new AuthenticationStatusUpdateEvent(true));
+
+            Fragment communicationPreferencesFragment = getFragmentManager().findFragmentByTag(CommunicationPreferencesFragment.TAG);
+
+            if (communicationPreferencesFragment == null) {
+                communicationPreferencesFragment = new CommunicationPreferencesFragment();
+            }
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+            ft.replace(R.id.main_account_frame, communicationPreferencesFragment, CommunicationPreferencesFragment.TAG);
+            ft.commit();
         }
+
         @Override
         public void onError(AuthError ae) {
             onFailure(getString(R.string.error_during_auth), ae);

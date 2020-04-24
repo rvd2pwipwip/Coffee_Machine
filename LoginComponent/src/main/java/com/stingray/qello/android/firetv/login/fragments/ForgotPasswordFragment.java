@@ -70,16 +70,16 @@ public class ForgotPasswordFragment extends FullScreenDialogFragment {
 
             observableFactory.create(new ForgotPasswordCallable(forgotPasswordRequestBody))
                     .subscribe(voidObject -> {
-                        showToast(R.string.forgot_password_success);
+                        showToast(R.string.ResetPassword_EmailSentMesage);
                         dismiss();
                         progressBar.setVisibility(View.GONE);
                     }, throwable -> {
                         Log.e(TAG, "Forgot password call failed", throwable);
                         if (throwable instanceof ForgotPasswordCallable.EmailDoesntExistException) {
-                            showToast(R.string.forgot_password_error_email_doesnt_exist);
+                            showToast(R.string.ResetPassword_EmailNotExist);
                             submitButton.setEnabled(false);
                         } else {
-                            showToast(R.string.forgot_password_error_generic);
+                            showToast(R.string.generic_error_message);
                         }
                         progressBar.setVisibility(View.GONE);
                     });

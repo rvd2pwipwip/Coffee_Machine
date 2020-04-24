@@ -30,7 +30,7 @@
         tools:visibility="gone"/>
 
     <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
+
         android:id="@+id/qello_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -59,8 +59,8 @@
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/accent"
                     android:textStyle="bold"
-                    android:gravity="left|center_vertical"
-                    android:text="Start Free Trial"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/Settings.StartFreeTrial"
                     android:textAllCaps="false"
                     android:textSize="16sp" />
 
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="start|center_vertical"
-                    android:text="Login"
+                    android:text="@string/Settings.Login"
                     android:textAllCaps="false"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="start|center_vertical"
-                    android:text="History"
+                    android:text="@string/history"
                     android:textAllCaps="false"
                     android:textColorHighlight="#FAFAFA"
                     android:textSize="16sp" />
@@ -102,23 +102,11 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="start|center_vertical"
-                    android:text="Favorites"
+                    android:text="@string/favorites"
                     android:textAllCaps="false"
                     android:textColorHighlight="#FAFAFA"
                     android:textSize="16sp" />
 
-
-                <!--            <Button-->
-                <!--                android:id="@+id/playlists_button"-->
-                <!--                style="@style/button_border_highlight"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:fontFamily="sans-serif-light"-->
-                <!--                android:gravity="start|center_vertical"-->
-                <!--                android:text="Playlists"-->
-                <!--                android:textAllCaps="false"-->
-                <!--                android:textColorHighlight="#FAFAFA"-->
-                <!--                android:textSize="16sp" />-->
             </LinearLayout>
 
 
@@ -133,10 +121,11 @@
                 style="@style/button_border_highlight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/settings_gear"
+                android:drawableStart="@drawable/settings_gear"
+                android:drawablePadding="10dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="start|center_vertical"
-                android:text="    Settings"
+                android:text="@string/Settings.Settings"
                 android:textAllCaps="false"
                 android:textColorHighlight="#FAFAFA"
                 android:textSize="16sp" />

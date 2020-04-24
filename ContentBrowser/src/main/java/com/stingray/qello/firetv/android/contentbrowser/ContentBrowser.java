@@ -885,36 +885,36 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                     if (record != null && !record.isPlaybackComplete()) {
                         contentActionList.add(createActionButton(CONTENT_ACTION_RESUME,
                                 R.string.resume_1,
-                                R.string.resume_2,
+                                R.string.empty_seconde_line,
                                 R.drawable.play_show));
                         // Add "Watch From Beginning" button to start content over.
                         contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_FROM_BEGINNING,
-                                R.string.watch_from_beginning_1,
-                                R.string.watch_from_beginning_2,
+                                R.string.watch_from_beginning,
+                                R.string.empty_seconde_line,
                                 R.drawable.beginning_show));
                     }
                     // If the content has not been played yet, add the "Watch Now" button.
                     else {
                         contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW,
-                                R.string.watch_now_1,
-                                R.string.watch_now_2,
+                                R.string.ShowScreen_PlayCompleteShow,
+                                R.string.empty_seconde_line,
                                 R.drawable.play_show));
                     }
                 } else {
                     contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW,
-                            R.string.watch_sample_now_1,
-                            R.string.watch_sample_now_2,
+                            R.string.ShowScreen_PlayCompleteShow,
+                            R.string.empty_seconde_line,
                             R.drawable.play_show));
                 }
 
                 if (mSubscribed) {
                     if (isFavorite) {
-                        contentActionList.add(createActionButton(CONTENT_ACTION_REMOVE_FROM_FAVORITES, R.string.remove_from_favorites_1, R.string.remove_from_favorites_2, R.drawable.remove_favorite));
+                        contentActionList.add(createActionButton(CONTENT_ACTION_REMOVE_FROM_FAVORITES, R.string.remove_from_favorites, R.string.empty_seconde_line, R.drawable.remove_favorite));
                     } else {
-                        contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.add_to_favorites_1, R.string.add_to_favorites_2, R.drawable.add_favorite));
+                        contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.ShowScreen_AddToFavorite, R.string.empty_seconde_line, R.drawable.add_favorite));
                     }
                 } else {
-                    contentActionList.add(createActionButton(CONTENT_ACTION_START_FREE_TRIAL, R.string.start_free_trial_1, R.string.start_free_trial_2, null));
+                    contentActionList.add(createActionButton(CONTENT_ACTION_START_FREE_TRIAL, R.string.Global_StartTrial, R.string.empty_seconde_line, null));
                 }
 
                 if (isWatchlistRowEnabled()) {
@@ -922,7 +922,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 }
             }
             else {
-                contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW, R.string.watch_now_1, R.string.watch_now_2, R.drawable.play_show));
+                contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_NOW, R.string.ShowScreen_PlayCompleteShow, R.string.empty_seconde_line, R.drawable.play_show));
             }
         }
 
@@ -1046,14 +1046,14 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 // Update the button text.
                 if (isLiked) {
                     showToast("Successfully added to favorites");
-                    action.setLabel1(mAppContext.getResources().getString(R.string.remove_from_favorites_1));
-                    action.setLabel2(mAppContext.getResources().getString(R.string.remove_from_favorites_2));
+                    action.setLabel1(mAppContext.getResources().getString(R.string.remove_from_favorites));
+                    action.setLabel2(mAppContext.getResources().getString(R.string.empty_seconde_line));
                     action.setId(CONTENT_ACTION_REMOVE_FROM_FAVORITES);
                     action.setIcon(mAppContext.getResources().getDrawable(R.drawable.remove_favorite));
                 } else {
                     showToast("Successfully removed from favorites");
-                    action.setLabel1(mAppContext.getResources().getString(R.string.add_to_favorites_1));
-                    action.setLabel2(mAppContext.getResources().getString(R.string.add_to_favorites_2));
+                    action.setLabel1(mAppContext.getResources().getString(R.string.ShowScreen_AddToFavorite));
+                    action.setLabel2(mAppContext.getResources().getString(R.string.empty_seconde_line));
                     action.setId(CONTENT_ACTION_ADD_TO_FAVORITES);
                     action.setIcon(mAppContext.getResources().getDrawable(R.drawable.add_favorite));
                 }
@@ -1206,7 +1206,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
 
         AlertDialogFragment.createAndShowAlertDialogFragment(
                 mNavigator.getActiveActivity(),
-                mAppContext.getString(R.string.optional_login_dialog_title),
+                mAppContext.getString(R.string.Global_LogIn),
                 mAppContext.getString(R.string.optional_login_dialog_message),
                 mAppContext.getString(R.string.now),
                 mAppContext.getString(R.string.later),
@@ -1408,57 +1408,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         }
         else {
             Log.d(TAG, "validating purchase while handleRendererScreenSwitch");
-//            mPurchaseHelper
-//                    .isSubscriptionValidObservable()
-//                    .subscribe(resultBundle -> {
-//                        if (resultBundle.getBoolean(PurchaseHelper.RESULT) &&
-//                                resultBundle.getBoolean(PurchaseHelper.RESULT_VALIDITY)) {
-//                            // Switch to renderer screen.
-//                            switchToRendererScreen(content, actionId);
-//                        }
-//                        else if (resultBundle.getBoolean(PurchaseHelper.RESULT) &&
-//                                !resultBundle.getBoolean(PurchaseHelper.RESULT_VALIDITY)) {
-//
-//                            if (showErrorDialog) {
-//                                AlertDialogFragment.createAndShowAlertDialogFragment(
-//                                        mNavigator.getActiveActivity(),
-//                                        mAppContext.getString(R.string.iap_error_dialog_title),
-//                                        mAppContext.getString(R.string.subscription_expired),
-//                                        null,
-//                                        mAppContext.getString(R.string.ok),
-//                                        new AlertDialogFragment.IAlertDialogListener() {
-//
-//                                            @Override
-//                                            public void onDialogPositiveButton
-//                                                    (AlertDialogFragment alertDialogFragment) {
-//
-//                                            }
-//
-//                                            @Override
-//                                            public void onDialogNegativeButton
-//                                                    (AlertDialogFragment alertDialogFragment) {
-//
-//                                                alertDialogFragment.dismiss();
-//                                            }
-//                                        });
-//                            }
-//                            else {
-//                                Log.e(TAG, "Purchase expired while handleRendererScreenSwitch");
-//                                ContentBrowser.getInstance(activity).setLastSelectedContent(content)
-//                                              .switchToScreen(ContentBrowser
-//                                                                      .CONTENT_DETAILS_SCREEN,
-//                                                              content);
-//                            }
-//                            updateContentActions();
-//                        }
-//                        else {
-//                            // IAP errors are handled by IAP sdk.
-//                            Log.e(TAG, "IAP error!!!");
-//                        }
-//                    }, throwable -> {
-//                        // IAP errors are handled by IAP sdk.
-//                        Log.e(TAG, "IAP error!!!", throwable);
-//                    });
+
         }
     }
 
@@ -1496,10 +1446,6 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                     handleRendererScreenSwitch(activity, content, actionId, true);
                 }
                 break;
-//            case CONTENT_ACTION_SUBSCRIPTION:
-//            case CONTENT_ACTION_DAILY_PASS:
-//                mPurchaseHelper.handleAction(activity, content, actionId);
-//                break;
             case CONTENT_ACTION_ADD_WATCHLIST:
                 watchlistButtonClicked(content.getId(), true, actionAdapter);
                 break;
@@ -1644,7 +1590,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                                                "Error",
                                                "The selected content is no longer available",
                                                null,
-                                               mAppContext.getString(R.string.ok),
+                                               mAppContext.getString(R.string.Global_ButtonOk),
                                                new AlertDialogFragment.IAlertDialogListener() {
 
                                                    @Override

@@ -3,7 +3,6 @@ package com.stingray.qello.firetv.android.tv.tenfoot.ui.fragments.MyQello;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,13 +14,16 @@ import com.stingray.qello.firetv.android.ui.fragments.AppInfoDialog;
 import com.stingray.qello.firetv.android.ui.interfaces.SingleViewProvider;
 import com.stingray.qello.firetv.android.utils.Preferences;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class MyAccountSettingsDialog extends AppInfoDialog {
 
     private static final String TAG = MyAccountSettingsDialog.class.getSimpleName();
+
+    private static final SimpleDateFormat ulDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static final SimpleDateFormat printDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public void createFragment(final Activity activity, FragmentManager manager) {
         super.createFragment(activity, manager,"MyAccountSettingsFragment");
@@ -38,9 +40,8 @@ public class MyAccountSettingsDialog extends AppInfoDialog {
 
             if (hasSubscription) {
                 // TODO Get the price and recurrence
-                // TODO Format date
                 String subscriptionEnd = Preferences.getString(PreferencesConstants.SUBSCRIPTION_END_DATE);
-                String formattedSubscriptionEnd = subscriptionEnd;
+
                 String subscriptionPrice = "9.99$";
                 String subscriptionRecurrence = "MONTHLY";
 
@@ -50,10 +51,20 @@ public class MyAccountSettingsDialog extends AppInfoDialog {
                     TextView emailView = view.findViewById(R.id.my_account_email);
                     emailView.setText(email);
 
+                    String formattedSubscriptionEnd;
+                    try {
+                        Date date = ulDateFormat.parse(subscriptionEnd);
+                        formattedSubscriptionEnd = printDateFormat.format(date);
+                    } catch (ParseException e) {
+                        formattedSubscriptionEnd = subscriptionEnd;
+                    }
+
                     TextView subEndView = view.findViewById(R.id.my_account_sub_end);
                     subEndView.setText(formattedSubscriptionEnd);
+
                     TextView subRecurrenceView = view.findViewById(R.id.my_account_sub_rec);
                     subRecurrenceView.setText(subscriptionRecurrence);
+
                     TextView subPriceView = view.findViewById(R.id.my_account_sub_price);
                     subPriceView.setText(subscriptionPrice);
 

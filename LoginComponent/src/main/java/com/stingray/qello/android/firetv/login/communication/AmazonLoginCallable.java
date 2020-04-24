@@ -17,7 +17,7 @@ public class AmazonLoginCallable extends ULCallable<LoginResponse> {
     private final static TypeReference<Map<String, String>> MAP_STRING_STRING = new TypeReference<Map<String, String>>() {
     };
     private final static String ENDPOINT = "/user/amazonLogin";
-    private final static String CREATE_PASSWORD_LINK = BASE_CLIENT_URL + "/createPasswordAndLink?client_id=JD0NM5sIIqRTEZQf&redirect_uri=https%3A%2F%2Fqello-test.stingray.com%2Fen%2F&response_type=code&language=en";
+    private final static String CREATE_PASSWORD_LINK_FORMAT = BASE_CLIENT_URL + "/createPasswordAndLink?client_id=%s&redirect_uri=%s&response_type=code&language=%s";
     private final static String TAG = AmazonLoginCallable.class.getSimpleName();
 
     private ObjectMapper objectMapper = new ObjectMapper()
@@ -27,8 +27,10 @@ public class AmazonLoginCallable extends ULCallable<LoginResponse> {
     private AmazonLoginRequestBody requestBody;
 
     public AmazonLoginCallable(AmazonLoginRequestBody requestBody) {
+        String createPasswordLink = String.format(CREATE_PASSWORD_LINK_FORMAT, CLIENT_ID, WEB_LINK, requestBody.getLanguageTag());
+
         requestBody.setClientId(CLIENT_ID);
-        requestBody.setSetAmazonPasswordUri(CREATE_PASSWORD_LINK);
+        requestBody.setSetAmazonPasswordUri(createPasswordLink);
         this.requestBody = requestBody;
     }
 

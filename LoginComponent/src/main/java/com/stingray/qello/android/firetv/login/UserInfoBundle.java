@@ -10,6 +10,7 @@ public class UserInfoBundle {
     private final String subscriptionPlan;
     private final String subscriptionEnd;
     private final String userTrackingId;
+    private final String sessionId;
 
     public UserInfoBundle(Bundle bundle) {
         this.stingrayEmail = bundle.getString(ULAuthManager.BUNDLE_STINGRAY_EMAIL);
@@ -19,6 +20,7 @@ public class UserInfoBundle {
         this.subscriptionPlan = bundle.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_PLAN);
         this.subscriptionEnd = bundle.getString(ULAuthManager.BUNDLE_SUBSCRIPTION_END);
         this.userTrackingId = bundle.getString(ULAuthManager.BUNDLE_USER_TRACKING_ID);
+        this.sessionId = bundle.getString(ULAuthManager.BUNDLE_SESSION_ID);
     }
 
     public String getStingrayEmail() {
@@ -46,4 +48,8 @@ public class UserInfoBundle {
     }
 
     public String getUserTrackingId() { return userTrackingId; }
+
+    public String getSessionId() {
+        return sessionId;
+    }
 }

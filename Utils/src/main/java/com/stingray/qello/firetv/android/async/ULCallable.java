@@ -1,31 +1,23 @@
 package com.stingray.qello.firetv.android.async;
 
 import android.net.Uri;
-import android.text.TextUtils;
 
-import com.stingray.qello.firetv.android.utils.Helpers;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_UL_API_URL;
 import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_UL_FE_URL;
+import static com.stingray.qello.firetv.android.async.UrlConstants.WEB_URL;
 
 public abstract class ULCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = ULCallable.class.getName();
     protected static final String BASE_API_URL = BASE_UL_API_URL + "/loginapi";
     protected static final String BASE_CLIENT_URL = BASE_UL_FE_URL;
+    protected  static final String WEB_LINK = WEB_URL;
 
     private String createUrl(String url) {
         return BASE_API_URL + url;

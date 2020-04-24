@@ -13,9 +13,9 @@ public class PurchaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         setContentView(R.layout.purchase_main);
-        Helpers.handleActivityEnterFadeTransition(this, 1500);
 
         Fragment purchaseFragment = new PurchaseFragment();
         purchaseFragment.setArguments(savedInstanceState);
