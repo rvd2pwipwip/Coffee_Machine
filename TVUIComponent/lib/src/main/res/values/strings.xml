@@ -32,7 +32,6 @@ permissions and limitations under the License.
 
 <resources>
     <string name="feed_reloading">Reloading</string>
-    <string name="feed_loading">Loading</string>
 
     <!-- The hint text that appears in the search box. -->
     <string name="lb_search_bar_hint">@string/Explore.SearchPlaceholder</string>
@@ -59,19 +58,17 @@ permissions and limitations under the License.
     <string name="stingray_copyright" translatable="false">Stingray Qello © 2020\nStingray Digital Media Group</string>
     <string name="qello_com" translatable="false">qello.com</string>
 
-    <string name="subscribe_offer_description">To enjoy full-length concerts, music documentaries, and live events, start your free trial now.</string>
 
-    <string name="history">History</string>
-    <string name="favorites">Favorites</string>
-
-
-    <string name="About.AboutMessage">© 2020 Stingray Media Group. All rights reserved. STINGRAY®, QELLOTM CONCERTS BY STINGRAY® and other related marks and logos are trademarks of Stingray Media Group in Canada, the United States of America and/or other territories.</string>
+    <!-- LOKALISE -->
+    <string name="About.AboutMessage">All rights reserved. STINGRAY®, QELLOTM CONCERTS BY STINGRAY® and other related marks and logos are trademarks of Stingray Media Group in Canada, the United States of America and/or other territories.</string>
+    <string name="About.Platform">© 2020 Stingray Media Group</string>
     <string name="About.Title">About</string>
     <string name="About.Version">Version: %s</string>
     <string name="Account.AccountAndSettings">Account and Settings</string>
     <string name="Account.Email">Email Address</string>
     <string name="Account.Guest">Discovery Mode</string>
     <string name="Account.ManageAccount">Manage Account</string>
+    <string name="Account.ManageAccountText">To manage your account, please visit account.stingray.com on your browser</string>
     <string name="Account.ManagePlan">Manage Plan</string>
     <string name="Account.NoSubscription">No Current Subscription</string>
     <string name="Account.PlanEnd">Your plan will end on\n%s</string>
@@ -102,6 +99,7 @@ permissions and limitations under the License.
     <string name="ContactUs.StingrayAddressText">Stingray Group Inc.\n736 Wellington, Montreal,\nQuebec, Canada H3C 1T4</string>
     <string name="ContactUs.StingrayAddressTitle">Stingray Group Inc.</string>
     <string name="ContactUs.Title">Contact Us</string>
+    <string name="CreateAccount.AlreadyHaveAccountTitle">Already have an account?</string>
     <string name="CreateAccount.CreateButtonTitle">Continue</string>
     <string name="CreateAccount.EmailExist">This email is already in use. Try logging in.</string>
     <string name="CreateAccount.EmailHeader">Enter your email address</string>
@@ -117,11 +115,13 @@ permissions and limitations under the License.
     <string name="Explore.NoSearchResult">We couldn\'t find what you\'re looking for.\nPlease try again.</string>
     <string name="Explore.NoSearchResultTitle">Uh oh!</string>
     <string name="Explore.Search">Search</string>
-    <string name="Explore.SearchPlaceholder">Artist, film title, song</string>
+    <string name="Explore.SearchPlaceholder">Artist, title, song</string>
     <string name="Global.ApplicationName">Qello Concerts</string>
     <string name="Global.ButtonCancel">Cancel</string>
     <string name="Global.ButtonOk">OK</string>
     <string name="Global.Clear">Clear</string>
+    <string name="Global.Dismiss">Dismiss</string>
+    <string name="Global.Loading">Loading</string>
     <string name="Global.LogIn">Log In</string>
     <string name="Global.LogOut">Log Out</string>
     <string name="Global.More">More</string>
@@ -170,6 +170,8 @@ permissions and limitations under the License.
     <string name="Settings.CommunicationPreference">Communication Preferences</string>
     <string name="Settings.ContactUs">Contact Us</string>
     <string name="Settings.FAQ">FAQ</string>
+    <string name="Settings.Favorites">Favorites</string>
+    <string name="Settings.History">History</string>
     <string name="Settings.Login">Log In</string>
     <string name="Settings.Logout">Log Out</string>
     <string name="Settings.Notification">Notification</string>
@@ -187,12 +189,15 @@ permissions and limitations under the License.
     <string name="ShowScreen.PlayCompleteShow">Play Complete Show</string>
     <string name="ShowScreen.ReadMore">Read More</string>
     <string name="ShowScreen.RelatedMessage">You May Also Like</string>
+    <string name="ShowScreen.RemoveFromFavorites">Remove from Favorites</string>
+    <string name="ShowScreen.Resume">Resume</string>
     <string name="ShowScreen.RuntimeLabel">Runtime:</string>
     <!-- 1 is the title
   2 is the artist -->
     <string name="ShowScreen.TitleAndArtist">%1$s by %2$s</string>
     <string name="ShowScreen.ViewRelated">View Related</string>
     <string name="ShowScreen.YearLabel">Year:</string>
+    <string name="ShowScreen.PlayFromBeginning">Play from beginning</string>
     <string name="Splash.RefreshTokenError">Unable to load account</string>
     <string name="Splash.Retry">Retry</string>
     <string name="Splash.SessionExpired">Your session expired. Please log back in.</string>
@@ -222,7 +227,5 @@ permissions and limitations under the License.
     <string name="Subscription.TitleComment">Continue enjoying Qello Concerts after your FREE trial ends.</string>
     <!-- we couldnt get the new userInfo after the purchase was successful, ask the user to restart the app. -->
     <string name="Subscription.UserInfoRefreshError">Your purchase was successful, but something is not quite right. Please restart the application.</string>
-
-
 
 </resources>

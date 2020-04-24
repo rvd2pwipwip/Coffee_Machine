@@ -114,20 +114,20 @@ public class ErrorUtils {
                 buttonLabelsList.add(context.getResources().getString(R.string.exit_app_label));
                 break;
             case REGISTRATION_CODE_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.dismiss_label));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_Dismiss));
                 break;
             case AUTHENTICATION_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.dismiss_label));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_Dismiss));
                 break;
             case AUTHENTICATION_SYSTEM_ERROR:
                 buttonLabelsList.add(context.getResources().getString(R.string.exit_app_label));
                 break;
             case AUTHORIZATION_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.dismiss_label));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_Dismiss));
                 buttonLabelsList.add(context.getResources().getString(R.string.Global_LogOut));
                 break;
             case PLAYER_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.dismiss_label));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_Dismiss));
                 break;
             default:
                 break;
@@ -150,7 +150,7 @@ public class ErrorUtils {
             return ERROR_BUTTON_TYPE.NETWORK_SETTINGS;
         }
         else if (buttonText.equalsIgnoreCase(activity.getResources()
-                                                     .getString(R.string.dismiss_label))) {
+                                                     .getString(R.string.Global_Dismiss))) {
             return ERROR_BUTTON_TYPE.DISMISS;
         }
         else if (buttonText.equalsIgnoreCase(activity.getResources()

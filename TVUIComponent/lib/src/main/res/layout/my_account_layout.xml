@@ -118,6 +118,13 @@
 
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:paddingTop="6dp"
+                android:text="@string/Account.ManageAccountText" />
+
 
         </TableRow>
 

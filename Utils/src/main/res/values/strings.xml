@@ -16,7 +16,7 @@ permissions and limitations under the License.
     <!-- Error messages -->
     <string name="feed_error_message">Service is unavailable. Please try again later.</string>
     <string name="network_error_message">Network is currently unavailable. Please try again later.</string>
-    <string name="registration_code_error_message">Error obtaining the registration code. Please dismiss this message and retry. </string>
+    <string name="registration_code_error_message">Error obtaining the registration code. Please dismiss this message and retry.</string>
     <string name="authentication_system_error_message">You must update your Fire TV for the Qello app to work properly. To install the latest update, go to Settings &gt; Device &gt; About > Install System Update. If the problem persists, please contact Amazon Customer Service at Settings &gt; Help &gt; Contact Us.</string>
     <string name="logout_success_message">Logout Successful.You shall soon be redirected to the details page.</string>
     <string name="logout_failure_message">Logout UnSuccessful. Please retry.</string>
@@ -25,17 +25,19 @@ permissions and limitations under the License.
     <string name="try_again_label">Try Again</string>
     <string name="exit_app_label">Exit the Application</string>
     <string name="go_to_network_settings_label">Go to Network Settings</string>
-    <string name="dismiss_label">Dismiss</string>
 
     <string name="contact_us_by_email" translatable="false">Contact us by email:</string>
 
-    <string name="About.AboutMessage">© 2020 Stingray Media Group. All rights reserved. STINGRAY®, QELLOTM CONCERTS BY STINGRAY® and other related marks and logos are trademarks of Stingray Media Group in Canada, the United States of America and/or other territories.</string>
+    <!-- LOKALISE -->
+    <string name="About.AboutMessage">All rights reserved. STINGRAY®, QELLOTM CONCERTS BY STINGRAY® and other related marks and logos are trademarks of Stingray Media Group in Canada, the United States of America and/or other territories.</string>
+    <string name="About.Platform">© 2020 Stingray Media Group</string>
     <string name="About.Title">About</string>
     <string name="About.Version">Version: %s</string>
     <string name="Account.AccountAndSettings">Account and Settings</string>
     <string name="Account.Email">Email Address</string>
     <string name="Account.Guest">Discovery Mode</string>
     <string name="Account.ManageAccount">Manage Account</string>
+    <string name="Account.ManageAccountText">To manage your account, please visit account.stingray.com on your browser</string>
     <string name="Account.ManagePlan">Manage Plan</string>
     <string name="Account.NoSubscription">No Current Subscription</string>
     <string name="Account.PlanEnd">Your plan will end on\n%s</string>
@@ -66,6 +68,7 @@ permissions and limitations under the License.
     <string name="ContactUs.StingrayAddressText">Stingray Group Inc.\n736 Wellington, Montreal,\nQuebec, Canada H3C 1T4</string>
     <string name="ContactUs.StingrayAddressTitle">Stingray Group Inc.</string>
     <string name="ContactUs.Title">Contact Us</string>
+    <string name="CreateAccount.AlreadyHaveAccountTitle">Already have an account?</string>
     <string name="CreateAccount.CreateButtonTitle">Continue</string>
     <string name="CreateAccount.EmailExist">This email is already in use. Try logging in.</string>
     <string name="CreateAccount.EmailHeader">Enter your email address</string>
@@ -81,11 +84,13 @@ permissions and limitations under the License.
     <string name="Explore.NoSearchResult">We couldn\'t find what you\'re looking for.\nPlease try again.</string>
     <string name="Explore.NoSearchResultTitle">Uh oh!</string>
     <string name="Explore.Search">Search</string>
-    <string name="Explore.SearchPlaceholder">Artist, film title, song</string>
+    <string name="Explore.SearchPlaceholder">Artist, title, song</string>
     <string name="Global.ApplicationName">Qello Concerts</string>
     <string name="Global.ButtonCancel">Cancel</string>
     <string name="Global.ButtonOk">OK</string>
     <string name="Global.Clear">Clear</string>
+    <string name="Global.Dismiss">Dismiss</string>
+    <string name="Global.Loading">Loading</string>
     <string name="Global.LogIn">Log In</string>
     <string name="Global.LogOut">Log Out</string>
     <string name="Global.More">More</string>
@@ -134,6 +139,8 @@ permissions and limitations under the License.
     <string name="Settings.CommunicationPreference">Communication Preferences</string>
     <string name="Settings.ContactUs">Contact Us</string>
     <string name="Settings.FAQ">FAQ</string>
+    <string name="Settings.Favorites">Favorites</string>
+    <string name="Settings.History">History</string>
     <string name="Settings.Login">Log In</string>
     <string name="Settings.Logout">Log Out</string>
     <string name="Settings.Notification">Notification</string>
@@ -151,12 +158,15 @@ permissions and limitations under the License.
     <string name="ShowScreen.PlayCompleteShow">Play Complete Show</string>
     <string name="ShowScreen.ReadMore">Read More</string>
     <string name="ShowScreen.RelatedMessage">You May Also Like</string>
+    <string name="ShowScreen.RemoveFromFavorites">Remove from Favorites</string>
+    <string name="ShowScreen.Resume">Resume</string>
     <string name="ShowScreen.RuntimeLabel">Runtime:</string>
     <!-- 1 is the title
   2 is the artist -->
     <string name="ShowScreen.TitleAndArtist">%1$s by %2$s</string>
     <string name="ShowScreen.ViewRelated">View Related</string>
     <string name="ShowScreen.YearLabel">Year:</string>
+    <string name="ShowScreen.PlayFromBeginning">Play from beginning</string>
     <string name="Splash.RefreshTokenError">Unable to load account</string>
     <string name="Splash.Retry">Retry</string>
     <string name="Splash.SessionExpired">Your session expired. Please log back in.</string>

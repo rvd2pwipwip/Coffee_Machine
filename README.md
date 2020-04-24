@@ -35,3 +35,16 @@ The base repo uses symlinks in their project structure. Thus, special instructio
 - If you set up an SSH Key with Git, perform`git clone sa_gitlab@gitserver.corp.stingraydigital.com:rogue/qello-android-fire-tv.git`
 - Otherwise, `git clone https://gitserver.corp.stingraydigital.com/rogue/qello-android-fire-tv`
 5. With Android Studio, open the project `<WORKSPACE_LOCATION>/qello-android-fire-tv/Application`
+
+##  How to update strings viaf  Lokalise
+Lokalie is used from string management
+Visit https://lokalise.com/
+
+Project lokalise folder is located at path_to_project\qello-android-fire-tv\lokalise
+
+To update strings: 
+1. Navigate to lokalise folder
+2. Run PullStringsFromLokalise.bat
+3. Navigate to lokalie/values
+4. Copy block of strings (excluding resource tags) and paste in strings-{lang}.xml everywhere there is a <!-- LOKALISE --> comment (replace block)
+-There are strings that are not in lokalise because they are specific to amazon fire tv

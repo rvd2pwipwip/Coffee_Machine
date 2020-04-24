@@ -884,12 +884,12 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                     // Add "Resume" button if content playback is not complete.
                     if (record != null && !record.isPlaybackComplete()) {
                         contentActionList.add(createActionButton(CONTENT_ACTION_RESUME,
-                                R.string.resume_1,
+                                R.string.ShowScreen_Resume,
                                 R.string.empty_seconde_line,
                                 R.drawable.play_show));
                         // Add "Watch From Beginning" button to start content over.
                         contentActionList.add(createActionButton(CONTENT_ACTION_WATCH_FROM_BEGINNING,
-                                R.string.watch_from_beginning,
+                                R.string.ShowScreen_PlayFromBeginning,
                                 R.string.empty_seconde_line,
                                 R.drawable.beginning_show));
                     }
@@ -909,7 +909,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
 
                 if (mSubscribed) {
                     if (isFavorite) {
-                        contentActionList.add(createActionButton(CONTENT_ACTION_REMOVE_FROM_FAVORITES, R.string.remove_from_favorites, R.string.empty_seconde_line, R.drawable.remove_favorite));
+                        contentActionList.add(createActionButton(CONTENT_ACTION_REMOVE_FROM_FAVORITES, R.string.ShowScreen_RemoveFromFavorites, R.string.empty_seconde_line, R.drawable.remove_favorite));
                     } else {
                         contentActionList.add(createActionButton(CONTENT_ACTION_ADD_TO_FAVORITES, R.string.ShowScreen_AddToFavorite, R.string.empty_seconde_line, R.drawable.add_favorite));
                     }
@@ -1046,7 +1046,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
                 // Update the button text.
                 if (isLiked) {
                     showToast("Successfully added to favorites");
-                    action.setLabel1(mAppContext.getResources().getString(R.string.remove_from_favorites));
+                    action.setLabel1(mAppContext.getResources().getString(R.string.ShowScreen_RemoveFromFavorites));
                     action.setLabel2(mAppContext.getResources().getString(R.string.empty_seconde_line));
                     action.setId(CONTENT_ACTION_REMOVE_FROM_FAVORITES);
                     action.setIcon(mAppContext.getResources().getDrawable(R.drawable.remove_favorite));

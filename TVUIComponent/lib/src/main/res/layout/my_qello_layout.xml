@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="start|center_vertical"
-                    android:text="@string/history"
+                    android:text="@string/Settings.History"
                     android:textAllCaps="false"
                     android:textColorHighlight="#FAFAFA"
                     android:textSize="16sp" />
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="start|center_vertical"
-                    android:text="@string/favorites"
+                    android:text="@string/Settings.Favorites"
                     android:textAllCaps="false"
                     android:textColorHighlight="#FAFAFA"
                     android:textSize="16sp" />
