@@ -32,16 +32,17 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
 
     @Deprecated
     protected String get(String path) throws IOException {
-        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN)).getBody();
+        return performGet(path).getBody();
+    }
+
+    protected Response performGet(String path, String accessToken) {
+        Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
+        return performGet(path);
     }
 
     protected Response performGet(String path) {
-        return get(path, Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
-    }
-
-    protected Response get(String path, String accessToken) {
         return performWithTokenRefresh(() -> {
-            HttpURLConnection urlConnection = createUrlConnection(path, "GET", accessToken);
+            HttpURLConnection urlConnection = createUrlConnection(path, "GET");
             return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), urlConnection.getURL().toString());
         });
     }
@@ -53,7 +54,7 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
     protected Response post(String path, String jsonBody, Map<String, String> additionalHeaders) {
 
         return performWithTokenRefresh(() -> {
-            HttpURLConnection urlConnection = createUrlConnection(path, "POST", Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
+            HttpURLConnection urlConnection = createUrlConnection(path, "POST");
 
             for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
                 urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
@@ -70,12 +71,12 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
 
     protected Response delete(String path) {
         return performWithTokenRefresh(() -> {
-            HttpURLConnection urlConnection =  createUrlConnection(path, "DELETE", Preferences.getString(PreferencesConstants.ACCESS_TOKEN));
+            HttpURLConnection urlConnection =  createUrlConnection(path, "DELETE");
             return new Response(urlConnection.getResponseCode(), getResponseBody(urlConnection), urlConnection.getURL().toString());
         });
     }
 
-    private HttpURLConnection createUrlConnection(String path, String method, String accessToken) throws IOException {
+    private HttpURLConnection createUrlConnection(String path, String method) throws IOException {
         HttpURLConnection urlConnection;
         URL url = new URL(createUrl(path));
         urlConnection = (HttpURLConnection) url.openConnection();
@@ -83,6 +84,7 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
         urlConnection.setRequestProperty("x-client-id", CLIENT_ID);
         urlConnection.setRequestProperty("Content-Type", "application/json");
 
+        String accessToken = Preferences.getString(PreferencesConstants.ACCESS_TOKEN);
         if (accessToken != null && !accessToken.isEmpty()) {
             urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
         }
