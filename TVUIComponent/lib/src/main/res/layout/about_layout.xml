@@ -20,14 +20,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         tools:text="@string/About.Version" />-->
-
-    <TextView
-        android:id="@+id/textView5"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="@string/stingray_copyright" />
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/about_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/Global.ApplicationName" />
+        <TextView
+            android:id="@+id/about_platform"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:text="@string/About.Platform" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView7"
@@ -37,14 +50,6 @@
         android:gravity="center_horizontal"
         android:text="@string/About.AboutMessage"
         android:textAlignment="center" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textSize="@dimen/button_text_size"
-        android:text="@string/qello_com" />
 
     <Button
         android:id="@+id/terms_button"
