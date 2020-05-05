@@ -586,8 +586,6 @@ public class AuthHelper {
     private static ErrorUtils.ERROR_CATEGORY convertAuthErrorToErrorUtils(Bundle bundle) {
 
         switch (bundle.getString(AuthenticationConstants.ERROR_CATEGORY)) {
-            case AuthenticationConstants.REGISTRATION_ERROR_CATEGORY:
-                return ErrorUtils.ERROR_CATEGORY.REGISTRATION_CODE_ERROR;
             case AuthenticationConstants.NETWORK_ERROR_CATEGORY:
                 return ErrorUtils.ERROR_CATEGORY.NETWORK_ERROR;
             case AuthenticationConstants.AUTHENTICATION_ERROR_CATEGORY:
@@ -629,8 +627,7 @@ public class AuthHelper {
                             public void onFailure(Bundle extras) {
                                 fragment.getArguments()
                                         .putString(ErrorDialogFragment.ARG_ERROR_MESSAGE,
-                                                   activity.getResources().getString(
-                                                           R.string.logout_failure_message));
+                                                   activity.getResources().getString(R.string.BaseViewController_ErrorMessage));
                             }
                         });
                     }

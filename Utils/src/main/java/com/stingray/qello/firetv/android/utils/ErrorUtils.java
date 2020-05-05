@@ -37,7 +37,6 @@ public class ErrorUtils {
     public enum ERROR_CATEGORY {
         NETWORK_ERROR,
         FEED_ERROR,
-        REGISTRATION_CODE_ERROR,
         AUTHENTICATION_ERROR,
         AUTHORIZATION_ERROR,
         PLAYER_ERROR,
@@ -71,10 +70,6 @@ public class ErrorUtils {
             case FEED_ERROR:
                 errorMessage = context.getResources().getString(R.string.Global_ServiceUnavailable);
                 break;
-            case REGISTRATION_CODE_ERROR:
-                errorMessage =
-                        context.getResources().getString(R.string.registration_code_error_message);
-                break;
             case AUTHENTICATION_ERROR:
                 errorMessage =
                         context.getResources().getString(R.string.Login_InvalidCredential);
@@ -87,7 +82,7 @@ public class ErrorUtils {
                         context.getResources().getString(R.string.Account_SubscribeText);
                 break;
             case PLAYER_ERROR:
-                errorMessage = context.getResources().getString(R.string.playback_error_message);
+                errorMessage = context.getResources().getString(R.string.BaseViewController_ErrorMessage);
                 break;
             default:
                 break;
@@ -108,19 +103,16 @@ public class ErrorUtils {
         switch (error_category) {
             case NETWORK_ERROR:
                 buttonLabelsList.add(
-                        context.getResources().getString(R.string.go_to_network_settings_label));
+                        context.getResources().getString(R.string.Global_NetworkUnavailable));
                 break;
             case FEED_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.exit_app_label));
-                break;
-            case REGISTRATION_CODE_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.Global_ButtonDismiss));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_ServiceUnavailable));
                 break;
             case AUTHENTICATION_ERROR:
                 buttonLabelsList.add(context.getResources().getString(R.string.Global_ButtonDismiss));
                 break;
             case AUTHENTICATION_SYSTEM_ERROR:
-                buttonLabelsList.add(context.getResources().getString(R.string.exit_app_label));
+                buttonLabelsList.add(context.getResources().getString(R.string.Global_ServiceUnavailable));
                 break;
             case AUTHORIZATION_ERROR:
                 buttonLabelsList.add(context.getResources().getString(R.string.Global_ButtonDismiss));
@@ -145,7 +137,7 @@ public class ErrorUtils {
     public static ERROR_BUTTON_TYPE getErrorButtonType(Activity activity, String buttonText) {
 
         if (buttonText.equalsIgnoreCase(activity.getResources()
-                                                .getString(R.string.go_to_network_settings_label)
+                                                .getString(R.string.Global_NetworkUnavailable)
         )) {
             return ERROR_BUTTON_TYPE.NETWORK_SETTINGS;
         }
@@ -158,7 +150,7 @@ public class ErrorUtils {
             return ERROR_BUTTON_TYPE.LOGOUT;
         }
         else if (buttonText.equalsIgnoreCase(activity.getResources()
-                                                     .getString(R.string.exit_app_label))) {
+                                                     .getString(R.string.Global_ServiceUnavailable))) {
             return ERROR_BUTTON_TYPE.EXIT_APP;
         }
 

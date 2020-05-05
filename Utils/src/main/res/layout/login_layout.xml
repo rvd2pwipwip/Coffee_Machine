@@ -53,7 +53,7 @@ permissions and limitations under the License.
                 android:background="@drawable/action_button_background"
                 android:minWidth="@dimen/logout_fragment_button_width"
                 android:minHeight="@dimen/logout_fragment_button_height"
-                android:text="@string/Global.Dismiss"/>
+                android:text="@string/Global.ButtonDismiss"/>
 
     </LinearLayout>
 </LinearLayout>

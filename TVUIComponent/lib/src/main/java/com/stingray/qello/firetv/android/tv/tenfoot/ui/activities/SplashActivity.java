@@ -71,7 +71,7 @@ public class SplashActivity extends BaseActivity implements ICancellableLoad {
         }
         // If this activity was called from the TenFootApp call activity method.
         else {
-            mProgressText.setText(R.string.feed_reloading);
+            mProgressText.setText(R.string.Global_Loading);
         }
     }
 

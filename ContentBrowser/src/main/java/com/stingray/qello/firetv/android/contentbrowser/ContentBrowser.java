@@ -1207,7 +1207,7 @@ public class ContentBrowser implements IContentBrowser, ICancellableLoad {
         AlertDialogFragment.createAndShowAlertDialogFragment(
                 mNavigator.getActiveActivity(),
                 mAppContext.getString(R.string.Global_LogIn),
-                mAppContext.getString(R.string.optional_login_dialog_message),
+                mAppContext.getString(R.string.SubscribePrompt_Description),
                 mAppContext.getString(R.string.now),
                 mAppContext.getString(R.string.later),
                 new AlertDialogFragment.IAlertDialogListener() {

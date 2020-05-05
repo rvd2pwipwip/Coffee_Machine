@@ -79,7 +79,7 @@ public class ForgotPasswordFragment extends FullScreenDialogFragment {
                             showToast(R.string.ResetPassword_EmailNotExist);
                             submitButton.setEnabled(false);
                         } else {
-                            showToast(R.string.generic_error_message);
+                            showToast(R.string.BaseViewController_ErrorMessage);
                         }
                         progressBar.setVisibility(View.GONE);
                     });

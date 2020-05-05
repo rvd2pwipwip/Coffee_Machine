@@ -1292,7 +1292,7 @@ public class TenFootPlaybackOverlayFragment extends DetailsFragment {
     protected String getVideoTitle() {
 
         if (isAdded()) { // Check if the fragment is attached to activity
-            return getResources().getString(R.string.video_title);
+            return "Video Title";
         }
         else {
             Log.e(TAG, "Fragment is not attached to the activity");
@@ -1309,7 +1309,7 @@ public class TenFootPlaybackOverlayFragment extends DetailsFragment {
     protected String getVideoSubtitle() {
 
         if (isAdded()) { // Check if the fragment is attached to activity
-            return getResources().getString(R.string.video_subtitle);
+            return "Video Subtitle";
         }
         else {
             Log.e(TAG, "Fragment is not attached to the activity");

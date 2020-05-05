@@ -71,7 +71,7 @@
                     android:textColor="@color/lb_search_bar_text"
                     android:textColorHint="@color/lb_search_bar_hint"
                     android:textCursorDrawable="@null"
-                    android:hint="@string/lb_search_bar_hint"
+                    android:hint="@string/Explore.SearchPlaceholder"
                     android:textSize="@dimen/lb_search_bar_text_size"/>
     </RelativeLayout>
 </merge>

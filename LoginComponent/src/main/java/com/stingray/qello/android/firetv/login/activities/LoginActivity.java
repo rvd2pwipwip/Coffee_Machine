@@ -83,13 +83,14 @@ public class LoginActivity extends Activity {
         try {
             amazonAuthManager = new AmazonAuthorizationManager(this, Bundle.EMPTY);
         } catch (IllegalArgumentException e) {
-            showAuthToast(getString(R.string.incorrect_api_key));
-            Log.e(TAG, getString(R.string.incorrect_api_key), e);
+            String message = "APIKey is incorrect or does not exist.";
+            showAuthToast(message);
+            Log.e(TAG, message, e);
         }
 
         setContentView(R.layout.login_dialog_layout);
 
-        APP_SCOPES = new String[]{getString(R.string.profile_Login)};
+        APP_SCOPES = new String[]{"profile"};
 
         //For universal login
         ulAuthManager = new ULAuthManager();
@@ -277,7 +278,7 @@ public class LoginActivity extends Activity {
         @Override
         public void onError(final AuthError ae) {
             runOnUiThread(() -> {
-                showAuthToast(getString(R.string.error_during_auth));
+                showAuthToast(getString(R.string.Login_Fail));
                 setLoggingInState(false);
                 setLoggedOutState();
                 LoginActivity.this.setResultAndReturn(ae.getCause());
@@ -297,7 +298,7 @@ public class LoginActivity extends Activity {
                 @Override
                 public void run() {
                     setLoggedOutState();
-                    showAuthToast(getString(R.string.auth_cancelled));
+                    showAuthToast(getString(R.string.Login_Fail));
                 }
             });
         }

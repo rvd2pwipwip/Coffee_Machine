@@ -179,11 +179,11 @@ public class AccountCreationFragment extends Fragment {
 
         @Override
         public void onError(final AuthError ae) {
-            onFailure(getString(R.string.error_during_auth), ae);
+            onFailure(getString(R.string.CreateAccount_GenericError), ae);
         }
         @Override
         public void onCancel(Bundle cause) {
-            onFailure(getString(R.string.error_during_auth), new Throwable("Hit a state that should never happen"));
+            onFailure(getString(R.string.CreateAccount_GenericError), new Throwable("Hit a state that should never happen"));
         }
     }
 
@@ -207,7 +207,7 @@ public class AccountCreationFragment extends Fragment {
 
         @Override
         public void onError(AuthError ae) {
-            onFailure(getString(R.string.error_during_auth), ae);
+            onFailure(getString(R.string.CreateAccount_GenericError), ae);
         }
     }
 

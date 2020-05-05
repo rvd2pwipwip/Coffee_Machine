@@ -40,10 +40,6 @@ public class AuthenticationConstants {
      */
     public static final String NETWORK_ERROR_CATEGORY = "network";
     /**
-     * Constant for registration error category
-     */
-    public static final String REGISTRATION_ERROR_CATEGORY = "registration";
-    /**
      * Constant for error category
      */
     public static final String AUTHORIZATION_ERROR_CATEGORY = "authorization";

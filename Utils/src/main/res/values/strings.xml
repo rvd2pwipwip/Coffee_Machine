@@ -1,29 +1,7 @@
-<!--
-Copyright 2015-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-A copy of the License is located at
-
-    http://aws.amazon.com/apache2.0/
-
-or in the "license" file accompanying this file. This file is distributed
-on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-express or implied. See the License for the specific language governing
-permissions and limitations under the License.
--->
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <!-- Error messages -->
-    <string name="registration_code_error_message">Error obtaining the registration code. Please dismiss this message and retry.</string>
     <string name="authentication_system_error_message">You must update your Fire TV for the Qello app to work properly. To install the latest update, go to Settings &gt; Device &gt; About > Install System Update. If the problem persists, please contact Amazon Customer Service at Settings &gt; Help &gt; Contact Us.</string>
-    <string name="logout_success_message">Logout Successful.You shall soon be redirected to the details page.</string>
-    <string name="logout_failure_message">Logout UnSuccessful. Please retry.</string>
-    <string name="playback_error_message">Playback failed. Please retry.</string>
-    <!-- Error button labels -->
-    <string name="try_again_label">Try Again</string>
-    <string name="exit_app_label">Exit the Application</string>
-    <string name="go_to_network_settings_label">Go to Network Settings</string>
-
 
     <!-- LOKALISE -->
     <string name="About.AboutMessage">All rights reserved. STINGRAY®, QELLOTM CONCERTS BY STINGRAY® and other related marks and logos are trademarks of Stingray Media Group in Canada, the United States of America and/or other territories.</string>
@@ -34,7 +12,7 @@ permissions and limitations under the License.
     <string name="Account.Email">Email Address</string>
     <string name="Account.Guest">Discovery Mode</string>
     <string name="Account.ManageAccount">Manage Account</string>
-    <string name="Account.ManageAccountText">To manage your account, please visit account.stingray.com on your browser</string>
+    <string name="Account.ManageAccountText">To manage your account, please login to qello.com on your browser</string>
     <string name="Account.ManagePlan">Manage Plan</string>
     <string name="Account.NoSubscription">No Current Subscription</string>
     <string name="Account.PlanEnd">Your plan will end on\n%s</string>
@@ -59,9 +37,7 @@ permissions and limitations under the License.
     <string name="ContactUs.EmailText">qellosupport@stingray.com</string>
     <string name="ContactUs.OnlineHelpCenter">Online Help Center</string>
     <string name="ContactUs.PrivacyText">If you have any questions about the privacy aspects of Stingray’s products or services or would like to make a privacy complaint, please contact us by email: \n\nprivacy@stingray.com or by mail at the addresses above.</string>
-    <!-- Contact Us privacy email that is included in the Full Text to use as link -->
     <string name="ContactUs.PrivateEmail">privacy@stingray.com</string>
-    <!-- Contact Us  service email that is included in the Full Text to use as link -->
     <string name="ContactUs.ServiceEmail">qellosupport@stingray.com</string>
     <string name="ContactUs.StingrayAddressText">Stingray Group Inc.\n736 Wellington, Montreal,\nQuebec, Canada H3C 1T4</string>
     <string name="ContactUs.StingrayAddressTitle">Stingray Group Inc.</string>
@@ -105,10 +81,8 @@ permissions and limitations under the License.
     <string name="Global.TermsAndCondition">Terms and Conditions</string>
     <string name="Login.Continue">Continue</string>
     <string name="Login.EmailAddressHint">Email Address</string>
-    <!-- A message shown to the user, if they decline the to give email permission. -->
     <string name="Login.FacebookMissingEmailPermissionMessage">In the interest of offering you the best customer service, we may exceptionally contact you. For this reason, please provide us with your email address.</string>
     <string name="Login.Fail">Log in failed. Try again later.</string>
-    <!-- Message if the server can't validate correctly the email or password -->
     <string name="Login.InvalidCredential">Your credentials are invalid.</string>
     <string name="Login.LoginText">Log In</string>
     <string name="Login.PasswordHint">Password</string>
@@ -116,9 +90,7 @@ permissions and limitations under the License.
     <string name="MainPage.ExploreTab">Explore</string>
     <string name="MainPage.HomeTab">Home</string>
     <string name="MainPage.MyServiceTab">My Qello</string>
-    <!-- Clear Favorite button label -->
     <string name="MyService.ClearFavorite">Clear Favorites</string>
-    <!-- Clear history button label -->
     <string name="MyService.ClearHistory">Clear history</string>
     <string name="MyService.FavoriteEmptyMessage">Your favorites will appear here</string>
     <string name="MyService.FavoriteEmptyTitle">Empty Favorites</string>
@@ -150,7 +122,6 @@ permissions and limitations under the License.
     <string name="Settings.Wifi">Wi-Fi</string>
     <string name="Settings.WiFiOnly">Play videos on Wi-Fi only</string>
     <string name="ShowScreen.AddToFavorite">Add to Favorites</string>
-    <!-- number of minute of duration -->
     <string name="ShowScreen.Duration">%d min</string>
     <string name="ShowScreen.EmptyTrackList">Setlist is empty</string>
     <string name="ShowScreen.NumberOfTrackLabel">Tracks</string>
@@ -162,8 +133,6 @@ permissions and limitations under the License.
     <string name="ShowScreen.RemoveFromFavorites">Remove from Favorites</string>
     <string name="ShowScreen.Resume">Resume</string>
     <string name="ShowScreen.RuntimeLabel">Runtime:</string>
-    <!-- 1 is the title
-  2 is the artist -->
     <string name="ShowScreen.TitleAndArtist">%1$s by %2$s</string>
     <string name="ShowScreen.ViewRelated">View Related</string>
     <string name="ShowScreen.YearLabel">Year:</string>
@@ -179,21 +148,13 @@ permissions and limitations under the License.
     <string name="SubscribePrompt.SubscribeNow">Subscribe Now</string>
     <string name="Subscription.Disclaimer">By selecting a plan, you accept the Terms and Conditions and Privacy Policy. By subscribing to Qello Concerts, you will obtain seven days for free. Your subscription will be charged at the end of the free period. Your monthly subscription will automatically renew unless you turn off the auto-renewal at least 24 hours before the end of the subscription on My Account &gt; Manage Subscription. Any unused portion of a free trial period, if offered, will be forfeited when the user purchases a subscription to that publication, where applicable. For more information about your subscription fees and renewals, please consult our Terms and Conditions.</string>
     <string name="Subscription.GenericErrorMessage">Error, try again later.</string>
-    <!-- Shown to the user when they try to restore a purchase, but they never did, or the subscription is expired -->
     <string name="Subscription.NothingToRestore">There is no valid subscription to restore.</string>
     <string name="Subscription.PlaystoreUnreachable">Can\'t connect to the google play store. Make sure it\'s installed on your device and try again.</string>
-    <!-- this text is beside the price of a subscription, if there is a free trial for it -->
     <string name="Subscription.ProductPriceWithTrial">per month after trial</string>
-    <!-- Title for the user dialog when an error occurs -->
     <string name="Subscription.PurchaseError">Purchase Error</string>
-    <!-- unable to validate the store purchase with our server -->
     <string name="Subscription.PurchaseValidationError">We can\'t validate your purchase. Please try Restore Purchase to try again.</string>
-    <!-- button title to restore a purchase  -->
     <string name="Subscription.RestorePurchase">Restore Purchase</string>
-    <!-- Title in subscription page -->
     <string name="Subscription.SelectPlan">Select a plan</string>
-    <!-- Subscription Page. Text bellow the title -->
     <string name="Subscription.TitleComment">Continue enjoying Qello Concerts after your FREE trial ends.</string>
-    <!-- we couldnt get the new userInfo after the purchase was successful, ask the user to restart the app. -->
     <string name="Subscription.UserInfoRefreshError">Your purchase was successful, but something is not quite right. Please restart the application.</string>
 </resources>
