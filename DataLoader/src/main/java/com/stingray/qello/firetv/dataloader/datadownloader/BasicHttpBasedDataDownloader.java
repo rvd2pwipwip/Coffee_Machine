@@ -14,19 +14,17 @@
  */
 package com.stingray.qello.firetv.dataloader.datadownloader;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.stingray.qello.firetv.android.recipe.Recipe;
 import com.stingray.qello.firetv.android.utils.NetworkUtils;
 import com.stingray.qello.firetv.dataloader.R;
 import com.stingray.qello.firetv.utils.model.Data;
 
-import android.content.Context;
-import android.util.Log;
-
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 
-import static com.stingray.qello.firetv.android.async.UrlConstants.HOMEPAGE_LOAD_URL;
+import static com.stingray.qello.firetv.android.async.EnvironmentConstants.BASE_AVC_URL;
 
 /**
  * This class represents a basic HTTP-based data downloader. It receives a URL from the URL
@@ -125,7 +123,7 @@ BasicHttpBasedDataDownloader extends ADataDownloader {
 //        }
 //        // Get the url.
 //        String url = mUrlGenerator.getUrl(urlGeneratorRecipeMap);
-        String url = HOMEPAGE_LOAD_URL;
+        String url = BASE_AVC_URL + "/v1/browse-pages/homepage";
         Log.d(TAG, "url: " + url);
         return Data.createDataForPayload(NetworkUtils.getDataLocatedAtUrl(url));
     }

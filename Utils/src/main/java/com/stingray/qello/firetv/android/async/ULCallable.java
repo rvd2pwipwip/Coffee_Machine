@@ -9,9 +9,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_UL_API_URL;
-import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_UL_FE_URL;
-import static com.stingray.qello.firetv.android.async.UrlConstants.WEB_URL;
+import static com.stingray.qello.firetv.android.async.EnvironmentConstants.BASE_UL_API_URL;
+import static com.stingray.qello.firetv.android.async.EnvironmentConstants.BASE_UL_FE_URL;
+import static com.stingray.qello.firetv.android.async.EnvironmentConstants.WEB_URL;
 
 public abstract class ULCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = ULCallable.class.getName();

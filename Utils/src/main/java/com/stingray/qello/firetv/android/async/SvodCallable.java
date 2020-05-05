@@ -16,11 +16,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import static com.stingray.qello.firetv.android.async.UrlConstants.BASE_AVC_URL;
+import static com.stingray.qello.firetv.android.async.EnvironmentConstants.BASE_AVC_URL;
 
 public abstract class SvodCallable<T> extends BaseCommunicator implements Callable<T> {
     private static final String TAG = SvodCallable.class.getName();
