@@ -33,6 +33,12 @@ buildscript {
 }
 
 allprojects {
+    ext {
+        versionCode = 20595
+        versionName = '3.0.2'
+        applicationId = "com.qello.amazon"
+    }
+
     repositories {
         jcenter()
         mavenCentral()

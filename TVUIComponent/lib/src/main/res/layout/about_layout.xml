@@ -14,12 +14,12 @@
         android:layout_marginBottom="30dp"
         android:src="@drawable/stingray_qello_white" />
 
-<!--    <TextView
-        android:id="@+id/versionText"
+    <TextView
+        android:id="@+id/about_version_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        tools:text="@string/About.Version" />-->
+        tools:text="@string/About.Version" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

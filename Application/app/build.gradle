@@ -40,11 +40,11 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        applicationId "com.qello.amazon"
+        applicationId rootProject.ext.applicationId
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 20595
-        versionName "3.0.2"
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }

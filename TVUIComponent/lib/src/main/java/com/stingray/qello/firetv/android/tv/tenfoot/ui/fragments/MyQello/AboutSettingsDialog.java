@@ -28,6 +28,11 @@ public class AboutSettingsDialog extends AppInfoDialog {
         return (context1, inflater, parent) -> {
             final View view = mActivity.getLayoutInflater().inflate(R.layout.about_layout, parent);
 
+            String version = BuildConfig.VERSION_NAME;
+            String versionText = String.format(mActivity.getResources().getString(R.string.About_Version), version);
+            TextView versionTextView = view.findViewById(R.id.about_version_text);
+            versionTextView.setText(versionText);
+
             String termsTag = mActivity.getResources().getString(R.string.terms_settings_fragment_tag);
             String termsUrl = mActivity.getResources().getString(R.string.terms_settings_url);
 
