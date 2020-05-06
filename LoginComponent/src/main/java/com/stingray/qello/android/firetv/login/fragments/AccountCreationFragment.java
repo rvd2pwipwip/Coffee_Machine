@@ -147,7 +147,7 @@ public class AccountCreationFragment extends Fragment {
         Preferences.setLoggedInState(
                 userInfoBundle.getSessionId(),
                 userInfoBundle.getAccessToken(),
-                userInfoBundle.getAccessTokenExpiryTime(),
+                userInfoBundle.getAccessTokenExpiryTimeInMs(),
                 userInfoBundle.getRefreshToken(),
                 userInfoBundle.getSubscriptionPlan(),
                 userInfoBundle.getUserTrackingId(),

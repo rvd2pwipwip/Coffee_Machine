@@ -183,7 +183,7 @@ public class LoginActivity extends Activity {
         Preferences.setLoggedInState(
                 userInfoBundle.getSessionId(),
                 userInfoBundle.getAccessToken(),
-                userInfoBundle.getAccessTokenExpiryTime(),
+                userInfoBundle.getAccessTokenExpiryTimeInMs(),
                 userInfoBundle.getRefreshToken(),
                 userInfoBundle.getSubscriptionPlan(),
                 userInfoBundle.getUserTrackingId(),

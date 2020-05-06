@@ -24,7 +24,7 @@ public class ULAuthManager {
     final static String BUNDLE_SESSION_ID = "sessionId";
     final static String BUNDLE_ACCESS_TOKEN = AuthzConstants.BUNDLE_KEY.TOKEN.val;
     final static String BUNDLE_REFRESH_TOKEN = "refreshToken";
-    final static String BUNDLE_ACCESS_TOKEN_EXPIRY_TIME = "access_token_expiry_time";
+    final static String BUNDLE_ACCESS_TOKEN_EXPIRY_TIME_IN_MS = "access_token_expiry_time_in_ms";
     final static String BUNDLE_STINGRAY_EMAIL = "stingrayEmail";
     final static String BUNDLE_SUBSCRIPTION_PLAN = "subscriptionPlan";
     final static String BUNDLE_SUBSCRIPTION_END = "subscriptionEnd";
@@ -80,8 +80,8 @@ public class ULAuthManager {
         bundle.putString(BUNDLE_ACCESS_TOKEN, tokenResponse.getAccessToken());
         bundle.putString(BUNDLE_REFRESH_TOKEN, tokenResponse.getRefreshToken());
 
-        long accessTokenExpiryDate = new Date().getTime() + tokenResponse.getExpiresInMS();
-        bundle.putLong(BUNDLE_ACCESS_TOKEN_EXPIRY_TIME, accessTokenExpiryDate);
+        long accessTokenExpiryTimeInMs = new Date().getTime() + tokenResponse.getExpiresInMS();
+        bundle.putLong(BUNDLE_ACCESS_TOKEN_EXPIRY_TIME_IN_MS, accessTokenExpiryTimeInMs);
 
         return bundle;
     }

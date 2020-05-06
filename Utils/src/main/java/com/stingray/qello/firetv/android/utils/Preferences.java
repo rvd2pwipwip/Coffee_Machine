@@ -139,7 +139,7 @@ public class Preferences {
     public static void setLoggedOutState() {
         Preferences.setBoolean(PreferencesConstants.IS_LOGGED_IN, false);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, null);
-        Preferences.setLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME, 0);
+        Preferences.setLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME_IN_MS, 0);
         Preferences.setString(PreferencesConstants.REFRESH_TOKEN, null);
         Preferences.setString(PreferencesConstants.SUBSCRIPTION_END_DATE, null);
         Preferences.setString(PreferencesConstants.STINGRAY_EMAIL, null);
@@ -154,7 +154,7 @@ public class Preferences {
         Preferences.setString(PreferencesConstants.SESSION_ID, sessionId);
         Preferences.setString(PreferencesConstants.REFRESH_TOKEN, refreshToken);
         Preferences.setString(PreferencesConstants.ACCESS_TOKEN, accessToken);
-        Preferences.setLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME, accessTokenExpiryTime);
+        Preferences.setLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME_IN_MS, accessTokenExpiryTime);
         updateUserInfo(subscriptionPlan, subscriptionEnd, email, userTrackingId);
     }
 

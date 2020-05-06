@@ -97,8 +97,8 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
             Response response = null;
             do {
                 String accessToken = Preferences.getString(PreferencesConstants.ACCESS_TOKEN);
-                long accessTokenExpiryDate = Preferences.getLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME);
-                boolean isAccessTokenExpired = new Date().after(new Date(accessTokenExpiryDate));
+                long accessTokenExpiryTimeInMs = Preferences.getLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME_IN_MS);
+                boolean isAccessTokenExpired = new Date().after(new Date(accessTokenExpiryTimeInMs));
                 if (accessToken.isEmpty()) {
                     response = responseCallable.call();
                 } else {
@@ -132,7 +132,7 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
             if (tokenResponse != null) {
                 Preferences.setString(PreferencesConstants.ACCESS_TOKEN, tokenResponse.getAccessToken());
                 long accessTokenExpiryDate = new Date().getTime() + tokenResponse.getExpiresInMS();
-                Preferences.setLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME, accessTokenExpiryDate);
+                Preferences.setLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME_IN_MS, accessTokenExpiryDate);
                 performLogout = false;
             }
         }

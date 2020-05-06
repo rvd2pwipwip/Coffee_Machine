@@ -43,7 +43,7 @@ public class PreferencesConstants {
 
     public static final String ACCESS_TOKEN = "access_token";
 
-    public static final String ACCESS_TOKEN_EXPIRED_TIME = "access_token_expiry_time";
+    public static final String ACCESS_TOKEN_EXPIRED_TIME_IN_MS = "access_token_expiry_time_in_ms";
 
     public static final String REFRESH_TOKEN = "refresh_token";
 
