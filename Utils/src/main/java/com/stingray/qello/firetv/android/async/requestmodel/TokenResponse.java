@@ -14,8 +14,12 @@ public class TokenResponse {
         return tokenType;
     }
 
-    public Long getExpiresIn() {
+    private Long getExpiresIn() {
         return expiresIn;
+    }
+
+    public long getExpiresInMS() {
+        return (expiresIn != null) ? expiresIn * 1000 : 0;
     }
 
     public String getRefreshToken() {

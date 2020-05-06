@@ -80,7 +80,7 @@ public class ULAuthManager {
         bundle.putString(BUNDLE_ACCESS_TOKEN, tokenResponse.getAccessToken());
         bundle.putString(BUNDLE_REFRESH_TOKEN, tokenResponse.getRefreshToken());
 
-        long accessTokenExpiryDate = new Date().getTime() + (tokenResponse.getExpiresIn() * 1000);
+        long accessTokenExpiryDate = new Date().getTime() + tokenResponse.getExpiresInMS();
         bundle.putLong(BUNDLE_ACCESS_TOKEN_EXPIRY_TIME, accessTokenExpiryDate);
 
         return bundle;

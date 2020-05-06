@@ -131,7 +131,7 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
             TokenResponse tokenResponse = new TokenCallable(tokenRequestBody).call();
             if (tokenResponse != null) {
                 Preferences.setString(PreferencesConstants.ACCESS_TOKEN, tokenResponse.getAccessToken());
-                long accessTokenExpiryDate = new Date().getTime() + (tokenResponse.getExpiresIn() * 1000);
+                long accessTokenExpiryDate = new Date().getTime() + tokenResponse.getExpiresInMS();
                 Preferences.setLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME, accessTokenExpiryDate);
                 performLogout = false;
             }
