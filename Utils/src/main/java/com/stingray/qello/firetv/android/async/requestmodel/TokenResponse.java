@@ -3,7 +3,7 @@ package com.stingray.qello.firetv.android.async.requestmodel;
 public class TokenResponse {
     private String accessToken;
     private String tokenType;
-    private String expiresIn;
+    private Long expiresIn;
     private String refreshToken;
 
     public String getAccessToken() {
@@ -14,7 +14,7 @@ public class TokenResponse {
         return tokenType;
     }
 
-    public String getExpiresIn() {
+    public Long getExpiresIn() {
         return expiresIn;
     }
 

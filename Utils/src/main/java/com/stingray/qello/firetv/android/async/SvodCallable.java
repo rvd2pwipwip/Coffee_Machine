@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -84,7 +85,7 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
         urlConnection.setRequestProperty("Content-Type", "application/json");
 
         String accessToken = Preferences.getString(PreferencesConstants.ACCESS_TOKEN);
-        if (accessToken != null && !accessToken.isEmpty()) {
+        if (!accessToken.isEmpty()) {
             urlConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
         }
 
@@ -93,19 +94,26 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
 
     private Response performWithTokenRefresh(Callable<Response> responseCallable) {
         try {
-            Response response;
-            boolean isRetrying = false;
+            Response response = null;
             do {
-                response = responseCallable.call();
-
-                if (response.getCode() == 401 && !isRetrying) {
-                    refreshTokenOrPerformLogout();
-                    isRetrying = true;
+                String accessToken = Preferences.getString(PreferencesConstants.ACCESS_TOKEN);
+                long accessTokenExpiryDate = Preferences.getLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME);
+                boolean isAccessTokenExpired = new Date().after(new Date(accessTokenExpiryDate));
+                if (accessToken.isEmpty()) {
+                    response = responseCallable.call();
                 } else {
-                    isRetrying = false;
-                }
+                    if (isAccessTokenExpired) {
+                        refreshTokenOrPerformLogout();
+                    } else {
+                        response = responseCallable.call();
 
-            } while (isRetrying);
+                        if (response.getCode() == 401) {
+                            refreshTokenOrPerformLogout();
+                            response = null;
+                        }
+                    }
+                }
+            } while (response == null);
 
             return response;
         } catch (Exception e) {
@@ -123,6 +131,8 @@ public abstract class SvodCallable<T> extends BaseCommunicator implements Callab
             TokenResponse tokenResponse = new TokenCallable(tokenRequestBody).call();
             if (tokenResponse != null) {
                 Preferences.setString(PreferencesConstants.ACCESS_TOKEN, tokenResponse.getAccessToken());
+                long accessTokenExpiryDate = new Date().getTime() + (tokenResponse.getExpiresIn() * 1000);
+                Preferences.setLong(PreferencesConstants.ACCESS_TOKEN_EXPIRED_TIME, accessTokenExpiryDate);
                 performLogout = false;
             }
         }

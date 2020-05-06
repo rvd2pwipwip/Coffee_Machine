@@ -17,14 +17,14 @@ import com.stingray.qello.firetv.android.async.requestmodel.TokenResponse;
 import com.stingray.qello.firetv.android.model.svod.SvodUserInfo;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class ULAuthManager {
     private static final String TAG = ULAuthManager.class.getName();
-
     final static String BUNDLE_SESSION_ID = "sessionId";
     final static String BUNDLE_ACCESS_TOKEN = AuthzConstants.BUNDLE_KEY.TOKEN.val;
     final static String BUNDLE_REFRESH_TOKEN = "refreshToken";
-    final static String BUNDLE_EXPIRES_IN = "expiresIn";
+    final static String BUNDLE_ACCESS_TOKEN_EXPIRY_TIME = "access_token_expiry_time";
     final static String BUNDLE_STINGRAY_EMAIL = "stingrayEmail";
     final static String BUNDLE_SUBSCRIPTION_PLAN = "subscriptionPlan";
     final static String BUNDLE_SUBSCRIPTION_END = "subscriptionEnd";
@@ -79,7 +79,9 @@ public class ULAuthManager {
     private Bundle addTokenResponse(Bundle bundle, TokenResponse tokenResponse) {
         bundle.putString(BUNDLE_ACCESS_TOKEN, tokenResponse.getAccessToken());
         bundle.putString(BUNDLE_REFRESH_TOKEN, tokenResponse.getRefreshToken());
-        bundle.putString(BUNDLE_EXPIRES_IN, tokenResponse.getExpiresIn());
+
+        long accessTokenExpiryDate = new Date().getTime() + (tokenResponse.getExpiresIn() * 1000);
+        bundle.putLong(BUNDLE_ACCESS_TOKEN_EXPIRY_TIME, accessTokenExpiryDate);
 
         return bundle;
     }
