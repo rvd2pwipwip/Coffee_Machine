@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class EnvironmentConstants {
     // Change this to set urls
-    private final static Environment CURRENT_ENV =  Environment.PROD;
+    private final static Environment CURRENT_ENV =  Environment.STAGE;
     private final static EnvironmentSettings ENV_SETTINGS = getMap().get(CURRENT_ENV);
 
     public final static String BASE_AVC_URL = ENV_SETTINGS.baseAVCUrl;
