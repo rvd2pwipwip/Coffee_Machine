@@ -34,8 +34,8 @@ buildscript {
 
 allprojects {
     ext {
-        versionCode = 20595
-        versionName = '3.0.2'
+        versionCode = 20596
+        versionName = '3.0.3'
         applicationId = "com.qello.amazon"
     }
 

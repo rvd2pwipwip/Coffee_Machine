@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class EnvironmentConstants {
     // Change this to set urls
-    private final static Environment CURRENT_ENV =  Environment.TEST;
+    private final static Environment CURRENT_ENV =  Environment.PROD;
     private final static EnvironmentSettings ENV_SETTINGS = getMap().get(CURRENT_ENV);
 
     public final static String BASE_AVC_URL = ENV_SETTINGS.baseAVCUrl;
@@ -25,14 +25,14 @@ public class EnvironmentConstants {
                 "https://ulogin-proxy-prod.stingray.com",
                 "https://login.stingray.com",
                 "https://qello.stingray.com",
-                "<TODO>"));
+                segmentWriteKeyDev));
 
         envMap.put(Environment.STAGE, new EnvironmentSettings(
                 "https://svod-stage.api.stingray.com",
                 "https://ulogin-proxy-stage.stingray.com",
                 "https://login-stage.stingray.com",
                 "https://qello-stage.stingray.com",
-                "<TODO>"));
+                segmentWriteKeyDev));
 
         envMap.put(Environment.TEST, new EnvironmentSettings(
                 "https://svod-test.api.stingray.com",
