@@ -44,12 +44,12 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/my_account_sub_rec"
+                android:id="@+id/my_account_subscribed_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-light"
                 android:paddingTop="15dp"
-                tools:text="Monthly"
+                android:text="@string/Account.Subscribed"
                 android:textColor="@color/accent"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -60,63 +60,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/my_account_subscription_end_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5">
-
-                <TextView
-                    android:id="@+id/my_account_sub_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:fontFamily="sans-serif-light"
-                    android:paddingTop="6dp"
-                    android:text="Automatically renew on"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/my_account_sub_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/my_account_sub_desc"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    tools:text="9/99/99" />
-
-
-                <TextView
-                    android:id="@+id/my_account_sub_for"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/my_account_sub_end"
-                    android:layout_toEndOf="@+id/my_account_sub_end"
-                    android:fontFamily="sans-serif-light"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
-                    tools:text="for"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-
-                <TextView
-                    android:id="@+id/my_account_sub_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/my_account_sub_for"
-                    android:layout_toEndOf="@+id/my_account_sub_for"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    tools:text="9.99$" />
-
-            </RelativeLayout>
+                android:layout_weight="0.4"
+                android:fontFamily="sans-serif-light"
+                android:paddingTop="6dp"
+                android:text="@string/Account.PlanEnd"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <TextView
                 android:layout_width="0dp"

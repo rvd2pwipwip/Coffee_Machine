@@ -25,6 +25,7 @@
     <string name="Account.PlanEnd">Your plan will end on\n%s</string>
     <string name="Account.PlanRenew">Your plan will automatically renew on\n%s</string>
     <string name="Account.PlanTitle">Subscription</string>
+    <string name="Account.Subscribed">SUBSCRIBED</string>
     <string name="Account.SubscribeText">Subscribe to get full access to \nQello Concerts</string>
     <string name="Account.Title">Account</string>
     <string name="BaseViewController.ErrorMessage">Something went wrong. Please retry.</string>
